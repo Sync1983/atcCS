@@ -1,0 +1,36 @@
+/* 
+    Created on : 09.09.2015, 09.09.2015 19:50:44
+    Author     : sync1983
+*/
+
+$width: 80%;
+
+html, body{
+  background-color: #6699ff;  
+  height: 100%;    
+}
+
+.wrap {
+    width: $width;
+    min-height: 100%;
+    height: auto;
+    margin: 0 auto -60px;
+    padding: 0 0 60px;
+    
+    & > .container-fluid{
+      width: 100%;
+      //padding: 70px 15px 20px;
+      margin: 10px auto;
+      background-color: #FFF;
+    }
+}
+
+.footer {
+    width: $width;
+    margin: 0 auto;
+    height: 60px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
