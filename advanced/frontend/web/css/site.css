@@ -13,9 +13,79 @@ html, body {
   margin: 0 auto -60px;
   padding: 0 0 60px; }
   .wrap > .container-fluid {
+    padding: 0;
     width: 100%;
-    margin: 10px auto;
+    margin: 130px auto 0;
     background-color: #FFF; }
+
+.head {
+  top: 10px;
+  height: 60px;
+  width: 80%;
+  line-height: 60px;
+  background-color: #FFFFBA;
+  padding: 0;
+  margin: 0 0;
+  border-radius: 20px 20px 0 0;
+  border-bottom: 1px solid #6699ff;
+  position: absolute;
+  z-index: 1; }
+  .head > .head-logo {
+    width: 20%;
+    display: block;
+    position: relative;
+    margin: 0 5px;
+    float: left; }
+  .head > .circle {
+    top: 10px; }
+
+.info {
+  top: 10px;
+  width: 80%;
+  color: #0C557C;
+  padding: 15px 0;
+  line-height: 120px;
+  height: 120px;
+  text-align: center;
+  background-color: transparent;
+  z-index: 2;
+  position: absolute;
+  pointer-events: none; }
+  .info p {
+    left: 25%;
+    width: 50%;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    line-height: 30px;
+    vertical-align: middle;
+    font-weight: bold;
+    font-size: 1.5em;
+    font-family: "Arial",monospace;
+    pointer-events: auto;
+    position: relative; }
+    .info p > img {
+      top: -2px;
+      height: 80%;
+      padding: 0 5px;
+      position: relative; }
+
+.circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  line-height: 40px;
+  border: 2px solid #006699;
+  margin: 10px 5px;
+  text-align: center;
+  background: linear-gradient(-20deg, rgba(0, 80, 155, 0.5) 0%, rgba(155, 155, 255, 0.2) 70%, rgba(255, 255, 255, 0.7) 80%, white 100%);
+  cursor: pointer; }
+  .circle > img {
+    top: -3px;
+    max-width: 50%;
+    position: relative; }
+  .circle:hover {
+    background: linear-gradient(-20deg, rgba(0, 80, 155, 0.7) 0%, rgba(155, 155, 255, 0.4) 70%, rgba(255, 255, 255, 0.4) 80%, #9b9bff 100%); }
 
 .footer {
   width: 80%;
@@ -24,5 +94,42 @@ html, body {
   background-color: #f5f5f5;
   border-top: 1px solid #ddd;
   padding-top: 20px; }
+
+@media (min-width: 34em) {
+  .head {
+    height: 60px;
+    line-height: 60px; }
+
+  .circle {
+    width: 40px;
+    height: 40px;
+    line-height: 40px; } }
+@media (min-width: 48em) {
+  .head {
+    height: 80px;
+    line-height: 80px; }
+
+  .circle {
+    width: 60px;
+    height: 60px;
+    line-height: 60px; } }
+@media (min-width: 62em) {
+  .head {
+    height: 100px;
+    line-height: 100px; }
+
+  .circle {
+    width: 80px;
+    height: 80px;
+    line-height: 80px; } }
+@media (min-width: 75em) {
+  .head {
+    height: 120px;
+    line-height: 120px; }
+
+  .circle {
+    width: 100px;
+    height: 100px;
+    line-height: 100px; } }
 
 /*# sourceMappingURL=site.css.map */

@@ -23,16 +23,12 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/angular/angular.js',
-        'js/bootstrap/bootstrap.js'
+        'js/bootstrap/tether.min.js',
+        'js/bootstrap/bootstrap.js',        
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        //'yii\bootstrap\BootstrapAsset',
+        'yii\web\JqueryAsset'        
     ];
-
-    /*/* @var $view \yii\web\View
-    public static function register($view){
-      parent::register($view);
-      $view->registerJs('js/bootstrap/bootstrap.js', \yii\web\View::POS_END);
-    }*/
+    
 }

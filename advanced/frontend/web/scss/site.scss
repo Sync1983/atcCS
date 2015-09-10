@@ -18,11 +18,94 @@ html, body{
     padding: 0 0 60px;
     
     & > .container-fluid{
+      padding: 0;
       width: 100%;
-      //padding: 70px 15px 20px;
-      margin: 10px auto;
+      margin: 130px auto 0;
       background-color: #FFF;
     }
+}
+
+.head{
+    top: 10px;
+    height: 60px;
+    width: $width;
+    line-height: 60px;
+    background-color: #FFFFBA;
+    padding: 0;
+    margin: 0 0;
+    border-radius: 20px 20px 0 0;
+    border-bottom: 1px solid #6699ff;
+    position: absolute;
+    z-index: 1;
+    
+    & > .head-logo{
+      width: 20%;
+      display: block;
+      position: relative;
+      margin: 0 5px;
+      float:left;
+    }
+    & > .circle {
+      top: 10px;
+    }
+}
+
+.info{
+  top: 10px;
+  width: $width;   
+  color: #0C557C;
+  padding: 15px 0;
+  line-height: 120px;
+  height: 120px;
+  text-align: center;  
+  background-color: transparent;
+  z-index: 2;
+  position: absolute;
+  pointer-events: none;
+  
+  & p {
+    left:25%;
+    width: 50%;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    line-height: 30px;
+    vertical-align: middle;
+    font-weight: bold;
+    font-size: 1.5em;
+    font-family: "Arial",monospace;
+    pointer-events: auto;  
+    position:relative;
+            
+    &> img{
+      top: -2px;
+      height: 80%;
+      padding: 0 5px;
+      position: relative;
+    }
+  }
+}
+
+.circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;  
+  line-height: 40px;
+  border: 2px solid #006699;  
+  margin: 10px 5px;
+  text-align: center;
+  background: linear-gradient(-20deg, rgba(0,80,155,0.5)0%, rgba(155, 155, 255, 0.2)70%, rgba(255, 255, 255, 0.7)80%, rgba(255, 255, 255, 1)100%);
+  cursor: pointer;
+  
+  & > img {
+    top: -3px;
+    max-width: 50%;
+    position: relative;
+  }
+  
+  &:hover{
+    background: linear-gradient(-20deg, rgba(0,80,155,0.7)0%, rgba(155, 155, 255, 0.4)70%, rgba(255, 255, 255, 0.4)80%, rgba(155, 155, 255, 1)100%);    
+  }
 }
 
 .footer {
@@ -34,3 +117,7 @@ html, body{
     padding-top: 20px;
 }
 
+@import "site-sm.scss";
+@import "site-md.scss";
+@import "site-lg.scss";
+@import "site-xl.scss";

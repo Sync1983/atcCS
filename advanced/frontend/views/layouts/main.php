@@ -26,16 +26,20 @@ AppAsset::register($this);
 <div class="wrap">
 
     <div class="container-fluid">
-      I can add: {{ 1+2 }}.
-        <?= Alert::widget() ?>
-        <?= $content ?>
+      <?php $this->beginContent('@app/views/layouts/menu.php'); ?>
+        <!-- You may need to put some content here -->
+      <?php $this->endContent(); ?>
+        <div class="container-fluid">
+          I can add: {{ 1+2 }}.
+          <?= Alert::widget() ?>
+          <?= $content ?>
+        </div>
     </div>
 </div>
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
+        <p class="pull-left">&copy; АвтоТехСнаб <?= date('Y') ?></p>
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
 </footer>
