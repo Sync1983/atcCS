@@ -19,16 +19,20 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/bootstrap/bootstrap.css',
-        'css/site.css',
+        'css/site.css'        
     ];
-    public $js = [
-        'js/angular/angular.js',
+    public $js = [        
         'js/bootstrap/tether.min.js',
-        'js/bootstrap/bootstrap.js',        
+        'js/bootstrap/bootstrap.js',
+        
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\web\JqueryAsset'        
     ];
+    /* @var $view \yii\web\View */
+    public static function register($view) {
+      parent::register($view);      
+    }
     
 }

@@ -2,7 +2,14 @@ module.exports = function(grunt) {
   
   grunt.config('angular_src','../../../angular.js/build/');
   grunt.config('angular_dst','web/js/angular/');
-  grunt.config('angular_files',['angular.js','angular.min.js','angular.min.js.map']);
+  grunt.config('angular_files',[
+    'angular.js',
+    'angular.min.js',
+    'angular.min.js.map',
+    'angular-sanitize.js',
+    'angular-sanitize.min.js',
+    'angular-sanitize.min.js.map'
+  ]);
   
   grunt.config('bst_src','../../../bootstrap/dist/');
   grunt.config('bst_dst','web/');  

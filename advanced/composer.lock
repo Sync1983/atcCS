@@ -4,8 +4,95 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8580bd82955b1fbb80d47024e184056e",
+    "hash": "2c727590d42467b81f7c3048bd992397",
     "packages": [
+        {
+            "name": "bower-asset/angular",
+            "version": "v1.4.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/angular/bower-angular.git",
+                "reference": "3809d44e5279e94a0596d5bc216d921f34f8ab2a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/angular/bower-angular/zipball/3809d44e5279e94a0596d5bc216d921f34f8ab2a",
+                "reference": "3809d44e5279e94a0596d5bc216d921f34f8ab2a",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "./angular.js",
+                "bower-asset-ignore": []
+            }
+        },
+        {
+            "name": "bower-asset/angular-sanitize",
+            "version": "v1.4.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/angular/bower-angular-sanitize.git",
+                "reference": "0e2789bafea2c9294dcea209ca56a8ba308a90c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/angular/bower-angular-sanitize/zipball/0e2789bafea2c9294dcea209ca56a8ba308a90c0",
+                "reference": "0e2789bafea2c9294dcea209ca56a8ba308a90c0",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/angular": "1.4.5"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "./angular-sanitize.js",
+                "bower-asset-ignore": []
+            }
+        },
+        {
+            "name": "bower-asset/angular-ui-select",
+            "version": "v0.12.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/angular-ui/ui-select.git",
+                "reference": "6862b1fdcaf5db59308d225e17804c078e488469"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/angular-ui/ui-select/zipball/6862b1fdcaf5db59308d225e17804c078e488469",
+                "reference": "6862b1fdcaf5db59308d225e17804c078e488469",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/angular": ">=1.2.18"
+            },
+            "require-dev": {
+                "bower-asset/angular-mocks": ">=1.2.18",
+                "bower-asset/angular-sanitize": ">=1.2.18",
+                "bower-asset/jquery": "~1.11"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "dist/select.js",
+                    "dist/select.css"
+                ],
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "node_modules",
+                    "bower_components",
+                    "src",
+                    "test",
+                    "gulpfile.js",
+                    "karma.conf.js",
+                    "examples"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "AngularJS ui-select"
+        },
         {
             "name": "bower-asset/bootstrap",
             "version": "v3.3.5",

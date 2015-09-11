@@ -3,6 +3,8 @@
     Author     : sync1983
 */
 
+@import "variable.scss";
+
 $width: 80%;
 
 html, body{
@@ -25,11 +27,10 @@ html, body{
     }
 }
 
-.head{
+.head{  
     top: 10px;
-    height: 60px;
     width: $width;
-    line-height: 60px;
+    @include media-style((height,line-height),($sm:60px,$md:80px,$lg:100px,$xl:120px),60px);    
     background-color: #FFFFBA;
     padding: 0;
     margin: 0 0;
@@ -50,31 +51,31 @@ html, body{
     }
 }
 
-.info{
-  top: 10px;
+.info{  
   width: $width;   
   color: #0C557C;
   padding: 15px 0;
-  line-height: 120px;
-  height: 120px;
+  @include media-style(top,($xs:0px,$sm:5px,$md:-5px,$lg:1px,$xl:3px),6px);
+  @include media-style((height,line-height),($sm:60px,$md:80px,$lg:100px,$xl:120px),60px);
+  @include media-style(font-size,($xs:0.5em,$sm:1em,$md:1em,$lg:0.9em,$xl:0.9em,1400px:1.5em),0.6em);
   text-align: center;  
   background-color: transparent;
   z-index: 2;
   position: absolute;
   pointer-events: none;
   
-  & p {
-    left:25%;
+  & p {    
     width: 50%;
     height: 30px;
     margin: 0;
-    padding: 0;
-    line-height: 30px;
+    padding: 0;    
+    @include media-style(left,($xs:10%,$sm:15%,$md:15%,$lg:25%),25%);
+    @include media-style((height,line-height),($xs:25px,$sm:20px,$md:27px,$lg:30px,$xl:35px),20px);
     vertical-align: middle;
-    font-weight: bold;
-    font-size: 1.5em;
+    font-weight: bold;    
     font-family: "Arial",monospace;
     pointer-events: auto;  
+    overflow: hidden;
     position:relative;
             
     &> img{
@@ -86,11 +87,22 @@ html, body{
   }
 }
 
-.circle {
-  width: 40px;
-  height: 40px;
+.search-bar{
+  top: 120px + 10px;
+  width: $width;
+  height: 50px;
+  padding: 5px 20px;
+  margin: 0 0;
+  border-radius: 0 0 20px 20px;
+  //@include media-style((height,line-height),($sm:60px,$md:80px,$lg:100px,$xl:120px),60px);    
+  background-color: #FFFFBA;
+  border-bottom: 1px solid #6699ff;
+  position: absolute;
+}
+
+.circle {  
+  @include media-style((height,width,line-height),($sm:40px,$md:60px,$lg:80px,$xl:100px),40px);
   border-radius: 50%;  
-  line-height: 40px;
   border: 2px solid #006699;  
   margin: 10px 5px;
   text-align: center;
@@ -116,8 +128,3 @@ html, body{
     border-top: 1px solid #ddd;
     padding-top: 20px;
 }
-
-@import "site-sm.scss";
-@import "site-md.scss";
-@import "site-lg.scss";
-@import "site-xl.scss";

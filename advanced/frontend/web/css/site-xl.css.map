@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA,wBAAwB;EACtB,KAAK;IACH,MAAM,EAAE,KAAK;IACb,WAAW,EAAE,KAAK;;EAGpB,OAAQ;IACN,KAAK,EAAE,KAAK;IACZ,MAAM,EAAE,KAAK;IACb,WAAW,EAAE,KAAK",
-"sources": ["../scss/site-xl.scss"],
-"names": [],
-"file": "site-xl.css"
-}

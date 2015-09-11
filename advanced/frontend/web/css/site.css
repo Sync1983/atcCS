@@ -20,8 +20,8 @@ html, body {
 
 .head {
   top: 10px;
-  height: 60px;
   width: 80%;
+  height: 60px;
   line-height: 60px;
   background-color: #FFFFBA;
   padding: 0;
@@ -30,6 +30,22 @@ html, body {
   border-bottom: 1px solid #6699ff;
   position: absolute;
   z-index: 1; }
+  @media screen and (min-width: 34rem) {
+    .head {
+      height: 60px;
+      line-height: 60px; } }
+  @media screen and (min-width: 48rem) {
+    .head {
+      height: 80px;
+      line-height: 80px; } }
+  @media screen and (min-width: 62rem) {
+    .head {
+      height: 100px;
+      line-height: 100px; } }
+  @media screen and (min-width: 75rem) {
+    .head {
+      height: 120px;
+      line-height: 120px; } }
   .head > .head-logo {
     width: 20%;
     display: block;
@@ -40,46 +56,160 @@ html, body {
     top: 10px; }
 
 .info {
-  top: 10px;
   width: 80%;
   color: #0C557C;
   padding: 15px 0;
-  line-height: 120px;
-  height: 120px;
+  top: 6px;
+  height: 60px;
+  line-height: 60px;
+  font-size: 0.6em;
   text-align: center;
   background-color: transparent;
   z-index: 2;
   position: absolute;
   pointer-events: none; }
+  @media screen and (min-width: 20rem) {
+    .info {
+      top: 0px; } }
+  @media screen and (min-width: 34rem) {
+    .info {
+      top: 5px; } }
+  @media screen and (min-width: 48rem) {
+    .info {
+      top: -5px; } }
+  @media screen and (min-width: 62rem) {
+    .info {
+      top: 1px; } }
+  @media screen and (min-width: 75rem) {
+    .info {
+      top: 3px; } }
+  @media screen and (min-width: 34rem) {
+    .info {
+      height: 60px;
+      line-height: 60px; } }
+  @media screen and (min-width: 48rem) {
+    .info {
+      height: 80px;
+      line-height: 80px; } }
+  @media screen and (min-width: 62rem) {
+    .info {
+      height: 100px;
+      line-height: 100px; } }
+  @media screen and (min-width: 75rem) {
+    .info {
+      height: 120px;
+      line-height: 120px; } }
+  @media screen and (min-width: 20rem) {
+    .info {
+      font-size: 0.5em; } }
+  @media screen and (min-width: 34rem) {
+    .info {
+      font-size: 1em; } }
+  @media screen and (min-width: 48rem) {
+    .info {
+      font-size: 1em; } }
+  @media screen and (min-width: 62rem) {
+    .info {
+      font-size: 0.9em; } }
+  @media screen and (min-width: 75rem) {
+    .info {
+      font-size: 0.9em; } }
+  @media screen and (min-width: 1400px) {
+    .info {
+      font-size: 1.5em; } }
   .info p {
-    left: 25%;
     width: 50%;
     height: 30px;
     margin: 0;
     padding: 0;
-    line-height: 30px;
+    left: 25%;
+    height: 20px;
+    line-height: 20px;
     vertical-align: middle;
     font-weight: bold;
-    font-size: 1.5em;
     font-family: "Arial",monospace;
     pointer-events: auto;
+    overflow: hidden;
     position: relative; }
+    @media screen and (min-width: 20rem) {
+      .info p {
+        left: 10%; } }
+    @media screen and (min-width: 34rem) {
+      .info p {
+        left: 15%; } }
+    @media screen and (min-width: 48rem) {
+      .info p {
+        left: 15%; } }
+    @media screen and (min-width: 62rem) {
+      .info p {
+        left: 25%; } }
+    @media screen and (min-width: 20rem) {
+      .info p {
+        height: 25px;
+        line-height: 25px; } }
+    @media screen and (min-width: 34rem) {
+      .info p {
+        height: 20px;
+        line-height: 20px; } }
+    @media screen and (min-width: 48rem) {
+      .info p {
+        height: 27px;
+        line-height: 27px; } }
+    @media screen and (min-width: 62rem) {
+      .info p {
+        height: 30px;
+        line-height: 30px; } }
+    @media screen and (min-width: 75rem) {
+      .info p {
+        height: 35px;
+        line-height: 35px; } }
     .info p > img {
       top: -2px;
       height: 80%;
       padding: 0 5px;
       position: relative; }
 
+.search-bar {
+  top: 130px;
+  width: 80%;
+  height: 50px;
+  padding: 5px 20px;
+  margin: 0 0;
+  border-radius: 0 0 20px 20px;
+  background-color: #FFFFBA;
+  border-bottom: 1px solid #6699ff;
+  position: absolute; }
+
 .circle {
-  width: 40px;
   height: 40px;
-  border-radius: 50%;
+  width: 40px;
   line-height: 40px;
+  border-radius: 50%;
   border: 2px solid #006699;
   margin: 10px 5px;
   text-align: center;
   background: linear-gradient(-20deg, rgba(0, 80, 155, 0.5) 0%, rgba(155, 155, 255, 0.2) 70%, rgba(255, 255, 255, 0.7) 80%, white 100%);
   cursor: pointer; }
+  @media screen and (min-width: 34rem) {
+    .circle {
+      height: 40px;
+      width: 40px;
+      line-height: 40px; } }
+  @media screen and (min-width: 48rem) {
+    .circle {
+      height: 60px;
+      width: 60px;
+      line-height: 60px; } }
+  @media screen and (min-width: 62rem) {
+    .circle {
+      height: 80px;
+      width: 80px;
+      line-height: 80px; } }
+  @media screen and (min-width: 75rem) {
+    .circle {
+      height: 100px;
+      width: 100px;
+      line-height: 100px; } }
   .circle > img {
     top: -3px;
     max-width: 50%;
@@ -94,42 +224,5 @@ html, body {
   background-color: #f5f5f5;
   border-top: 1px solid #ddd;
   padding-top: 20px; }
-
-@media (min-width: 34em) {
-  .head {
-    height: 60px;
-    line-height: 60px; }
-
-  .circle {
-    width: 40px;
-    height: 40px;
-    line-height: 40px; } }
-@media (min-width: 48em) {
-  .head {
-    height: 80px;
-    line-height: 80px; }
-
-  .circle {
-    width: 60px;
-    height: 60px;
-    line-height: 60px; } }
-@media (min-width: 62em) {
-  .head {
-    height: 100px;
-    line-height: 100px; }
-
-  .circle {
-    width: 80px;
-    height: 80px;
-    line-height: 80px; } }
-@media (min-width: 75em) {
-  .head {
-    height: 120px;
-    line-height: 120px; }
-
-  .circle {
-    width: 100px;
-    height: 100px;
-    line-height: 100px; } }
 
 /*# sourceMappingURL=site.css.map */

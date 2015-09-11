@@ -14,7 +14,11 @@ return [
     'components' => [
         'assetManager' => [
           'class' => 'yii\web\AssetManager',
-          'forceCopy' => true,
+          //'forceCopy' => true,          
+          'appendTimestamp' => true,
+          'bundles' => [
+            frontend\assets\AngularAsset::class,
+          ]
         ],
         'user' => [
             'identityClass' => 'common\models\User',

@@ -1,0 +1,36 @@
+$xs: 20rem;
+$sm: 34rem;
+$md: 48rem;
+$lg: 62rem;
+$xl: 75rem;
+
+@mixin media-style($attr,$size-map, $default:null){  
+  
+  @if (type-of($attr) == 'list'){
+    @each $attr-name in $attr{
+      @if ($default != null){
+        #{$attr-name}: $default;
+      }      
+    }
+    
+    @each $size,$value in $size-map{    
+      @media screen and (min-width: $size){
+        @each $attr-name in $attr{
+          #{$attr-name}: $value;    
+        }
+      }
+    }
+  }
+  
+  @if (type-of($attr) == 'string'){
+    @if ($default != null){
+      #{$attr}: $default;
+    }    
+    @each $size,$value in $size-map{
+      @media screen and (min-width: $size){        
+        #{$attr} : $value;
+      }
+    }
+  }  
+}
+
