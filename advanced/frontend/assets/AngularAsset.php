@@ -21,6 +21,7 @@ class AngularAsset extends AssetBundle
     public $js = [
         'angular/angular.min.js',
         'angular-sanitize/angular-sanitize.min.js',
+        'angular-bootstrap-checkbox/angular-bootstrap-checkbox.js'
     ];
     public $depends = [      
     ];

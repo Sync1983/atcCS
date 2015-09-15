@@ -7,11 +7,13 @@ use yii\helpers\Html;
 use frontend\assets\AppAsset;
 use frontend\assets\AngularAsset;
 use frontend\assets\AngularSelectAsset;
+use frontend\assets\AAppAsset;
 use common\widgets\Alert;
 
 AppAsset::register($this);
 AngularAsset::register($this);
 AngularSelectAsset::register($this);
+AAppAsset::register($this);
 ?>
 
 <?php $this->beginPage() ?>

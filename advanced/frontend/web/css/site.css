@@ -179,6 +179,15 @@ html, body {
   background-color: #FFFFBA;
   border-bottom: 1px solid #6699ff;
   position: absolute; }
+  .search-bar #searchFilter > input {
+    width: 100%; }
+  .search-bar .markup-selector > span {
+    font-weight: bold !important; }
+  .search-bar .ui-select-choices-row:hover {
+    background-color: #FFF !important; }
+  .search-bar label {
+    width: 60%;
+    vertical-align: top; }
 
 .circle {
   height: 40px;

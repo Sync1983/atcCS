@@ -98,6 +98,29 @@ html, body{
   background-color: #FFFFBA;
   border-bottom: 1px solid #6699ff;
   position: absolute;
+  
+  #searchFilter{
+    &>input{
+      width: 100%;
+    }
+  }
+  
+  .markup-selector{
+    &>span{
+      font-weight: bold !important;        
+    }    
+  }
+  
+  .ui-select-choices-row{
+    &:hover{ 
+      background-color: #FFF !important;          
+    }
+  }
+  
+  label{
+    width: 60%;
+    vertical-align: top;
+  }
 }
 
 .circle {  

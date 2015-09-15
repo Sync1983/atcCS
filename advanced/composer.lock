@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2c727590d42467b81f7c3048bd992397",
+    "hash": "e19dbc282c3a9bc83f2d09b7eb516602",
+    "content-hash": "47c794085aaaf5ff018dd557f76bdbd3",
     "packages": [
         {
             "name": "bower-asset/angular",
@@ -25,6 +26,48 @@
                 "bower-asset-main": "./angular.js",
                 "bower-asset-ignore": []
             }
+        },
+        {
+            "name": "bower-asset/angular-bootstrap-checkbox",
+            "version": "0.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianha/angular-bootstrap-checkbox.git",
+                "reference": "f8279841f4df2a224f738b50ae4382966eb162c6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianha/angular-bootstrap-checkbox/zipball/f8279841f4df2a224f738b50ae4382966eb162c6",
+                "reference": "f8279841f4df2a224f738b50ae4382966eb162c6",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/angular": ">=1.2.0",
+                "bower-asset/bootstrap": ">=3.0.0"
+            },
+            "require-dev": {
+                "bower-asset/angular-scenario": ">=1.2.0"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "angular-bootstrap-checkbox.js",
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "node_modules",
+                    "bower_components"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A Twitter Bootstrap styled checkbox to use with AngularJS",
+            "keywords": [
+                "angular",
+                "angularjs",
+                "bootstrap",
+                "checkbox",
+                "input"
+            ]
         },
         {
             "name": "bower-asset/angular-sanitize",

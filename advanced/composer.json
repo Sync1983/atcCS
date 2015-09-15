@@ -19,7 +19,8 @@
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
         "bower-asset/angular-ui-select": "*",
-        "bower-asset/angular-sanitize": "*"
+        "bower-asset/angular-sanitize": "*",
+        "bower-asset/angular-bootstrap-checkbox": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
