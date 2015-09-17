@@ -11,7 +11,9 @@ function userModel(){
     markup: [
       { v:15,n:'Простая'},
       { v:10,n:'Сложная'}
-    ]
+    ],
+
+    analogShow: false,
     
   };
   

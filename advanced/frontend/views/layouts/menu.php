@@ -30,7 +30,7 @@ use yii\helpers\Url;
 </div>
 <div class="search-bar row-md-top row" ng-controller="searchControl">
 <!-- Список каталогов для перехода -->
-  <div class="dropdown col-md-first col-md-2">
+  <div class="dropdown col-md-first col-md-1">
     <button class="btn btn-info disabled" id="catalog-btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     Каталоги
     <span class="caret"></span>
@@ -40,7 +40,7 @@ use yii\helpers\Url;
   </ul>
   </div>
 <!-- Строка поиска и список выбора -->
-  <div class="dropdown col-md-8" id='searchFilter'>
+  <div class="dropdown col-md-9" id='searchFilter'>
     <input  ng-change='change()'
             ng-model='query'
             ng-value='selected'
@@ -57,13 +57,25 @@ use yii\helpers\Url;
       </li>
     </ul>
   </div>
-<!-- Флаг отображения аналогов -->
-  <div class="col-md-2">
-    <label for="analog-show" class="btn btn-info">Аналоги</label>
-    <checkbox ng-model="analogShow" name="asd " id="analog-show" class="btn-info"/>
-  </div>
+<!-- Флаг отображения аналогов -->  
+  <checkbox ng-model="user.analogShow" class="btn-info col-md-1">&nbsp;Аналоги</checkbox>
+  
 <!-- Кнопка выбора процентов -->
-  <ui-select   class="col-md-2 markup-selector btn btn-info"
+<select2 class="col-md-1 btn btn-info"
+         ng-model     = "markup"
+         placeholder  = "Наценка"         
+         list         = "user.markup"
+         show-pattern = "item.n + ' ' + item.v +'%'"
+         >
+  <div>
+    <span>{{item.n}}</span><br>
+    <small>
+      Размер: {{item.v}}%
+    </small>
+  </div>
+</select2>
+
+  <!--ui-select   class="col-md-2 markup-selector btn btn-info"
                ng-model="markup.selected"
                reset-search-input="false"
                ng-disabled="disabled"
@@ -78,7 +90,7 @@ use yii\helpers\Url;
         Размер: {{mark.v}}%
       </small>
     </ui-select-choices>
-  </ui-select>
+  </ui-select-->
 </div>  
 
 <?php

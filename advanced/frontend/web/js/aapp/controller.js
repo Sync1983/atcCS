@@ -1,17 +1,22 @@
 
 atcCS.controller( 'searchControl', 
-                  ['$scope','$filter','$http','$user','$checkbox',
-  function($scope,$filter,$http,$user,checkbox) {
+                  ['$scope','$filter','$http','$user',
+  function($scope,$filter,$http,$user) {
     
     $scope.user = $user;    
-    $scope.markup = {
-      selected: $scope.user.markup[0]
-    };
+    $scope.markup = null;//$scope.user.markup[0];
+    
     $scope.analogShow = false;
+
+    $scope.debug = function () {
+      console.log($scope.markup);
+    };
+    $scope.debug1 = function () {      
+        $scope.markup = $scope.user.markup[1];
+      console.log($scope.markup);
+    };
     
     console.log($user);
-    console.log(checkbox);
-
     
     
     $scope.selected = '';    
