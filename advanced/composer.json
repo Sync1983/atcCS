@@ -18,9 +18,12 @@
         "yiisoft/yii2": ">=2.0.6",
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
+        "yiisoft/yii2-mongodb": "~2.0.0",
+        "yiisoft/yii2-redis": "~2.0.0",
         "bower-asset/angular-ui-select": "*",
         "bower-asset/angular-sanitize": "*",
-        "bower-asset/angular-bootstrap-checkbox": "*"
+        "bower-asset/angular-bootstrap-checkbox": "*",
+        "bower-asset/angular-route": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

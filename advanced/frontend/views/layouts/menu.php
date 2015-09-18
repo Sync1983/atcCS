@@ -3,22 +3,40 @@ use yii\helpers\Url;
 
 ?>
 
-<div class="head" style="text-align: center">
+<div class="head" style="text-align: center" ng-controller="headControl">
   <div class="head-logo">
     <a href="<?= Url::home();?>">
       <img class="hidden-md-down" src="img/logo_left.png"/>
       <img class="hidden-lg-up" src="img/logo_left_min.png"/>
     </a>
   </div>
-
-  <div class="circle pull-right clearfix" data-toggle="tooltip" data-placement="bottom" title="Настройки">
-    <img src="img/setup_icon.png"/>
-  </div>
-  <div class="circle pull-right clearfix" data-toggle="tooltip" data-placement="bottom" title="Заказы">
-    <img src="img/order_icon.png"/>
-  </div>
-  <div class="circle pull-right clearfix" data-toggle="tooltip" data-placement="bottom" title="Корзина">
-    <img src="img/basket_icon.png"/>
+  <div ng-switch="user.login">
+    <div ng-switch-when="true">
+      <div class="circle pull-right clearfix" data-toggle="tooltip" data-placement="bottom" title="Настройки">
+        <img src="img/setup_icon.png"/>
+      </div>
+      <div class="circle pull-right clearfix" data-toggle="tooltip" data-placement="bottom" title="Заказы">
+        <img src="img/order_icon.png"/>
+      </div>
+      <div class="circle pull-right clearfix" data-toggle="tooltip" data-placement="bottom" title="Корзина">
+        <img src="img/basket_icon.png"/>
+      </div>
+    </div>
+    <div ng-switch-when="false">
+      <div class="circle pull-right clearfix" data-toggle="tooltip" data-placement="bottom" title="Войти в учетную запись" ng-click="showLogin();">
+        <img src="img/login_icon.png"/>
+      </div>
+      <?php $this->beginContent('@app/views/layouts/login-window.php');
+            $this->endContent(); ?>
+    </div>
+    <div ng-switch-default>
+      <div class="circle pull-right clearfix" data-toggle="tooltip" data-placement="bottom" title="Войти в учетную запись" ng-click="showLogin();">
+        <img src="img/login_icon.png"/>
+      </div>
+      <?php $this->beginContent('@app/views/layouts/login-window.php');
+            $this->endContent(); ?>
+    </div>
+    
   </div>
 </div>
 <div class="info">
@@ -75,23 +93,8 @@ use yii\helpers\Url;
   </div>
 </select2>
 
-  <!--ui-select   class="col-md-2 markup-selector btn btn-info"
-               ng-model="markup.selected"
-               reset-search-input="false"
-               ng-disabled="disabled"
-               search-enabled="true"
-               append-to-body="true">
+</div>
 
-    <ui-select-match>{{$select.selected.n}} ({{$select.selected.v}} %)</ui-select-match>
-    
-    <ui-select-choices repeat="mark in user.markup track by $index">
-      <div ng-bind-html="mark.n | highlight: $markup.search.n"></div>
-      <small>
-        Размер: {{mark.v}}%
-      </small>
-    </ui-select-choices>
-  </ui-select-->
-</div>  
 
 <?php
   /* @var $this yii\web\View */

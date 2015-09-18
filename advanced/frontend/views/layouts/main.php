@@ -31,13 +31,10 @@ AAppAsset::register($this);
 
 <div class="wrap">
     <div class="container-fluid">
-      <?php $this->beginContent('@app/views/layouts/menu.php'); ?>
-          I can add: {{ 1+2 }}.
-        <!-- You may need to put some content here -->
-      <?php $this->endContent(); ?>
+      <?php $this->beginContent('@app/views/layouts/menu.php');
+            $this->endContent(); ?>
         <div class="container-fluid">
-          <?= Alert::widget() ?>
-          <?= $content ?>
+          <div ng-view></div>
         </div>
     </div>
 </div>
@@ -50,85 +47,17 @@ AAppAsset::register($this);
 </footer>
 
 <?php $this->endBody() ?>
-  <script>
-  'use strict';
-
-var app = angular.module('demo', ['ngSanitize', 'ui.select']);
-
-app.filter('propsFilter', function() {
-  return function(items, props) {
-    var out = [];
-
-    if (angular.isArray(items)) {
-      items.forEach(function(item) {
-        var itemMatches = false;
-
-        var keys = Object.keys(props);
-        for (var i = 0; i < keys.length; i++) {
-          var prop = keys[i];
-          var text = props[prop].toLowerCase();
-          if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
-            itemMatches = true;
-            break;
-          }
-        }
-
-        if (itemMatches) {
-          out.push(item);
-        }
-      });
-    } else {
-      // Let the output be the input untouched
-      out = items;
-    }
-
-    return out;
-  }
-});
-
-app.controller('DemoCtrl', function($scope, $http) {
-  $scope.disabled = undefined;
-
-  $scope.enable = function() {
-    $scope.disabled = false;
-  };
-
-  $scope.disable = function() {
-    $scope.disabled = true;
-  };
-
-  $scope.clear = function() {
-    $scope.person.selected = undefined;
-    $scope.address.selected = undefined;
-    $scope.country.selected = undefined;
-  };
-
-  $scope.person = {};
-  $scope.people = [
-    { name: 'Adam',      email: 'adam@email.com',      age: 10 },
-    { name: 'Amalie',    email: 'amalie@email.com',    age: 12 },
-    { name: 'Wladimir',  email: 'wladimir@email.com',  age: 30 },
-    { name: 'Samantha',  email: 'samantha@email.com',  age: 31 },
-    { name: 'Estefanía', email: 'estefanía@email.com', age: 16 },
-    { name: 'Natasha',   email: 'natasha@email.com',   age: 54 },
-    { name: 'Nicole',    email: 'nicole@email.com',    age: 43 },
-    { name: 'Adrian',    email: 'adrian@email.com',    age: 21 }
-  ];
-
-  $scope.address = {};
-  $scope.refreshAddresses = function(address) {
-    var params = {address: address, sensor: false};
-    return $http.get(
-      'http://maps.googleapis.com/maps/api/geocode/json',
-      {params: params}
-    ).then(function(response) {
-      $scope.addresses = response.data.results
-    });
-  };
-
-  
-});
-</script>
 </body>
+<!-- Grunt views place start -->
+<!-- Angular views -->
+ <!-- Collect from 'views/site/angular//main-page.html' file -->
+<script type="text/ng-template" id="/main-page.html">
+<!DOCTYPE html><!-- --><html><head><title>TODO supply a title</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body><div>TODO write content</div></body></html>
+</script>
+ <!-- Collect from 'views/site/angular//modal-window.html' file -->
+<script type="text/ng-template" id="/modal-window.html">
+<div class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">{{ title }}</h4></div><div class="modal-body" ng-transclude></div></div></div></div>
+</script>
+<!-- Grunt views place stop -->
 </html>
 <?php $this->endPage() ?>

@@ -12,6 +12,16 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'console\controllers',
     'components' => [
+        'mongodb' => [
+            'class' => '\yii\mongodb\Connection',
+            'dsn'   => 'mongodb://sync:test@localhost:27017/atc',
+        ],
+        'redis' => [
+            'class' => 'yii\redis\Connection',
+            'hostname' => 'localhost',
+            'port' => 6379,
+            'database' => 0,
+        ],
         'log' => [
             'targets' => [
                 [

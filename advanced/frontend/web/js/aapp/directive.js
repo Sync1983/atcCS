@@ -1,3 +1,6 @@
+/* global atcCS */
+
+'use strict';
 
 atcCS.directive('xngFocus', function(){
   
@@ -143,3 +146,30 @@ atcCS.directive('select2', ['$compile','$parse', function ($compile,$parse){
     }
   };
 }]);
+
+atcCS.directive('modal', function (){
+  return {
+    require: "ngModel",    
+    restrict: 'E',
+    replace: true,    
+    transclude: true,
+    templateUrl: '/modal-window.html',
+    scope: true,
+    link: function link(scope, element, attrs, modelCtrl){
+      scope.title = attrs.title;
+
+      scope.$watch(function(){
+          return modelCtrl.$viewValue;}, 
+        function( newVal ){
+          if( newVal === true ){
+            $(element).modal({
+              backdrop: false,
+              show: true
+            });
+          } else {
+            $(element).modal('hide');
+          }
+        });
+    }
+  };
+} );

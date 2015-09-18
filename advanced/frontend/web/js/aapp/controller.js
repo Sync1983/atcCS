@@ -1,21 +1,17 @@
+/* global atcCS */
+
+'use strict';
 
 atcCS.controller( 'searchControl', 
-                  ['$scope','$filter','$http','$user',
+                  ['$scope','$filter','$http','User',
   function($scope,$filter,$http,$user) {
     
-    $scope.user = $user;    
-    $scope.markup = null;//$scope.user.markup[0];
+    $scope.user = $user;
+    $scope.loginShow = true;
+    $scope.markup = null;
     
     $scope.analogShow = false;
 
-    $scope.debug = function () {
-      console.log($scope.markup);
-    };
-    $scope.debug1 = function () {      
-        $scope.markup = $scope.user.markup[1];
-      console.log($scope.markup);
-    };
-    
     console.log($user);
     
     
@@ -51,3 +47,20 @@ atcCS.controller( 'searchControl',
     };*/  
 }]);
 
+atcCS.controller( 'headControl',['$scope', 'User', function($scope,$user) {
+    $scope.loginShow  = true;
+    $scope.login      = {
+      name: null,
+      password: null
+    };
+
+    $scope.onLogin = function(){
+      $user.login($scope.login.name,$scope.login.password);
+      $scope.loginShow = false;
+    };
+
+    $scope.showLogin = function(){      
+      $scope.loginShow = ! $scope.loginShow;
+    };
+    
+}]);

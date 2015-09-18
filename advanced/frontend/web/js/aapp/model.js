@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * Модель пользователя системы
  */
@@ -14,6 +16,8 @@ function userModel(){
     ],
 
     analogShow: false,
+
+    login: false,
     
   };
   

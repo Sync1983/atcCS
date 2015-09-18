@@ -14,8 +14,18 @@ return [
     'modules' => [],
     'components' => [
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => \backend\models\User::class,
             'enableAutoLogin' => true,
+        ],
+        'mongodb' => [
+            'class' => '\yii\mongodb\Connection',
+            'dsn'   => 'mongodb://sync:test@localhost:27017/atc',
+        ],
+        'redis' => [
+            'class' => 'yii\redis\Connection',
+            'hostname' => 'localhost',
+            'port' => 6379,
+            'database' => 0,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

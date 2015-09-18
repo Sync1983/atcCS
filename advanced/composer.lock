@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e19dbc282c3a9bc83f2d09b7eb516602",
-    "content-hash": "47c794085aaaf5ff018dd557f76bdbd3",
+    "hash": "e02cbbc443d1580885b353d96d2a6c38",
+    "content-hash": "625b6373a3e6a573e9126fe03394e0b9",
     "packages": [
         {
             "name": "bower-asset/angular",
-            "version": "v1.4.5",
+            "version": "v1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/angular/bower-angular.git",
-                "reference": "3809d44e5279e94a0596d5bc216d921f34f8ab2a"
+                "reference": "0e8a4e9b36704cacad159b99dd06bbcacef94975"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/angular/bower-angular/zipball/3809d44e5279e94a0596d5bc216d921f34f8ab2a",
-                "reference": "3809d44e5279e94a0596d5bc216d921f34f8ab2a",
+                "url": "https://api.github.com/repos/angular/bower-angular/zipball/0e8a4e9b36704cacad159b99dd06bbcacef94975",
+                "reference": "0e8a4e9b36704cacad159b99dd06bbcacef94975",
                 "shasum": ""
             },
             "type": "bower-asset-library",
@@ -70,21 +70,44 @@
             ]
         },
         {
-            "name": "bower-asset/angular-sanitize",
-            "version": "v1.4.5",
+            "name": "bower-asset/angular-route",
+            "version": "v1.4.6",
             "source": {
                 "type": "git",
-                "url": "https://github.com/angular/bower-angular-sanitize.git",
-                "reference": "0e2789bafea2c9294dcea209ca56a8ba308a90c0"
+                "url": "https://github.com/angular/bower-angular-route.git",
+                "reference": "3372cf63c4e9bfc1bb827b54bd9267a9943c4822"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/angular/bower-angular-sanitize/zipball/0e2789bafea2c9294dcea209ca56a8ba308a90c0",
-                "reference": "0e2789bafea2c9294dcea209ca56a8ba308a90c0",
+                "url": "https://api.github.com/repos/angular/bower-angular-route/zipball/3372cf63c4e9bfc1bb827b54bd9267a9943c4822",
+                "reference": "3372cf63c4e9bfc1bb827b54bd9267a9943c4822",
                 "shasum": ""
             },
             "require": {
-                "bower-asset/angular": "1.4.5"
+                "bower-asset/angular": "1.4.6"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "./angular-route.js",
+                "bower-asset-ignore": []
+            }
+        },
+        {
+            "name": "bower-asset/angular-sanitize",
+            "version": "v1.4.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/angular/bower-angular-sanitize.git",
+                "reference": "f1c23e40fc3c6658eb37294b5c22194576195bdb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/angular/bower-angular-sanitize/zipball/f1c23e40fc3c6658eb37294b5c22194576195bdb",
+                "reference": "f1c23e40fc3c6658eb37294b5c22194576195bdb",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/angular": "1.4.6"
             },
             "type": "bower-asset-library",
             "extra": {
@@ -683,6 +706,102 @@
                 "yii2"
             ],
             "time": "2015-03-01 06:22:44"
+        },
+        {
+            "name": "yiisoft/yii2-mongodb",
+            "version": "2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiisoft/yii2-mongodb.git",
+                "reference": "8f959240e17bfdab6fb4e16be078b81b461988a2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yiisoft/yii2-mongodb/zipball/8f959240e17bfdab6fb4e16be078b81b461988a2",
+                "reference": "8f959240e17bfdab6fb4e16be078b81b461988a2",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mongo": ">=1.5.0",
+                "yiisoft/yii2": ">=2.0.4"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "yii\\mongodb\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Paul Klimov",
+                    "email": "klimov.paul@gmail.com"
+                }
+            ],
+            "description": "MongoDb extension for the Yii framework",
+            "keywords": [
+                "active-record",
+                "mongo",
+                "mongodb",
+                "yii2"
+            ],
+            "time": "2015-05-10 22:10:01"
+        },
+        {
+            "name": "yiisoft/yii2-redis",
+            "version": "2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiisoft/yii2-redis.git",
+                "reference": "af2c2f91cd61c201c537d18f9c2338258c821918"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yiisoft/yii2-redis/zipball/af2c2f91cd61c201c537d18f9c2338258c821918",
+                "reference": "af2c2f91cd61c201c537d18f9c2338258c821918",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": ">=2.0.4"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "yii\\redis\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Carsten Brandt",
+                    "email": "mail@cebe.cc"
+                }
+            ],
+            "description": "Redis Cache, Session and ActiveRecord for the Yii framework",
+            "keywords": [
+                "active-record",
+                "cache",
+                "redis",
+                "session",
+                "yii2"
+            ],
+            "time": "2015-05-10 22:10:19"
         },
         {
             "name": "yiisoft/yii2-swiftmailer",

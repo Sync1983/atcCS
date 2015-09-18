@@ -1,55 +1,99 @@
 module.exports = function(grunt) {
-  
-  grunt.config('angular_src','../../../angular.js/build/');
-  grunt.config('angular_dst','web/js/angular/');
-  grunt.config('angular_files',[
-    'angular.js',
-    'angular.min.js',
-    'angular.min.js.map',
-    'angular-sanitize.js',
-    'angular-sanitize.min.js',
-    'angular-sanitize.min.js.map'
-  ]);
-  
-  grunt.config('bst_src','../../../bootstrap/dist/');
-  grunt.config('bst_dst','web/');  
-  
 
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  
-  // A very basic default task.
-  grunt.registerTask('copyAngular', 'Copy Angular assets.', function() {    
-    var names = grunt.config('angular_files');
-    for( var i in names ){
-      var name = names[i];
-      var full_name_src = grunt.config('angular_src') + '/' +name;
-      var full_name_dst = grunt.config('angular_dst') + '/' +name;
-      grunt.file.copy(full_name_src,full_name_dst);
-      grunt.log.write('Copy ' + name + ' file...').ok();
-    }    
+  grunt.initConfig({
+    copyBootstrap: {
+      src: '../../../bootstrap/dist/',
+      dst: 'web/'
+    },
+    compileAngularView: {
+      src: 'views/site/angular/',
+      map: 'views/site/angular/views.map',
+      dest:'views/layouts/main.php',
+      lineStart : '<!-- Grunt views place start -->',
+      lineEnd   : '<!-- Grunt views place stop -->'
+    },
+    watch:{
+      options: {
+        livereload: true
+      },
+      views:{
+        files: ['views/site/angular/**/*.html'],
+        tasks: ['compileAngularView'],
+        options: {
+          reload: true
+        }
+      }
+    }
   });
   
   grunt.registerTask('copyBootstrap', 'Copy Bootstrap assets.', function() {    
-    var source = grunt.config('bst_src');
-    var dest   = grunt.config('bst_dst');
+    var config = grunt.config(this.name);
+    var source = config.src;
+    var dest   = config.dst;
+    //Копируем скрипты
     grunt.file.recurse(source + '/js/',function(abspath,rootdir,subdir,filename){
       if( filename.indexOf('bootstrap') > -1){
         grunt.log.write('Copy bootstrap js ' + abspath).ok();
         grunt.file.copy(abspath,dest + '/js/bootstrap/' + filename);
       }      
     });
+    //Копируем стили
     grunt.file.recurse(source + '/css/',function(abspath,rootdir,subdir,filename){
       if( filename.indexOf('bootstrap') > -1){
         grunt.log.write('Copy bootstrap js ' + abspath).ok();
         grunt.file.copy(abspath,dest + '/css/bootstrap/' + filename);
       }      
-    });    
+    });
+
+  });
+
+  grunt.registerTask('compileAngularView','Compile Angular Views to file',function(){
+    var config  = grunt.config(this.name);
+    var source  = config.src;
+    var map     = config.map || source + '/views.map';
+    var dest    = config.dest;
+    var keyStart= config.lineStart;
+    var keyStop = config.lineEnd;
+    var fileMin = "<!-- Angular views -->";
+    var fileMap = "List of included views";
+    var htmlTagExp = new RegExp(">\n*\r*\t* *<","g");
+    
+    var list = grunt.file.expand({cwd: source + '/'},'**/*.html');
+    list.forEach(function(name){
+      var file = grunt.file.read(source + '/' + name);
+
+      minimizeText = String(file).replace(htmlTagExp, "><");
+      minimizeText = String(minimizeText).replace(new RegExp("[\n\t]*","g"), "");
+
+      fileMap = fileMap + "\n" + name;
+      fileMin = fileMin + "\n <!-- Collect from '" + source + "/" + name + "' file -->";
+      fileMin = fileMin + "\n" +
+                '<script type="text/ng-template" id="/' + name +'">' + "\n" +
+                  minimizeText + "\n" +
+                '</script>';
+      grunt.log.write("Collect: " + name + " ").ok();
+    });
+
+    grunt.file.write(map,fileMap);
+    grunt.log.write("Map file create ").ok();
+
+    var destFile = grunt.file.read(dest);
+    var regExp = new RegExp(keyStart + '[.\\s\\S]*' + keyStop);
+
+    destFile = String(destFile).replace(regExp, keyStart + "\n" + fileMin + "\n" + keyStop);
+
+    grunt.file.write(dest,destFile);    
+
+    grunt.log.writeln("Replace tag in " + dest).ok();
+
   });
   
   
-  grunt.registerTask('build', ['copyAngular','copyBootstrap']);
-  
+  grunt.registerTask('view-compile', ['compileAngularView']);
+  grunt.registerTask('build', ['copyBootstrap','compileAngularView']);
   grunt.registerTask('default', ['build']);
+
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
 };
 

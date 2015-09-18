@@ -226,6 +226,13 @@ html, body {
   .circle:hover {
     background: linear-gradient(-20deg, rgba(0, 80, 155, 0.7) 0%, rgba(155, 155, 255, 0.4) 70%, rgba(255, 255, 255, 0.4) 80%, #9b9bff 100%); }
 
+.login-window {
+  right: 10%;
+  left: auto;
+  text-align: initial;
+  line-height: initial;
+  top: 100px; }
+
 span.placeholder {
   color: #DDD; }
 
