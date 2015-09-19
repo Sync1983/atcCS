@@ -12,7 +12,6 @@ use common\widgets\Alert;
 
 AppAsset::register($this);
 AngularAsset::register($this);
-AngularSelectAsset::register($this);
 AAppAsset::register($this);
 ?>
 

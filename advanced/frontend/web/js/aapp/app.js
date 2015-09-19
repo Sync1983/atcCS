@@ -1,3 +1,3 @@
 'use strict';
 
-var atcCS = angular.module('atcCS',[]).value('$user',userModel());
+var atcCS = angular.module('atcCS',['ngCookies']);

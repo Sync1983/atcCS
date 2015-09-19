@@ -51,12 +51,13 @@ atcCS.controller( 'headControl',['$scope', 'User', function($scope,$user) {
     $scope.loginShow  = true;
     $scope.login      = {
       name: null,
-      password: null
+      password: null,
+      remember: false
     };
 
     $scope.onLogin = function(){
-      $user.login($scope.login.name,$scope.login.password);
-      $scope.loginShow = false;
+      $user.login($scope.login.name,$scope.login.password,$scope.login.remember);
+      //$scope.loginShow = false;
     };
 
     $scope.showLogin = function(){      

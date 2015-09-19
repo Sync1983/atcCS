@@ -14,8 +14,8 @@ return [
     'modules' => [],
     'components' => [
         'user' => [
-            'identityClass' => \backend\models\User::class,
-            'enableAutoLogin' => true,
+            'identityClass' => \backend\models\User::className(),
+            'enableAutoLogin' => false,
         ],
         'mongodb' => [
             'class' => '\yii\mongodb\Connection',
@@ -32,7 +32,7 @@ return [
             'targets' => [
                 [
                     'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
+                    'levels' => ['info', 'error', 'warning'],
                 ],
             ],
         ],

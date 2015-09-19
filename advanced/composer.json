@@ -23,7 +23,8 @@
         "bower-asset/angular-ui-select": "*",
         "bower-asset/angular-sanitize": "*",
         "bower-asset/angular-bootstrap-checkbox": "*",
-        "bower-asset/angular-route": "*"
+        "bower-asset/angular-route": "*",
+        "bower-asset/angular-cookies": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

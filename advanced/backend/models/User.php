@@ -31,8 +31,8 @@ class User extends ActiveRecord implements IdentityInterface {
     }
 
     $user = new User();
-    $user->user_name      = $login?$login:$name;     //Логин
-    $user->user_pass      = md5($pass); //Пароль
+    $user->user_name      = $login?$login:$name;        //Логин
+    $user->user_pass      = $user->setPassword($pass);  //Пароль
     $user->role           = "user";     //Роль пользователя
     $user->over_price     = ArrayHelper::getValue(\yii::$app->params, 'guestOverPrice', 18.0);  //Наценка для пользователя
     $user->type           = "private";  //Тип
@@ -113,11 +113,12 @@ class User extends ActiveRecord implements IdentityInterface {
   }
 
   public static function findIdentityByAccessToken($token, $type = null) {
+    Yii::info("Token: $token  Type: $type");
     throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
   }
 
   public static function findByUsername($username) {
-    return static::findOne(['username' => $username]);
+    return static::findOne(['user_name' => $username]);
   }
 
   public static function findByPasswordResetToken($token) {
@@ -125,10 +126,8 @@ class User extends ActiveRecord implements IdentityInterface {
       return null;
     }
 
-    return static::findOne([
-              'password_reset_token' => $token,
-              'status' => self::STATUS_ACTIVE,
-    ]);
+    return static::findOne(['password_reset_token' => $token]);
+    
   }
 
   public static function isPasswordResetTokenValid($token) {
@@ -154,7 +153,7 @@ class User extends ActiveRecord implements IdentityInterface {
   }
 
   public function validatePassword($password) {
-    return Yii::$app->security->validatePassword($password, $this->password_hash);
+    return Yii::$app->security->validatePassword($password, $this->user_pass);
   }
 
   public function setPassword($password) {

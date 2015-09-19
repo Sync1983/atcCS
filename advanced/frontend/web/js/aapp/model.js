@@ -15,9 +15,9 @@ function userModel(){
       { v:10,n:'Сложная'}
     ],
 
-    analogShow: false,
-
-    login: false,
+    analogShow  : false,      //Отображать аналоги
+    login       : false,      //Вход выполнен
+    accessToken : false       //access-token для запросов
     
   };
   

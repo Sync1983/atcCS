@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e02cbbc443d1580885b353d96d2a6c38",
-    "content-hash": "625b6373a3e6a573e9126fe03394e0b9",
+    "hash": "3bc77552bfbafb7170b56c3c34759afc",
+    "content-hash": "6795f78850f3237c306b62903c73e5d8",
     "packages": [
         {
             "name": "bower-asset/angular",
@@ -68,6 +68,29 @@
                 "checkbox",
                 "input"
             ]
+        },
+        {
+            "name": "bower-asset/angular-cookies",
+            "version": "v1.4.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/angular/bower-angular-cookies.git",
+                "reference": "9965ef6f608ffb90983c1c32cf0127d827f3379d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/angular/bower-angular-cookies/zipball/9965ef6f608ffb90983c1c32cf0127d827f3379d",
+                "reference": "9965ef6f608ffb90983c1c32cf0127d827f3379d",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/angular": "1.4.6"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "./angular-cookies.js",
+                "bower-asset-ignore": []
+            }
         },
         {
             "name": "bower-asset/angular-route",
