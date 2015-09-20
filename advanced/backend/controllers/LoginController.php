@@ -6,7 +6,7 @@
 
 namespace backend\controllers;
 
-use yii\rest\Controller;
+use yii\web\Controller;
 
 class LoginController extends Controller{
   
@@ -14,36 +14,39 @@ class LoginController extends Controller{
     return [
       'login' => [
         'class'  => user\LoginAction::className(),
-      ]
+      ],
+      'get-data' => [
+        'class'  => user\UserGetDataAction::className(),
+      ],
     ];
   }
 
-  public function verbs() {
+  public function behaviors() {    
     return [
-      'login' => ['post','get', 'options'],
-    ];
-  }
-
-  public function behaviors() {
-    $pre = parent::behaviors();
-
-    $pre['auth'] = [
-      'class' => \yii\filters\auth\CompositeAuth::className(),
-      'authMethods' => [
-        'http' => [
-          'class' => \yii\filters\auth\HttpBasicAuth::className(),
-          'auth'  => 'backend\controllers\user\LoginAction::authHttpBasic',
-          'only'  => ['login'],
-        ],
-        //\yii\filters\auth\QueryParamAuth::className()
-      ]
-    ];
-
-    $pre['corsFilter'] = [ 
+        'corsFilter' => [
           'class' => \yii\filters\Cors::className(),
           'cors'  => [
+            'Origin' => ['*'],
+            'Access-Control-Request-Headers' => ['*'],
             'Access-Control-Allow-Credentials' => true
-          ]];
-    return $pre;
+          ]
+        ],
+        'authFilter' => [
+          'class'       => \backend\filters\RestAuthFilter::className(),
+          'auth'        => [\backend\controllers\user\LoginAction::className(),'authHttpBasic'],
+          'authToken'   => [\backend\controllers\user\LoginAction::className(),'authToken'],
+          'exceptMethods' => ['OPTIONS'],
+        ],
+        'contentNegotiator' => [
+            'class' => \yii\filters\ContentNegotiator::className(),
+            'formats' => [
+                'application/json' => \yii\web\Response::FORMAT_JSON,
+                'application/xml' => \yii\web\Response::FORMAT_XML,
+            ],
+        ],
+        'verbFilter' => [
+            'class' => \yii\filters\VerbFilter::className(),
+        ],
+    ];
   }
 }

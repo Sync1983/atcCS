@@ -55,7 +55,7 @@ AAppAsset::register($this);
 </script>
  <!-- Collect from 'views/site/angular//modal-window.html' file -->
 <script type="text/ng-template" id="/modal-window.html">
-<div class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">{{ title }}</h4></div><div class="modal-body" ng-transclude></div></div></div></div>
+<div class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">{{ title }}</h4></div><div class="modal-body" ng-transclude></div></div></div> </div>
 </script>
 <!-- Grunt views place stop -->
 </html>

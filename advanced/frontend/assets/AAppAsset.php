@@ -24,6 +24,7 @@ class AAppAsset extends AssetBundle
         'app.js',
         'config.js',
         'directive.js',
+        'factory.js',
         'controller.js',
         'service.js',
         'filter.js',

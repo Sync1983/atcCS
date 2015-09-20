@@ -4,9 +4,10 @@
 /*
  * Сервис для обслуживания модели пользователя и общения с сервером
  */
-atcCS.service('User',['$http', '$cookies',function($http, $cookies){
+atcCS.service('User',['$http', '$cookies', '$rootScope', function($http, $cookies, $rootScope){
   var URL   = "http://rest.atc58.bit/index.php";
   var model = new userModel();
+
 
   function URLto(controller,funct,local){
     return (local?"":URL) + "?r=" + controller + "/" + funct;
@@ -15,52 +16,79 @@ atcCS.service('User',['$http', '$cookies',function($http, $cookies){
   function loadFormCookies(){
     var name = $cookies.get('name');
     var pass = $cookies.get('pass');
+
+    console.log("Login from Cookies");
+
     if ( name && pass ){
-      model.login(name,pass,true);
+      model.login(name,pass,true).then(function(){
+        model.update();
+      });
+      return true;
     }
+    
+    return false;
+  };
+
+  model.addAlert = function addAlert(head,text){
+    model.alerts.push({head:head,text:text});
   };
 
   model.login = function login(name,password,remember){
-    var addres = URLto('login','login');    
-    
-    console.log($http.defaults);
-    $http.defaults.headers.get = {'Authorization': 'Basic ' + btoa('admin' + ':' + 'test'),
-                                  'Param1': 'Basic ' + btoa('admin' + ':' + 'test')};
-    //$http.defaults.headers.get['Param1'] = 'Basic ' + btoa('admin' + ':' + 'test');
-
     var req = {
       method: 'GET',
-      url: addres,
-      responseType: 'json',
-      withCredentials: true,
-      headers: {
-        'Access-Control-Allow-Origin': 'http://rest.atc58.bit',
-        'Authorization': "Basic " + btoa('admin' + ":" + 'test'),
-        'Accept': 'application/json;odata=verbose'
+      url: URLto('login','login'),
+      responseType: 'json',      
+      headers: {        
+        'Authorization': "Basic " + btoa(name + ":" + password)
       },
-      params: {
-        _format:'json',
+      params: {        
         params: 'get-token' + (remember?'-hash':'')
-      },
-      data:{
-        'Authorization': "Basic " + btoa('admin' + ":" + 'test')
       }
     };
     
-    $http(req).then(
-      function success(response){
-        console.log("ok ", response);
+    return $http(req).then(
+      function success(response){        
+        var hash        = response.data['hash'] || null;
+
+        // Если вернулся хэш, значит запомним для следующей авторизации
+        if( hash ){
+          var now     = new Date();
+          var expires = new Date( now.getTime() + 30*24*3600 );
+          
+          $cookies.put('name',name,{expires:expires});
+          $cookies.put('pass',hash,{expires:expires});
+        }
+        
       },
       function error(response){
-        console.log("err ", response);
+        model.addAlert("Ошибка","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.")
     });
     
-    console.log('name',name);
-    console.log('pass',password);
-    console.log('pass',remember);
   };
 
+  model.update = function update(){    
+    var req = {
+      method: 'GET',
+      url: URLto('login','get-data'),      
+      params: {        
+        params: 'get-data'
+      }
+    };
 
+    if( model.isLogin === false ){
+      return false;
+    }
+
+    console.log("User data update");
+    return $http(req).then(function succes(response){
+      
+      }, function error(response){
+      
+      });
+    
+  };
+
+  $rootScope.user = model;
   loadFormCookies();      //Пробуем войти через информацию в cookie
   
   return model;

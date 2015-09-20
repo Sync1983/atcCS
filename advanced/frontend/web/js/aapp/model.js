@@ -15,8 +15,12 @@ function userModel(){
       { v:10,n:'Сложная'}
     ],
 
+    alerts: [
+      {head: "A", text: "B"}
+    ],
+
     analogShow  : false,      //Отображать аналоги
-    login       : false,      //Вход выполнен
+    isLogin     : false,      //Вход выполнен
     accessToken : false       //access-token для запросов
     
   };

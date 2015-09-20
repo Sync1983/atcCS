@@ -5,8 +5,9 @@
  */
 namespace backend\controllers\user;
 
-use yii\rest\Action;
+use yii\base\Action;
 use backend\models\User;
+use backend\models\AccessTokenModel;
 
 class LoginAction extends Action {
   
@@ -16,11 +17,25 @@ class LoginAction extends Action {
   public static function authHttpBasic($name, $pass){
     /* @var $user User */
     $user = User::findByUsername($name);
-    if( $user && ($user->validatePassword($pass) || ( $user->getAttribute('user_pass') === strval($pass) ) ) ){
+    \yii::info("Try Auth for user $name:$pass");
+    if( $user && ( $user->validatePassword($pass) || ($user->user_pass === $pass) ) ){
       return $user;
     }    
-    \yii::error("AuthError! user-name: $name  pass: $pass");
-    throw new \yii\web\BadRequestHttpException("Auth Error");    
+    \yii::error("AuthError! user-name: $name  pass: $pass");    
+    return null;
+  }
+
+  public static function authToken($token){
+    /* @var $user User */
+    $user = AccessTokenModel::getUserByToken($token);
+    \yii::info("Try Auth for user by token $token");
+    
+    if( $user ){
+      return $user;
+    }
+
+    \yii::error("AuthError! token: $token");
+    return null;
   }
 
   public function run($params){

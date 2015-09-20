@@ -10,7 +10,7 @@ use yii\helpers\Url;
       <img class="hidden-lg-up" src="img/logo_left_min.png"/>
     </a>
   </div>
-  <div ng-switch="user.login">
+  <div ng-switch="user.isLogin">
     <div ng-switch-when="true">
       <div class="circle pull-right clearfix" data-toggle="tooltip" data-placement="bottom" title="Настройки">
         <img src="img/setup_icon.png"/>
@@ -29,14 +29,6 @@ use yii\helpers\Url;
       <?php $this->beginContent('@app/views/layouts/login-window.php');
             $this->endContent(); ?>
     </div>
-    <div ng-switch-default>
-      <div class="circle pull-right clearfix" data-toggle="tooltip" data-placement="bottom" title="Войти в учетную запись" ng-click="showLogin();">
-        <img src="img/login_icon.png"/>
-      </div>
-      <?php $this->beginContent('@app/views/layouts/login-window.php');
-            $this->endContent(); ?>
-    </div>
-    
   </div>
 </div>
 <div class="info">

@@ -3,16 +3,14 @@
 'use strict';
 
 atcCS.controller( 'searchControl', 
-                  ['$scope','$filter','$http','User',
-  function($scope,$filter,$http,$user) {
-    
-    $scope.user = $user;
-    $scope.loginShow = true;
+                  ['$scope','$filter', 'User',
+  function($scope,$filter,$user) {
+
     $scope.markup = null;
     
     $scope.analogShow = false;
 
-    console.log($user);
+    console.log($scope.user);
     
     
     $scope.selected = '';    
@@ -47,7 +45,7 @@ atcCS.controller( 'searchControl',
     };*/  
 }]);
 
-atcCS.controller( 'headControl',['$scope', 'User', function($scope,$user) {
+atcCS.controller( 'headControl',['$scope', function($scope) {    
     $scope.loginShow  = true;
     $scope.login      = {
       name: null,
@@ -55,9 +53,10 @@ atcCS.controller( 'headControl',['$scope', 'User', function($scope,$user) {
       remember: false
     };
 
-    $scope.onLogin = function(){
-      $user.login($scope.login.name,$scope.login.password,$scope.login.remember);
-      //$scope.loginShow = false;
+    $scope.onLogin = function(){      
+      $scope.user.login('admin','test',true);
+      //$user.login($scope.login.name,$scope.login.password,$scope.login.remember);
+      $scope.loginShow = false;      
     };
 
     $scope.showLogin = function(){      
