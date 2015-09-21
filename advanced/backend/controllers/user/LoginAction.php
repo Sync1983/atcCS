@@ -27,8 +27,8 @@ class LoginAction extends Action {
 
   public static function authToken($token){
     /* @var $user User */
-    $user = AccessTokenModel::getUserByToken($token);
     \yii::info("Try Auth for user by token $token");
+    $user = AccessTokenModel::getUserByToken($token);
     
     if( $user ){
       return $user;
@@ -51,6 +51,7 @@ class LoginAction extends Action {
     $hash = \yii::$app->getUser()->getIdentity()->user_pass;
 
     $answer = ['access-token'=>$accessToken];
+    
     if( $params === "get-token-hash" ){
       $answer['hash'] = $hash;
     }

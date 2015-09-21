@@ -16,7 +16,7 @@ atcCS.factory('atcServerToken', ['$q', '$rootScope', '$injector',
         return config;
       },
       response: function (response){
-        var accessToken = response.data["access-token"] || null;
+        var accessToken = response && response.data && response.data["access-token"] || null;
 
         if( accessToken ){
           $rootScope.user.accessToken = accessToken;

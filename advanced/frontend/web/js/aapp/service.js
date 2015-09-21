@@ -48,7 +48,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', function($http, $cookie
     
     return $http(req).then(
       function success(response){        
-        var hash        = response.data['hash'] || null;
+        var hash        = response && response.data && response.data['hash'] || null;
 
         // Если вернулся хэш, значит запомним для следующей авторизации
         if( hash ){

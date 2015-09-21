@@ -52,10 +52,10 @@ class RestAuthFilter extends AuthMethod{
    * @inheritdoc
    */
   public function authenticate($user, $request, $response) {
-    /* @var $request yii\web\Request */
+    /* @var $request \yii\web\Request */
     $username = $request->getAuthUser();
     $password = $request->getAuthPassword();
-    $auth     = $request->
+    $auth     = $request->getHeaders()->get('Authorization');
 
     if ( $this->auth && ($username !== null || $password !== null) ) {
 
@@ -69,7 +69,23 @@ class RestAuthFilter extends AuthMethod{
 
     }
 
+    if( $this->authToken && $auth ){
+      
+      $matches = [];
+      preg_match("/^Bearer\\s+(.*?)$/", $auth, $matches);
+      $token = $matches[1];
 
+      $identity = call_user_func($this->authToken,$token);
+      
+      if( $identity !== null ){
+        $user->switchIdentity($identity);
+        return $identity;
+      }
+
+      $this->handleFailure($response);
+      return null;
+
+    }
 
     return null;
   }  

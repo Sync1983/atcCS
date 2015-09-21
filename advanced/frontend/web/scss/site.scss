@@ -87,17 +87,27 @@ html, body{
   }
 }
 
-.search-bar{
-  top: 120px + 10px;
+.search-bar{  
   width: $width;
   height: 50px;
   padding: 5px 20px;
   margin: 0 0;
   border-radius: 0 0 20px 20px;
-  //@include media-style((height,line-height),($sm:60px,$md:80px,$lg:100px,$xl:120px),60px);    
+  @include media-style((top),($sm:70px,$md:90px,$lg:110px,$xl:130px),70px);    
   background-color: #FFFFBA;
   border-bottom: 1px solid #6699ff;
   position: absolute;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  display: flex;
+  
+  & > .btn,button,input{
+    @include media-style((font-size),($xs:0.5em,$sm:0.7em,$md:1em,$lg:1em,$xl:1em),0.5em);
+    @include media-style((height),($xs:30px,$sm:40px),30px);
+    @include media-style((padding),($xs:0 5px,$sm:0 10px),0 5px);
+  }
   
   #searchFilter{
     &>input{
@@ -182,9 +192,12 @@ ul.select2selector{
 
 .footer {
     width: $width;
+    left: (100% - $width)/2;
     margin: 0 auto;
+    bottom: 0px;
     height: 60px;
     background-color: #f5f5f5;
     border-top: 1px solid #ddd;
-    padding-top: 20px;
+    //padding-top: 20px;
+    position: absolute;
 }

@@ -34,17 +34,23 @@ class AccessTokenModel extends Model{
    */
   public static function getUserByToken($token){
     /* @var $db \yii\redis\Connection */
+    \yii::info("Connect Redis db");
     $db = \yii::$app->get('redis');
-    if( $db->redisCommands("EXISTS",[$token]) !== 0){
+    if( !$db->executeCommand("EXISTS",[$token]) ){
       return false;
     }
 
-    $uid = $db->redisCommands("GET",[$token]);
+    \yii::info("Token user uid");
+    $uid = $db->executeCommand("GET",[$token]);
+    \yii::info($uid);
+    $db->executeCommand("EXPIRE",[$token, ( 60 * 5 )]);
     if( !$uid ){
       return false;
     }
 
-    $user = User::findOne(['_id'=> new \MongoId(strval($uid))]);
+    $user = User::findOne([ '_id'=> new \MongoId(strval($uid)) ]);
+    \yii::info("User");
+    \yii::info($user);
 
     return $user;
   }

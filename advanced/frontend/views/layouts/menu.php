@@ -38,19 +38,18 @@ use yii\helpers\Url;
     <p class="hidden-sm-down"><img src="img/mail.png"/><a href="mailto:sales@atc58.ru">sales@atc58.ru</a></p>
     <p class="hidden-md-down"><img src="img/skype.png"/><a href="skype:atc_58">АвтоТехСнаб(atc_58)</a></p>
 </div>
-<div class="search-bar row-md-top row" ng-controller="searchControl">
+<div class="search-bar row-md-top btn-group-justified" ng-controller="searchControl">
 <!-- Список каталогов для перехода -->
-  <div class="dropdown col-md-first col-md-1">
+  <div class="dropdown col-md-first">
     <button class="btn btn-info disabled" id="catalog-btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Каталоги
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="catalog-btn">
-    ...
-  </ul>
+    Каталоги    
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="catalog-btn">
+      ...
+    </ul>
   </div>
 <!-- Строка поиска и список выбора -->
-  <div class="dropdown col-md-9" id='searchFilter'>
+  <div class="dropdown" id='searchFilter' style="width:70%">
     <input  ng-change='change()'
             ng-model='query'
             ng-value='selected'
@@ -68,10 +67,10 @@ use yii\helpers\Url;
     </ul>
   </div>
 <!-- Флаг отображения аналогов -->  
-  <checkbox ng-model="user.analogShow" class="btn-info col-md-1">&nbsp;Аналоги</checkbox>
+  <checkbox ng-model="user.analogShow" class="btn-info">&nbsp;Аналоги</checkbox>
   
 <!-- Кнопка выбора процентов -->
-<select2 class="col-md-1 btn btn-info"
+<select2 class="btn btn-info col-md-last"
          ng-model     = "markup"
          placeholder  = "Наценка"         
          list         = "user.markup"
