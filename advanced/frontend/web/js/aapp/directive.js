@@ -133,6 +133,8 @@ atcCS.directive('select2', ['$compile','$parse', function ($compile,$parse){
       
       ul.offset({'top':top});
 
+      console.log(element[0].style);
+
       scope.$watch('value',function(newVal){
         if( scope.value ){
           modelCtrl.$setViewValue(scope.value);

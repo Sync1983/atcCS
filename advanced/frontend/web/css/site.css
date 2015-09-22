@@ -284,23 +284,29 @@ html, body {
 span.placeholder {
   color: #DDD; }
 
+.select2 {
+  position: relative; }
+
 ul.select2selector {
   right: 0;
   min-width: 160px;
   color: #333;
   background-color: #FFF;
-  border-color: #8c8c8c;
-  border-radius: 5px;
+  border-radius: 10px;
   list-style: none outside;
   padding: 5px 10px;
   white-space: normal;
   text-align: left;
+  box-shadow: 7px 8px 20px black, inset -1px -1px 6px #0A2C4A,inset 1px 1px 6px #2B58A2;
   position: absolute; }
   ul.select2selector > li {
     padding: 2px 10px;
-    border-radius: 5px; }
+    border-radius: 0px;
+    border-bottom: 1px solid #C7C7C7; }
+    ul.select2selector > li:last-child {
+      border-bottom: none; }
     ul.select2selector > li:hover {
-      background-color: #ececec; }
+      color: #0030C3; }
 
 .footer {
   width: 80%;
