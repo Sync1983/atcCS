@@ -7,6 +7,7 @@
 namespace console\controllers;
 use yii\console\Controller;
 use mysqli;
+use common\models\MongoArticle;
 
 class TdassetsController extends Controller{
   /* @var $db mysqli */
@@ -85,7 +86,7 @@ class TdassetsController extends Controller{
     //$head = "Art_id,Article,Sup,Descr";
     //fputs($file, $head, strlen($head));
     while($row = $result->fetch_array()){
-      $line = $row['ART_ID'] . "," . $row['ART_ARTICLE_NR'] . "," . $row['ART_SUP_ID'] . "," . $row['ART_COMPLETE_DES_ID'] . "\n";
+      $line = strtoupper($row['ART_ID']) . "," . strtoupper($row['ART_ARTICLE_NR']) . "," . $row['ART_SUP_ID'] . "," . $row['ART_COMPLETE_DES_ID'] . ", \n";
       fputs($file, $line, strlen($line));
     }
     fclose($file);
@@ -131,7 +132,7 @@ class TdassetsController extends Controller{
     fclose($file);
     echo "Ok RU\r\n";
 
-    $file = fopen($this->dir . "des_ru.csv", "r");
+    $file = fopen($this->dir . "des_en.csv", "r");
 
     while( !feof($file) ){
 
@@ -194,6 +195,74 @@ class TdassetsController extends Controller{
     $this->actionPushDescToRedis();
     $this->actionPushSupliesToRedis();
     $this->actionPushArticlesToRedis();
+  }
+
+  protected function getArticulDataByLimit($start,$limit){
+    /* @var $result \mysqli_result */
+    $SQL = <<<SQL
+      SELECT 	
+        ARL_ART_ID              as ID,
+        ARL_SEARCH_NUMBER 			as part_search_number,
+        convert(ARL_KIND,char)	as part_type,
+        ARL_DISPLAY_NR          as part_full_number,
+        ARL_BRA_ID              as brand
+      FROM art_lookup
+      LIMIT $start,$limit;
+SQL;
+
+    $result = $this->db->query($SQL);
+    if( !$result){
+      echo "Mysql error!\r\n";
+      return false;
+    }
+    
+    
+    while ( $row = $result->fetch_array(MYSQLI_ASSOC) ){
+      $record = new MongoArticle();
+      $record->setAttributes($row);
+      $record->save();
+    }
+    $result->close();
+    
+    return true;
+  }
+
+  public function actionMysqlToMongo(){
+    /* @var $result \mysqli_result */
+    $result = $this->db->query("SELECT count(*) as art_cnt FROM techdock.art_lookup;");
+    if( !$result){
+      echo "Mysql error!\r\n";
+      return;
+    }
+    $row = $result->fetch_array(MYSQLI_ASSOC);
+    if( !isset($row['art_cnt']) ){
+      echo "Mysql answer error!\r\n";
+      return;
+    }
+    $count = $row['art_cnt'] * 1;
+    $result->close();
+    echo "Articles count: $count \r\n";
+    $start_cnt = 0;
+    $limit = 10000;
+    $one_percent = round($count/100);
+    
+    echo "\r\n";
+    $time = time();
+    while($start_cnt <= $count ){      
+      $this->getArticulDataByLimit($start_cnt,$limit);
+
+      $d_time = time() - $time;
+      $time   = time();
+      $percents = round($start_cnt/$one_percent);
+      $percent_string = str_pad("", $percents, "=");
+      $percent_string = str_pad($percent_string, 100, ".");
+      echo sprintf("start: %'.10u stop: %'.10u  last time: %'.5u sec.\r\n",$start_cnt,$start_cnt + $limit,$d_time);
+      echo sprintf("[%'002u%%] [%s]",$percents, $percent_string);
+      echo "\033[1A";
+      echo "\033[0G";
+      $start_cnt += $limit;
+    }
+
   }
 
 }

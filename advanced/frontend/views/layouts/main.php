@@ -49,6 +49,14 @@ AAppAsset::register($this);
 </body>
 <!-- Grunt views place start -->
 <!-- Angular views -->
+ <!-- Collect from 'views/site/angular//ajax-button.html' file -->
+<script type="text/ng-template" id="/ajax-button.html">
+<button class="ajax-button"><div ng-transclude ng-click="toggle()"></div><div class="ajax-button-helper" ng-show="visible"><div class="ajax-button-header">      {{title}}    </div>    </div>  </button>
+</script>
+ <!-- Collect from 'views/site/angular//input-help.html' file -->
+<script type="text/ng-template" id="/input-help.html">
+<div class="input-helper"><input ng-model="data.inputValue" type="text" class="input-input" ng-class="{{inputClass}}" placeholder="{{placeholder}}" ng-change="change()" ng-click="toggle()"/><span ng-if="!visible && (count>0)" class="icon glyphicon glyphicon-download"></span>    <span ng-if="visible && (count>0)" class="icon glyphicon glyphicon-upload"></span>    <ul class="input-select-helper" ng-show="visible"><li ng-if="count !== 0" style="text-align:center;"><input type="text" class="search-filter form-control" ng-model="data.filters" ng-change="subfilter()" placeholder="Найти в найденом"/>            <span> Всего вариантов {{count}} </span></li><li ng-if="count === 0">       <strong>Вариантов не найдено</strong></li><li ng-repeat="item in list" inject></li>   </ul>  </div>
+</script>
  <!-- Collect from 'views/site/angular//main-page.html' file -->
 <script type="text/ng-template" id="/main-page.html">
 <!DOCTYPE html><!-- --><html><head><title>TODO supply a title</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body><div>TODO write content</div></body></html>

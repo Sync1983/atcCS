@@ -8,16 +8,13 @@ namespace backend\controllers;
 
 use yii\web\Controller;
 
-class LoginController extends Controller{
+class HelperController extends Controller{
   
   public function actions() {
     return [
-      'login' => [
-        'class'  => user\LoginAction::className(),
-      ],
-      'get-data' => [
-        'class'  => user\UserGetDataAction::className(),
-      ],
+      'articul' => [
+        'class'  => helper\ArticulAction::className(),
+      ]      
     ];
   }
 
@@ -43,10 +40,7 @@ class LoginController extends Controller{
                 'application/json' => \yii\web\Response::FORMAT_JSON,
                 'application/xml' => \yii\web\Response::FORMAT_XML,
             ],
-        ],
-        'verbFilter' => [
-            'class' => \yii\filters\VerbFilter::className(),
-        ],
+        ],        
     ];
   }
   

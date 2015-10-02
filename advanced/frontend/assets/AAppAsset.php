@@ -23,11 +23,11 @@ class AAppAsset extends AssetBundle
         'model.js',
         'app.js',
         'config.js',
+        'filter.js',
         'directive.js',
         'factory.js',
         'controller.js',
         'service.js',
-        'filter.js',
         
     ];
     public $depends = [

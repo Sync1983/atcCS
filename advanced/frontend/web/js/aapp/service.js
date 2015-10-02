@@ -20,6 +20,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', function($http, $cookie
     console.log("Login from Cookies");
 
     if ( name && pass ){
+      console.log("Name:",name,"Pass:",pass);
       model.login(name,pass,true).then(function(){
         model.update();
       });
@@ -51,7 +52,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', function($http, $cookie
         var hash        = response && response.data && response.data['hash'] || null;
 
         // Если вернулся хэш, значит запомним для следующей авторизации
-        if( hash ){
+        if( hash && remember ){
           var now     = new Date();
           var expires = new Date( now.getTime() + 30*24*3600 );
           

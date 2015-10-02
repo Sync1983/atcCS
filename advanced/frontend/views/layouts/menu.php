@@ -49,33 +49,33 @@ use yii\helpers\Url;
     </ul>
   </div>
 <!-- Строка поиска и список выбора -->
-  <div class="dropdown" id='searchFilter' style="width:70%">
-    <input  ng-change='change()'
-            ng-model='query'
-            ng-value='selected'
-            ng-app=""placeholder='Введите артикул запчасти... '
-            type='text'
-            xng-focus='cleared'
-            class='form-control'
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false">    
-    <ul ng-show='query' class='dropdown-menu' aria-labelledby="searchFilter">
-      <li ng-click='select(item)' ng-repeat='item in items | filter: query'>
-        {{item}}
-      </li>
-    </ul>
-  </div>
+  <inputhelper
+                    input-class = "form-control"
+                    ng-model    = "query"
+                    placeholder = "Введите артикул запчасти... "
+                    url         = "http://rest.atc58.bit/index.php?r=helper/articul"
+                    param       = "search-string"
+                    start-length= "3"
+                    sub-filter  = "inputHelper"
+                    on-load     = "searchListLodaded()"
+                    >
+    <div>
+      <span class="header">Артикул: {{item.article}}</span>
+      <small>Производитель: {{item.supply}} <span ng-show="item.descrRU" class="descr">Описание: {{item.descrRU}}</span></small>
+      <ajax-button title="{{item.article}} - {{item.supply}}" data="{{item.article}}" url = "http://rest.atc58.bit/index.php?r=helper/cross" name="cross-selector">
+        <span class="glyphicon glyphicon-random"></span>
+      </ajax-button>
+      <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>
+    </div>
+  </inputhelper>
 <!-- Флаг отображения аналогов -->  
-  <checkbox ng-model="user.analogShow" class="btn-info">&nbsp;Аналоги</checkbox>
-  
+  <checkbox ng-model="user.analogShow" class="btn-info">&nbsp;Аналоги</checkbox>  
 <!-- Кнопка выбора процентов -->
 <select2 class="btn btn-info col-md-last"
          ng-model     = "markup"
          placeholder  = "Наценка"         
          list         = "user.markup"
-         show-pattern = "item.n + ' ' + item.v +'%'"
-         >
+         show-pattern = "item.n + ' ' + item.v +'%'">
   <div>
     <span>{{item.n}}</span><br>
     <small>
