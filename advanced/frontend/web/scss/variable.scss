@@ -4,6 +4,11 @@ $md: 48rem;
 $lg: 62rem;
 $xl: 75rem;
 
+$bg_color: #2F4654;
+//$yellow_color: #F5D909;
+$yellow_color: #FFFFBA;
+$atc_color: #0C557C;
+
 @mixin media-style($attr,$size-map, $default:null){  
   
   @if (type-of($attr) == 'list'){

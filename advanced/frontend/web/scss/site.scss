@@ -5,19 +5,17 @@
 
 @import "variable.scss";
 
-$width: 80%;
-
+$width: 98%;
+ 
 html, body{
-  background-color: #6699ff;  
+  background-color: $bg_color;  
   height: 100%;    
 }
 
 .wrap {
-    width: $width;
-    min-height: 100%;
+    width: $width;    
     height: auto;
-    margin: 0 auto -60px;
-    padding: 0 0 60px;
+    margin: 0 auto -130px;    
     
     & > .container-fluid{
       padding: 0;
@@ -28,86 +26,109 @@ html, body{
 }
 
 .head{  
-    top: 10px;
-    width: $width;
-    @include media-style((height,line-height),($sm:60px,$md:80px,$lg:100px,$xl:120px),60px);    
-    background-color: #FFFFBA;
+    top: 22px;
+    left: 2%;
+    width: $width;    
+    height: 60px;
+    line-height: 60px;    
+    background-color: transparent;
     padding: 0;
-    margin: 0 0;
-    border-radius: 20px 20px 0 0;
-    border-bottom: 1px solid #6699ff;
+    margin: 0 0;    
     position: absolute;
     z-index: 1;
     
     & > .head-logo{
-      width: 20%;
+      top:-15px;
+      height: 80px;
       display: block;
       position: relative;
       margin: 0 5px;
       float:left;
+      
+      &>img{
+        height: 80px;        
+      }
     }
-    & > .circle {
-      top: 10px;
+    
+    div.header-up {
+      width: 25%;
+      left:-1%;
+      top: -20px;
+      height: 20px;
+      background-color: $yellow_color;
+      position:absolute;
+      display: inline;
+      
+      & div{
+        height: 20px;
+        border-left: 20px solid transparent; 
+        border-top: 20px solid $bg_color; 
+        vertical-align: top;        
+        display: inline-block; 
+        float:right;
+      }
     }
 }
 
-.info{  
-  width: $width;   
+.info{
+  top: 0px;
+  right: 0px;
+  width: 100%;   
   color: #0C557C;
-  padding: 15px 0;
-  @include media-style(top,($xs:0px,$sm:5px,$md:-5px,$lg:1px,$xl:3px),6px);
-  @include media-style((height,line-height),($sm:60px,$md:80px,$lg:100px,$xl:120px),60px);
-  @include media-style(font-size,($xs:0.5em,$sm:1em,$md:1em,$lg:0.9em,$xl:0.9em,1400px:1.5em),0.6em);
-  text-align: center;  
+  padding: 0;
+  height: 20px;
+  text-align:center;  
   background-color: transparent;
   z-index: 2;
-  position: absolute;
+  position: absolute;  
   pointer-events: none;
-  
-  & p {    
-    width: 50%;
-    height: 30px;
-    margin: 0;
-    padding: 0;    
-    @include media-style(left,($xs:10%,$sm:15%,$md:15%,$lg:25%),25%);
-    @include media-style((height,line-height),($xs:25px,$sm:20px,$md:27px,$lg:30px,$xl:35px),20px);
-    vertical-align: middle;
-    font-weight: bold;    
-    font-family: "Arial",monospace;
-    pointer-events: auto;  
-    overflow: hidden;
-    position:relative;
-            
-    &> img{
-      top: -2px;
-      height: 80%;
-      padding: 0 5px;
-      position: relative;
+   
+  & > p {
+    width: 80%;
+    left: 20%;
+    line-height: 20px;    
+    position: relative;
+    
+    & > span {
+      width: 24%;
+      max-width: 300px;
+      margin: 0;
+      padding: 0 10px;    
+      font-family: Geneva, Arial, Helvetica, sans-serif;;
+      font-size: 0.9em;
+      text-align: left;  
+      vertical-align: middle;
+      font-weight: bold;    
+      overflow: hidden;
+      display: inline-block;
+      border-right: 2px solid #000;
+      box-shadow: 1px 1px #000;
+      pointer-events: auto;  
+      
+      &:last-child{
+        border-right: none;
+      }
+      
+      & > img{
+        top: -2px;
+        height: 15px;
+        padding: 0 5px;
+        position: relative;
+      }
     }
   }
 }
 
-.search-bar{  
-  width: $width;
-  height: 50px;
-  padding: 5px 20px;
+.search-bar{
+  top: 22px;   
+  left:1%;
+  width: 98%;
+  height: 60px;
+  line-height: 40px;
   margin: 0 0;
-  border-radius: 0 0 20px 20px;
-  @include media-style((top),($sm:70px,$md:90px,$lg:110px,$xl:130px),70px);    
-  background-color: #FFFFBA;
-  border-bottom: 1px solid #6699ff;
-  position: absolute;
-  flex-wrap: nowrap;
-  flex-direction: row;
-  justify-content: center;
-  align-items: stretch;
-  display: flex;
-  
-  & > .btn,button,input{
-    @include media-style((font-size),($xs:0.5em,$sm:0.7em,$md:1em,$lg:1em,$xl:1em),0.5em);
-    @include media-style((height),($xs:30px,$sm:40px),30px);
-    @include media-style((padding),($xs:0 5px,$sm:0 10px),0 5px);
-  }
+  background-color: $yellow_color;  
+  vertical-align: bottom;
+  position: absolute;  
   
   & span.header{
     float: left;
@@ -115,11 +136,17 @@ html, body{
   }
   
   & > .input-helper{
-    width: 100%;
+    top: 10px;
+    left: 20%;
+    width: 60%;
     position:relative;
     
     &> input{
-      width: 100%;      
+      height: 40px;
+      width: 100%;
+      padding: 0 5px;
+      border-radius: 5px;
+      border: 1px $atc_color solid;;
     }
     
     &> .icon{
@@ -184,6 +211,41 @@ html, body{
   label{
     width: 60%;
     vertical-align: top;
+  }
+}
+
+.main-menu-left{
+  top: 60px + 22px;
+  left: 1%;
+  width: 14%;
+  bottom: 60px;
+  background-color: $yellow_color;
+  position: absolute;
+  
+  & > ul {    
+    list-style: none;
+    &:first-child{
+      padding: 20px 20px 0 20px;      
+    }
+    
+    & > li {
+      border-bottom: 1px solid #000;
+      
+      & > h4{
+        width: 100%;
+        text-align: center;
+      }      
+    }
+  }
+  
+  & ul {
+    padding: 0 0 0 60px;   
+    list-style: none;
+    
+    & li {
+      width: 100%;
+      text-align: right;
+    }
   }
 }
 

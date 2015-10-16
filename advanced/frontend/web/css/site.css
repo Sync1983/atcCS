@@ -3,15 +3,13 @@
     Author     : sync1983
 */
 html, body {
-  background-color: #6699ff;
+  background-color: #2F4654;
   height: 100%; }
 
 .wrap {
-  width: 80%;
-  min-height: 100%;
+  width: 98%;
   height: auto;
-  margin: 0 auto -60px;
-  padding: 0 0 60px; }
+  margin: 0 auto -130px; }
   .wrap > .container-fluid {
     padding: 0;
     width: 100%;
@@ -19,222 +17,105 @@ html, body {
     background-color: #FFF; }
 
 .head {
-  top: 10px;
-  width: 80%;
+  top: 22px;
+  left: 2%;
+  width: 98%;
   height: 60px;
   line-height: 60px;
-  background-color: #FFFFBA;
+  background-color: transparent;
   padding: 0;
   margin: 0 0;
-  border-radius: 20px 20px 0 0;
-  border-bottom: 1px solid #6699ff;
   position: absolute;
   z-index: 1; }
-  @media screen and (min-width: 34rem) {
-    .head {
-      height: 60px;
-      line-height: 60px; } }
-  @media screen and (min-width: 48rem) {
-    .head {
-      height: 80px;
-      line-height: 80px; } }
-  @media screen and (min-width: 62rem) {
-    .head {
-      height: 100px;
-      line-height: 100px; } }
-  @media screen and (min-width: 75rem) {
-    .head {
-      height: 120px;
-      line-height: 120px; } }
   .head > .head-logo {
-    width: 20%;
+    top: -15px;
+    height: 80px;
     display: block;
     position: relative;
     margin: 0 5px;
     float: left; }
-  .head > .circle {
-    top: 10px; }
+    .head > .head-logo > img {
+      height: 80px; }
+  .head div.header-up {
+    width: 25%;
+    left: -1%;
+    top: -20px;
+    height: 20px;
+    background-color: #FFFFBA;
+    position: absolute;
+    display: inline; }
+    .head div.header-up div {
+      height: 20px;
+      border-left: 20px solid transparent;
+      border-top: 20px solid #2F4654;
+      vertical-align: top;
+      display: inline-block;
+      float: right; }
 
 .info {
-  width: 80%;
+  top: 0px;
+  right: 0px;
+  width: 100%;
   color: #0C557C;
-  padding: 15px 0;
-  top: 6px;
-  height: 60px;
-  line-height: 60px;
-  font-size: 0.6em;
+  padding: 0;
+  height: 20px;
   text-align: center;
   background-color: transparent;
   z-index: 2;
   position: absolute;
   pointer-events: none; }
-  @media screen and (min-width: 20rem) {
-    .info {
-      top: 0px; } }
-  @media screen and (min-width: 34rem) {
-    .info {
-      top: 5px; } }
-  @media screen and (min-width: 48rem) {
-    .info {
-      top: -5px; } }
-  @media screen and (min-width: 62rem) {
-    .info {
-      top: 1px; } }
-  @media screen and (min-width: 75rem) {
-    .info {
-      top: 3px; } }
-  @media screen and (min-width: 34rem) {
-    .info {
-      height: 60px;
-      line-height: 60px; } }
-  @media screen and (min-width: 48rem) {
-    .info {
-      height: 80px;
-      line-height: 80px; } }
-  @media screen and (min-width: 62rem) {
-    .info {
-      height: 100px;
-      line-height: 100px; } }
-  @media screen and (min-width: 75rem) {
-    .info {
-      height: 120px;
-      line-height: 120px; } }
-  @media screen and (min-width: 20rem) {
-    .info {
-      font-size: 0.5em; } }
-  @media screen and (min-width: 34rem) {
-    .info {
-      font-size: 1em; } }
-  @media screen and (min-width: 48rem) {
-    .info {
-      font-size: 1em; } }
-  @media screen and (min-width: 62rem) {
-    .info {
-      font-size: 0.9em; } }
-  @media screen and (min-width: 75rem) {
-    .info {
-      font-size: 0.9em; } }
-  @media screen and (min-width: 1400px) {
-    .info {
-      font-size: 1.5em; } }
-  .info p {
-    width: 50%;
-    height: 30px;
-    margin: 0;
-    padding: 0;
-    left: 25%;
-    height: 20px;
+  .info > p {
+    width: 80%;
+    left: 20%;
     line-height: 20px;
-    vertical-align: middle;
-    font-weight: bold;
-    font-family: "Arial",monospace;
-    pointer-events: auto;
-    overflow: hidden;
     position: relative; }
-    @media screen and (min-width: 20rem) {
-      .info p {
-        left: 10%; } }
-    @media screen and (min-width: 34rem) {
-      .info p {
-        left: 15%; } }
-    @media screen and (min-width: 48rem) {
-      .info p {
-        left: 15%; } }
-    @media screen and (min-width: 62rem) {
-      .info p {
-        left: 25%; } }
-    @media screen and (min-width: 20rem) {
-      .info p {
-        height: 25px;
-        line-height: 25px; } }
-    @media screen and (min-width: 34rem) {
-      .info p {
-        height: 20px;
-        line-height: 20px; } }
-    @media screen and (min-width: 48rem) {
-      .info p {
-        height: 27px;
-        line-height: 27px; } }
-    @media screen and (min-width: 62rem) {
-      .info p {
-        height: 30px;
-        line-height: 30px; } }
-    @media screen and (min-width: 75rem) {
-      .info p {
-        height: 35px;
-        line-height: 35px; } }
-    .info p > img {
-      top: -2px;
-      height: 80%;
-      padding: 0 5px;
-      position: relative; }
+    .info > p > span {
+      width: 24%;
+      max-width: 300px;
+      margin: 0;
+      padding: 0 10px;
+      font-family: Geneva, Arial, Helvetica, sans-serif;
+      font-size: 0.9em;
+      text-align: left;
+      vertical-align: middle;
+      font-weight: bold;
+      overflow: hidden;
+      display: inline-block;
+      border-right: 2px solid #000;
+      box-shadow: 1px 1px #000;
+      pointer-events: auto; }
+      .info > p > span:last-child {
+        border-right: none; }
+      .info > p > span > img {
+        top: -2px;
+        height: 15px;
+        padding: 0 5px;
+        position: relative; }
 
 .search-bar {
-  width: 80%;
-  height: 50px;
-  padding: 5px 20px;
+  top: 22px;
+  left: 1%;
+  width: 98%;
+  height: 60px;
+  line-height: 40px;
   margin: 0 0;
-  border-radius: 0 0 20px 20px;
-  top: 70px;
   background-color: #FFFFBA;
-  border-bottom: 1px solid #6699ff;
-  position: absolute;
-  flex-wrap: nowrap;
-  flex-direction: row;
-  justify-content: center;
-  align-items: stretch;
-  display: flex; }
-  @media screen and (min-width: 34rem) {
-    .search-bar {
-      top: 70px; } }
-  @media screen and (min-width: 48rem) {
-    .search-bar {
-      top: 90px; } }
-  @media screen and (min-width: 62rem) {
-    .search-bar {
-      top: 110px; } }
-  @media screen and (min-width: 75rem) {
-    .search-bar {
-      top: 130px; } }
-  .search-bar > .btn, .search-bar button, .search-bar input {
-    font-size: 0.5em;
-    height: 30px;
-    padding: 0 5px; }
-    @media screen and (min-width: 20rem) {
-      .search-bar > .btn, .search-bar button, .search-bar input {
-        font-size: 0.5em; } }
-    @media screen and (min-width: 34rem) {
-      .search-bar > .btn, .search-bar button, .search-bar input {
-        font-size: 0.7em; } }
-    @media screen and (min-width: 48rem) {
-      .search-bar > .btn, .search-bar button, .search-bar input {
-        font-size: 1em; } }
-    @media screen and (min-width: 62rem) {
-      .search-bar > .btn, .search-bar button, .search-bar input {
-        font-size: 1em; } }
-    @media screen and (min-width: 75rem) {
-      .search-bar > .btn, .search-bar button, .search-bar input {
-        font-size: 1em; } }
-    @media screen and (min-width: 20rem) {
-      .search-bar > .btn, .search-bar button, .search-bar input {
-        height: 30px; } }
-    @media screen and (min-width: 34rem) {
-      .search-bar > .btn, .search-bar button, .search-bar input {
-        height: 40px; } }
-    @media screen and (min-width: 20rem) {
-      .search-bar > .btn, .search-bar button, .search-bar input {
-        padding: 0 5px; } }
-    @media screen and (min-width: 34rem) {
-      .search-bar > .btn, .search-bar button, .search-bar input {
-        padding: 0 10px; } }
+  vertical-align: bottom;
+  position: absolute; }
   .search-bar span.header {
     float: left;
     width: 100%; }
   .search-bar > .input-helper {
-    width: 100%;
+    top: 10px;
+    left: 20%;
+    width: 60%;
     position: relative; }
     .search-bar > .input-helper > input {
-      width: 100%; }
+      height: 40px;
+      width: 100%;
+      padding: 0 5px;
+      border-radius: 5px;
+      border: 1px #0C557C solid; }
     .search-bar > .input-helper > .icon {
       right: 0;
       opacity: 0.5;
@@ -277,6 +158,29 @@ html, body {
     width: 60%;
     vertical-align: top; }
 
+.main-menu-left {
+  top: 82px;
+  left: 1%;
+  width: 14%;
+  bottom: 60px;
+  background-color: #FFFFBA;
+  position: absolute; }
+  .main-menu-left > ul {
+    list-style: none; }
+    .main-menu-left > ul:first-child {
+      padding: 20px 20px 0 20px; }
+    .main-menu-left > ul > li {
+      border-bottom: 1px solid #000; }
+      .main-menu-left > ul > li > h4 {
+        width: 100%;
+        text-align: center; }
+  .main-menu-left ul {
+    padding: 0 0 0 60px;
+    list-style: none; }
+    .main-menu-left ul li {
+      width: 100%;
+      text-align: right; }
+
 .circle {
   height: 40px;
   width: 40px;
@@ -315,7 +219,7 @@ html, body {
     background: linear-gradient(-20deg, rgba(0, 80, 155, 0.7) 0%, rgba(155, 155, 255, 0.4) 70%, rgba(255, 255, 255, 0.4) 80%, #9b9bff 100%); }
 
 .login-window {
-  right: 10%;
+  right: 1%;
   left: auto;
   text-align: initial;
   line-height: initial;
@@ -407,8 +311,8 @@ ul.select2selector {
     padding: 9px 14px; }
 
 .footer {
-  width: 80%;
-  left: 10%;
+  width: 98%;
+  left: 1%;
   margin: 0 auto;
   bottom: 0px;
   height: 60px;
