@@ -4,8 +4,8 @@
 */
 
 @import "variable.scss";
-
-$width: 98%;
+ 
+$width: 98%; 
  
 html, body{
   background-color: $bg_color;  
@@ -27,8 +27,7 @@ html, body{
 
 .head{  
     top: 22px;
-    left: 2%;
-    width: $width;    
+    left: 2%;    
     height: 60px;
     line-height: 60px;    
     background-color: transparent;
@@ -49,32 +48,13 @@ html, body{
         height: 80px;        
       }
     }
-    
-    div.header-up {
-      width: 25%;
-      left:-1%;
-      top: -20px;
-      height: 20px;
-      background-color: $yellow_color;
-      position:absolute;
-      display: inline;
-      
-      & div{
-        height: 20px;
-        border-left: 20px solid transparent; 
-        border-top: 20px solid $bg_color; 
-        vertical-align: top;        
-        display: inline-block; 
-        float:right;
-      }
-    }
 }
 
 .info{
   top: 0px;
   right: 0px;
   width: 100%;   
-  color: #0C557C;
+  color: $info_color;
   padding: 0;
   height: 20px;
   text-align:center;  
@@ -82,7 +62,7 @@ html, body{
   z-index: 2;
   position: absolute;  
   pointer-events: none;
-   
+  
   & > p {
     width: 80%;
     left: 20%;
@@ -100,10 +80,12 @@ html, body{
       vertical-align: middle;
       font-weight: bold;    
       overflow: hidden;
-      display: inline-block;
-      border-right: 2px solid #000;
-      box-shadow: 1px 1px #000;
+      display: inline-block;      
       pointer-events: auto;  
+      
+      & > a{
+        color: $info_color;
+      }
       
       &:last-child{
         border-right: none;
@@ -212,41 +194,131 @@ html, body{
     width: 60%;
     vertical-align: top;
   }
+  
+  div.header-up {
+      width: 25%;
+      left: 0 ;
+      top: -20px;
+      height: 20px;
+      background-color: $yellow_color;
+      position:absolute;
+      display: inline;
+      
+      & div{
+        height: 20px;
+        border-left: 20px solid transparent; 
+        border-top: 20px solid $bg_color; 
+        vertical-align: top;        
+        display: inline-block; 
+        float:right;
+      }
+    }
 }
 
-.main-menu-left{
+.main-menu-left{ 
   top: 60px + 22px;
   left: 1%;
   width: 14%;
   bottom: 60px;
   background-color: $yellow_color;
+  border-top: 1px solid $menu_border;
+  border-right: 1px solid $menu_border;
   position: absolute;
   
-  & > ul {    
+  & ul {    
+    width: 100%; 
+    padding: 0;
     list-style: none;
-    &:first-child{
-      padding: 20px 20px 0 20px;      
-    }
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size:1.2em;
+    font-stretch: expanded;
+    color: $menu_color;
+    text-transform: initial;
+    font-weight: bold;
+    line-height: 35px;
+    cursor: default;        
+    
+    &:first-child{      
+      
+      color: #665D49;//#21313A;      
+      padding: 30px 0 0 0 ;    
+      position: relative;      
+      
+      & > li {
+        text-transform: uppercase;
+        width: 100%;
+        padding: 5px 0px;
+        text-align: left;
+        vertical-align: middle;
+        border-top: 1px solid $menu_border;         
+        
+        &:first-child{
+          border-top: none;          
+        }
+        
+        &:hover {
+          background-color: $yellow_color;
+          cursor: default;
+        }
+        
+        &:before{
+          margin-top: 8px;
+          left: 10px;
+          
+          color: #665D49;//#21313A;//#365161;
+          
+          content: '\E114';
+          font-family: 'Glyphicons Halflings';
+          font-style: normal;
+          font-weight: normal;
+          line-height: 1;
+          
+          position: absolute;
+          float:left;
+          display: inline-block;
+        }
+      }
+    }        
     
     & > li {
-      border-bottom: 1px solid #000;
+      padding: 0 0 0 0px;      
       
-      & > h4{
-        width: 100%;
-        text-align: center;
-      }      
+      & > span {
+        padding: 0 40px;
+      }
+      
+      &:hover {
+        background-color: #365161;
+        cursor: pointer;
+      }
+      
+      &:before{
+        color: $menu_color;//#21313A;//#365161;  
+        left: 10px;
+        content: '\2BB1';
+        position: absolute;
+      }
+      
+      &.active:after{
+        color: #FFF;//#365161;  
+        right: -2px; 
+        content: '\1F780';
+        text-shadow: -1px 0 1px $menu_border;
+        position: absolute;
+      }
     }
   }
   
-  & ul {
-    padding: 0 0 0 60px;   
-    list-style: none;
-    
-    & li {
-      width: 100%;
-      text-align: right;
-    }
-  }
+}
+
+.view {
+  top: 83px;
+  left:15%;
+  right: 1%;
+  bottom: 60px;
+  overflow-y: auto;
+  background-color: #FFF;
+  position: absolute;
 }
 
 .circle {  
@@ -384,8 +456,8 @@ ul.select2selector{
     margin: 0 auto;
     bottom: 0px;
     height: 60px;
-    background-color: #f5f5f5;
-    border-top: 1px solid #ddd;
+    background-color: $yellow_color;
+    border-top: 1px solid $menu_border;
     //padding-top: 20px;
     position: absolute;
 }

@@ -3,10 +3,7 @@ use yii\helpers\Url;
 
 ?>
 
-<div class="head" style="text-align: center" ng-controller="headControl">
-  <div class="header-up">
-    <div style=''>&nbsp;</div>
-  </div>
+<div class="head" style="text-align: center" ng-controller="headControl">  
   <div class="head-logo">
     <a href="<?= Url::home();?>">
       <img src="img/logo_left.png"/>      
@@ -23,6 +20,9 @@ use yii\helpers\Url;
     </p>
 </div>
 <div class="search-bar row-md-top btn-group-justified" ng-controller="searchControl">
+  <div class="header-up">
+    <div style=''>&nbsp;</div>
+  </div>
 <!-- Строка поиска и список выбора -->
   <inputhelper
                     input-class = "form-control"
@@ -49,25 +49,25 @@ use yii\helpers\Url;
 <div class="main-menu-left">
   <ul>
     <li>
-      <h4>Содержание</h4>
+      <span>Содержание</span>
       <uL>
-        <li>Новости</li>
-        <li>Каталоги</li>
-        <li>Контакты</li>
+        <li class="active"><span>Новости</span></li>
+        <li><span>Каталоги</span></li>
+        <li><span>Контакты</span></li>
       </uL>
     </li>
     <li>
-      <h4>Магазин</h4>
+      <span>Магазин</span>
       <ul>
-        <li>Корзина</li>
-        <li>Заказы</li>
+        <li><span>Корзина</span></li>
+        <li><span>Заказы</span></li>
       </ul>
     </li>
     <li>
-      <h4>Настройки</h4>
+      <span>Настройки</span>
       <ul>
-        <li>Профиль</li>
-        <li>Баланс</li>
+        <li><span>Профиль</span></li>
+        <li><span>Баланс</span></li>
       </ul>
     </li>
   </ul>

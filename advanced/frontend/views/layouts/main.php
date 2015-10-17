@@ -31,10 +31,8 @@ AAppAsset::register($this);
 <div class="wrap">
     <div class="container-fluid">
       <?php $this->beginContent('@app/views/layouts/menu.php');
-            $this->endContent(); ?>
-        <div class="container-fluid">
-          <div ng-view></div>
-        </div>
+            $this->endContent(); ?>        
+      <div ng-view class="view">&nbsp;</div>        
     </div>
 </div>
 
