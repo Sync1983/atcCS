@@ -15,20 +15,12 @@ use yii\web\AssetBundle;
  */
 class AAppAsset extends AssetBundle
 {
-    public $sourcePath = '@app/web/js/aapp/';
+    public $sourcePath = '@app/web/js/';
     public $baseUrl = '@web';
     public $css = [        
     ];
     public $js = [        
-        'model.js',
-        'app.js',
-        'config.js',
-        'filter.js',
-        'directive.js',
-        'factory.js',
-        'controller.js',
-        'service.js',
-        
+        '_aapp.js'        
     ];
     public $depends = [
         'frontend\assets\AngularAsset'

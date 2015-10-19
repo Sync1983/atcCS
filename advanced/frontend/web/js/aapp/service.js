@@ -1,10 +1,11 @@
 /* global atcCS */
 
-'use strict';
 /*
  * Сервис для обслуживания модели пользователя и общения с сервером
  */
 atcCS.service('User',['$http', '$cookies', '$rootScope', function($http, $cookies, $rootScope){
+  'use strict';
+  
   var URL   = "http://rest.atc58.bit/index.php";
   var model = new userModel();
 
@@ -92,6 +93,6 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', function($http, $cookie
   $rootScope.user = model;
   loadFormCookies();      //Пробуем войти через информацию в cookie
   
-  return model;
+  return model; 
 
 }]);

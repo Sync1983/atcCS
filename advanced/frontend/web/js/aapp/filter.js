@@ -1,8 +1,9 @@
 /* global atcCS */
 
-'use strict';
 
 atcCS.filter('inputHelper', [function(){
+  'use strict';
+  
   return function(input,value){
     var result = {};
     

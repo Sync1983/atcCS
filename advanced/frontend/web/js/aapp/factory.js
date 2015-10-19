@@ -1,6 +1,4 @@
-/* global atcCS */
-
-'use strict';
+/* global atcCS */   
 
 atcCS.factory('atcServerToken', ['$q', '$rootScope', '$injector',
   function ($q, $rootScope, $injector) {

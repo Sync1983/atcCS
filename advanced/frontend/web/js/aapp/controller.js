@@ -1,8 +1,8 @@
 /* global atcCS */
 
-'use strict';
 
 atcCS.controller( 'searchControl', ['$scope','$filter', 'User', function($scope,$filter,$user) {
+    'use strict';
 
     $scope.markup = null;
 
@@ -17,7 +17,9 @@ atcCS.controller( 'searchControl', ['$scope','$filter', 'User', function($scope,
     
 }]);
 
-atcCS.controller( 'headControl',['$scope', function($scope) {    
+atcCS.controller( 'headControl',['$scope', function($scope) {
+    'use strict';
+    
     $scope.loginShow  = true;
     $scope.login      = {
       name: null,

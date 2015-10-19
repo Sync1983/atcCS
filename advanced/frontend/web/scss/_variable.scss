@@ -1,0 +1,80 @@
+$xs: 20rem;
+$sm: 34rem;
+$md: 48rem;
+$lg: 62rem;
+$xl: 75rem;
+
+$gold_slice: 1.618;
+$info_height: 22px;
+$menu_left_width: (100% / (5 * $gold_slice) );
+
+$bg_color:        #155871;
+$main_color:      #94CFE6;
+$info_text_color: #ECE862;
+
+$menu_iacolor:    #40819A;
+$menu_color:      #C4E8F6;
+$menu_border:     #1A4D60;
+$menu_active_bg:  #365161;
+
+$atc_color:       #0C557F;
+/*
+$bg_color:        #1A4D60;
+$main_color:      #6891A1;
+$info_text_color: #ECE862;
+
+$menu_iacolor:    #1A4D60;
+$menu_color:      #A8C5CF;
+$menu_border:     #1A4D60;
+$menu_active_bg:  #365161;
+
+$atc_color:       #0C557F;
+
+
+/**/
+/*$bg_color: #495266;//#2F4654;
+$info_color: #ECE862;
+$menu_color: #FFF7E5;//#9CE9F3; 
+$menu_border: #476171;
+$main_color: #8F9AB2 ;//#4A80A0;
+//$yellow_color: #F5D909;
+$atc_color: #0C557F; 
+/**/
+
+@mixin media-style($attr,$size-map, $default:null){  
+  
+  @if (type-of($attr) == 'list'){
+    @each $attr-name in $attr{
+      @if ($default != null){
+        #{$attr-name}: $default;
+      }      
+    }
+    
+    @each $size,$value in $size-map{    
+      @media screen and (min-width: $size){
+        @each $attr-name in $attr{
+          #{$attr-name}: $value;    
+        }
+      }
+    }
+  }
+  
+  @if (type-of($attr) == 'string'){
+    @if ($default != null){
+      #{$attr}: $default;
+    }    
+    @each $size,$value in $size-map{
+      @media screen and (min-width: $size){        
+        #{$attr} : $value;
+      }
+    }
+  }  
+}
+
+@mixin placeholder($name) {
+  #{$name}::-webkit-input-placeholder {@content}
+  #{$name}:-moz-placeholder           {@content}
+  #{$name}::-moz-placeholder          {@content}
+  #{$name}:-ms-input-placeholder      {@content}  
+}
+

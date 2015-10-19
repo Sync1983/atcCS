@@ -3,27 +3,25 @@ use yii\helpers\Url;
 
 ?>
 
-<div class="head" style="text-align: center" ng-controller="headControl">  
-  <div class="head-logo">
-    <a href="<?= Url::home();?>">
-      <img src="img/logo_left.png"/>      
-    </a>
-  </div>  
-</div>
-
+<!-- Строка контактов -->
 <div class="info">
-    <p>
-      <span><img src="img/callus.png"/>+7 (8412) 763-533</span>
-      <span><img src="img/callus.png"/>+7 (8412) 518-302</span>
-      <span><img src="img/mail.png"/><a href="mailto:sales@atc58.ru">sales@atc58.ru</a></span>
-      <span><img src="img/skype.png"/><a href="skype:atc_58">АвтоТехСнаб(atc_58)</a></span>
-    </p>
-</div>
-<div class="search-bar row-md-top btn-group-justified" ng-controller="searchControl">
   <div class="header-up">
-    <div style=''>&nbsp;</div>
+    <div>&nbsp;</div>
   </div>
+  <div class="text-info">
+    <span><img src="img/callus.png"/>+7 (8412) 763-533</span>
+    <span><img src="img/callus.png"/>+7 (8412) 518-302</span>
+    <span><img src="img/mail.png"/><a href="mailto:sales@atc58.ru">sales@atc58.ru</a></span>
+    <span><img src="img/skype.png"/><a href="skype:atc_58">АвтоТехСнаб(atc_58)</a></span>
+  </div>
+</div>
+<!-- Основной логотип -->
+<div class="head-logo">  
+  <a href="<?= Url::home();?>"><img src="img/logo_left.png"/></a>  
+</div>
 <!-- Строка поиска и список выбора -->
+<div class="search-bar row-md-top btn-group-justified" ng-controller="searchControl">
+  
   <inputhelper
                     input-class = "form-control"
                     ng-model    = "query"
@@ -45,9 +43,28 @@ use yii\helpers\Url;
   </inputhelper>
 
 </div>
-
+<!-- Левый блок меню -->
 <div class="main-menu-left">
   <ul>
+    <li>
+      <span>Авторизация</span>
+      <?php $form = yii\widgets\ActiveForm::begin([
+         'options' => [
+          'class' => 'login-form'
+         ]
+      ]);?>
+      <div class="row-line">
+        <sinput class="login-input" value="" placeholder="Введите логин или адрес почты" name="login" ></sinput>
+      </div>
+      <div class="row-line">
+        <sinput class="login-input" value="" placeholder="Введите пароль" name="password" ></sinput>
+      </div>
+      <div class="row-line">
+        <scheckbox name="rememberMe" />
+        <label>Запомнить меня</label>
+      </div>
+      <?php yii\widgets\ActiveForm::end();?>
+    </li>
     <li>
       <span>Содержание</span>
       <uL>
@@ -71,6 +88,12 @@ use yii\helpers\Url;
       </ul>
     </li>
   </ul>
+  <footer class="footer">
+    <div class="container-fluid">
+        <p class="">&copy; АвтоТехСнаб <?= date('Y') ?></p>
+        <p class=""><?= Yii::powered() ?></p>
+    </div>
+</footer>
 </div>
 
 

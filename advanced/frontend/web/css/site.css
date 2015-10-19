@@ -2,12 +2,34 @@
     Created on : 09.09.2015, 09.09.2015 19:50:44
     Author     : sync1983
 */
+/*
+$bg_color:        #1A4D60;
+$main_color:      #6891A1;
+$info_text_color: #ECE862;
+
+$menu_iacolor:    #1A4D60;
+$menu_color:      #A8C5CF;
+$menu_border:     #1A4D60;
+$menu_active_bg:  #365161;
+
+$atc_color:       #0C557F;
+
+
+/**/
+/*$bg_color: #495266;//#2F4654;
+$info_color: #ECE862;
+$menu_color: #FFF7E5;//#9CE9F3; 
+$menu_border: #476171;
+$main_color: #8F9AB2 ;//#4A80A0;
+//$yellow_color: #F5D909;
+$atc_color: #0C557F; 
+/**/
 html, body {
-  background-color: #495266;
+  background-color: #155871;
   height: 100%; }
 
 .wrap {
-  width: 98%;
+  width: 100%;
   height: auto;
   margin: 0 auto -130px; }
   .wrap > .container-fluid {
@@ -16,44 +38,51 @@ html, body {
     margin: 130px auto 0;
     background-color: #FFF; }
 
-.head {
-  top: 22px;
-  left: 2%;
-  height: 60px;
-  line-height: 60px;
+div.head-logo {
+  top: 7px;
+  left: 1%;
+  height: 80px;
   background-color: transparent;
-  padding: 0;
-  margin: 0 0;
+  display: block;
   position: absolute;
-  z-index: 1; }
-  .head > .head-logo {
-    top: -15px;
-    height: 80px;
-    display: block;
-    position: relative;
-    margin: 0 5px;
-    float: left; }
-    .head > .head-logo > img {
-      height: 80px; }
+  z-index: 2; }
+  div.head-logo > img {
+    height: 80px; }
 
 .info {
+  background-color: transparent;
   top: 0px;
   right: 0px;
   width: 100%;
-  color: #ECE862;
+  height: 22px;
   padding: 0;
-  height: 20px;
+  line-height: 22px;
+  border-left: 2px solid #1A4D60;
   text-align: center;
-  background-color: transparent;
-  z-index: 2;
-  position: absolute;
-  pointer-events: none; }
-  .info > p {
-    width: 80%;
-    left: 20%;
-    line-height: 20px;
-    position: relative; }
-    .info > p > span {
+  display: inline-block;
+  position: absolute; }
+  .info > div.header-up {
+    top: 0;
+    left: 0;
+    width: 25%;
+    height: 22px;
+    background-color: #94CFE6;
+    position: absolute;
+    display: inline-block; }
+    .info > div.header-up div {
+      height: 100%;
+      border-left: 22px solid transparent;
+      border-top: 22px solid #155871;
+      vertical-align: top;
+      display: inline-block;
+      float: right; }
+  .info > div.text-info {
+    color: #ECE862;
+    left: 25%;
+    width: 75%;
+    display: inline-block;
+    position: absolute; }
+    .info > div.text-info > span {
       width: 24%;
       max-width: 300px;
       margin: 0;
@@ -66,29 +95,104 @@ html, body {
       overflow: hidden;
       display: inline-block;
       pointer-events: auto; }
-      .info > p > span > a {
+      .info > div.text-info > span > a {
         color: #ECE862; }
-      .info > p > span:last-child {
-        border-right: none; }
-      .info > p > span > img {
+      .info > div.text-info > span > img {
         top: -2px;
         height: 15px;
         padding: 0 5px;
         position: relative; }
 
+.main-menu-left {
+  background-color: #94CFE6;
+  top: 82px;
+  left: 0;
+  width: 12.36094%;
+  bottom: 5px;
+  border-top: 1px solid #1A4D60;
+  border-right: 1px solid #1A4D60;
+  border-left: 2px solid #1A4D60;
+  position: absolute; }
+  .main-menu-left ul {
+    color: #C4E8F6;
+    width: 100%;
+    padding: 0;
+    line-height: 35px;
+    text-align: right;
+    list-style: none;
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    font-size: 1.1em;
+    font-stretch: expanded;
+    font-weight: bold;
+    text-transform: initial;
+    cursor: default; }
+    .main-menu-left ul:first-child {
+      color: #40819A;
+      padding: 30px 0 0 0;
+      position: relative; }
+      .main-menu-left ul:first-child > li {
+        text-align: right !important;
+        text-shadow: none;
+        text-transform: uppercase;
+        width: 100%;
+        padding: 5px 0px;
+        text-align: left;
+        vertical-align: middle;
+        border-top: 1px solid #1A4D60; }
+        .main-menu-left ul:first-child > li:first-child {
+          border-top: none; }
+        .main-menu-left ul:first-child > li:hover {
+          background-color: #94CFE6;
+          cursor: default; }
+        .main-menu-left ul:first-child > li:before {
+          content: ""; }
+        .main-menu-left ul:first-child > li > span {
+          width: 100%;
+          padding: 0 40px 0 0;
+          display: block; }
+          .main-menu-left ul:first-child > li > span:after {
+            top: 3px;
+            left: 15px;
+            color: #40819A;
+            content: '\E114';
+            font-family: 'Glyphicons Halflings';
+            font-style: normal;
+            font-weight: normal;
+            line-height: 1;
+            position: relative;
+            display: inline-block; }
+    .main-menu-left ul > li {
+      padding: 0 10px 0 0px;
+      text-shadow: 0 0 2px black; }
+      .main-menu-left ul > li > span {
+        padding: 0 30px; }
+      .main-menu-left ul > li:hover {
+        background-color: #365161;
+        cursor: pointer; }
+      .main-menu-left ul > li:before {
+        color: #C4E8F6;
+        right: 20px;
+        position: absolute; }
+      .main-menu-left ul > li.active {
+        background-color: #365161; }
+        .main-menu-left ul > li.active:after {
+          color: #FFF;
+          right: -2px;
+          content: '\1F780';
+          text-shadow: -1px 0 1px #1A4D60;
+          position: absolute; }
+
 .search-bar {
+  background: linear-gradient(to bottom, #94CFE6 10%, #C4E8F6 49%, #94CFE6 90%);
   top: 22px;
-  left: 1%;
-  width: 98%;
+  left: 0;
+  width: 100%;
   height: 60px;
-  line-height: 40px;
   margin: 0 0;
-  background-color: #8F9AB2;
+  line-height: 40px;
+  border-left: 2px solid #1A4D60;
   vertical-align: bottom;
   position: absolute; }
-  .search-bar span.header {
-    float: left;
-    width: 100%; }
   .search-bar > .input-helper {
     top: 10px;
     left: 20%;
@@ -141,97 +245,72 @@ html, body {
   .search-bar label {
     width: 60%;
     vertical-align: top; }
-  .search-bar div.header-up {
-    width: 25%;
-    left: 0;
-    top: -20px;
-    height: 20px;
-    background-color: #8F9AB2;
-    position: absolute;
-    display: inline; }
-    .search-bar div.header-up div {
-      height: 20px;
-      border-left: 20px solid transparent;
-      border-top: 20px solid #495266;
-      vertical-align: top;
-      display: inline-block;
-      float: right; }
 
-.main-menu-left {
-  top: 82px;
-  left: 1%;
-  width: 14%;
-  bottom: 60px;
-  background-color: #8F9AB2;
-  border-top: 1px solid #476171;
-  border-right: 1px solid #476171;
-  position: absolute; }
-  .main-menu-left ul {
+/* 
+    Created on : 19.10.2015, 19.10.2015 10:11:43
+    Author     : sync1983
+*/
+/* 
+    Created on : 19.10.2015, 19.10.2015 10:08:57
+    Author     : sync1983
+*/
+div.sinput {
+  height: 22px;
+  border: 5px solid white;
+  border-radius: 15px;
+  box-shadow: 0px 0px 6px 0px #1A4D60; }
+  div.sinput.active {
+    box-shadow: 0px 0px 8px 2px #053040; }
+  div.sinput > input {
+    top: -14px;
     width: 100%;
-    padding: 0;
-    list-style: none;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 1.2em;
-    font-stretch: expanded;
-    color: #FFF7E5;
-    text-transform: initial;
+    height: 18px;
+    padding: 0 7px;
+    font-size: 0.7em;
     font-weight: bold;
-    line-height: 35px;
-    cursor: default; }
-    .main-menu-left ul:first-child {
-      color: #665D49;
-      padding: 30px 0 0 0;
-      position: relative; }
-      .main-menu-left ul:first-child > li {
-        text-transform: uppercase;
-        width: 100%;
-        padding: 5px 0px;
-        text-align: left;
-        vertical-align: middle;
-        border-top: 1px solid #476171; }
-        .main-menu-left ul:first-child > li:first-child {
-          border-top: none; }
-        .main-menu-left ul:first-child > li:hover {
-          background-color: #8F9AB2;
-          cursor: default; }
-        .main-menu-left ul:first-child > li:before {
-          margin-top: 8px;
-          left: 10px;
-          color: #665D49;
-          content: '\E114';
-          font-family: 'Glyphicons Halflings';
-          font-style: normal;
-          font-weight: normal;
-          line-height: 1;
-          position: absolute;
-          float: left;
-          display: inline-block; }
-    .main-menu-left ul > li {
-      padding: 0 0 0 0px; }
-      .main-menu-left ul > li > span {
-        padding: 0 40px; }
-      .main-menu-left ul > li:hover {
-        background-color: #365161;
-        cursor: pointer; }
-      .main-menu-left ul > li:before {
-        color: #FFF7E5;
-        left: 10px;
-        content: '\2BB1';
-        position: absolute; }
-      .main-menu-left ul > li.active:after {
-        color: #FFF;
-        right: -2px;
-        content: '\1F780';
-        text-shadow: -1px 0 1px #476171;
-        position: absolute; }
+    color: #1A4D60;
+    outline: 0;
+    line-height: 18px;
+    border: none;
+    position: relative; }
+
+input.sinput::-webkit-input-placeholder {
+  color: #A8C5CF;
+  font-weight: normal; }
+
+input.sinput:-moz-placeholder {
+  color: #A8C5CF;
+  font-weight: normal; }
+
+input.sinput::-moz-placeholder {
+  color: #A8C5CF;
+  font-weight: normal; }
+
+input.sinput:-ms-input-placeholder {
+  color: #A8C5CF;
+  font-weight: normal; }
+
+form.login-form .row-line {
+  width: 80%;
+  left: 10%;
+  margin: 10px 0;
+  height: 18px;
+  position: relative; }
+form.login-form label {
+  color: #651504;
+  height: 14px;
+  line-height: 14px;
+  font-size: 0.65em;
+  text-transform: initial;
+  vertical-align: middle; }
 
 .view {
   top: 83px;
-  left: 15%;
-  right: 1%;
-  bottom: 60px;
+  left: 12.36094%;
+  right: 0;
+  bottom: 5px;
   overflow-y: auto;
-  background-color: #FFF;
+  background-color: #E0E0E0;
   position: absolute; }
 
 .circle {
@@ -272,7 +351,7 @@ html, body {
     background: linear-gradient(-20deg, rgba(0, 80, 155, 0.7) 0%, rgba(155, 155, 255, 0.4) 70%, rgba(255, 255, 255, 0.4) 80%, #9b9bff 100%); }
 
 .login-window {
-  right: 1%;
+  right: 0%;
   left: auto;
   text-align: initial;
   line-height: initial;
@@ -364,13 +443,12 @@ ul.select2selector {
     padding: 9px 14px; }
 
 .footer {
-  width: 98%;
-  left: 1%;
+  width: 100%;
+  left: 0;
   margin: 0 auto;
   bottom: 0px;
-  height: 60px;
-  background-color: #8F9AB2;
-  border-top: 1px solid #476171;
+  height: 80px;
+  background-color: #94CFE6;
   position: absolute; }
 
 /*# sourceMappingURL=site.css.map */

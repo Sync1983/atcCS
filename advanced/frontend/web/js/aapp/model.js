@@ -1,9 +1,9 @@
-'use strict';
 
 /*
  * Модель пользователя системы
  */
 function userModel(){
+  'use strict';
   
   return {
     name: 'Йожыг',
