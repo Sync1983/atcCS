@@ -1,5 +1,18 @@
+div.head-logo{
+  top: 7px;
+  left: 1%;
+  height: 80px;
+  background-color: transparent;
+  display: block;
+  position: absolute;  
+  &>img{
+    height: 80px;        
+  }
+  z-index: 2;
+}
+
 .search-bar{
-  background: linear-gradient(to bottom,$main_color 10%,$menu_color 49%,$main_color 90%);    
+  background: linear-gradient(to bottom,$main_color 10%,($main_color - #101010) 49%,$main_color 90%);    
   
   top: $info_height;   
   left:0;

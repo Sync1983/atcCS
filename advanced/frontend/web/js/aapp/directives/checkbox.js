@@ -12,7 +12,7 @@ atcCS.directive('scheckbox', function (){
       label: "@",
       name: "@"
     },
-    controller: function controller($scope, $element, $attrs, $transclude, otherInjectables){
+    controller: function controller($scope, $element, $attrs, $transclude){
     },
     compile: function compile(templateElement, templateAttrs){
     },

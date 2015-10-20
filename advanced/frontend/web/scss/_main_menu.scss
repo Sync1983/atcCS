@@ -1,19 +1,86 @@
+$mml_line_height: 36px;
+
 .main-menu-left{ 
   background-color: $main_color;
   
   top: 60px + $info_height;
-  left: 0;
   width: $menu_left_width;
-  bottom: 5px;
-  
-  
-  border-top: 1px solid $menu_border;
-  border-right: 1px solid $menu_border;
-  border-left: 2px solid $menu_border;
+  left:  (100% - $menu_left_width) /2 ;
+  height: $mml_line_height;
+  line-height: $mml_line_height;
+  margin: auto 0;
+  //bottom: 5px;
+    
+  border-top: 1px solid $menu_border;  
+  border-radius: 0 0 15px 15px;
   
   position: absolute;
+  display: inline-block;
   
-  & ul {    
+  & > .menu-line {
+    top: 0;
+    height: $mml_line_height;
+    width: 100%;
+    padding: 0 20px;
+    text-align: justify;
+    position: absolute;
+    
+    & > li {      
+      color: $menu_color;
+      line-height: $mml_line_height;
+      min-width: 14%;
+      
+      text-transform: uppercase;
+      font-family: "Open Sans", Helvetica, Arial, sans-serif;
+      font-size:  1.1em;
+      font-stretch: expanded;
+      font-weight: bold;
+      
+      text-shadow: 0 0 3px #000;
+      text-align: center;
+      
+      display: inline-block;
+      position:relative;
+      
+      & > a{
+        color:$menu_color;
+        text-decoration: none;
+        //No select
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;    
+      }
+      
+      &.helper{
+        width: 100%;
+        height: 0;
+        visibility: hidden;
+      }
+      
+      & > div.divider{
+        top: 4px;
+        width: 1px;
+        height: $mml_line_height - 8px;
+        float: left;
+        box-shadow: 0px 0px 3px 0px #484848;    
+        background-color: #1A4D60;
+        transform: skew(30deg);       
+        position: relative;
+      }
+      
+      &:first-child > div.divider{        
+        display: none;        
+      }
+    }
+    
+  }
+  
+  
+  
+  /*& ul {    
     color: $menu_color;
     
     width: 100%; 
@@ -23,10 +90,7 @@
     text-align: right;
     list-style: none;
     
-    font-family: "Open Sans", Helvetica, Arial, sans-serif;
-    font-size:1.1em;
-    font-stretch: expanded;
-    font-weight: bold;
+    
     
     text-transform: initial;
     cursor: default;        
@@ -116,6 +180,6 @@
         }
       }      
     }
-  }
+  }*/
   
 }

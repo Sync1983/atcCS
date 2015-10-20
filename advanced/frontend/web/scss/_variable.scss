@@ -6,18 +6,23 @@ $xl: 75rem;
 
 $gold_slice: 1.618;
 $info_height: 22px;
-$menu_left_width: (100% / (5 * $gold_slice) );
+//$menu_left_width: (100% / (5 * $gold_slice) );
+$menu_left_width: 80%;
 
-$bg_color:        #155871;
-$main_color:      #94CFE6;
-$info_text_color: #ECE862;
+$bg_color:        #595858;
+$main_color:      #B5B5B5;
+$info_text_color: #C7C7C7; 
 
 $menu_iacolor:    #40819A;
-$menu_color:      #C4E8F6;
+$menu_color:      #FFFFFF;
 $menu_border:     #1A4D60;
 $menu_active_bg:  #365161;
 
 $atc_color:       #0C557F;
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,800&subset=cyrillic);
+
+
 /*
 $bg_color:        #1A4D60;
 $main_color:      #6891A1;

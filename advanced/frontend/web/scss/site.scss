@@ -11,7 +11,7 @@ html, body{
   background-color: $bg_color;  
   height: 100%;    
 }
-
+ 
 .wrap {
     width: $width;    
     height: auto;
@@ -23,19 +23,6 @@ html, body{
       margin: 130px auto 0;
       background-color: #FFF;
     }
-}
-
-div.head-logo{
-  top: 7px;
-  left: 1%;
-  height: 80px;
-  background-color: transparent;
-  display: block;
-  position: absolute;  
-  &>img{
-    height: 80px;        
-  }
-  z-index: 2;
 }
 
 @import "_info_part.scss";

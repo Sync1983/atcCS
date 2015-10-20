@@ -44,9 +44,18 @@ use yii\helpers\Url;
 
 </div>
 <!-- Левый блок меню -->
-<div class="main-menu-left">
-  <ul>
-    <li>
+<div class="main-menu-left">  
+  <ul class="menu-line">
+    <li> <a href="#">Новости</a>  <div class="divider"></div></li>
+    <li> <a href="#">Каталоги</a> <div class="divider"></div></li>
+    <li> <a href="#">Контакты</a> <div class="divider"></div></li>
+    <li> <a href="#">Корзина</a>  <div class="divider"></div></li>
+    <li> <a href="#">Заказы</a>   <div class="divider"></div></li>
+    <li> <a href="#">Профиль</a>  <div class="divider"></div></li>
+    <li> <a href="#">Баланс</a>   <div class="divider"></div></li>
+    <li class="helper "></li>
+  </ul>
+    <!--<li>
       <span>Авторизация</span>
       <?php $form = yii\widgets\ActiveForm::begin([
          'options' => [
@@ -93,7 +102,7 @@ use yii\helpers\Url;
         <p class="">&copy; АвтоТехСнаб <?= date('Y') ?></p>
         <p class=""><?= Yii::powered() ?></p>
     </div>
-</footer>
+</footer>-->
 </div>
 
 

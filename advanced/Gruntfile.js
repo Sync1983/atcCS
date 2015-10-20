@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
     copyBootstrap: {
       src: '../../../bootstrap/dist/',
       dst: 'web/'
@@ -16,13 +17,21 @@ module.exports = function(grunt) {
       src: 'frontend/web/js/aapp/',
       dest:'frontend/web/js/_aapp.js'
     },
+    sass:{
+      dist: {
+        options: {
+          style: 'compressed'
+        },
+        files: { 'frontend/web/css/site.css': 'frontend/web/scss/site.scss'}
+      }
+    },
     watch:{
       options: {
         livereload: true
       },
       views:{
-        files: ['frontend/views/site/angular/**/*.html','frontend/web/js/aapp/**/*.js'],
-        tasks: ['compileAngularView', 'compileAngularJS'],
+        files: ['frontend/views/site/angular/**/*.html','frontend/web/js/aapp/**/*.js','frontend/web/scss/**/*.scss'],
+        tasks: ['compileAngularView', 'compileAngularJS','sass'],
         options: {
           reload: true
         }
@@ -124,6 +133,7 @@ module.exports = function(grunt) {
   grunt.registerTask('build', ['copyBootstrap','compileAngularView']);
   grunt.registerTask('default', ['build']);
 
+  grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
 };
