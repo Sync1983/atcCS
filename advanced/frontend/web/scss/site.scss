@@ -49,9 +49,20 @@ form.login-form{
   }
 }
 
-.view {
-  top: 83px;
-  left: $menu_left_width;
+.login-menu{
+  top: $info_height + $mml_line_height + $sb_height + 5px;
+  left: 0;
+  right: 100% - (100% - $menu_left_width) /2;
+  height: 200px;
+  
+  position: absolute;
+}
+
+.view { 
+  top: $info_height + $mml_line_height + $sb_height + 5px;
+  left: (100% - $menu_left_width) /2;
+  width: $menu_left_width;
+  border-radius: 5px 5px 0 0;
   right: 0;
   bottom: 5px;
   overflow-y: auto;

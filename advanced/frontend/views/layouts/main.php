@@ -46,7 +46,7 @@ AAppAsset::register($this);
 </script>
  <!-- Collect from 'frontend/views/site/angular//input-help.html' file -->
 <script type="text/ng-template" id="/input-help.html">
-<div class="input-helper"><input ng-model="data.inputValue" type="text" class="input-input" ng-class="{{inputClass}}" placeholder="{{placeholder}}" ng-change="change()" ng-click="toggle()"/><span ng-if="!visible && (count>0)" class="icon glyphicon glyphicon-download"></span>    <span ng-if="visible && (count>0)" class="icon glyphicon glyphicon-upload"></span>    <ul class="input-select-helper" ng-show="visible"><li ng-if="count !== 0" style="text-align:center;"><input type="text" class="search-filter form-control" ng-model="data.filters" ng-change="subfilter()" placeholder="Найти в найденом"/>            <span> Всего вариантов {{count}} </span></li><li ng-if="count === 0">       <strong>Вариантов не найдено</strong></li><li ng-repeat="item in list" inject></li>   </ul>  </div>
+<div class="input-helper"><div class="input-group"><input ng-model="data.inputValue" type="text" class="input-input" ng-class="{{inputClass}}" placeholder="{{placeholder}}" ng-change="change()" ng-click="toggle()"/>        <span class="input-group-btn"><button class="btn btn-atc">Искать</button></span></div><div class="btn-group"><span class="icon glyphicon glyphicon-cog"  ng-click="toggle();"></span>          <span ng-if="!visible && (count>0)" class="icon glyphicon glyphicon-download" ng-click="toggle();"></span>      <span ng-if="visible && (count>0)" class="icon glyphicon glyphicon-upload"  ng-click="toggle();"></span>    </div><ul class="input-select-helper" ng-show="visible"><li ng-if="count !== 0" style="text-align:center;"><input type="text" class="search-filter form-control" ng-model="data.filters" ng-change="subfilter()" placeholder="Найти в списке"/>            <span> Всего вариантов {{count}} </span></li><li ng-if="count === 0">       <strong>Вариантов не найдено</strong></li><li ng-repeat="item in list" inject></li>   </ul>  </div>
 </script>
  <!-- Collect from 'frontend/views/site/angular//main-page.html' file -->
 <script type="text/ng-template" id="/main-page.html">
@@ -55,6 +55,10 @@ AAppAsset::register($this);
  <!-- Collect from 'frontend/views/site/angular//modal-window.html' file -->
 <script type="text/ng-template" id="/modal-window.html">
 <div class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">{{ title }}</h4></div><div class="modal-body" ng-transclude></div></div></div> </div>
+</script>
+ <!-- Collect from 'frontend/views/site/angular//window.html' file -->
+<script type="text/ng-template" id="/window.html">
+<div class="window"><div class="header">      </div><div class="content" ng-transclude>      </div></div>
 </script>
 <!-- Grunt views place stop -->
 </html>

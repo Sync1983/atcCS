@@ -37,13 +37,13 @@ use yii\helpers\Url;
       <small>Производитель: {{item.supply}} <span ng-show="item.descrRU" class="descr">Описание: {{item.descrRU}}</span></small>
       <ajax-button title="{{item.article}} - {{item.supply}}" data="{{item.article}}" url = "http://rest.atc58.bit/index.php?r=helper/cross" name="cross-selector">
         <span class="glyphicon glyphicon-random"></span>
-      </ajax-button>
+      </ajax-button>      
       <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>
     </div>
   </inputhelper>
 
 </div>
-<!-- Левый блок меню -->
+<!-- Блок меню -->
 <div class="main-menu-left">  
   <ul class="menu-line">
     <li> <a href="#">Новости</a>  <div class="divider"></div></li>
@@ -55,6 +55,14 @@ use yii\helpers\Url;
     <li> <a href="#">Баланс</a>   <div class="divider"></div></li>
     <li class="helper "></li>
   </ul>
+</div>
+
+<div class="login-menu" ng-controller="headControl">
+  <window title="Авторизация">
+    asd
+  </window>
+</div>
+
     <!--<li>
       <span>Авторизация</span>
       <?php $form = yii\widgets\ActiveForm::begin([
@@ -74,39 +82,16 @@ use yii\helpers\Url;
       </div>
       <?php yii\widgets\ActiveForm::end();?>
     </li>
-    <li>
-      <span>Содержание</span>
-      <uL>
-        <li class="active"><span>Новости</span></li>
-        <li><span>Каталоги</span></li>
-        <li><span>Контакты</span></li>
-      </uL>
-    </li>
-    <li>
-      <span>Магазин</span>
-      <ul>
-        <li><span>Корзина</span></li>
-        <li><span>Заказы</span></li>
-      </ul>
-    </li>
-    <li>
-      <span>Настройки</span>
-      <ul>
-        <li><span>Профиль</span></li>
-        <li><span>Баланс</span></li>
-      </ul>
-    </li>
-  </ul>
+
   <footer class="footer">
     <div class="container-fluid">
         <p class="">&copy; АвтоТехСнаб <?= date('Y') ?></p>
         <p class=""><?= Yii::powered() ?></p>
     </div>
 </footer>-->
-</div>
 
 
 <?php
   /* @var $this yii\web\View */
-  $this->registerJs("$('.circle').tooltip({});");
-  $this->registerJs("$('[data-toggle=\"dropdown\"').dropdown({});");
+  //$this->registerJs("$('.circle').tooltip({});");
+  //$this->registerJs("$('[data-toggle=\"dropdown\"').dropdown({});");
