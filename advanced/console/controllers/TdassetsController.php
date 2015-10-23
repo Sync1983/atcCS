@@ -172,6 +172,164 @@ SQL;
     }
     $result->close();
   }
+
+  public function actionManufacturersToPg(){
+    /* @var $result \mysqli_result */
+    $SQL = "SELECT
+              MFA_ID as id,
+              MFA_BRAND as brand,
+              CONCAT('\'',MFA_PC_MFC,MFA_CV_MFC,MFA_ENG_MFC,MFA_AXL_MFC,'\'') as `type`
+            FROM manufacturers order by MFA_ID;";
+    $result = $this->db->query($SQL);
+    if( !$result ){
+      die($this->db->error);
+    }
+    while($row = $result->fetch_array(MYSQL_ASSOC)){
+
+      $mfa= new \common\models\PgManufacturers();
+      $mfa->setAttributes($row);
+      $mfa->save();
+
+    }
+    $result->close();
+  }
+
+  public function actionModelsToPg(){
+    /* @var $result \mysqli_result */
+    $SQL = "SELECT
+              MOD_ID as model_id,
+              MOD_MFA_ID as manufacturers_id,
+              MOD_PCON_START as `start`,
+              MOD_PCON_END as `end`,
+              concat(MOD_PC,MOD_CV,MOD_AXL) as `type`,
+              CDS_TEX_ID as `text_id`
+            FROM techdock.models as md
+            LEFT JOIN techdock.country_designations as cd ON CDS_ID = md.MOD_CDS_ID and CDS_LNG_ID=16;";
+    $result = $this->db->query($SQL);
+    if( !$result ){
+      die($this->db->error);
+    }
+    while($row = $result->fetch_array(MYSQL_ASSOC)){
+
+      $model= new \common\models\PgModels();
+      $start = $row['start'];
+      if( !$start ){
+        $start = "197001";
+      }
+      $start_year = substr($start, 0,4);
+      $start_month= substr($start, 4,2);
+      $row['start'] = "01-$start_month-$start_year";
+      
+      $end = $row['end'];
+      $end_year = substr($end, 0,4);
+      $end_month= substr($end, 4,2);
+      $end_month_start = "01-$end_month-$end_year";
+      if( !$end ){
+        $end_month_start = date_format(new \DateTime(), "01-m-Y");
+      }
+      $end_date = new \DateTime($end_month_start);      
+      $row['end'] = $end_date->format("t-m-Y");      
+      $model->setAttributes($row);
+      if( !$model->save() ) {
+        throw new \Exception(implode("\r\n",$model->getFirstErrors()));
+      };
+
+    }
+    $result->close();
+  }
+
+  public function actionTypesToPg(){
+    /* @var $result \mysqli_result */
+    $des = [];
+    $sql="select des_id,des_tex_id from designations where des_lng_id=16";
+    $result = $this->db->query($sql);
+    if( !$result ){
+      die($this->db->error);
+    }
+    while($row = $result->fetch_array(MYSQL_ASSOC)){
+      $des[$row['des_id']] = $row['des_tex_id'];
+    }
+    $result->close();
+    echo " Designators load\r\n";
+    $SQL = "SELECT
+              TYP_ID as type_id,
+              TYP_MOD_ID as model_id,
+              cd.CDS_TEX_ID as 'text_id',
+              TYP_PCON_START as 'start',
+              TYP_PCON_END as 'end',
+              TYP_KW_FROM as 'kw',
+              TYP_HP_FROM as 'hp',
+              TYP_CCM	as 'volume',
+              TYP_CYLINDERS as 'cylinder',
+              TYP_VALVES as 'valves',
+              TYP_KV_FUEL_DES_ID as 'fuel',
+              TYP_KV_DRIVE_DES_ID as 'drive',
+              TYP_KV_STEERING_SIDE_DES_ID as 'side'
+            FROM techdock.types as tp
+            INNER JOIN techdock.country_designations as cd ON cd.CDS_ID = TYP_MMT_CDS_ID and cd.CDS_LNG_ID=16";
+    $result = $this->db->query($SQL);
+    if( !$result ){
+      die($this->db->error);
+    }
+    while($row = $result->fetch_array(MYSQL_ASSOC)){
+
+      $model= new \common\models\PgTypes();
+      $start = $row['start'];
+      if( !$start ){
+        $start = "197001";
+      }
+      $start_year = substr($start, 0,4);
+      $start_month= substr($start, 4,2);
+      $row['start'] = "01-$start_month-$start_year";
+
+      $end = $row['end'];
+      $end_year = substr($end, 0,4);
+      $end_month= substr($end, 4,2);
+      $end_month_start = "01-$end_month-$end_year";
+      if( !$end ){
+        $end_month_start = date_format(new \DateTime(), "01-m-Y");
+      }
+      $end_date = new \DateTime($end_month_start);
+      $row['end'] = $end_date->format("t-m-Y");
+
+      $row['fuel_id']  = \yii\helpers\ArrayHelper::getValue($des, $row['fuel'], 0);
+      $row['drive_id'] = \yii\helpers\ArrayHelper::getValue($des, $row['drive'], 0);
+      $row['side_id']  = \yii\helpers\ArrayHelper::getValue($des, $row['side'], 0);
+      
+      unset($row['fuel']);
+      unset($row['drive']);
+      unset($row['side']);
+
+      $model->setAttributes($row);
+      if( !$model->save() ) {
+        throw new \Exception(implode("\r\n",$model->getFirstErrors()));
+      };
+
+    }
+    $result->close();
+  }
+
+  public function actionTextsToPg(){
+    /* @var $result \mysqli_result */
+    $SQL = "SELECT
+              TEX_ID as id,
+              TEX_TEXT as `text`
+            FROM des_texts";
+    $result = $this->db->query($SQL);
+    if( !$result ){
+      die($this->db->error);
+    }
+    while($row = $result->fetch_array(MYSQL_ASSOC)){
+
+      $text = new \common\models\PgTexts();
+      $text->setAttributes($row);
+      if( !$text->save() ) {
+        throw new \Exception(implode("\r\n",$model->getFirstErrors()));
+      };
+
+    }
+    $result->close();
+  }
   
 
 }

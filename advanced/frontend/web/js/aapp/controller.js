@@ -17,10 +17,9 @@ atcCS.controller( 'searchControl', ['$scope','$filter', 'User', function($scope,
     
 }]);
 
-atcCS.controller( 'headControl',['$scope', function($scope) {
+atcCS.controller( 'headControl',['$scope','User', function($scope,$user) {
     'use strict';
     
-    $scope.loginShow  = true;
     $scope.login      = {
       name: null,
       password: null,
@@ -28,13 +27,9 @@ atcCS.controller( 'headControl',['$scope', function($scope) {
     };
 
     $scope.onLogin = function(){      
-      $scope.user.login('admin','test',true);
-      //$user.login($scope.login.name,$scope.login.password,$scope.login.remember);
-      $scope.loginShow = false;      
-    };
-
-    $scope.showLogin = function(){      
-      $scope.loginShow = ! $scope.loginShow;
+      //$scope.user.login('admin','test',true);
+      $user.login($scope.login.name,$scope.login.password,$scope.login.remember);
+      return false;
     };
     
 }]);

@@ -57,33 +57,31 @@ use yii\helpers\Url;
   </ul>
 </div>
 
-<div class="login-menu" ng-controller="headControl">
-  <window title="Авторизация">
-    asd
+<div class="login-menu" ng-controller="headControl" ng-submit="onLogin();">
+  <window header="Авторизация">
+    <?php $form = yii\widgets\ActiveForm::begin([
+       'options' => [
+        'class' => 'login-form'
+       ]
+    ]);?>
+    <div class="row-line">
+      <sinput class="login-input" placeholder="Введите логин или адрес почты" name="login" ng-model="login.name" submit="true" submit-function="onLogin()"></sinput>
+    </div>
+    <div class="row-line">
+      <sinput class="login-input" placeholder="Введите пароль" name="password" ng-model="login.password" submit="true" submit-function="onLogin()"></sinput>
+    </div>
+    <div class="row-line" style="text-align:center;">
+      <scheckbox name="rememberMe" label="Запомнить меня" ng-model="login.remember"/>
+    </div>
+    <div class="row-line" style="text-align:center;">
+      <lable ng-click="onLogin()">Войти</lable>    
+      <lable>Регистрация</lable>
+    </div>    
+    <?php yii\widgets\ActiveForm::end();?>
   </window>
 </div>
 
-    <!--<li>
-      <span>Авторизация</span>
-      <?php $form = yii\widgets\ActiveForm::begin([
-         'options' => [
-          'class' => 'login-form'
-         ]
-      ]);?>
-      <div class="row-line">
-        <sinput class="login-input" value="" placeholder="Введите логин или адрес почты" name="login" ></sinput>
-      </div>
-      <div class="row-line">
-        <sinput class="login-input" value="" placeholder="Введите пароль" name="password" ></sinput>
-      </div>
-      <div class="row-line">
-        <scheckbox name="rememberMe" />
-        <label>Запомнить меня</label>
-      </div>
-      <?php yii\widgets\ActiveForm::end();?>
-    </li>
-
-  <footer class="footer">
+<!-- <footer class="footer">
     <div class="container-fluid">
         <p class="">&copy; АвтоТехСнаб <?= date('Y') ?></p>
         <p class=""><?= Yii::powered() ?></p>

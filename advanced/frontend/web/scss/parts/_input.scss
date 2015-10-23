@@ -4,11 +4,16 @@
 */
 
 div.sinput{  
+  top: 0px;
+  left:0;
+  width: 100%;
   height: $input_height + 4px;
-  //margin: 10px 0;
+  
   border: 5px solid white;
   border-radius: 15px;
   box-shadow: 0px 0px 6px 0px $menu_border;
+  
+  position: absolute;
   
   &.active{
     box-shadow: 0px 0px 8px 2px $input_active_color; 
@@ -16,7 +21,7 @@ div.sinput{
   
   
   & > input {
-    top: 4 - $input_height; 
+    top: -3px; 
     width: 100%;
     height: $input_height;
     
@@ -30,13 +35,14 @@ div.sinput{
     line-height: $input_height;
     border: none;
     
-    position: relative;
+    position: absolute;
     
     
   }
   
 }
-    @include placeholder("input.sinput") {      
-      color: $input_placeholder_color;
-      font-weight:normal;
-    }
+
+@include placeholder("input.sinput") {      
+  color: $input_placeholder_color;
+  font-weight:normal;
+}

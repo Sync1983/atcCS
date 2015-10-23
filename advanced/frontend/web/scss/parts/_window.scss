@@ -3,8 +3,9 @@
   left: 0;
   width: 100%;
   height: 100%;
+  background-color: #E0DDDD;
   border-radius: 5px;
-  border: 1px solid red;
+  border: 1px solid $menu_border;
   position: absolute;
   
   & .header{
@@ -12,14 +13,22 @@
     width: 60%;
     left: 20%;
     min-height: 20px;
-    background-color: red;
+    color: #E5F7FF;
+    background: linear-gradient(#054368 0%,#1599E6 40%,#097CBF 60%, #054368 100%);
     border-radius: 0 0 15px 15px;
-    
+    text-align: center;
+    font-family: "Georgia";
+    font-size: 0.85em;    
     
     position: absolute;
   }
   
   & .content{
-    
+    top: 20px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 15px;
+    position: absolute;
   }
 }
