@@ -1,0 +1,16 @@
+#! /bin/sh
+#
+# Created by configure
+
+CFLAGS='-g3 -gdwarf-2' \
+CXXFLAGS='-g3 -gdwarf-2' \
+CC='/usr/bin/gcc' \
+CXX='/usr/bin/g++' \
+'./configure' \
+'CC=/usr/bin/gcc' \
+'CXX=/usr/bin/g++' \
+'CFLAGS=-g3 \
+'-gdwarf-2'' \
+'CXXFLAGS=-g3 \
+'-gdwarf-2'' \
+"$@"

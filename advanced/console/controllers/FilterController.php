@@ -8,7 +8,45 @@ namespace console\controllers;
 use yii\console\Controller;
 
 class FilterController extends Controller{
-  
+
+  public function actionFindDesc($text){
+    $engine = new \backend\models\search_engine\SearchEngine();
+    $data = $engine->getByDescription($text);
+    print_r($data);
+  }
+
+  public function actionCreateTesaurus(){
+    $descr = new \common\models\PgDescription();
+    $rows = $descr->find()->asArray()->all();
+    $tesaurus = [];
+    foreach ($rows as $row) {
+      $id     = $row['id'];
+      $text   = $row['desc'];
+      $text   = mb_strtoupper($text);
+      $text   = str_replace('"', '', $text);
+      $text   = preg_replace('/[\(\)\[\];\.,\/\\\\_]+/', ' ', $text);
+      $parts  = preg_split('/[ ]+/', $text);
+
+      foreach ($parts as $part){
+        if( mb_strlen($part) < 3 ){
+          continue;
+        }
+        if( !isset($tesaurus[$part]) ){
+          $tesaurus[$part] = [];
+        }
+        $tesaurus[$part][] = $id;
+      }
+    }
+    ksort($tesaurus,SORT_NATURAL);
+    foreach ($tesaurus as $text=>$ids){
+      $link = new \common\models\PgTesaurus();
+      $link->setAttribute('text', $text);
+      $link->setAttribute('ids', $ids);
+      $link->save();
+    }
+    Echo "Ok\r\n";
+  }
+
   public function actionConvertFile($file,$file_out){
     echo "Обрабатываем файл '$file' => '$file_out' \r\n";
     $fout = fopen($file_out, "w");
