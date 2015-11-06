@@ -1,188 +1,67 @@
 <?php
 namespace common\models;
 
-use Yii;
 use yii\base\NotSupportedException;
-use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
-/**
- * User model
- *
- * @property integer $id
- * @property string $username
- * @property string $password_hash
- * @property string $password_reset_token
- * @property string $email
- * @property string $auth_key
- * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
- * @property string $password write-only password
- */
-class User extends ActiveRecord implements IdentityInterface
-{
-    const STATUS_DELETED = 0;
-    const STATUS_ACTIVE = 10;
+class User extends ActiveRecord implements IdentityInterface {
+  const IS_USER     = 0;
+  const IS_ADMIN    = 1;  
 
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return '{{%user}}';
-    }
+  public function attributes() {
+    return ['id', 'user_name', 'user_pass', 'role', 'over_price', 'credit', 'is_init'];
+  }
 
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::className(),
-        ];
-    }
+  public static function tableName() {
+    return 'Users';
+  }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-        ];
-    }
+  public function rules(){
+    return [
+      ['id','integer','min' => 0],
+      ['user_name','string','max' => 100],
+      ['user_pass','string','max' => 62],
+      ['role','integer'],
+      ['role','in','range'=>[static::IS_USER, static::IS_ADMIN]],
+      ['over_price','integer','min' => 0],
+      ['credit','integer','min' => 0],
+      ['is_init','integer'],
+      ['is_init','in','range'=>[0,1]],
+      [['user_name', 'user_pass', 'role', 'over_price', 'credit', 'is_init'],'safe'],
+    ];
+  }
 
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentity($id)
-    {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
-    }
+  public static function findIdentity($id) {
+    return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+  }
 
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
-    }
+  public static function findIdentityByAccessToken($token, $type = null) {
+    throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+  }
 
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
-    }
+  public static function findByUsername($username) {
+    return static::findOne(['user_name' => $username]);
+  }
 
-    /**
-     * Finds user by password reset token
-     *
-     * @param string $token password reset token
-     * @return static|null
-     */
-    public static function findByPasswordResetToken($token)
-    {
-        if (!static::isPasswordResetTokenValid($token)) {
-            return null;
-        }
+  public function getId() {
+    return $this->getPrimaryKey();
+  }
 
-        return static::findOne([
-            'password_reset_token' => $token,
-            'status' => self::STATUS_ACTIVE,
-        ]);
-    }
+  public function validatePassword($password) {
+    return \yii::$app->security->validatePassword($password, $this->user_pass);
+  }
 
-    /**
-     * Finds out if password reset token is valid
-     *
-     * @param string $token password reset token
-     * @return boolean
-     */
-    public static function isPasswordResetTokenValid($token)
-    {
-        if (empty($token)) {
-            return false;
-        }
+  public function setPassword($password) {
+    $this->user_pass = \yii::$app->security->generatePasswordHash($password);
+  }
 
-        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
-        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
-        return $timestamp + $expire >= time();
-    }
+  public function getAuthKey() {
+    throw new NotSupportedException('"getAuthKey" is not implemented.');
+  }
 
-    /**
-     * @inheritdoc
-     */
-    public function getId()
-    {
-        return $this->getPrimaryKey();
-    }
+  public function validateAuthKey($authKey) {
+    throw new NotSupportedException('"validAuthKey" is not implemented.');
+  }
 
-    /**
-     * @inheritdoc
-     */
-    public function getAuthKey()
-    {
-        return $this->auth_key;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->getAuthKey() === $authKey;
-    }
-
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return boolean if password provided is valid for current user
-     */
-    public function validatePassword($password)
-    {
-        return Yii::$app->security->validatePassword($password, $this->password_hash);
-    }
-
-    /**
-     * Generates password hash from password and sets it to the model
-     *
-     * @param string $password
-     */
-    public function setPassword($password)
-    {
-        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
-    }
-
-    /**
-     * Generates "remember me" authentication key
-     */
-    public function generateAuthKey()
-    {
-        $this->auth_key = Yii::$app->security->generateRandomString();
-    }
-
-    /**
-     * Generates new password reset token
-     */
-    public function generatePasswordResetToken()
-    {
-        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
-    }
-
-    /**
-     * Removes password reset token
-     */
-    public function removePasswordResetToken()
-    {
-        $this->password_reset_token = null;
-    }
 }

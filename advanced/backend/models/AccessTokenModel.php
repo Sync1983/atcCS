@@ -6,7 +6,7 @@
 
 namespace backend\models;
 use yii\base\Model;
-use backend\models\User;
+use common\models\User;
 
 class AccessTokenModel extends Model{
   /**
@@ -48,7 +48,7 @@ class AccessTokenModel extends Model{
       return false;
     }
 
-    $user = User::findOne([ '_id'=> new \MongoId(strval($uid)) ]);
+    $user = User::findOne([ 'id'=> strval($uid) ]);
     \yii::info("User");
     \yii::info($user);
 

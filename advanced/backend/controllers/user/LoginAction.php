@@ -6,7 +6,7 @@
 namespace backend\controllers\user;
 
 use yii\base\Action;
-use backend\models\User;
+use common\models\User;
 use backend\models\AccessTokenModel;
 
 class LoginAction extends Action {

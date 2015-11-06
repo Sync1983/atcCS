@@ -57,8 +57,8 @@ use yii\helpers\Url;
   </ul>
 </div>
 
-<div class="login-menu" ng-controller="headControl" ng-submit="onLogin();">
-  <window header="Авторизация">
+<div class="login-menu" ng-controller="headControl" ng-submit="onLogin();" >
+  <window header="Авторизация" ng-show="show">
     <?php $form = yii\widgets\ActiveForm::begin([
        'options' => [
         'class' => 'login-form'
@@ -79,6 +79,13 @@ use yii\helpers\Url;
     </div>    
     <?php yii\widgets\ActiveForm::end();?>
   </window>
+  <window header="Пользователь" ng-show="!show" class="info-window">
+    <div class="row-line">
+      <label>Пользователь</label>
+      <label>{{login.name}}</label>
+    </div>
+  </window>
+
 </div>
 
 <!-- <footer class="footer">

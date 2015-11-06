@@ -57,7 +57,7 @@ class User extends ActiveRecord implements IdentityInterface {
   }
 
   public static function collectionName() {
-      return 'users';
+      return 'Users';
   }
 
   public function behaviors() {
@@ -72,7 +72,7 @@ class User extends ActiveRecord implements IdentityInterface {
 
   public function attributes(){
     return [
-      '_id',
+      'id',
       'user_name',        //Логин
       'user_pass',        //Пароль
       'role',             //Роль пользователя

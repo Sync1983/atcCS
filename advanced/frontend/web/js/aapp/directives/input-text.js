@@ -1,7 +1,7 @@
 /*
  * Измененное поле ввода текста
  */
-atcCS.directive('sinput', function (){
+atcCS.directive('sinput', function (){ 
   return {
     require: "ngModel",
     priority: 0,
@@ -46,8 +46,8 @@ atcCS.directive('sinput', function (){
     link: function link(scope, element, attrs, modelCtrl){
       scope.$watch(
         function() { return modelCtrl.$viewValue; },
-        function(newVal){
-          scope.state = newVal;
+        function(newVal){          
+          scope.model = newVal;
           return newVal;
       });
 

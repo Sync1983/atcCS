@@ -63,7 +63,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', function($http, $cookie
         
       },
       function error(response){
-        model.addAlert("Ошибка","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.")
+        model.addAlert("Ошибка","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
     });
     
   };

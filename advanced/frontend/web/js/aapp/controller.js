@@ -4,6 +4,7 @@
 atcCS.controller( 'searchControl', ['$scope','$filter', 'User', function($scope,$filter,$user) {
     'use strict';
 
+    console.log("searchController"); 
     $scope.markup = null;
 
     console.log($scope.user);
@@ -19,11 +20,12 @@ atcCS.controller( 'searchControl', ['$scope','$filter', 'User', function($scope,
 
 atcCS.controller( 'headControl',['$scope','User', function($scope,$user) {
     'use strict';
-    
+    $scope.show = $user.isLogin;
+
     $scope.login      = {
-      name: null,
-      password: null,
-      remember: false
+      name: $user.name,
+      password: $user.password,
+      remember: true
     };
 
     $scope.onLogin = function(){      

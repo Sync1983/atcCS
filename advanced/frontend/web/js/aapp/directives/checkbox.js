@@ -21,8 +21,7 @@ atcCS.directive('scheckbox', function (){
       $scope.state = true;
       $scope.box = $($element).find('span.scb-box');
 
-      $scope.toggle = function toggle(){
-        console.log(123);
+      $scope.toggle = function toggle(){        
         $scope.state = ! $scope.state; 
       };
 
