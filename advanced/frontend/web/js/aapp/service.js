@@ -31,8 +31,11 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', function($http, $cookie
     return false;
   };
 
-  model.addAlert = function addAlert(head,text){
-    model.alerts.push({head:head,text:text});
+  model.addAlert = function addAlert(head,text,style){
+    if( !style ){
+      style = "info";
+    }
+    model.alerts.push({head:head,text:text,style:style, new:1});
   };
 
   model.login = function login(name,password,remember){

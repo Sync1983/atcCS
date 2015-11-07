@@ -88,6 +88,17 @@ use yii\helpers\Url;
 
 </div>
 
+<div class="notifications" ng-controller="notificationsController">
+  <window header="Уведомления">
+    <ul>
+      <li ng-repeat="item in items track by $index" class="btn-{{item.style}}">
+        <a href="#" ng-click="show($index);">{{item.head}}</a>
+        <a href="#" ng-click="setViewed($index);" ng-show="item.new == 1"><span class="glyphicon glyphicon-alert pull-right text-danger"></span></a>
+      </li>
+    </ul>
+  </window>
+</div>
+
 <!-- <footer class="footer">
     <div class="container-fluid">
         <p class="">&copy; АвтоТехСнаб <?= date('Y') ?></p>

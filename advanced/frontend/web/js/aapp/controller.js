@@ -35,3 +35,20 @@ atcCS.controller( 'headControl',['$scope','User', function($scope,$user) {
     };
     
 }]);
+
+atcCS.controller( 'notificationsController',['$scope','User', function($scope,$user) {
+    'use strict';
+    $scope.items = $user.alerts;
+    
+    $scope.setViewed = function setViewed($index){
+      console.log(123);
+      $user.alerts[$index].new = 0;
+    };
+
+    $scope.$watch(
+        function() { return $user.alerts; },
+        function(newVal){
+          $scope.items = $user.alerts;
+          return $scope.items;
+      });
+}]);

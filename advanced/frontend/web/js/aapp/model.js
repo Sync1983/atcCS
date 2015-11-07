@@ -16,7 +16,8 @@ function userModel(){
     ],
 
     alerts: [
-      {head: "A", text: "B"}
+      {head: "Добро пожаловать", text: "Добро пожаловать в нашу мега-супе-пупер-систему", style:"info", new:1},
+      {head: "Ошибка авторизации", text: "Ошибка при авторизации", style:"danger", new:1}
     ],
 
     analogShow  : false,      //Отображать аналоги
