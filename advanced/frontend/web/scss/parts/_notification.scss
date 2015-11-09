@@ -1,0 +1,23 @@
+/* 
+    Created on : 09.11.2015, 09.11.2015 12:51:52
+    Author     : sync1983
+*/
+
+.notification-item{
+  font-size: 0.8em;
+  & > button{
+    font-weight: bold;    
+    width: 100%;
+    font-size: 1em;    
+    border-radius: 5px;
+    box-shadow: 0 0 3px 0 #000;    
+    margin: 2px 0;     
+    padding: 5px 0;
+    
+    & > span{
+      margin: 0 5px;
+      font-size: 1.2em;
+    }
+  }
+}
+

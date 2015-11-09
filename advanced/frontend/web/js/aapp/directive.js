@@ -1,87 +1,3 @@
-
-atcCS.directive('select2', ['$compile','$parse', function ($compile,$parse){
-  return {
-    require: "ngModel",    
-    restrict: 'E',
-    replace: true,
-    template: '<button class="select2" ng-click="showSelector()">' +
-              '<span class="placeholder" ng-class="{\'hidden\': value!==null}">{{placeholder}}</span>'+
-              '<span class="" ng-class="{\'hidden\': value===null}">{{showValue}}</span>'+
-              '<ul class="select2selector hidden"></ul></button>',
-    transclude: true,    
-    scope: {
-      ngModel       : "=",
-      placeholder   : "@",
-      list          : "=",
-      showPattern   : "@"
-    },
-    controller: function ctrl($scope,$element,$attrs){
-
-      $scope.showSelector = function showSelector(){
-        $scope.open = !$scope.open;
-        if( !$scope.open ){
-          $scope.ul.addClass('hidden');
-        } else {
-          $scope.ul.removeClass('hidden');
-        }
-      };
-
-      $scope.updateValue = function updateValue($value){
-        var localScope = {};
-
-        localScope[$scope.itemName] = $value;        
-        $scope.value = $value;
-
-        if( !$attrs.showPattern ){
-          $scope.showValue = "selected";
-        }
-
-        $scope.showValue = $parse($attrs.showPattern)(localScope);
-        
-      };
-
-      $scope.click = function click($event){        
-        $scope.updateValue($event);
-      };
-    },
-    link: function link(scope, element, attrs, modelCtrl, transclude){
-
-      scope.value       = null;
-      scope.open        = false;
-      scope.placeholder = attrs.placeholder || "button";
-      scope.showValue   = "selected";
-      scope.itemName    = "item" || attrs.itemName;
-      
-      var ul      = angular.element(element.children('ul')[0]);
-      var li      = angular.element('<li/>').
-                    attr('ng-repeat',scope.itemName + ' in list').
-                    attr('ng-transclude','').
-                    attr('ng-click','click(' + scope.itemName + ')');
-                    
-      var top     = element[0].offsetHeight;
-
-      scope.ul          = ul;
-            
-      $compile(li,transclude)(scope);
-      
-      ul.append(li);
-      
-      ul.offset({'top':top});
-
-      scope.$watch('value',function(newVal){
-        if( scope.value ){
-          modelCtrl.$setViewValue(scope.value);
-        }
-      });
-      
-      scope.$watch(
-        function(){ return modelCtrl.$viewValue; },
-        function(newVal){ scope.updateValue(newVal);}
-      );
-    }
-  };
-}]);
-
 atcCS.directive('modal', function (){
   return {
     require: "ngModel",    
@@ -129,7 +45,7 @@ atcCS.directive('inject', function(){
     };
 });
 
-atcCS.directive('ajaxButton', ['$http','$compile', function ($http,$compile) {
+/*atcCS.directive('ajaxButton', ['$http','$compile', function ($http,$compile) {
 
   return {
     //require: "ngModel",
@@ -203,6 +119,6 @@ atcCS.directive('ajaxButton', ['$http','$compile', function ($http,$compile) {
     }
 
   };
-}]);
+}]);*/
 
 

@@ -25,25 +25,13 @@ div.head-logo{
   vertical-align: bottom;
   position: absolute;  
   
-  & > .input-helper{
-    top: 10px;
-    left: 20%;
-    width: 60%;
-    position:relative;
-    
+ /* & > .input-helper{
+        
     & input{
-      height: 40px;
-      width: 100%;
-      padding: 0 10px;
-      border-radius: 5px 0 0 5px;
-      border: 1px $atc_color solid;
-      border-right: 1px solid;      
+      
     }
     
-    @include placeholder('input') {      
-      color: $input_placeholder_color;
-      font-weight:normal;
-    }
+    
     
     & > div.btn-group{
       top: -40px;
@@ -106,22 +94,6 @@ div.head-logo{
       }
     }
   }
-  
-  .markup-selector{
-    &>span{
-      font-weight: bold !important;        
-    }    
-  }
-  
-  .ui-select-choices-row{
-    &:hover{ 
-      background-color: #FFF !important;          
-    }
-  }
-  
-  label{
-    width: 60%;
-    vertical-align: top;
-  }  
+  */  
   
 }

@@ -36,6 +36,13 @@ AAppAsset::register($this);
     </div>
 </div>
 
+<footer class="footer">
+    <div class="container-fluid">
+        <p class="">&copy; АвтоТехСнаб <?= date('Y') ?></p>
+        <p class=""><?= Yii::powered() ?></p>
+    </div>
+</footer>
+  
 <?php $this->endBody() ?>
 </body>
 <!-- Grunt views place start -->
@@ -55,6 +62,10 @@ AAppAsset::register($this);
  <!-- Collect from 'frontend/views/site/angular//modal-window.html' file -->
 <script type="text/ng-template" id="/modal-window.html">
 <div class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">{{ title }}</h4></div><div class="modal-body" ng-transclude></div></div></div> </div>
+</script>
+ <!-- Collect from 'frontend/views/site/angular//search-line.html' file -->
+<script type="text/ng-template" id="/search-line.html">
+<div class="search-line"><input type="text" id="search-text" placeholder="Номер детали или её описание"/><div class="search-icons"><ul><li><button><span class="glyphicon glyphicon-download"></span></button></li><li><button><span class="glyphicon glyphicon-cog"></span></button></li><li><button><span class="glyphicon glyphicon-search"></span></button></li></ul></div><div class="tag-icons">      </div></div><!--<div class="input-helper"><div class="input-group"><input ng-model="data.inputValue" type="text" class="input-input" ng-class="{{inputClass}}" placeholder="{{placeholder}}" ng-change="change()" ng-click="toggle()"/>        <span class="input-group-btn"><button class="btn btn-atc">Искать</button></span></div><div class="btn-group"><span class="icon glyphicon glyphicon-cog"  ng-click="toggle();"></span>          <span ng-if="!visible && (count>0)" class="icon glyphicon glyphicon-download" ng-click="toggle();"></span>      <span ng-if="visible && (count>0)" class="icon glyphicon glyphicon-upload"  ng-click="toggle();"></span>    </div><ul class="input-select-helper" ng-show="visible"><li ng-if="count !== 0" style="text-align:center;"><input type="text" class="search-filter form-control" ng-model="data.filters" ng-change="subfilter()" placeholder="Найти в списке"/>            <span> Всего вариантов {{count}} </span></li><li ng-if="count === 0">       <strong>Вариантов не найдено</strong></li><li ng-repeat="item in list" inject></li>   </ul>  </div>-->
 </script>
  <!-- Collect from 'frontend/views/site/angular//window.html' file -->
 <script type="text/ng-template" id="/window.html">

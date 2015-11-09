@@ -3,7 +3,7 @@
 /*
  * Сервис для обслуживания модели пользователя и общения с сервером
  */
-atcCS.service('User',['$http', '$cookies', '$rootScope', function($http, $cookies, $rootScope){
+atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification', function($http, $cookies, $rootScope, $notify){
   'use strict';
   
   var URL   = "http://rest.atc58.bit/index.php";
@@ -29,13 +29,6 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', function($http, $cookie
     }
     
     return false;
-  };
-
-  model.addAlert = function addAlert(head,text,style){
-    if( !style ){
-      style = "info";
-    }
-    model.alerts.push({head:head,text:text,style:style, new:1});
   };
 
   model.login = function login(name,password,remember){
@@ -66,7 +59,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', function($http, $cookie
         
       },
       function error(response){
-        model.addAlert("Ошибка","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
+        $notify.addItem("Ошибка","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
     });
     
   };
@@ -94,6 +87,9 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', function($http, $cookie
   };
 
   $rootScope.user = model;
+  for(var index in model.alerts){
+    $notify.addObj(model.alerts[index]);
+  }
   loadFormCookies();      //Пробуем войти через информацию в cookie
   
   return model; 

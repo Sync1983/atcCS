@@ -21,8 +21,10 @@ use yii\helpers\Url;
 </div>
 <!-- Строка поиска и список выбора -->
 <div class="search-bar row-md-top btn-group-justified" ng-controller="searchControl">
-  
-  <inputhelper
+  <search-line>
+
+  </search-line>
+  <!--inputhelper
                     input-class = "form-control"
                     ng-model    = "query"
                     placeholder = "Введите артикул запчасти... "
@@ -40,7 +42,7 @@ use yii\helpers\Url;
       </ajax-button>      
       <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>
     </div>
-  </inputhelper>
+  </inputhelper -->
 
 </div>
 <!-- Блок меню -->
@@ -88,24 +90,11 @@ use yii\helpers\Url;
 
 </div>
 
-<div class="notifications" ng-controller="notificationsController">
-  <window header="Уведомления">
-    <ul>
-      <li ng-repeat="item in items track by $index" class="btn-{{item.style}}">
-        <a href="#" ng-click="show($index);">{{item.head}}</a>
-        <a href="#" ng-click="setViewed($index);" ng-show="item.new == 1"><span class="glyphicon glyphicon-alert pull-right text-danger"></span></a>
-      </li>
-    </ul>
+<div class="notifications">
+  <window header="Уведомления">    
+    <notification-items></notification-items>      
   </window>
 </div>
-
-<!-- <footer class="footer">
-    <div class="container-fluid">
-        <p class="">&copy; АвтоТехСнаб <?= date('Y') ?></p>
-        <p class=""><?= Yii::powered() ?></p>
-    </div>
-</footer>-->
-
 
 <?php
   /* @var $this yii\web\View */
