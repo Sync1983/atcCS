@@ -9,12 +9,17 @@ namespace backend\controllers;
 use yii\web\Controller;
 
 class HelperController extends Controller{
+
+  public $enableCsrfValidation = false;
   
   public function actions() {
     return [
       'articul' => [
         'class'  => helper\ArticulAction::className(),
-      ]      
+      ],
+      'parse-search' => [
+        'class'  => helper\ParseSearchAction::className(),
+      ]
     ];
   }
 

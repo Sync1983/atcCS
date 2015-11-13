@@ -7,7 +7,7 @@ atcCS.factory('atcServerToken', ['$q', '$rootScope', '$injector',
         if( config.params ){
           config.params._format = 'json';
           config.responseType   = 'json';
-        }
+        }        
         if( $rootScope.user.isLogin ){
           config.headers.Authorization = 'Bearer ' + $rootScope.user.accessToken;
         }

@@ -18,7 +18,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification', functio
     var name = $cookies.get('name');
     var pass = $cookies.get('pass');
 
-    console.log("Login from Cookies");
+    console.log("Login from Cookies", name, pass);
 
     if ( name && pass ){
       console.log("Name:",name,"Pass:",pass);
@@ -84,6 +84,22 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification', functio
       
       });
     
+  };
+
+  model.parseSearch = function parseSearch(text, tags){
+    var req = {
+      method: 'POST',
+      url: URLto('helper','parse-search'),
+      responseType: 'json',      
+      params: {
+        params: {
+          text: text,
+          tags: tags
+        }
+      }
+    };
+
+    return $http(req);
   };
 
   $rootScope.user = model;
