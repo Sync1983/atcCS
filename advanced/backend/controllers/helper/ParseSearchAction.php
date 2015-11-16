@@ -14,8 +14,8 @@ class ParseSearchAction extends Action{
     }
     
     $search_engine = new \backend\models\search_engine\SearchEngine();    
-    $by_brand = $search_engine->getByBrand($data['text']);
-    $by_sup   = $search_engine->getBySupplier($data['text']);
+    $by_sup   = $search_engine->getByMFC($data['text']);
+    $by_brand = $search_engine->getByMFC($data['text']);
     $by_descr = $search_engine->getByDescription($data['text']);
     
     return ['sup'   => $by_sup,

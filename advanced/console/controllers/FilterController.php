@@ -9,10 +9,19 @@ use yii\console\Controller;
 
 class FilterController extends Controller{
 
-  public function actionFindDesc($text){
+  public function actionGetModels(){        
+
+  }
+
+  public function actionFind($text = null,$filters = null){
+    $data = [
+      'mfc'   => [],
+      'model' => false,
+      'undef' => ['nissan', 'ad',' порш ', "1134"]
+    ];
     $engine = new \backend\models\search_engine\SearchEngine();
-    $data = $engine->getByDescription($text);
-    print_r($data);
+    $result = $engine->parse($data);
+    print_r($result);
   }
 
   public function actionCreateTesaurus(){
