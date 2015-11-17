@@ -4,26 +4,56 @@
   width: 100%;
   height: 100%;
   background-color: #E0DDDD;
-  border-radius: 10px;
+  border-radius: 5px;
   border: 1px solid $menu_border;
   box-shadow: inset 0px 0px 4px 0px #1A4D60;
   position: absolute;
   
   & .header{
-    top: 0;
-    width: 60%;
-    left: 20%;
+    top:        0;    
+    left:       0;
+    right:      0;
+    margin:     2px 2px 0 2px;
     min-height: 20px;
-    color: #E5F7FF;
-    background: linear-gradient(#054368 0%,#1599E6 40%,#097CBF 60%, #054368 100%);
-    border-radius: 0 0 15px 15px;
-    text-align: center;
-    font-family: "Georgia";
-    font-size: 0.75rem;   
-    box-shadow: 0px 0px 3px 0px #054368;
-    font-weight: bold;
+    color:      #E5F7FF;
+    font-weight:bold;
+    background:     linear-gradient(to right,#054368 0%,#1599E6 35%,#097CBF 65%, #054368 100%);
+    border-radius:  2px;
+    text-align:     center;
+    font-family:    "Georgia";
+    font-size:      0.75rem;   
+    box-shadow:     0px 0px 3px 0px #054368;
+    text-shadow:    0px 0px 1px #000;
+    cursor:         pointer;
     
-    position: absolute;
+    @include no-select();
+    
+    position: absolute;  
+    
+  }
+  
+  & .sysicons {
+    top:        0;
+    right:      0;
+    min-height: 25px;
+    padding:    0 5px;
+    display:    inline-block;
+    position:   absolute;
+    
+    & > button{
+      background: none;
+      padding: 0;
+      border: none;
+      color: #E5F7FF;
+      font-size: 0.8rem;
+      margin: 0 3px;
+      text-shadow:    0px 0px 1px #000;
+      display: inline;
+      
+      &:hover{
+        color: #0AA7FB;
+      }
+    }
   }
   
   & > .content{
@@ -36,6 +66,21 @@
     position: absolute;
     
   }
+  
+  & > .statusbar {
+    left:   0;
+    right:  0;
+    bottom: 0;
+    margin: 0 2px 2px 2px;
+    border: none;
+    border-top: 2px solid #054469;
+    border-radius: 2px;
+    box-shadow: inset 0px 1px 1px #FFF;
+    background-color: transparent;
+    min-height: 25px;
+    
+    position: absolute;
+  }  
   
     &> .content::-webkit-scrollbar {
       width: 0.7em;

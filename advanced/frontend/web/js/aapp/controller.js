@@ -14,8 +14,15 @@ atcCS.controller( 'searchControl', ['$scope','$filter', 'User', function($scope,
     
 }]);
 
-atcCS.controller( 'headControl',['$scope','User', function($scope,$user) {
+atcCS.controller( 'headControl',['$scope','User','$wndMng', function($scope,$user,$wndMng) {
     'use strict';
+
+    var window = $wndMng.createWindow();
+    window.title = "Тестовое окно";
+    window.hAlign = 'center';
+    window.vAlign = 'center';
+    console.log("Window",window);
+
     $scope.show = !$user.isLogin;
     
     $scope.login      = {

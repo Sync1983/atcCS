@@ -69,7 +69,7 @@ AAppAsset::register($this);
 </script>
  <!-- Collect from 'frontend/views/site/angular//window.html' file -->
 <script type="text/ng-template" id="/window.html">
-<div class="window"><div class="header">      </div><div class="content" ng-transclude>      </div></div>
+<div class="window"><div class="header"></div><div class="sysicons"><button><span class="glyphicon glyphicon-save"></span>          </button><button><span class="glyphicon glyphicon-remove"></span></button></div><div class="content">      </div><div class="statusbar"></div></div>
 </script>
 <!-- Grunt views place stop -->
 </html>
