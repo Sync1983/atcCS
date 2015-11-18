@@ -14,14 +14,30 @@ atcCS.controller( 'searchControl', ['$scope','$filter', 'User', function($scope,
     
 }]);
 
-atcCS.controller( 'headControl',['$scope','User','$wndMng', function($scope,$user,$wndMng) {
+atcCS.controller( 'headControl',['$scope','User','$wndMng','$templateCache', function($scope,$user,$wndMng,$templateCache) {
     'use strict';
 
-    var window = $wndMng.createWindow();
-    window.title = "Тестовое окно";
-    window.hAlign = 'center';
-    window.vAlign = 'center';
-    console.log("Window",window);
+    var menu = $(".search-bar");
+    
+    var loginHtml = $templateCache.get('/parts/_login-part.html');
+    var window = $wndMng.createWindow({
+      title: "Авторизация",
+      vPos: menu.position().top + menu.height(),
+      hSize: $(".view").position().left,
+      vSize: 170,
+      hAlign: 'left',
+      showStatusBar: false,
+      canResize: false,
+      canMove: false,
+      show: !$user.isLogin
+    });
+    $wndMng.setBody(window, loginHtml, $scope);    
+    
+
+    var window1 = $wndMng.createWindow();
+    window1.title = "1 Тестовое окно 1";
+    window1.hAlign = 'right';
+    window1.vAlign = 'top';    
 
     $scope.show = !$user.isLogin;
     
@@ -42,6 +58,7 @@ atcCS.controller( 'headControl',['$scope','User','$wndMng', function($scope,$use
       function(){ return $user.isLogin },
       function( newVal ){
         $scope.show = !newVal;
+        window.show = !newVal;
       }
     );
     

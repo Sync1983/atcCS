@@ -1,0 +1,20 @@
+<?php $form = yii\widgets\ActiveForm::begin([
+        'options' => [
+          'class' => 'login-form'
+       ]
+    ]);?>
+<div class="row-line">
+  <sinput class="login-input" placeholder="Введите логин или адрес почты" name="login" ng-model="login.name" submit="true" submit-function="onLogin()"></sinput>
+</div>
+<div class="row-line">
+  <sinput class="login-input" placeholder="Введите пароль" name="password" ng-model="login.password" submit="true" submit-function="onLogin()"></sinput>
+</div>
+<div class="row-line" style="text-align:center;">
+  <scheckbox name="rememberMe" label="Запомнить меня" ng-model="login.remember"/>
+</div>
+<div class="row-line" style="text-align:center;">
+  <label ng-click="onLogin()">Войти</label>
+  <label>Регистрация</label>
+</div>    
+<?php yii\widgets\ActiveForm::end();?>
+

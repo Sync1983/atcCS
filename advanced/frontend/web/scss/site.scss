@@ -48,27 +48,25 @@ html, body{
 
 @import "_parts.scss";
 
-.login-menu{
-  top: $info_height + $sb_height;
-  left: 0;
-  right: 100% - (100% - $menu_left_width) /2;
-  height: 170px;
+div.tray-bar{
+  left: 100%-(100% - $menu_left_width) / 2;
+  right:0;
+  bottom: 5px;
+  top: $info_height + $sb_height;  
   position: absolute;
-  
-  & > div.window{
-    //background-color: $main_color !important;
-  }
-  
-  form.login-form{
+}
+
+form.login-form{
     
     .row-line{    
       left:3%;
       width: 94%;    
-      padding: 30px 0 0 0;
+      padding: 25px 0 0 0;
+      margin:  5px 0 0 0;
       height: 10px;
       position: relative; 
       
-      &  lable{
+      & > label{
         color: $atc_color;
         top: -40px;
         height: 14px;
@@ -80,19 +78,14 @@ html, body{
         border-bottom: 1px dashed $atc_color;    
         vertical-align: middle;    
         cursor: pointer;
-        //No select
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
+        
+        @include no-select();
         
         position: relative;
       }
     }
   }
-}
+
 
 .notifications{
   top: $info_height + $sb_height + 170px; 
