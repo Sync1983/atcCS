@@ -136,11 +136,22 @@ class SearchEngine extends Object {
 
   public function getByMFC($text, $mfc = [], $model = []){
     $mfcm     = new \common\models\PgMfcModels();
+    $text     = mb_strtoupper($text);
     $text_len = mb_strlen($text);
     $part_len = round($text_len/4);
 
-    $mfcs         = $mfcm->findByFilter(['mfc_id as id','mfc_txt as text','(mfc_txt) as full_name'],  "model", $model)->distinct()->asArray(true)->all();
-    $mfc_models   = $mfcm->findByFilter(['model as id','model_txt as text','(mfc_txt ||\' \' || model_txt) as full_name'], "mfc_id",  $mfc)->distinct()->asArray(true)->all();
+    $mfcs         = $mfcm
+                      ->findByFilter(['mfc_id as id','mfc_txt as text','(mfc_txt) as full_name'],  "model", $model)
+                      ->distinct()
+                      ->orderBy('text')
+                      ->asArray(true)
+                      ->all();
+    $mfc_models   = $mfcm
+                      ->findByFilter(['model as id','model_txt as text','(mfc_txt ||\' \' || model_txt) as full_name'], "mfc_id",  $mfc)
+                      ->distinct()
+                      ->orderBy('full_name')
+                      ->asArray(true)
+                      ->all();
 
     foreach ($mfcs as $key=>$value){
       $mfcs[$key]['type'] = 'mfc';
@@ -172,16 +183,61 @@ class SearchEngine extends Object {
     }
 
     if( isset($answer['mfc'])){
-      asort($answer['mfc'],SORT_NATURAL);
+      $sort_mfc = $answer['mfc'];
+      asort($sort_mfc,SORT_NATURAL);
+      $answer['mfc'] = $sort_mfc;
     }
 
     if( isset($answer['model'])){
-      asort($answer['model'],SORT_NATURAL);
+      $sort_model = $answer['model'];
+      asort($sort_model,SORT_NATURAL);
+      $answer['model'] = $sort_model;
     }
 
     return $answer;
   }
 
+  public function getByModels($models){
+    $mfcm = new \common\models\PgMfcModels();
+    $mfcs = $mfcm
+              ->findByFilter(['mfc_id as id','mfc_txt as text','(mfc_txt) as full_name'],  "model", $models)
+              ->distinct()
+              ->asArray(true)
+              ->all();
+    $answer = [];
+
+    foreach ($mfcs as $key=>$value){
+      $answer[$value['id']] = $value['text'];
+    }
+
+    asort($answer,SORT_NATURAL);
+
+    return ['mfc' => $answer];
+
+  }
+
+  public function getParts($mfc = [], $model = [], $descr =[]){
+    $tesaurus = new \common\models\PgTesaurus();
+    $types    = new \common\models\PgTypes();
+
+    $tesis_ids = [];    
+    $tesis = $tesaurus->find()->select(['ids'])->where(['id' => $descr])->all();
+    foreach($tesis as $row){
+      $tesis_ids = array_merge($tesis_ids, $row->getAttribute('ids'));
+    }
+
+    $types_ids  = [];
+    $types_rows = $types->find()->where(['model_id' => $model])->select('type_id')->distinct()->asArray(true)->all();
+    foreach($types_rows as $row){
+      $types_ids[] = $row['type_id'];
+    }
+
+    var_dump($tesis_ids);
+    var_dump($types_ids);
+
+
+    return ['parts' => [123 => 'asd']];
+  }
 
 
 }

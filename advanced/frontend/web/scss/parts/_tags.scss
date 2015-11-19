@@ -1,0 +1,28 @@
+.tag{
+  margin: 0 2px;
+  padding: 2px 5px;
+  height: 24px;
+  line-height: 20px;
+  color: $atc_color;
+  font-size: 0.85rem;
+  font-weight: bold;
+  border: 1px solid $atc_color;
+  border-radius: (20px / 2);
+  
+  display: inline-block;
+  position: relative;  
+    
+  & > span {
+    top: 2px;
+    margin-left:4px;
+    cursor: pointer;
+  }
+    
+  &.icon-mfc{        
+    background-color: #90D1F1;
+  }
+  
+  &.icon-model{        
+    background-color: #59E7FF;
+  }
+}

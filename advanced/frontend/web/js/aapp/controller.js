@@ -17,27 +17,28 @@ atcCS.controller( 'searchControl', ['$scope','$filter', 'User', function($scope,
 atcCS.controller( 'headControl',['$scope','User','$wndMng','$templateCache', function($scope,$user,$wndMng,$templateCache) {
     'use strict';
 
-    var menu = $(".search-bar");
+    var menu = $(".search-bar");    
     
-    var loginHtml = $templateCache.get('/parts/_login-part.html');
     var window = $wndMng.createWindow({
       title: "Авторизация",
+      hPos: 0,
       vPos: menu.position().top + menu.height(),
       hSize: $(".view").position().left,
       vSize: 170,
       hAlign: 'left',
       showStatusBar: false,
+      showClose: false,
       canResize: false,
       canMove: false,
       show: !$user.isLogin
     });
-    $wndMng.setBody(window, loginHtml, $scope);    
+    $wndMng.setBodyByTemplate(window, '/parts/_login-part.html', $scope);
     
 
-    var window1 = $wndMng.createWindow();
+    /*var window1 = $wndMng.createWindow();
     window1.title = "1 Тестовое окно 1";
     window1.hAlign = 'right';
-    window1.vAlign = 'top';    
+    window1.vAlign = 'top';    */
 
     $scope.show = !$user.isLogin;
     

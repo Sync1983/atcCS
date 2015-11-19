@@ -63,12 +63,12 @@ use yii\helpers\Url;
 
   
 
-  <window header="Пользователь" ng-show="!show" class="info-window">
+  <!--<window header="Пользователь" ng-show="!show" class="info-window">
     <div class="row-line">
       <label>Пользователь</label>
       <label>{{login.name}}</label>
     </div>
-  </window>
+  </window>-->
 
 </div>
 

@@ -56,6 +56,18 @@ div.tray-bar{
   position: absolute;
 }
 
+span.cars{
+  top: 1px;
+  &:before{
+    background: url('/img/cars.png') 0 0;
+    background-size: 21px 15px;
+    width: 21px;    
+    height: 15px;    
+    content: " ";
+    display: block;
+  }
+}
+
 form.login-form{
     
     .row-line{    

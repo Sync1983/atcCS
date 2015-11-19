@@ -1,4 +1,4 @@
-atcCS.directive('searchLine', ['User','searchControl', function ($user,$searchCtrl){
+atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function ($user, $tagsControl, $wndMng, $sce){
   return {    
     priority: 0,
     terminal: false,
@@ -8,29 +8,147 @@ atcCS.directive('searchLine', ['User','searchControl', function ($user,$searchCt
     templateUrl: '/search-line.html',
     scope: {},
     controller: function controller($scope, $element, $attrs, $transclude){
+      var icons = $($element).find("div.search-icons");
+      var cars  = icons.find('button#search-cars');
 
-      $searchCtrl.pushTag('sup','NISSAN',[1,2,3,4]);
-      $searchCtrl.pushTag('brand','GNK',[1,2,3,4]);
-      $searchCtrl.pushTag('model','AD',[1,2,3,4]);
-      $searchCtrl.pushTag('part','256G3','256G3');
+      $scope.selector = {
+        mmodel: "nissan",
+        models: {},
+        mfcs:  {},
+        descriptions: {},
+        descr: "поршн",
+        showDescr: false,
+        selMFCs: [],
+        selModels: [],
+        selDescr: []
+      };
 
-      $searchCtrl.init($($element), function textValid(text,byEnter){
-        console.log(text);
-        $user.parseSearch(text,{}).then(
-          function success(answer){
-            console.log(answer);
-          },
-          function error(answer){
-            console.log("Error", answer);
+      function toggle(window){
+        return function(){
+          $wndMng.toggle(window);
+        };
+      }
+
+      function selectAndConvert(text,data, type){
+        var result = [];
+        for(var i in data){
+
+          var value = data[i];
+          var regReplace = new RegExp(text,'im');
+
+          result.push({
+            id: i,
+            type: type,
+            text: value,
+            trustedHtml:  $sce.trustAsHtml(
+                            String(value).
+                              replace( regReplace, '<b>' + text.toUpperCase() + '</b>')
+                          )
           });
+        }
+
+        return result;
+      }
+
+      function mmodelAnswer(text){
+        return function(answer){          
+          var data = answer && answer.data;
+          if( !data ){
+            return ;
+          }
+
+          $scope.selector.models        = ( data && data.model ) ? selectAndConvert(text, data.model, 'model'): {};
+          $scope.selector.mfcs          = ( data && data.mfc )   ? selectAndConvert(text, data.mfc, 'mfc'): {};
+          $scope.selector.descriptions  = ( data && data.descr )   ? selectAndConvert(text, data.descr, 'descr'): {};
+        };
+      }
+
+      $scope.onMMFind = function(){
+        var text = $scope.selector.mmodel;
+        
+        if( text.length < 2 ){
+          return ;
+        }
+
+        $user.findMModel($scope.selector.mmodel, $scope.tagsCtrl).then(mmodelAnswer(text));
+      };
+
+      $scope.onSelectMModel = function(mmodel){
+        $scope.tagsCtrl.pushTag(mmodel);
+        $scope.selector.mmodel    = "";
+        $scope.selector.selMFCs   = $scope.tagsCtrl.getTags('type','mfc');
+        $scope.selector.selModels = $scope.tagsCtrl.getTags('type','model');
+        $scope.selector.selDescr  = $scope.tagsCtrl.getTags('type','descr');
+        
+        if( mmodel.type === "mfc"){          
+          return;
+        } else if ( mmodel.type === 'model' ){
+          //Если производители модели не выбраны - нужно запросить и добавить их в теги          
+          if( $scope.selector.selMFCs.length === 0 ){
+            $user.findMFCs($scope.tagsCtrl).then(mmodelAnswer(' '));
+            return;
+          } else if( ($scope.selector.selMFCs.length !== 0) &&
+                     ($scope.selector.selModels.length !== 0) ){
+
+            $scope.selector.models = [];
+            $scope.selector.mfcs = [];
+            $scope.selector.showDescr = true;            
+          } else {
+            $scope.selector.showDescr = false;
+          }
+        } else if( mmodel.type === 'descr' ){
+          $user.findParts($scope.tagsCtrl).then(function(answer){
+            console.log(answer);
+          });
+        }
+      };
+
+      $scope.onDescrFind = function(){
+        var text = $scope.selector.descr;
+        if( text.length < 2 ){
+          return;
+        }
+        $user.findDescr(text,$scope.tagsCtrl).then(mmodelAnswer(text));
+      };
+      
+      $scope.carsWnd = $wndMng.createWindow({
+        title: "Подобрать по автомобилю",
+        vPos: cars.offset().top + cars.position().top + cars.height(),
+        hPos: cars.offset().left + cars.position().left - cars.width(),
+        hSize: 300,
+        vSize: 200,
+        hAlign: 'right',
+        vAlign: 'top',
+        hideIfClose: true,
+        //show: false
       });
-      $searchCtrl.updateTags();      
+      
+      $wndMng.setBodyByTemplate($scope.carsWnd, '/parts/_car-select-part.html', $scope);
+      var tags  = $wndMng.getBody($scope.carsWnd).find("div#tags");      
+      $scope.tagsCtrl = $tagsControl.init(tags);
+
+      // Just for debug!!!
+        $scope.tagsCtrl.pushTag({
+            id: "558",
+            text: "NISSAN",
+            type: "mfc"
+          });
+        $scope.tagsCtrl.pushTag({
+            id: "1475",
+            text: "NISSAN ALMERA   Наклонная задняя часть (N15)",
+            type: "model"
+          });
+        $scope.selector.showDescr = true;
+      // ===>>> Just for debug!!!
+      
+      cars.click( toggle($scope.carsWnd) );
+
     },
     compile: function compile(templateElement, templateAttrs){
       
     },
     link: function link(scope, element, attrs, modelCtrl){
-      
+
       //$(element).children('.head').text(scope.title);
     }
   };

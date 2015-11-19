@@ -19,6 +19,18 @@ class HelperController extends Controller{
       ],
       'parse-search' => [
         'class'  => helper\ParseSearchAction::className(),
+      ],
+      'mmodel-search' =>[
+        'class'  => helper\MModelSearchAction::className(),
+      ],
+      'mfcs-search' =>[
+        'class'  => helper\MFCSearchAction::className(),
+      ],
+      'description-search' =>[
+        'class'  => helper\DescriptionSearchAction::className(),
+      ],
+      'parts-search' =>[
+        'class'  => helper\PartsSearchAction::className(),
       ]
     ];
   }

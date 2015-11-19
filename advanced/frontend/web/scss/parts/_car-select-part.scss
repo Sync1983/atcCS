@@ -1,0 +1,52 @@
+div.car-select{
+  padding: 5px;
+  
+  & > .row-line:first-child{
+    margin-top: 0;
+  }
+  
+  & > .row-line {
+    width: 100%;
+    min-height: 24px;
+    line-height: 24px;
+    margin-top: 5px;
+    position: relative;
+    
+    & > label.title{
+      width: 100%;
+      color: $input_color;
+      padding: 0;
+      margin: 0;
+      text-align: center;
+      background-color: transparent;
+      font-size: 0.85rem;
+      font-weight: bold;
+      
+      @include no-select();
+    }
+    
+    & > ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      font-size: 0.75rem;
+      word-break: keep-all;
+      word-wrap: normal;
+      overflow-y: no-display;
+      cursor: pointer;
+      
+      @include no-select();
+      
+      & >li {        
+        padding: 0 5px;
+        border-radius: 5px;
+        
+        &:hover {
+          background-color: #FFF;
+        }
+      }
+    }
+  }
+}
+

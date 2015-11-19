@@ -25,6 +25,7 @@ function wndStruc(callbackFunction){
     canMove:        true,
     canResize:      true,
     show:           true,
+    hideIfClose:    false,
     setId:  function(id){
               if( this._id === 0 ){
                 this._id = id;
@@ -119,7 +120,7 @@ function wndManagerClass($templateCache, $compile){
 
                             wnd.hPos += dx;
                             wnd.vPos += dy;
-
+                            
                             event.stopPropagation();
                             return false;
                       }
@@ -137,7 +138,7 @@ function wndManagerClass($templateCache, $compile){
                             };
 
                             wnd.hSize += dx;
-                            wnd.vSize += dy;
+                            wnd.vSize += dy;                            
 
                             event.stopPropagation();
                             return false;
@@ -236,6 +237,15 @@ function wndManagerClass($templateCache, $compile){
     };
   }
 
+  function closeWindow(wnd, $this){
+    return function(event){
+      if( wnd.hideIfClose ){
+        wnd.show = false;
+        return ;
+      }
+    };
+  }
+
   function uTitle(text, body){
     $(body).find('div.header').text(text);
   }
@@ -243,27 +253,22 @@ function wndManagerClass($templateCache, $compile){
   function uHPos(align, wnd, body, area){
     var left  = 0;
     var width = 0;
-
-    switch( align ){
+    
+    switch( align.toLowerCase() ){
       case 'left':
-        left  = 0;
+        left  = wnd._hPos;
         break;
       case 'right':
-        left  = area.width() - wnd.hSize - 5;
-        left  = (left < 0) ? 0 : left;
+        left  = wnd._hPos -  wnd.hSize - 5;
         break;
       case 'center':
         left  = (area.width() - wnd.hSize) / 2;
-        left  = (left < 0) ? 0 : left;
         break;
       default :
         left  = wnd.hPos;
     }
-
-    width = (wnd.hSize > area.width())? area.width():wnd.hSize;
-
-    wnd._hPos  = left;
-    wnd._hSize = width;
+    
+    width = wnd.hSize;
 
     $(body).css({left: left,width: width});
   }
@@ -274,10 +279,10 @@ function wndManagerClass($templateCache, $compile){
 
     switch( align ){
       case 'top':
-        top  = 0;
+        top  = wnd._vPos;        
         break;
       case 'bottom':
-        top  = area.height() - wnd.vSize;
+        top  = wnd._vPos - wnd.vSize;
         top  = (top < 0) ? 0 : top;
         break;
       case 'center':
@@ -288,20 +293,18 @@ function wndManagerClass($templateCache, $compile){
         top  = wnd.vPos;
     }
 
-    height = (wnd.vSize > area.height())? area.height():wnd.vSize;
-
-    wnd._vPos  = top;
-    wnd._vSize = height;
+    height = wnd.vSize;
 
     $(body).css({top: top,height: height});
   }
 
   function uVisible(wnd, body){
-    if( !wnd.show ){
-      body.hide();
-      return;
-    } else {
-      body.show();
+    if( wnd.show !== body.is(':visible') ){
+      if( wnd.show ){
+        body.fadeIn(200);
+      } else {
+        body.fadeOut(200);
+      }
     }
 
     var close = body.find('button.destroy');
@@ -331,6 +334,17 @@ function wndManagerClass($templateCache, $compile){
   }
 
   function watchChanges(wnd,paramName,newValue,oldValue){
+    
+    if( (paramName === 'vPos') && ( (wnd.vAlign === 'top') || (wnd.vAlign === 'bottom')) ){      
+      wnd['_' + paramName] = oldValue;
+      return ;
+    }
+
+    if( (paramName === 'hPos') && ( (wnd.hAlign === 'left') || (wnd.hAlign === 'right')) ){
+      wnd['_' + paramName] = oldValue;
+      return ;
+    }
+    
     wnd._manager.updateWindow(wnd);
   };
 
@@ -342,10 +356,13 @@ function wndManagerClass($templateCache, $compile){
     var area    = this.area;
     var $this   = this;
 
-    initDrag(wnd, area, header, resize);
+    if( !wnd.show ){
+      $(body).hide();
+    }
 
-    var close = $(sysicons).find("button.destroy");
+    initDrag(wnd, area, header, resize);
     $(sysicons).find("button.minimize").click(trayToggle(wnd, $this));
+    $(sysicons).find("button.destroy").click(closeWindow(wnd, $this));
   };
 
   model.updateWindow = function updateWindow(wnd){
@@ -389,14 +406,25 @@ function wndManagerClass($templateCache, $compile){
 
   model.getBody = function getBody(wnd){    
     if( !wnd ){
+      throw new Error("Запрос тела отсутствующего окна");
       return false;
     }
+    
     var content = wnd.body.find('div.content');
     return content;
   };
 
   model.setBody = function setBody(wnd, html, scope){
     this.getBody(wnd).html( $compile(html)(scope) );
+  };
+
+  model.setBodyByTemplate = function setBodyByTemplate(wnd, template, scope){
+    var html = $templateCache.get(template);
+    this.getBody(wnd).html( $compile(html)(scope) );
+  };
+
+  model.toggle = function toggle(wnd){
+    wnd.show = !wnd.show;
   };
 
   return model;
