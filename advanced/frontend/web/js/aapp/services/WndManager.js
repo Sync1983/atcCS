@@ -17,8 +17,8 @@ function wndStruc(callbackFunction){
     vPos:           200,
     hSize:          600,
     vSize:          200,
-    vAlign:         null,
-    hAlign:         null,    
+    vAlign:         "none",
+    hAlign:         "none",
     showClose:      true,
     showMin:        true,
     showStatusBar:  true,
@@ -239,10 +239,18 @@ function wndManagerClass($templateCache, $compile){
 
   function closeWindow(wnd, $this){
     return function(event){
+      wnd.show = false;
       if( wnd.hideIfClose ){
-        wnd.show = false;
         return ;
       }
+      
+      $this._stack[wnd.getId()] = null;
+      $this._inTray[wnd.getId()] = null;
+      delete $this._stack[wnd.getId()];
+      delete $this._inTray[wnd.getId()];
+      wnd = null;
+      
+      trayRefresh($this);
     };
   }
 
@@ -250,9 +258,27 @@ function wndManagerClass($templateCache, $compile){
     $(body).find('div.header').text(text);
   }
 
+  function convertPercentToSize(value,areaValue){    
+    if( typeof  value === "string" ){
+      var stopPos = value.indexOf('%');
+      if( stopPos < 2){
+        throw new Error("Неверный формат данных");
+      }
+      var subStr  = value.substr(0,stopPos);
+      var percent = subStr * 1;
+      var newValue= Math.round(areaValue * percent / 100);
+      
+      return newValue;
+    }
+    return value;
+  }
+
   function uHPos(align, wnd, body, area){
     var left  = 0;
     var width = 0;
+
+    wnd._hPos   = convertPercentToSize(wnd._hPos,  $(area).width() );
+    wnd._hSize  = convertPercentToSize(wnd._hSize, $(area).width() );
     
     switch( align.toLowerCase() ){
       case 'left':
@@ -276,6 +302,9 @@ function wndManagerClass($templateCache, $compile){
   function uVPos(align, wnd, body, area){
     var top     = 0;
     var height  = 0;
+
+    wnd._vPos   = convertPercentToSize(wnd._vPos,  $(area).height());
+    wnd._vSize  = convertPercentToSize(wnd._vSize, $(area).height());
 
     switch( align ){
       case 'top':

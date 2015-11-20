@@ -14,6 +14,42 @@ atcCS.controller( 'searchControl', ['$scope','$filter', 'User', function($scope,
     
 }]);
 
+
+
+atcCS.controller( 'articulListController',['$scope','User','$wndMng', function($scope,$user,$wndMng) {
+    
+  $scope.onLoadArticulInfo = function onLoadArticulInfo(articulData){
+    var $scope = this;
+    console.log('articulInfo',articulData);
+    $user.getArticulInfo(articulData.id).then(
+      function(answer){
+        var data = answer && answer.data;
+        if( !data ){
+          return;
+        }
+
+        var window = $wndMng.createWindow({
+              title:  "\"" + articulData.number + "\"",
+              hPos:   $scope.wnd.hPos,
+              vPos:   $scope.wnd.vPos + $scope.wnd.vSize * 0.05,
+              vSize:  $scope.wnd.vSize,
+              hSize:  $scope.wnd.hSize
+            });
+
+        var newScope          = $scope.$new(true);
+        newScope.id           = data.id;
+        newScope.number       = data.number;
+        newScope.supplier     = data.supplier;
+        newScope.description  = data.description;
+        newScope.cross        = data.cross;
+        newScope.wnd          = window;
+
+        $wndMng.setBodyByTemplate(window, '/parts/_articul-info-part.html', newScope);        
+    });
+  };
+  
+}]);
+
 atcCS.controller( 'headControl',['$scope','User','$wndMng','$templateCache', function($scope,$user,$wndMng,$templateCache) {
     'use strict';
 

@@ -1,0 +1,23 @@
+<div class="articuls-list" ng-controller="articulListController">
+  <div class="row-line">
+    <div class="sub-row">
+      <strong>Информация по запросу:</strong><br>      
+    </div>
+    <div class="sub-row">
+      <label>Марка:</label>   <span ng-repeat="mfcItem   in mfc"  >{{mfcItem.text}}</span><br>
+    </div>
+    <div class="sub-row">
+      <label>Модель</label>   <span ng-repeat="modelItem in model">{{modelItem.text}}</span><br>
+    </div>
+    <div class="sub-row">
+      <label>Описание</label> <span ng-repeat="descrItem in descr">{{descrItem.text}}</span>
+    </div>
+  </div>
+  <ul>
+    <li ng-repeat="item in items" articul-id="{{item.id}}">
+      <label>Номер</label><span><strong>{{item.number}}</strong></span><br>
+      <label>Описание</label><span>{{item.desc}}</span>
+      <button ng-click="onLoadArticulInfo(item);" class="btn pull-right load-info" title="Информация по артикулу"><span class="glyphicon glyphicon-list-alt"></span></button>
+    </li>
+  </ul>  
+</div>

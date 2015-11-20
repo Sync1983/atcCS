@@ -219,6 +219,7 @@ class SearchEngine extends Object {
   public function getParts($mfc = [], $model = [], $descr =[]){
     $tesaurus = new \common\models\PgTesaurus();
     $types    = new \common\models\PgTypes();
+    //$links    = new \common\models\PgLinks();
 
     $tesis_ids = [];    
     $tesis = $tesaurus->find()->select(['ids'])->where(['id' => $descr])->all();
@@ -227,16 +228,30 @@ class SearchEngine extends Object {
     }
 
     $types_ids  = [];
-    $types_rows = $types->find()->where(['model_id' => $model])->select('type_id')->distinct()->asArray(true)->all();
+    $types_rows = $types->find()->where(['model_id' => $model])->select(['type_id'])->distinct()->asArray(true)->all();
     foreach($types_rows as $row){
       $types_ids[] = $row['type_id'];
     }
 
-    var_dump($tesis_ids);
-    var_dump($types_ids);
+    if( (count($types_ids) == 0) || (count($tesis_ids) == 0) ){
+      return ['parts' => []];
+    }
 
-
-    return ['parts' => [123 => 'asd']];
+    $types_string = implode(",", $types_ids);
+    $tesis_string = implode(",", $tesis_ids);
+    $SQL =  'SELECT DISTINCT ai.number,ds.desc, ai.id '
+           .' FROM "Links" as lnk'
+           .' INNER JOIN "ArticleInfo" as ai'
+           .'  ON ai.id = lnk.articul_id'
+           .' INNER JOIN "Description" as ds'
+           .'  ON ds.id = ai.description '
+           . '   AND ds.id IN (' . $tesis_string . ')'
+           .' WHERE lnk.type_id IN (' . $types_string . ')'
+           .' ORDER BY ai.number';
+    /* @var $db \yii\db\Connection */
+    $db = \yii::$app->getDb();    
+    $articuls = $db->createCommand($SQL)->queryAll();
+    return ['parts' => $articuls];
   }
 
 

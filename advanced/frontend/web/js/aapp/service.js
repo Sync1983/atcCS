@@ -91,12 +91,15 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification', functio
       method: 'POST',
       url: URLto('helper','parts-search'),
       responseType: 'json',
-      params: {
-        params: {
+      params:{
+        params:{
+
+        }
+      },
+      data: {        
           descr:  tags.getTagsOneField('type', 'descr', 'id'),
           mfc:    tags.getTagsOneField('type', 'mfc',   'id'),
-          model:  tags.getTagsOneField('type', 'model', 'id')
-        }
+          model:  tags.getTagsOneField('type', 'model', 'id')        
       }
     };
 
@@ -113,6 +116,21 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification', functio
           descr:  text,
           mfc:    tags.getTagsOneField('type', 'mfc',   'id'),
           model:  tags.getTagsOneField('type', 'model', 'id')
+        }
+      }
+    };
+
+    return $http(req);
+  };
+
+  model.getArticulInfo = function getArticulInfo(articul_id){
+    var req = {
+      method: 'GET',
+      url: URLto('helper','articul-info'),
+      responseType: 'json',
+      params: {
+        params: {
+          articul_id:  articul_id
         }
       }
     };

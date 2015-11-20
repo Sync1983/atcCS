@@ -31,6 +31,9 @@ class HelperController extends Controller{
       ],
       'parts-search' =>[
         'class'  => helper\PartsSearchAction::className(),
+      ],
+      'articul-info' =>[
+        'class'  => helper\ArticulInfoAction::className(),
       ]
     ];
   }
@@ -41,7 +44,7 @@ class HelperController extends Controller{
           'class' => \yii\filters\Cors::className(),
           'cors'  => [
             'Origin' => ['*'],
-            'Access-Control-Request-Headers' => ['*'],
+            'Access-Control-Request-Headers' => ['*'],            
             'Access-Control-Allow-Credentials' => true
           ]
         ],

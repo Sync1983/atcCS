@@ -3,6 +3,8 @@ ajax-button.html
 input-help.html
 main-page.html
 modal-window.html
+parts/_articul-info-part.html
+parts/_car-select-articul-part.html
 parts/_car-select-part.html
 parts/_login-part.html
 search-line.html

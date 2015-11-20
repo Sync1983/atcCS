@@ -98,7 +98,27 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
           }
         } else if( mmodel.type === 'descr' ){
           $user.findParts($scope.tagsCtrl).then(function(answer){
-            console.log(answer);
+            var data = answer && answer.data;
+            if( !data ){
+              return;
+            }
+
+            var window = $wndMng.createWindow({
+              title:  "Список подходящих деталей",
+              hPos:   $scope.carsWnd.hPos - $scope.carsWnd.hSize * 2 - 5,
+              vPos:   $scope.carsWnd.vPos,              
+              vSize:  $scope.carsWnd.vSize,
+              hSize:  $scope.carsWnd.hSize,
+            });            
+            
+            var newScope    = $scope.$new(true);
+            newScope.items  = data.parts;
+            newScope.mfc    = $scope.selector.selMFCs;
+            newScope.model  = $scope.selector.selModels;
+            newScope.descr  = $scope.selector.selDescr;
+            newScope.wnd    = window;
+            
+            $wndMng.setBodyByTemplate(window, '/parts/_car-select-articul-part.html', newScope);
           });
         }
       };
@@ -115,8 +135,8 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
         title: "Подобрать по автомобилю",
         vPos: cars.offset().top + cars.position().top + cars.height(),
         hPos: cars.offset().left + cars.position().left - cars.width(),
-        hSize: 300,
-        vSize: 200,
+        hSize: '25%',
+        vSize: '40%',
         hAlign: 'right',
         vAlign: 'top',
         hideIfClose: true,

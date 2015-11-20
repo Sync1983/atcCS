@@ -1,0 +1,41 @@
+<div class="articuls-info" ng-controller="articulListController">
+  <div class="row-line">
+    <div class="sub-row">
+      <strong>Информация по артикулу:</strong><br>      
+    </div>
+    <div class="sub-row">
+      <label>Артикул</label>        <span>{{number}}</span><br>
+    </div>
+    <div class="sub-row">
+      <label>Производитель</label>  <span>{{supplier}}</span><br>
+    </div>
+    <div class="sub-row">
+      <label>Описание</label>       <span>{{description}}</span>
+    </div>
+  </div>
+  <div class="row-line">
+    <div class="sub-row">
+      <strong>Варианты замены:</strong><br>      
+    </div>
+  </div>
+  <ul>    
+    <li ng-repeat="item in cross" articul-id="{{item.id}}">
+      
+      <div class="sub-row" ng-switch on="item.type">
+        <label>Номер</label>
+          <span><strong>{{item.full_number}}[{{item.number}}]</strong> </span>
+          <span ng-switch-when="1">Номер производителя</span>
+          <span ng-switch-when="2">?</span>
+          <span ng-switch-when="3">Оригинальный номер</span>
+          <span ng-switch-when="4">Аналог</span>
+          <span ng-switch-when="5">?</span>
+      </div>
+      
+      <div class="sub-row">
+        <label>Производитель</label><span>{{item.brand}}</span>
+      </div>
+      
+      <button ng-click="onLoadArticulInfo(item);" class="btn pull-right load-info" title="Информация по артикулу"><span class="glyphicon glyphicon-list-alt"></span></button>
+    </li>
+  </ul>  
+</div>
