@@ -4,6 +4,7 @@
 atcCS.controller( 'searchControl', ['$scope','$filter', 'User', function($scope,$filter,$user) {
     'use strict';
     $scope.markup = null;
+    $scope.query  = "asd";
 
     $scope.searchListLodaded = function listLoaded(){
       $("body").popover({
@@ -33,7 +34,8 @@ atcCS.controller( 'articulListController',['$scope','User','$wndMng', function($
               hPos:   $scope.wnd.hPos,
               vPos:   $scope.wnd.vPos + $scope.wnd.vSize * 0.05,
               vSize:  $scope.wnd.vSize,
-              hSize:  $scope.wnd.hSize
+              hSize:  $scope.wnd.hSize,
+              showStatusBar: false,
             });
 
         var newScope          = $scope.$new(true);
@@ -69,12 +71,6 @@ atcCS.controller( 'headControl',['$scope','User','$wndMng','$templateCache', fun
       show: !$user.isLogin
     });
     $wndMng.setBodyByTemplate(window, '/parts/_login-part.html', $scope);
-    
-
-    /*var window1 = $wndMng.createWindow();
-    window1.title = "1 Тестовое окно 1";
-    window1.hAlign = 'right';
-    window1.vAlign = 'top';    */
 
     $scope.show = !$user.isLogin;
     

@@ -34,6 +34,9 @@ class HelperController extends Controller{
       ],
       'articul-info' =>[
         'class'  => helper\ArticulInfoAction::className(),
+      ],
+      'get-groups' =>[
+        'class'  => helper\GetGroupsAction::className(),
       ]
     ];
   }
@@ -48,12 +51,12 @@ class HelperController extends Controller{
             'Access-Control-Allow-Credentials' => true
           ]
         ],
-        'authFilter' => [
+        /*'authFilter' => [
           'class'       => \backend\filters\RestAuthFilter::className(),
           'auth'        => [\backend\controllers\user\LoginAction::className(),'authHttpBasic'],
           'authToken'   => [\backend\controllers\user\LoginAction::className(),'authToken'],
           'exceptMethods' => ['OPTIONS'],
-        ],
+        ],*/
         'contentNegotiator' => [
             'class' => \yii\filters\ContentNegotiator::className(),
             'formats' => [

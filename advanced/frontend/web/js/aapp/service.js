@@ -9,7 +9,6 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification', functio
   var URL   = "http://rest.atc58.bit/index.php";
   var model = new userModel();
 
-
   function URLto(controller,funct,local){
     return (local?"":URL) + "?r=" + controller + "/" + funct;
   }
@@ -29,6 +28,10 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification', functio
     }
     
     return false;
+  };
+
+  model.getUrl = function getUrl(controller, funct){
+    return URLto(controller, funct);
   };
 
   model.login = function login(name,password,remember){

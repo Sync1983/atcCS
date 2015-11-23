@@ -1,5 +1,6 @@
 atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function ($user, $tagsControl, $wndMng, $sce){
-  return {    
+  return {
+    require: "ngModel",
     priority: 0,
     terminal: false,
     restrict: 'E',
@@ -11,8 +12,10 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
       var icons = $($element).find("div.search-icons");
       var cars  = icons.find('button#search-cars');
 
+      $scope.text = "";
+
       $scope.selector = {
-        mmodel: "nissan",
+        mmodel: "alm",
         models: {},
         mfcs:  {},
         descriptions: {},
@@ -22,6 +25,12 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
         selModels: [],
         selDescr: []
       };
+
+      $scope.treeModel = {
+          type: 'request',
+          url: $user.getUrl('helper','get-groups'),
+          data: ["1476"]
+        };
 
       function toggle(window){
         return function(){
@@ -80,7 +89,16 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
         $scope.selector.selModels = $scope.tagsCtrl.getTags('type','model');
         $scope.selector.selDescr  = $scope.tagsCtrl.getTags('type','descr');
         
-        if( mmodel.type === "mfc"){          
+        if( mmodel.type === "mfc"){
+          if( ($scope.selector.selMFCs.length !== 0) &&
+                     ($scope.selector.selModels.length !== 0) ){
+
+            $scope.selector.models = [];
+            $scope.selector.mfcs = [];
+            $scope.selector.showDescr = true;
+          } else {
+            $scope.selector.showDescr = false;
+          }
           return;
         } else if ( mmodel.type === 'model' ){
           //Если производители модели не выбраны - нужно запросить и добавить их в теги          
@@ -109,6 +127,7 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
               vPos:   $scope.carsWnd.vPos,              
               vSize:  $scope.carsWnd.vSize,
               hSize:  $scope.carsWnd.hSize,
+              showStatusBar: false,
             });            
             
             var newScope    = $scope.$new(true);
@@ -130,6 +149,18 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
         }
         $user.findDescr(text,$scope.tagsCtrl).then(mmodelAnswer(text));
       };
+
+      $scope.onShowPartTree = function onShowPartTree(){
+        var models = [];
+        for(var i in $scope.selector.selModels){
+          models.push($scope.selector.selModels[i].id);
+        }
+        $scope.treeModel = {
+          type: 'request',
+          url: $user.getUrl('helper','get-groups'),
+          data: models
+        };
+      };
       
       $scope.carsWnd = $wndMng.createWindow({
         title: "Подобрать по автомобилю",
@@ -142,34 +173,43 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
         hideIfClose: true,
         //show: false
       });
+
+      $scope.treeWnd = $wndMng.createWindow({
+        title: "Подобрать по автомобилю",
+        vPos: $scope.carsWnd.vPos,
+        hPos: $scope.carsWnd.hPos - $scope.carsWnd.hSize,
+        hSize: '25%',
+        vSize: '40%',
+        hAlign: 'right',
+        vAlign: 'top',
+        hideIfClose: true,
+        //show: false
+      });
       
       $wndMng.setBodyByTemplate($scope.carsWnd, '/parts/_car-select-part.html', $scope);
+      $wndMng.setBodyByTemplate($scope.treeWnd, '/parts/_car-select-group.html', $scope);
+      
       var tags  = $wndMng.getBody($scope.carsWnd).find("div#tags");      
       $scope.tagsCtrl = $tagsControl.init(tags);
-
-      // Just for debug!!!
-        $scope.tagsCtrl.pushTag({
-            id: "558",
-            text: "NISSAN",
-            type: "mfc"
-          });
-        $scope.tagsCtrl.pushTag({
-            id: "1475",
-            text: "NISSAN ALMERA   Наклонная задняя часть (N15)",
-            type: "model"
-          });
-        $scope.selector.showDescr = true;
-      // ===>>> Just for debug!!!
       
       cars.click( toggle($scope.carsWnd) );
 
-    },
-    compile: function compile(templateElement, templateAttrs){
+    },    
+    link: function link(scope, element, attrs, modelCtrl){    
       
-    },
-    link: function link(scope, element, attrs, modelCtrl){
+      scope.$watch(
+        function() { return modelCtrl.$viewValue; },
+        function(newVal){
+          scope.text = newVal;
+          return newVal;
+      });
 
-      //$(element).children('.head').text(scope.title);
+      scope.$watch(
+        function(scope) { return scope.text; },
+        function(newVal){
+          modelCtrl.$setViewValue(newVal);
+          return newVal;
+      });
     }
   };
 }] );

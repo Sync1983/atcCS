@@ -21,7 +21,7 @@ use yii\helpers\Url;
 </div>
 <!-- Строка поиска и список выбора -->
 <div class="search-bar row-md-top btn-group-justified" ng-controller="searchControl">
-  <search-line>
+  <search-line ng-model="query">
 
   </search-line>
   <!--inputhelper

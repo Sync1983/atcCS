@@ -1,0 +1,58 @@
+div.tree-view{
+  
+  ul{
+    list-style: none;    
+    margin: 0 5px;
+    padding: 0;
+    position: relative; 
+    @include no-select();
+    
+    li input[type="checkbox"]:checked{
+        color:red;
+        font-weight: bold;
+      }
+    
+    li {
+      font-weight: normal;
+      line-height: 0.75rem;
+      font-size: 0.75rem;  
+      cursor: pointer;
+      width: 100%;
+      
+      span{
+        width: 100%;
+        display: block;
+        &:hover{
+          font-weight: bold;          
+        }
+      }
+            
+      
+      &.open{
+        & > span{
+          font-weight: bold;
+        }
+        ul{
+          display: block;
+        }         
+      }
+      
+      &:not(.open){
+        ul {
+          display: none; 
+        }
+      }
+      
+      
+      /*&:before{
+        content: "\229E";
+      }
+      
+      & .open:before {
+        content: "\229F" !important;
+      }*/
+      
+    }
+  }
+  
+}

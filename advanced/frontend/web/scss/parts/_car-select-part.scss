@@ -12,6 +12,20 @@ div.car-select{
     margin-top: 5px;
     position: relative;
     
+    a{
+      color: $atc_color;
+      text-decoration: none;    
+      line-height: 0.75rem;
+      font-size: 0.75rem;
+      font-weight: bold;
+      border-bottom: 1px dashed $atc_color;
+    }
+    
+    & > a {
+      margin: 0 5px;
+      top: -5px;
+    }
+    
     & > label.title{
       width: 100%;
       color: $input_color;

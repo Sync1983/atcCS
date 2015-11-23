@@ -330,6 +330,32 @@ SQL;
     }
     $result->close();
   }
+
+  public function actionGAToPg(){
+    /* @var $result \mysqli_result */
+    $result = $this->db->query("SELECT * FROM tof_generic_articles");
+    if( !$result ){
+      die($this->db->error);
+    }
+    while($row = $result->fetch_array(MYSQL_ASSOC)){
+
+      $sup = new \common\models\PgGroupInfo();
+      foreach ($row as $key=>$value){
+        if( !$value ){
+          $row[$key] = 0;
+        }
+      }
+      $sup->setAttribute('id',$row['GA_ID']);
+      $sup->setAttribute('des_id',$row['GA_DES_ID']);
+      $sup->setAttribute('std_id',$row['GA_DES_ID_STANDARD']);
+      $sup->setAttribute('asm_id',$row['GA_DES_ID_ASSEMBLY']);
+      $sup->setAttribute('itd_id',$row['GA_DES_ID_ASSEMBLY']);
+      
+      $sup->save();
+
+    }
+    $result->close();
+  }
   
 
 }
