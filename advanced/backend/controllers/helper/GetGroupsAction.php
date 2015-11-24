@@ -10,6 +10,8 @@ class GetGroupsAction extends Action{
 
   public function run($params){
     $data     = json_decode($params,true);
+    /* @var $db yii\db\Connection */
+    $db       = \yii::$app->getDb();
     $articul  = false;
     $group    = false;
     $model    = true;
@@ -23,12 +25,46 @@ class GetGroupsAction extends Action{
     }
 
     if( $model ){
-      $types = \common\models\PgTypes::find()->where(['model_id' => $data])->select('type_id')->asArray(true)->all();
-      $types_ids = [];
-      foreach ($types as $row){
-        $types_ids[] = $row['type_id'];
-      }
+      $types  = \common\models\PgTypes::find()
+                  -> where(['model_id' => $data])
+                  -> select('type_id')
+                  -> asArray(true)
+                  -> all();
+      $types_ids = array_values($types);
       $groups = \common\models\PgLinks::find()
+                  -> where(['type_id' => $types_ids])
+                  -> select('group_id')
+                  -> indexBy('group_id')
+                  -> groupBy('group_id')
+                  -> asArray(true)
+                  -> all();
+      $group_ids = array_values(\yii\helpers\ArrayHelper::getColumn($groups, 'group_id'));
+      $group_str = implode(",", $group_ids);
+      $SQL = <<<SQL
+        SELECT
+          gi.id,          
+          d.desc
+        FROM "GroupInfo" as gi
+        INNER JOIN
+          "Description" as d ON d.id = gi.itd_id
+        WHERE gi.id IN ($group_str);
+SQL;
+
+      $answer = ['a'=>'b'];
+      
+      $query  = $db->createCommand($SQL)->queryAll();
+      \yii::info($query);
+      /*foreach ($db_data as $row){
+        //var_dump($row);
+        foreach ($row as $key=>$value){
+          echo "$key => $value,";
+        }
+        echo" \r\n";
+        var_dump($row['id']);
+        //var_dump($row['des_id']);
+      }*/
+    }
+      /*$groups = \common\models\PgLinks::find()
                   -> where(['type_id' => $types_ids])
                   -> select('group_id')
                   -> groupBy('group_id')
@@ -63,7 +99,7 @@ SQL;
           'text'  => \yii\helpers\ArrayHelper::getValue($descrs, $group['group_id'],$group['group_id'])
         ];
       }
-    }
+    }*/
 
     return $answer;
   }

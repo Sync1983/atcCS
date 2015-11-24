@@ -33,6 +33,8 @@ return [
           'username' => 'client',
           'password' => 'client',
           'charset' => 'utf8',
+          'enableQueryCache' => false,
+          'queryCacheDuration' => -1
         ], // PostgreSQL
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
