@@ -32,4 +32,4 @@ phpunit.phar
 /backend/text-data
 
 .csv
-*/*/*.csv
+/console/migrate_data
