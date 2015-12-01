@@ -11,6 +11,10 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'console\controllers',
+    'aliases' => [
+      // Set the editor language dir
+      '@migrate_data_dir' => '@console/migrate_data/',
+    ],
     'components' => [
         'mongodb' => [
             'class' => '\yii\mongodb\Connection',

@@ -21,14 +21,14 @@ class TdassetsController extends Controller{
 
   public function init() {
     parent::init();
-    $this->db = new \mysqli('localhost', 'root', 'test', 'techdock');    
+    /*$this->db = new \mysqli('localhost', 'root', 'test', 'techdock');
     $this->redis = \yii::$app->get('redis');
 
     if( $this->db->errno ){
       die("Mysql connect error: " . $this->db->error);
     }
 
-    $this->db->set_charset("utf8");
+    $this->db->set_charset("utf8");*/
     
   }
 

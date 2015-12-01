@@ -30,3 +30,5 @@ phpunit.phar
 /phpunit.xml
 
 /backend/text-data
+
+.csv

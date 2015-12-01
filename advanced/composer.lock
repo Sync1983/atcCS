@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3bc77552bfbafb7170b56c3c34759afc",
+    "hash": "14eb22e6344afed6c93596d942df4f9b",
     "content-hash": "6795f78850f3237c306b62903c73e5d8",
     "packages": [
         {
@@ -732,21 +732,21 @@
         },
         {
             "name": "yiisoft/yii2-mongodb",
-            "version": "2.0.4",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-mongodb.git",
-                "reference": "8f959240e17bfdab6fb4e16be078b81b461988a2"
+                "reference": "407050a07c9703b0cc7fa534b70d12e1785a7e2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-mongodb/zipball/8f959240e17bfdab6fb4e16be078b81b461988a2",
-                "reference": "8f959240e17bfdab6fb4e16be078b81b461988a2",
+                "url": "https://api.github.com/repos/yiisoft/yii2-mongodb/zipball/407050a07c9703b0cc7fa534b70d12e1785a7e2a",
+                "reference": "407050a07c9703b0cc7fa534b70d12e1785a7e2a",
                 "shasum": ""
             },
             "require": {
-                "ext-mongo": ">=1.5.0",
-                "yiisoft/yii2": ">=2.0.4"
+                "ext-mongo": ">=1.4.0",
+                "yiisoft/yii2": "*"
             },
             "type": "yii2-extension",
             "extra": {
@@ -776,7 +776,7 @@
                 "mongodb",
                 "yii2"
             ],
-            "time": "2015-05-10 22:10:01"
+            "time": "2014-12-07 16:42:41"
         },
         {
             "name": "yiisoft/yii2-redis",
