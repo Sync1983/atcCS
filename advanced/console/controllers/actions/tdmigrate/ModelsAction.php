@@ -44,8 +44,7 @@ class ModelsAction extends TdMigrateAction {
       $end      = $end_time->format("t-m-Y");
 
       $str = $row['MOD_ID']     . "," .
-             $row['MOD_MFA_ID'] . "," .
-             $row['MOD_MFA_ID'] . "," .
+             $row['MOD_MFA_ID'] . "," .             
              $start             . "," .
              $end               . "," .
              "B('" . $row['MOD_PC'] . $row['MOD_CV'] . $row['MOD_AXL'] . "')" . "," .
