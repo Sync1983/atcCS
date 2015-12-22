@@ -14,7 +14,7 @@ class ArticleInfoAction extends TdMigrateAction {
 
     $f      = $this->openFileToWrite();
     $data   = odbc_exec($odbc, "SELECT * FROM TOF_ARTICLES");
-    $str    = 'art_id'      . "," .
+    $str    = 'part_id'      . "," .
               'number'      . "," .
               'supplier'    . "," .
               'description' . "," .
@@ -24,15 +24,19 @@ class ArticleInfoAction extends TdMigrateAction {
     $pos = 0;
     while( $row = odbc_fetch_array($data) ){
       $str = $row['ART_ID']             . "," .
-             $row['ART_ARTICLE_NR']     . "," .
+             "'" . $row['ART_ARTICLE_NR']     . "'," .
              $row['ART_SUP_ID']         . "," .
              $row['ART_COMPLETE_DES_ID']. "," .
-             "B('" . $row['ART_PACK_SELFSERVICE'] . $row['ART_MATERIAL_MARK'] . $row['ART_REPLACEMENT'] . $row['ART_ACCESSORY'] . "')".
-             "\r";
+             "B('" . 
+                $row['ART_PACK_SELFSERVICE']?"1":"0".
+                $row['ART_MATERIAL_MARK']?"1":"0"   .
+                $row['ART_REPLACEMENT']?"1":"0"     .
+                $row['ART_ACCESSORY']?"1":"0"       . "')".
+             "\n";
       fputs($f, $str, strlen($str));
       $pos++;
       if( ($pos % 10000) == 0) {
-        echo "Save $pos Lines FROM $num\r\n";
+        echo "Save $pos Lines\r\n";
       }
     }
     fclose($f);
