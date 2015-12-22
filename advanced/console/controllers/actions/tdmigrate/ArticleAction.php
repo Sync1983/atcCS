@@ -22,17 +22,19 @@ class ArticleAction extends TdMigrateAction {
              "\r";
     fputs($f, $str, strlen($str));
     $pos = 0;
+    $str = "";
     while( $row = odbc_fetch_array($data) ){
-      $str = $row['ARL_ART_ID']         . "," .
+      $str.= $row['ARL_ART_ID']         . "," .
              $row['ARL_SEARCH_NUMBER']  . "," .
              $row['ARL_KIND']           . "," .
-             $row['ARL_DISPLAY_NR']     . "," .
+             "\"" . $row['ARL_DISPLAY_NR'] . "\"," .
              $row['ARL_BRA_ID']         .
-             "\r";
-      fputs($f, $str, strlen($str));
+             "\n";
       $pos++;
-      if( ($pos % 10000) == 0) {
-        echo "Save $pos Lines FROM $num\r\n";
+      if( ($pos % 50000) == 0) {
+        echo "Save $pos Lines\r\n";
+        fputs($f, $str, strlen($str));
+        $str = "";
       }
     }
     fclose($f);
