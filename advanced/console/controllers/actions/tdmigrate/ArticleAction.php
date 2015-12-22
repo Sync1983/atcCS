@@ -26,13 +26,13 @@ class ArticleAction extends TdMigrateAction {
       $str = $row['ARL_ART_ID']         . "," .
              $row['ARL_SEARCH_NUMBER']  . "," .
              $row['ARL_KIND']           . "," .
-             $row['ARL_DISPLAY_NR']     . "," .
+             '"' . $row['ARL_DISPLAY_NR'] . '",' .
              $row['ARL_BRA_ID']         .
              "\r";
       fputs($f, $str, strlen($str));
       $pos++;
       if( ($pos % 10000) == 0) {
-        echo "Save $pos Lines FROM $num\r\n";
+        echo "Save $pos Lines\r\n";
       }
     }
     fclose($f);

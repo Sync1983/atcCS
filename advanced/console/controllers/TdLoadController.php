@@ -12,14 +12,13 @@ class TdLoadController extends Controller{
   public function actions() {
     return [
       /*'show-tables'   => actions\tdmigrate\ShowTablesAction::className(),
-      'article'       => actions\tdmigrate\ArticleAction::className(),      
-      'article-info'  => actions\tdmigrate\ArticleInfoAction::className(),
       'links'         => actions\tdmigrate\LinksAction::className(),
-      'links-art'     => actions\tdmigrate\LinksArtAction::className(),
-      'graphics-data' => actions\tdmigrate\GraphicsDataAction::className(),
+      'links-art'     => actions\tdmigrate\LinksArtAction::className(),      
       'gen-art'       => actions\tdmigrate\GenArtAction::className(),
       'search-tree'   => actions\tdmigrate\SearchTreeAction::className(),
       'str-lookup'    => actions\tdmigrate\StrLookupAction::className()*/
+      'article'       => actions\tdload\ArticleLoadAction::className(),
+      'article-info'  => actions\tdload\ArticleInfoLoadAction::className(),
       'suppliers'     => actions\tdload\SuppliersLoadAction::className(),
       'brands'        => actions\tdload\BrandsLoadAction::className(),
       'description'   => actions\tdload\DescriptionLoadAction::className(),
