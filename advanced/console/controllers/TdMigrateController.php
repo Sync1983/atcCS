@@ -26,7 +26,8 @@ class TdMigrateController extends Controller{
       'graphics-data' => actions\tdmigrate\GraphicsDataAction::className(),
       'gen-art'       => actions\tdmigrate\GenArtAction::className(),
       'search-tree'   => actions\tdmigrate\SearchTreeAction::className(),
-      'str-lookup'    => actions\tdmigrate\StrLookupAction::className()
+      'str-lookup'    => actions\tdmigrate\StrLookupAction::className(),
+      'test'          => actions\tdmigrate\TestAction::className()
     ];
   }
 

@@ -10,13 +10,7 @@ use yii\console\Controller;
 class TdLoadController extends Controller{
 
   public function actions() {
-    return [
-      /*'show-tables'   => actions\tdmigrate\ShowTablesAction::className(),
-      'links'         => actions\tdmigrate\LinksAction::className(),
-      'links-art'     => actions\tdmigrate\LinksArtAction::className(),      
-      'gen-art'       => actions\tdmigrate\GenArtAction::className(),
-      'search-tree'   => actions\tdmigrate\SearchTreeAction::className(),
-      'str-lookup'    => actions\tdmigrate\StrLookupAction::className()*/
+    return [      
       'article'       => actions\tdload\ArticleLoadAction::className(),
       'article-info'  => actions\tdload\ArticleInfoLoadAction::className(),
       'suppliers'     => actions\tdload\SuppliersLoadAction::className(),
@@ -26,6 +20,11 @@ class TdLoadController extends Controller{
       'models'        => actions\tdload\ModelsLoadAction::className(),
       'types'         => actions\tdload\TypesLoadAction::className(),
       'texts'         => actions\tdload\TextsLoadAction::className(),
+      'links'         => actions\tdload\LinksLoadAction::className(),
+      'links-art'     => actions\tdload\LinksArtLoadAction::className(),
+      'gen-art'       => actions\tdload\GenArtLoadAction::className(),
+      'search-tree'   => actions\tdload\SearchTreeLoadAction::className(),
+      'str-lookup'    => actions\tdload\StrLookupLoadAction::className()
     ];
   }
 

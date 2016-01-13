@@ -15,8 +15,6 @@ atcCS.controller( 'searchControl', ['$scope','$filter', 'User', function($scope,
     
 }]);
 
-
-
 atcCS.controller( 'articulListController',['$scope','User','$wndMng', function($scope,$user,$wndMng) {
     
   $scope.onLoadArticulInfo = function onLoadArticulInfo(articulData){
