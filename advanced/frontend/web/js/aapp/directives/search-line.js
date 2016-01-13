@@ -26,11 +26,12 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
         selDescr: []
       };
 
-      $scope.treeModel = {
+      $scope.treeModel = [{
+          text: "Категории",
           type: 'request',
           url: $user.getUrl('helper','get-groups'),
-          data: ["1476"]
-        };
+          data: {path:""}
+        }];
 
       function toggle(window){
         return function(){
@@ -175,7 +176,7 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
       });
 
       $scope.treeWnd = $wndMng.createWindow({
-        title: "Подобрать по автомобилю",
+        title: "Выбрать по каталогу",
         vPos: $scope.carsWnd.vPos,
         hPos: $scope.carsWnd.hPos - $scope.carsWnd.hSize,
         hSize: '25%',

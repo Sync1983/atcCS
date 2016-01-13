@@ -12,96 +12,78 @@ class GetGroupsAction extends Action{
     $data     = json_decode($params,true);
     /* @var $db yii\db\Connection */
     $db       = \yii::$app->getDb();
-    $articul  = false;
-    $group    = false;
-    $model    = true;
+    $path     = $data['path'];
+    $pid      = isset($data['pid'])?$data['pid']:0;
     $answer   = [];
-    
-    if( isset($data['group']) ){
-      $articul  = true;
-      $group    = true;
-      $model    = false;
-      unset($data['group']);
+
+    if( !$path || ($path=="null") ){
+      $path = "*{1}";
+    } else {
+      $path .= ".*{1}";
     }
 
-    if( $model ){
-      $types  = \common\models\PgTypes::find()
-                  -> where(['model_id' => $data])
-                  -> select('type_id')
-                  -> asArray(true)
-                  -> all();
-      $types_ids = array_values($types);
-      $groups = \common\models\PgLinks::find()
-                  -> where(['type_id' => $types_ids])
-                  -> select('group_id')
-                  -> indexBy('group_id')
-                  -> groupBy('group_id')
-                  -> asArray(true)
-                  -> all();
-      $group_ids = array_values(\yii\helpers\ArrayHelper::getColumn($groups, 'group_id'));
-      $group_str = implode(",", $group_ids);
-      $SQL = <<<SQL
+    $SQL = <<<SQL
+
         SELECT
-          gi.id,          
-          d.desc
-        FROM "GroupInfo" as gi
-        INNER JOIN
-          "Description" as d ON d.id = gi.itd_id
-        WHERE gi.id IN ($group_str);
+          s.id,
+          s.type,
+          s.path,
+          d.desc,
+          subpath(s.path, -1) pid
+        FROM "SearchTree" s
+        LEFT JOIN
+          "Description" as d ON d.id = s.des_id
+        WHERE s.path ~ '$path';
 SQL;
 
-      $answer = ['a'=>'b'];
-      
-      $query  = $db->createCommand($SQL)->queryAll();
-      \yii::info($query);
-      /*foreach ($db_data as $row){
-        //var_dump($row);
-        foreach ($row as $key=>$value){
-          echo "$key => $value,";
+      $answer = [];
+
+      $query  = $db->createCommand($SQL)->queryAll();      
+
+      foreach ($query as $row){        
+        if( !$row['desc'] ){
+          $row['desc'] = "Категория [" . $row['id'] . "]";
         }
-        echo" \r\n";
-        var_dump($row['id']);
-        //var_dump($row['des_id']);
-      }*/
-    }
-      /*$groups = \common\models\PgLinks::find()
-                  -> where(['type_id' => $types_ids])
-                  -> select('group_id')
-                  -> groupBy('group_id')
-                  -> orderBy('group_id')
-                  -> asArray(true)
-                  -> all();
-
-      $group_ids = [];
-      foreach ($groups as $group){
-        $group_ids[] = $group['group_id'];
-      }
-      
-      $group_string = implode(",", $group_ids);
-
-      $SQL = <<<SQL
-          SELECT grp.id, ds.desc
-          FROM "GroupInfo" as grp
-          INNER JOIN "Description" as ds ON ds.id = grp.des_id
-          WHERE grp.id IN ($group_string);
-SQL;
-      $descr = \yii::$app->getDb()->createCommand($SQL)->queryAll();
-      $descrs = [];
-      var_dump("stop");
-      foreach ($descr as $row){
-        $descrs[$row['id']] = $row['desc'];
-      }
-      foreach ($groups as $group){
         $answer[] = [
           'type'  => 'request',
-          'url'   => \yii\helpers\Url::to(['helper/get-groups']),
-          'data'  => ['group'=>1,$group['group_id']],
-          'text'  => \yii\helpers\ArrayHelper::getValue($descrs, $group['group_id'],$group['group_id'])
-        ];
+          'url'   => "http://rest.atc58.bit/index.php?r=helper/get-groups",
+          'data'  => ['path'=>$row['path'], 'pid' => $row['pid']],
+          'text'  => $row['desc']
+        ];        
       }
-    }*/
+
+      if( count($answer) == 0 ){
+        return $this->getGroupByPID($pid);
+      }
 
     return $answer;
+  }
+
+  public function getGroupByPID($pid){
+    $SQL = <<<SQL
+        SELECT
+          gi.id,
+          ds.desc
+        FROM "StrLookup" sl
+        INNER JOIN
+          "GroupInfo" gi ON sl.ga_id = gi.id
+        INNER JOIN
+          "Description" ds ON ds.id = gi.std_id
+        WHERE str_id = '$pid';
+SQL;
+
+      $answer = [];
+      $query  = \yii::$app->getDb()->createCommand($SQL)->queryAll();
+      foreach ($query as $row){
+        $answer[] = [
+          'type'  => 'group',
+          //'url'   => "http://rest.atc58.bit/index.php?r=helper/get-groups",
+          'data'  => ['gid'=>$row['id']],
+          'text'  => $row['desc']
+        ];
+      }
+
+      return $answer;
   }
 
   public function beforeRun() {

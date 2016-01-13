@@ -13,20 +13,21 @@ atcCS.directive( 'tree',['$http', function ($http){
     },
     controller: function controller($scope, $element, $attrs, $transclude){
 
-      var UL    = $($element).find('ul');
+      var UL    = $($element);
+
+      function itemLoadable(item){
+        return !item.subItems && item.url && item.type && (item.type === 'request');
+      }
 
       function serverAnswer(item, listItem){
         return function(answer){
           var data = answer && answer.data;
-          console.log(data);
           if( !data ){
             return;
           }
-          item.subItems = data;
           
-          var ul = $('<ul></ul>');
-          ul.append( updateItem(item) );
-          listItem.append(ul);
+          item.subItems = data;
+          createItems(data, listItem);          
         };
       };
 
@@ -35,8 +36,9 @@ atcCS.directive( 'tree',['$http', function ($http){
           if( $(listItem).hasClass('open') ){
             $(listItem).removeClass('open');
           }else {
-            $(listItem).addClass('open');
-            if( !item.subItems && item.url && item.type && (item.type === 'request') ){
+            $(listItem).addClass('open');                     
+            
+            if( itemLoadable(item) ){
               var request = {
                 url:          item.url,
                 method:       "GET",
@@ -45,78 +47,42 @@ atcCS.directive( 'tree',['$http', function ($http){
                   params: item.data
                 }
               };
-              $http(request).then(serverAnswer(item, listItem));
-              return listItem;
+              $http(request).then( serverAnswer(item, listItem) );              
             }
           }
           event.stopPropagation();
         };
       }
 
-      function updateItem(item){
+      function createItem(item){
         var listItem  = $('<li></li>');
+        var ul        = $('<ul></ul>');
         var span      = $('<span></span>');
-        var text      = item.text?item.text:"???";
-        
+        var text      = item.text || "???";
+
         span.text(text);
         listItem.append(span);
-        listItem.click(itemClick(item,listItem));
-
-        /*if( !item.subItems && item.url && item.type && (item.type === 'request') ){
-          var request = {
-            url:          item.url,
-            method:       "GET",
-            responseType: 'json',
-            params: {
-              params: item.data
-            }
-          };
-          $http(request).then(serverAnswer(item, listItem));
-          return listItem;
-        }*/
-
-        if( !item.subItems ){
-          return listItem;
-        }
-
-        var list = $("<ul></ul>");
-        for(var i in item.subItems){
-          var value = item.subItems[i];          
-          list.append( updateItem(value) );
-        }
-        listItem.append(list);
+        listItem.append(ul);
+        createItems(item.subItems,ul); 
+        listItem.click( itemClick(item, listItem) );
+        
         return listItem;
-      };
+      }
 
-      $scope.update = function treeUpdate(){
-        console.log($scope.data);
-        /*$scope.data = {
-          type: 'text',
-          text: "asdf",
-          subItems: [
-            {
-              type: 'text',
-              text: "bsdf",
-              subItems:[
-                {
-                type: 'text',
-                text: "bbsdf"
-                }
-              ]
-            },
-            {
-              type: 'text',
-              text: "csdf",
-              subItems:[
-                {
-                  type: 'text',
-                  text: "ccsdf"
-                }
-              ]
-            }
-          ]
-        };*/
-        $(UL).html( updateItem($scope.data) );
+      function createItems(data, root){
+        var answer = "";
+        var ul = $(root).find('ul');
+
+        for( var i in data){
+          var item = data[i];
+          var htmlItem = createItem(item);
+          $(ul).append(htmlItem);
+        }
+        return answer;
+      }
+
+      $scope.update = function treeUpdate(){        
+        createItems($scope.data, UL);
       };
     },
     link: function link(scope, element, attrs, modelCtrl){
