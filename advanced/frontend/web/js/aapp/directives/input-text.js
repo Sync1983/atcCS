@@ -8,7 +8,7 @@ atcCS.directive('sinput', function (){
     terminal: false,
     restrict: 'E',
     replace: true,
-    template: '<div class="sinput"><input class="sinput" placeholder="{{placeholder}}" value="{{value}}" name="{{name}}" ng-value="value" ng-model="model" /></div>',
+    template: '/_sinput.html',
     transclude: true,    
     scope: {
       placeholder: "@",

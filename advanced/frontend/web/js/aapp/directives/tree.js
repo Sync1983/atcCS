@@ -60,6 +60,9 @@ atcCS.directive( 'tree',['$http', function ($http){
         var span      = $('<span></span>');
         var text      = item.text || "???";
 
+        if( item.type === "group" ){
+          span.addClass('node');
+        }
         span.text(text);
         listItem.append(span);
         listItem.append(ul);
