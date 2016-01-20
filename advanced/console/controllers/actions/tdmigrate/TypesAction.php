@@ -13,7 +13,7 @@ class TypesAction extends TdMigrateAction {
     $odbc = $this->connect();
 
     $f      = $this->openFileToWrite();
-    $data   = odbc_exec($odbc, "SELECT * FROM TOF_TYPES tp INNER JOIN TOF_COUNTRY_DESIGNATIONS cds ON cds.CDS_ID=tp.TYP_MMT_CDS_ID  and cds.CDS_LNG_ID=16 ");
+    $data   = odbc_exec($odbc, "SELECT * FROM TOF_TYPES tp INNER JOIN TOF_COUNTRY_DESIGNATIONS cds ON cds.CDS_ID=tp.TYP_MMT_CDS_ID  and cds.CDS_LNG_ID=16 LEFT JOIN TOF_DES_TEXTS dt ON dt.TEX_ID=cds.CDS_TEX_ID");
     $str    = 'type_id'          . "," .
               'model_id'  . "," .
               'kw'        . "," .
@@ -45,14 +45,16 @@ class TypesAction extends TdMigrateAction {
       $end_time = new \DateTime($end);
       $end      = $end_time->format("t-m-Y");
 
+      $row['TEX_TEXT'] = mb_convert_encoding($row['TEX_TEXT'],'UTF-8','CP-1251');
+
       $str = $row['TYP_ID']         . "," .
              $row['TYP_MOD_ID']     . "," .
              $row['TYP_KW_FROM']    . "," .
              $row['TYP_HP_FROM']    . "," .
-             $row['TYP_LITRES']     . "," .
+             $row['TYP_LITRES']*1000 . "," .
              $row['TYP_CYLINDERS']  . "," .
              $row['TYP_VALVES']     . "," .
-             $row['CDS_TEX_ID']     . "," .
+             "\"" . $row['TEX_TEXT']     . "\"," .
              $row['TYP_KV_FUEL_DES_ID'] . "," .
              $row['TYP_KV_DRIVE_DES_ID']. "," .
              $row['TYP_KV_STEERING_SIDE_DES_ID'] . "," .
@@ -61,8 +63,8 @@ class TypesAction extends TdMigrateAction {
              "\r";
       fputs($f, $str, strlen($str));
       $pos++;
-      if( ($pos % 100) == 0) {
-        echo "Save $pos Lines FROM $num\r\n";
+      if( ($pos % 10000) == 0) {
+        echo "Save $pos Lines\r\n";
       }
     }
     fclose($f);

@@ -73,17 +73,17 @@ form.login-form{
     .row-line{    
       left:3%;
       width: 94%;    
-      padding: 25px 0 0 0;
+      //padding: 25px 0 0 0;
       margin:  5px 0 0 0;
-      height: 10px;
+      height: 24px;
       position: relative; 
       
-      & > label{
+      & > label, &>div>label{
         color: $atc_color;
-        top: -40px;
-        height: 14px;
-        margin: 0 15px;
-        line-height: 14px;
+        //top: -40px;
+        height: 18px;
+        margin: -8px 15px 0;
+        line-height: 16px;
         font-size: 0.65em;        
         text-transform: initial;
         text-decoration: none;
@@ -94,6 +94,10 @@ form.login-form{
         @include no-select();
         
         position: relative;
+      }
+      
+      &>div>label {
+        margin: -8px 5px 0;
       }
     }
   }

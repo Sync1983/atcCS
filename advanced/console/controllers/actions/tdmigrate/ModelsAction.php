@@ -13,13 +13,13 @@ class ModelsAction extends TdMigrateAction {
     $odbc = $this->connect();
 
     $f      = $this->openFileToWrite();
-    $data   = odbc_exec($odbc, "SELECT * FROM TOF_MODELS m LEFT JOIN TOF_COUNTRY_DESIGNATIONS cd ON m.MOD_CDS_ID=cd.CDS_ID and cd.CDS_LNG_ID=16");
+    $data   = odbc_exec($odbc, "SELECT * FROM TOF_MODELS m LEFT JOIN TOF_COUNTRY_DESIGNATIONS cd ON m.MOD_CDS_ID=cd.CDS_ID and cd.CDS_LNG_ID=16 LEFT JOIN TOF_DES_TEXTS dt ON dt.TEX_ID=cd.CDS_TEX_ID");
     $str    = 'model_id'          . "," .
               'manufacturers_id'  . "," .
               'start'             . "," .
               'end'               . "," .
               'type'              . "," .
-              'text_id'           .
+              'text'              .
               "\r";
     fputs($f, $str, strlen($str));
     $pos = 0;
@@ -43,17 +43,19 @@ class ModelsAction extends TdMigrateAction {
       $end_time = new \DateTime($end);
       $end      = $end_time->format("t-m-Y");
 
+      $row['TEX_TEXT'] = mb_convert_encoding($row['TEX_TEXT'],'UTF-8','CP-1251');
+
       $str = $row['MOD_ID']     . "," .
              $row['MOD_MFA_ID'] . "," .             
              $start             . "," .
              $end               . "," .
-             "B('" . $row['MOD_PC'] . $row['MOD_CV'] . $row['MOD_AXL'] . "')" . "," .
-             $row['CDS_TEX_ID'] .
+             $row['MOD_PC'] . $row['MOD_CV'] . $row['MOD_AXL'] . "," .
+             "\"" . $row['TEX_TEXT'] . "\"".
              "\r";
       fputs($f, $str, strlen($str));
       $pos++;
-      if( ($pos % 100) == 0) {
-        echo "Save $pos Lines FROM $num\r\n";
+      if( ($pos % 1000) == 0) {
+        echo "Save $pos Lines \r\n";
       }
     }
     fclose($f);

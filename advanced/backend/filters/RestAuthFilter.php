@@ -25,7 +25,7 @@ class RestAuthFilter extends AuthMethod{
   /**
    * @inheritdoc
    */
-  public function init() {
+  public function init() {    
     array_map(function($item){
       return strtoupper($item);
     }, $this->exceptMethods);
@@ -37,7 +37,7 @@ class RestAuthFilter extends AuthMethod{
   public function beforeAction($action) {    
     $request = $this->request ? : \yii::$app->getRequest();
     $method = $request->getMethod();
-
+    
     if( in_array($method, $this->exceptMethods) ){
       return true;
     }

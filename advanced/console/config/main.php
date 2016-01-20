@@ -14,7 +14,8 @@ return [
     'aliases' => [
       // Set the editor language dir
       '@migrate_data_dir' => '@console/migrate_data/',
-      '@load_data_dir' => '/1G/gitHub/atcCS/advanced/console/migrate_data/',
+      //'@load_data_dir' => '/1G/gitHub/atcCS/advanced/console/migrate_data/',
+      '@load_data_dir' => 'd:/gitHub/atcCS/advanced/console/migrate_data/',
     ],
     'components' => [
         'mongodb' => [

@@ -12,17 +12,11 @@ class TestAction extends TdMigrateAction {
   public function run() {
     $odbc = $this->connect();
     
-    odbc_exec($odbc, "SET NAMES 'UTF8'");
-    odbc_exec($odbc, "SET client_encoding='UTF-8'");
-    $data   = odbc_exec($odbc, "SELECT des.DES_ID as DES_ID, txt.TEX_TEXT as TEXT FROM TOF_DESIGNATIONS des INNER JOIN TOF_DES_TEXTS txt ON txt.TEX_ID = des.DES_TEX_ID where des.DES_LNG_ID=16");
-    $str    = 'des_id'  . "\t" .
-              'descr'   .
-              "\r";
+    $data   = odbc_exec($odbc, "SELECT * FROM TOF_MODELS m LEFT JOIN TOF_COUNTRY_DESIGNATIONS cd ON m.MOD_CDS_ID=cd.CDS_ID and cd.CDS_LNG_ID=16 LEFT JOIN TOF_DES_TEXTS dt ON dt.TEX_ID=cd.CDS_TEX_ID");
     
-    $texts = [];
     $pos = 0;
-    while( $row = odbc_fetch_array($data) ){
-      print_r($row);
+    while( $row = odbc_fetch_array($data) ){      
+      print_r($row);      
     }
     /*echo "Collect all lang data\r\n";
     $data_255  = odbc_exec($odbc, "SELECT des.DES_ID as DES_ID, txt.TEX_TEXT as TEXT FROM TOF_DESIGNATIONS des INNER JOIN TOF_DES_TEXTS txt ON txt.TEX_ID = des.DES_TEX_ID where des.DES_LNG_ID=255");

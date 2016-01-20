@@ -236,12 +236,12 @@
             "version": "2.1.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jquery/jquery.git",
+                "url": "https://github.com/jquery/jquery-dist.git",
                 "reference": "7751e69b615c6eca6f783a81e292a55725af6b85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jquery/jquery/zipball/7751e69b615c6eca6f783a81e292a55725af6b85",
+                "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/7751e69b615c6eca6f783a81e292a55725af6b85",
                 "reference": "7751e69b615c6eca6f783a81e292a55725af6b85",
                 "shasum": ""
             },
@@ -732,21 +732,21 @@
         },
         {
             "name": "yiisoft/yii2-mongodb",
-            "version": "2.0.1",
+            "version": "2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-mongodb.git",
-                "reference": "407050a07c9703b0cc7fa534b70d12e1785a7e2a"
+                "reference": "8f959240e17bfdab6fb4e16be078b81b461988a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-mongodb/zipball/407050a07c9703b0cc7fa534b70d12e1785a7e2a",
-                "reference": "407050a07c9703b0cc7fa534b70d12e1785a7e2a",
+                "url": "https://api.github.com/repos/yiisoft/yii2-mongodb/zipball/8f959240e17bfdab6fb4e16be078b81b461988a2",
+                "reference": "8f959240e17bfdab6fb4e16be078b81b461988a2",
                 "shasum": ""
             },
             "require": {
-                "ext-mongo": ">=1.4.0",
-                "yiisoft/yii2": "*"
+                "ext-mongo": ">=1.5.0",
+                "yiisoft/yii2": ">=2.0.4"
             },
             "type": "yii2-extension",
             "extra": {
@@ -776,7 +776,7 @@
                 "mongodb",
                 "yii2"
             ],
-            "time": "2014-12-07 16:42:41"
+            "time": "2015-05-10 22:10:01"
         },
         {
             "name": "yiisoft/yii2-redis",

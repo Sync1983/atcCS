@@ -14,7 +14,7 @@ return [
     'modules' => [],
     'components' => [
         'user' => [
-            'identityClass' => \backend\models\User::className(),
+            'identityClass' => \common\models\User::className(),
             'enableAutoLogin' => false,
         ],
         'mongodb' => [

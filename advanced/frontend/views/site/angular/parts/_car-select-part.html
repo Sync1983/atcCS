@@ -6,14 +6,26 @@
   
   <div class="row-line">
     <sinput class="car-select-input" 
-            placeholder="Введите производителя или марку автомобиля" 
+            placeholder="Введите производителя или марку автомобиля111" 
             name="mmodel" 
-            ng-model="selector.mmodel" 
-            submit="true" 
-      submit-function="onMMFind()">            
+            ng-model="selector.filter" 
+            submit="false" 
+            submit-function="onMMFind()">            
     </sinput>
   </div>
   
+  <tree ng-model="typeSelector">
+    
+  </tree>  
+  
+  <tile-selector  class="tile-selector"
+                  wsize="5" 
+                  ng-model="tileSelector" 
+                  text-filter="selector.filter"
+                  url = "selector.url" >    
+  </tile-selector>
+  
+  <!--
   <div class="row-line" ng-show="selector.mfcs.length">
     <label class='title'>Подходящие производители</label>
     <ul>
@@ -53,5 +65,5 @@
       </li>
     </ul>
   </div>
-  
+  -->
 </div>

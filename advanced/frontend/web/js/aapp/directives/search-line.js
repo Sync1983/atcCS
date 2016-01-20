@@ -5,16 +5,18 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
     terminal: false,
     restrict: 'E',
     replace: true,
-    transclude: true,
     templateUrl: '/search-line.html',
+    transclude: true,
     scope: {},
-    controller: function controller($scope, $element, $attrs, $transclude){
+    controller: function controller($scope, $element, $attrs, $transclude){      
       var icons = $($element).find("div.search-icons");
       var cars  = icons.find('button#search-cars');
 
       $scope.text = "";
 
       $scope.selector = {
+        filter: "",
+        url: $user.getUrl('helper','get-mft'),
         mmodel: "alm",
         models: {},
         mfcs:  {},
@@ -30,6 +32,12 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
           text: "Категории",
           type: 'request',
           url: $user.getUrl('helper','get-groups'),
+          data: {path:""}
+        }];
+      $scope.typeSelector = [{
+          text: "Список автомобилей",
+          type: 'request',
+          url: $user.getUrl('helper','get-mmt'),
           data: {path:""}
         }];
 
@@ -89,6 +97,7 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
         $scope.selector.selMFCs   = $scope.tagsCtrl.getTags('type','mfc');
         $scope.selector.selModels = $scope.tagsCtrl.getTags('type','model');
         $scope.selector.selDescr  = $scope.tagsCtrl.getTags('type','descr');
+         
         
         if( mmodel.type === "mfc"){
           if( ($scope.selector.selMFCs.length !== 0) &&

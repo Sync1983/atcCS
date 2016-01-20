@@ -37,6 +37,9 @@ class HelperController extends Controller{
       ],
       'get-groups' =>[
         'class'  => helper\GetGroupsAction::className(),
+      ],
+      'get-mmt' =>[
+        'class'  => helper\GetMMTAction::className(),
       ]
     ];
   }

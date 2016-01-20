@@ -19,23 +19,24 @@ class ArticleInfoAction extends TdMigrateAction {
               'supplier'    . "," .
               'description' . "," .
               'type'        .
-             "\r";
+             "\n";
     fputs($f, $str, strlen($str));
     $pos = 0;
+    $str = "";
     while( $row = odbc_fetch_array($data) ){
-      $str = $row['ART_ID']             . "," .
-             "'" . $row['ART_ARTICLE_NR']     . "'," .
-             $row['ART_SUP_ID']         . "," .
-             $row['ART_COMPLETE_DES_ID']. "," .
-             "B('" . 
-                $row['ART_PACK_SELFSERVICE']?"1":"0".
-                $row['ART_MATERIAL_MARK']?"1":"0"   .
-                $row['ART_REPLACEMENT']?"1":"0"     .
-                $row['ART_ACCESSORY']?"1":"0"       . "')".
+      $str.= $row['ART_ID']                         . "," .
+             "'" . $row['ART_ARTICLE_NR']           . "'," .
+             $row['ART_SUP_ID']                     . "," .
+             $row['ART_COMPLETE_DES_ID']            . "," .
+             ($row['ART_PACK_SELFSERVICE']?"1":"0") .
+             ($row['ART_MATERIAL_MARK']?"1":"0"   ) .
+             ($row['ART_REPLACEMENT']?"1":"0"     ) .
+             ($row['ART_ACCESSORY']?"1":"0"       ) .
              "\n";
-      fputs($f, $str, strlen($str));
       $pos++;
       if( ($pos % 10000) == 0) {
+        fputs($f, $str, strlen($str));
+        $str = "";
         echo "Save $pos Lines\r\n";
       }
     }

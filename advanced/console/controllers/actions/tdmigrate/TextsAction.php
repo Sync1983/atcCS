@@ -32,6 +32,8 @@ class TextsAction extends TdMigrateAction {
       
       $text   = mb_convert_encoding($text,'UTF-8','byte2le');
       $text   = str_replace(["\0","\r","\n","\t"], "", $text);
+      $text   = str_replace(["\""], "'", $text);
+      $text   = str_replace(["@"], "(c)", $text);
 
       if( $lng_id == 16 ){
         $lng_rus[$id] = $text;
@@ -39,9 +41,9 @@ class TextsAction extends TdMigrateAction {
         $lng_all[$id] = $text;
       }
 
-      $ids[] = $id;
+      $ids[$id] = $id;
       
-      if( ($pos++ % 10000) == 0 ){
+      if( ($pos++ % 100000) == 0 ){
         echo "Load $pos lines \r\n";
       }
     }

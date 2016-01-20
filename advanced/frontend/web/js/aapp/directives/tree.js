@@ -12,7 +12,7 @@ atcCS.directive( 'tree',['$http', function ($http){
 
     },
     controller: function controller($scope, $element, $attrs, $transclude){
-
+      console.log($element);
       var UL    = $($element);
 
       function itemLoadable(item){

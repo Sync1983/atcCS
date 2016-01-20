@@ -8,8 +8,8 @@ atcCS.directive('sinput', function (){
     terminal: false,
     restrict: 'E',
     replace: true,
-    template: '/_sinput.html',
-    transclude: true,    
+    templateUrl: '/parts/_sinput.html',
+    transclude: false,    
     scope: {
       placeholder: "@",
       value: "@",
@@ -17,7 +17,7 @@ atcCS.directive('sinput', function (){
       submit: "@",
       submitFunction: "&"
     },
-    controller: function controller($scope, $element, $attrs, $transclude){
+    controller: function controller($scope, $element, $attrs, $transclude){      
       $scope.model = null;
 
       var onFocus = function(){        
