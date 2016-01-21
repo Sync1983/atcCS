@@ -65,9 +65,10 @@ SQL;
         SELECT
           DISTINCT mt.path as path,
           mt.name as name
+          nlevel(mt.path) as level
         FROM items it
         INNER JOIN "MMTTree" mt ON  mt.path @> it.path
-        ORDER BY path;
+        ORDER BY level;
 SQL;
 
     return [];
