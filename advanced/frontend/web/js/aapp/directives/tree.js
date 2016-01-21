@@ -9,10 +9,9 @@ atcCS.directive( 'tree',['$http', function ($http){
     transclude: false,
     templateUrl: '/parts/_tree-part.html',
     scope: {
-
+      filter: "@"
     },
-    controller: function controller($scope, $element, $attrs, $transclude){
-      console.log($element);
+    controller: function controller($scope, $element, $attrs, $transclude){      
       var UL    = $($element);
 
       function itemLoadable(item){
@@ -94,6 +93,12 @@ atcCS.directive( 'tree',['$http', function ($http){
         function(newVal){
           scope.data = newVal;
           scope.update();
+          return newVal;
+      });
+      console.log(scope.filter);
+      scope.$watch('filter',
+        function(newVal, oldVal){
+          console.log('Filter',scope.filter, oldVal);
           return newVal;
       });
     }

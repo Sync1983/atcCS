@@ -8,23 +8,14 @@
     <sinput class="car-select-input" 
             placeholder="Введите производителя или марку автомобиля111" 
             name="mmodel" 
-            ng-model="selector.filter" 
-            submit="false" 
-            submit-function="onMMFind()">            
+            ng-model="filter" 
+            submit="false">            
     </sinput>
   </div>
   
-  <tree ng-model="typeSelector">
+  <tree ng-model="typeSelector" filter="{{filter}}">
     
   </tree>  
-  
-  <tile-selector  class="tile-selector"
-                  wsize="5" 
-                  ng-model="tileSelector" 
-                  text-filter="selector.filter"
-                  url = "selector.url" >    
-  </tile-selector>
-  
   <!--
   <div class="row-line" ng-show="selector.mfcs.length">
     <label class='title'>Подходящие производители</label>

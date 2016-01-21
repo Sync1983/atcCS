@@ -13,7 +13,11 @@ class GetMMTAction extends Action{
     /* @var $db yii\db\Connection */
     $db       = \yii::$app->getDb();
     $path     = $data['path'];
-    $pid      = isset($data['pid'])?$data['pid']:0;    
+    $filter   = isset($data['filter'])?$data['filter']:false;
+
+    if ($filter){
+      return $this->filter($filter);
+    }
 
     if( !$path || ($path=="null") ){
       $path = "*{1}";
@@ -22,7 +26,6 @@ class GetMMTAction extends Action{
     }
 
     $SQL = <<<SQL
-
         SELECT
           s.path,
           s.name,
@@ -46,6 +49,28 @@ SQL;
       }
 
     return $answer;
+  }
+
+  public function filter($filter){
+    $SQL = <<<SQL
+        WITH items as (
+          SELECT
+            path
+          FROM "MMTTree"
+          WHERE
+            path ~ '*{1,}'
+            AND
+            name like '$filter%'
+        )
+        SELECT
+          DISTINCT mt.path as path,
+          mt.name as name
+        FROM items it
+        INNER JOIN "MMTTree" mt ON  mt.path @> it.path
+        ORDER BY path;
+SQL;
+
+    return [];
   }
 
   public function beforeRun() {

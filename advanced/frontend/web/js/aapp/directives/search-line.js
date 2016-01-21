@@ -40,6 +40,7 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
           url: $user.getUrl('helper','get-mmt'),
           data: {path:""}
         }];
+      $scope.filter = "asdf"; 
 
       function toggle(window){
         return function(){
@@ -198,9 +199,6 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
       
       $wndMng.setBodyByTemplate($scope.carsWnd, '/parts/_car-select-part.html', $scope);
       $wndMng.setBodyByTemplate($scope.treeWnd, '/parts/_car-select-group.html', $scope);
-      
-      var tags  = $wndMng.getBody($scope.carsWnd).find("div#tags");      
-      $scope.tagsCtrl = $tagsControl.init(tags);
       
       cars.click( toggle($scope.carsWnd) );
 
