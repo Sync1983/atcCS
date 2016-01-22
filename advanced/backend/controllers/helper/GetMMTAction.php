@@ -52,6 +52,10 @@ SQL;
   }
 
   public function filter($filter){
+     /* @var $db yii\db\Connection */
+    $db       = \yii::$app->getDb();
+    $filter   = strtoupper( strval($filter) );
+    
     $SQL = <<<SQL
         WITH items as (
           SELECT
@@ -64,14 +68,32 @@ SQL;
         )
         SELECT
           DISTINCT mt.path as path,
-          mt.name as name
+          mt.name as name,
           nlevel(mt.path) as level
         FROM items it
         INNER JOIN "MMTTree" mt ON  mt.path @> it.path
         ORDER BY level;
 SQL;
 
-    return [];
+    $query  = $db->createCommand($SQL)->queryAll();
+    
+    $data = [];    
+    foreach ($query as $row){      
+      $path = strval($row['path']);
+      $item = [
+        'type'  => 'static',
+        'url'   => "http://rest.atc58.bit/index.php?r=helper/get-mmt",
+        'data'  => ['path'=>$path],
+        'text'  => $row['name']
+      ];
+      if( !isset($data[$path]) ){
+        $data[$path] = [$item];
+      } else {
+        $data[$path][] = $item;
+      }
+    }    
+
+    return $data;
   }
 
   public function beforeRun() {

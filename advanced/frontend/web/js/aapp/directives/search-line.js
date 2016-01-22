@@ -37,10 +37,10 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
       $scope.typeSelector = [{
           text: "Список автомобилей",
           type: 'request',
-          url: $user.getUrl('helper','get-mmt'),
+          url: $user.getUrl('helper','get-mmt'),          
           data: {path:""}
         }];
-      $scope.filter = "asdf"; 
+      $scope.filter = "alm"; 
 
       function toggle(window){
         return function(){
