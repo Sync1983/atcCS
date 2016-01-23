@@ -12,8 +12,8 @@ atcCS.directive( 'tree',['$http', function ($http){
       filter: "@"
     },
     controller: function controller($scope, $element, $attrs, $transclude){      
-      var UL    = $($element);
-      $scope.loadFilter = true;
+      var UL    = $($element);  
+      $scope.filterText = false;
 
       function itemLoadable(item){
         return !item.subItems && item.url && item.type && (item.type === 'request');
@@ -23,6 +23,15 @@ atcCS.directive( 'tree',['$http', function ($http){
         return function(answer){
           var data = answer && answer.data;
           if( !data ){
+            return;
+          }
+           
+          if( data.isRoot === true){
+            delete data.isRoot;            
+            $scope.data.subItems = data;
+            $scope.data.open = true;     
+            console.log('a',$scope.data,data);
+            $scope.update();
             return;
           }
           
@@ -37,12 +46,16 @@ atcCS.directive( 'tree',['$http', function ($http){
           method:       "GET",
           responseType: 'json',
           params: {
-            params: item.data
+            params: {}
           }
         };
         
-        if ( $scope.filter ){
-          request.params.params.filter = $scope.filter;
+        for(var i in item.data){
+          request.params.params[i] = item.data[i];
+        }
+        
+        if ( $scope.filterText ){
+          request.params.params.filter = $scope.filterText;
         }
         
         $http(request).then( serverResponse(item, listItem) );
@@ -51,32 +64,34 @@ atcCS.directive( 'tree',['$http', function ($http){
       function itemClick(item, listItem){
         return function(event){
           event.stopPropagation();
-          if( $(listItem).hasClass('open') ){
-            $(listItem).removeClass('open');
-            return false;
-          }
-          
-          $(listItem).addClass('open');                     
-            
-          if( itemLoadable(item) ){              
+          $(listItem).toggleClass('open');
+          if( $(listItem).hasClass('open') && itemLoadable(item) ){              
             serverRequest(item,listItem);
           }          
         };
       }
 
-      function createItem(item){
+      function createItem( item ){
         var listItem  = $('<li></li>');
         var ul        = $('<ul></ul>');
         var span      = $('<span></span>');
         var text      = item.text || "???";
-
-        if( item.type === "group" ){
-          span.addClass('node');
+        
+        span.addClass(item.type);
+        
+        if( item.open ){
+          listItem.addClass('open');
         }
+        
         span.text(text);
         listItem.append(span);
         listItem.append(ul);
-        createItems(item.subItems,ul); 
+        
+        if( item.subItems ){
+          for( var i in item.subItems ){
+            $(ul).append( createItem(item.subItems[i]) );
+          }          
+        }        
         listItem.click( itemClick(item, listItem) );
         
         return listItem;
@@ -87,28 +102,26 @@ atcCS.directive( 'tree',['$http', function ($http){
         var ul = $(root).find('ul');
 
         for( var i in data){
-          var item = data[i];
-          var htmlItem = createItem(item);
-          $(ul).append(htmlItem);
+          $(ul).append( createItem(data[i]) );
         }
         return answer;
       }
 
-      $scope.update = function treeUpdate(){        
-        createItems($scope.data, UL);
+      $scope.update = function (){        
+        createItems([$scope.data], UL);        
+        console.log('c',$scope.data);
       };
       
-      $scope.clear = function treeUpdate(){
-        function clearSubTree(root){
-          if( root.subItems ){
-            root.subItems = undefined;
-            delete root.subItems;
-          }
+      $scope.load = function (){
+        if( $scope.data.type === 'request' ){          
+          serverRequest($scope.data,UL);
         }
-        
-        var list = UL.find('ul');
-        list.html('');
-        clearSubTree($scope.data);
+      };
+      
+      $scope.clear = function (){        
+        UL.find('ul').html('');        
+        delete $scope.data.open;
+        delete $scope.data.subItems;                  
       };
     },
     link: function link(scope, element, attrs, modelCtrl){
@@ -120,24 +133,22 @@ atcCS.directive( 'tree',['$http', function ($http){
           return newVal;
       });
       
-      scope.$watch('filter',
+      scope.$watch(
+        function() {return scope.filter;},
         function(newVal, oldVal){
-          /*if (scope.data){
-            if( newVal ){
-              scope.data.filter = newVal;
-            } 
-            else {
-              delete scope.data.filter;
-            }
-          }*/
-          console.log('Filter',scope.filter, oldVal, newVal);
+          var strLen = String(newVal).length;
+          console.log(strLen,newVal, scope.data);
+          scope.clear();            
           
-          if( newVal ){
-            console.log('renew');
-            scope.filter = newVal;
-            scope.clear();
-            scope.update();            
+          if( newVal && (newVal !== oldVal) && (strLen > 3) ){
+            scope.filterText = newVal;
+            scope.load();
+            return newVal;
           }
+          
+          scope.filterText = false;
+          scope.update();
+          
           return newVal;
       });
     }

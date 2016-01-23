@@ -12,7 +12,7 @@ class GetGroupsAction extends Action{
     $data     = json_decode($params,true);
     /* @var $db yii\db\Connection */
     $db       = \yii::$app->getDb();
-    $path     = $data['path'];
+    $path     = isset($data['path'])?$data['path']:"null";
     $pid      = isset($data['pid'])?$data['pid']:0;
     $answer   = [];
 
@@ -76,7 +76,7 @@ SQL;
       $query  = \yii::$app->getDb()->createCommand($SQL)->queryAll();
       foreach ($query as $row){
         $answer[] = [
-          'type'  => 'group',
+          'type'  => 'node',
           //'url'   => "http://rest.atc58.bit/index.php?r=helper/get-groups",
           'data'  => ['gid'=>$row['id']],
           'text'  => $row['desc']

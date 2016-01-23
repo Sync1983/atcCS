@@ -28,19 +28,19 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
         selDescr: []
       };
 
-      $scope.treeModel = [{
+      $scope.treeModel = {
           text: "Категории",
           type: 'request',
           url: $user.getUrl('helper','get-groups'),
           data: {path:""}
-        }];
-      $scope.typeSelector = [{
+        };
+      $scope.typeSelector = {
           text: "Список автомобилей",
           type: 'request',
           url: $user.getUrl('helper','get-mmt'),          
           data: {path:""}
-        }];
-      $scope.filter = "alm"; 
+        };
+      $scope.filter = "tig"; 
 
       function toggle(window){
         return function(){

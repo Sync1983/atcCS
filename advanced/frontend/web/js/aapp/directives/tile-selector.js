@@ -13,14 +13,7 @@ atcCS.directive( 'tileSelector',['$http', function ($http){
       textFilter: "@"
     },
     controller: function controller($scope, $element, $attrs, $transclude){
-      $scope.tiles = {
-        "asd":{data:1},
-        "absd":{data:1},
-        "acsd":{data:1},
-        "csd":{data:1},
-        "sd":{data:1},
-        "d":{data:1}
-      };      
+      $scope.tiles = {};      
       $scope.loaded = true;
       
       $scope.update = function(){

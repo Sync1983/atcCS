@@ -12,7 +12,7 @@ class GetMMTAction extends Action{
     $data     = json_decode($params,true);
     /* @var $db yii\db\Connection */
     $db       = \yii::$app->getDb();
-    $path     = $data['path'];
+    $path     = isset($data['path'])?$data['path']:'null';
     $filter   = isset($data['filter'])?$data['filter']:false;
 
     if ($filter){
@@ -77,23 +77,54 @@ SQL;
 
     $query  = $db->createCommand($SQL)->queryAll();
     
-    $data = [];    
-    foreach ($query as $row){      
-      $path = strval($row['path']);
-      $item = [
-        'type'  => 'static',
-        'url'   => "http://rest.atc58.bit/index.php?r=helper/get-mmt",
-        'data'  => ['path'=>$path],
-        'text'  => $row['name']
-      ];
-      if( !isset($data[$path]) ){
-        $data[$path] = [$item];
-      } else {
-        $data[$path][] = $item;
-      }
-    }    
+    $answer = ['isRoot'=>true];
+    foreach ($query as $row){
+      $level = $row['level'];
+      $name  = $row['name'];
+      $path  = $row['path'];
 
-    return $data;
+      $item_data = [
+          'path'  => $path,
+          'open'  => true,
+          'type'  => ($level<3)?'static':'node',
+          //'url'   => "http://rest.atc58.bit/index.php?r=helper/get-mmt",
+          //'data'  => ['path'=>$path],
+          'text'  => $name
+        ];      
+      $this->insertByPath($item_data, $answer);
+    }
+
+    return $answer;
+  }
+
+  protected function insertByPath($data, &$array){
+    $path = explode('.', $data['path']);
+    array_pop($path);
+    $root     = implode('.', $path);    
+    
+    if( !$root ){
+      $array[] = $data;
+    }
+
+    foreach ($array as &$row){
+      if( !is_array($row)){
+        continue;
+      }
+
+      if( $row['path'] == $root ){        
+        if( !isset($row['subItems']) ){
+          $row['subItems'] = [];          
+        }
+        $row['subItems'][] = $data;
+        continue;
+      }
+
+      if( isset($row['subItems']) ){
+        $this->insertByPath($data, $row['subItems']);
+      }
+    }
+
+    return true;
   }
 
   public function beforeRun() {
