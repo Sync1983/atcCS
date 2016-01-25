@@ -78,8 +78,8 @@ div.tree-view{
           background: url("/img/doc.png") no-repeat !important;
           background-size: 14px 14px !important;
           width: 14px;
-          height: 14px;
-        }
+          height: 14px;          
+        }        
       }
       
       &.open{
@@ -99,17 +99,7 @@ div.tree-view{
         ul {
           display: none; 
         }
-      }
-      
-      
-      /*&:before{
-        content: "\229E";
-      }
-      
-      & .open:before {
-        content: "\229F" !important;
-      }*/
-      
+      }      
     }
   }
   

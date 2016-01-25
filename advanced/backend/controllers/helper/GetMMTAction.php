@@ -29,6 +29,7 @@ class GetMMTAction extends Action{
         SELECT
           s.path,
           s.name,
+          nlevel(s.path) as level,
           subpath(s.path, -1) tid
         FROM "MMTTree" s        
         WHERE s.path ~ '$path'
@@ -40,10 +41,11 @@ SQL;
       $query  = $db->createCommand($SQL)->queryAll();      
 
       foreach ($query as $row){
+        $level    =  $row['level'];
         $answer[] = [
-          'type'  => 'request',
+          'type'  => ($level<4)?'request':'node',
           'url'   => "http://rest.atc58.bit/index.php?r=helper/get-mmt",
-          'data'  => ['path'=>$row['path']],
+          'data'  => ($level<4)?['path'=>$row['path']]:$row['tid'],
           'text'  => $row['name']
         ];        
       }
@@ -69,7 +71,8 @@ SQL;
         SELECT
           DISTINCT mt.path as path,
           mt.name as name,
-          nlevel(mt.path) as level
+          nlevel(mt.path) as level,
+          subpath(mt.path,-1) as id
         FROM items it
         INNER JOIN "MMTTree" mt ON  mt.path @> it.path
         ORDER BY level;
@@ -82,13 +85,14 @@ SQL;
       $level = $row['level'];
       $name  = $row['name'];
       $path  = $row['path'];
+      $id    = $row['id'];
 
       $item_data = [
           'path'  => $path,
           'open'  => true,
-          'type'  => ($level<3)?'static':'node',
-          //'url'   => "http://rest.atc58.bit/index.php?r=helper/get-mmt",
-          //'data'  => ['path'=>$path],
+          'type'  => ($level<4)?'request':'node car',
+          'url'   => "http://rest.atc58.bit/index.php?r=helper/get-mmt",
+          'data'  => ($level<4)?['path'=>$row['path']]:$id,
           'text'  => $name
         ];      
       $this->insertByPath($item_data, $answer);

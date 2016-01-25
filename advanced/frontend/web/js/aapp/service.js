@@ -172,6 +172,60 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification', functio
 
     return $http(req);
   };
+  
+  model.findTypeDescr = function findTypeDescr(data, response){
+     var req = {
+      method: 'GET',
+      url: URLto('helper','get-type-description'),
+      responseType: 'json',
+      params: {
+        params: {
+          type:  data
+        }
+      }
+    };
+    
+    function serverResponse(answer){      
+      var data = answer && answer.data;
+      var responseData = new Array();
+      
+      if( !data ){
+        return false;
+      }
+      
+      if( data instanceof Array ){
+        for(var i in data){
+          var item = data[i];
+          responseData.push({            
+            name  : item.name,
+            power : item.power,
+            volume: item.volume,
+            cyl   : item.cylinder,
+            val   : item.valves,
+            fuel  : item.fuel,
+            drive : item.drive,
+            start : new Date(item.start),
+            end   : new Date(item.end)
+          });
+        }
+      } else {
+        responseData.push({            
+            name  : data.name,
+            power : data.power,
+            volume: data.volume,
+            cyl   : data.cylinder,
+            val   : data.valves,
+            fuel  : data.fuel,
+            drive : data.drive,
+            start : new Date(data.start),
+            end   : new Date(data.end)
+          });
+      }
+      response(responseData);      
+    }
+
+    $http(req).then(serverResponse);
+  };
 
   $rootScope.user = model;
   for(var index in model.alerts){

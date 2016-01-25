@@ -12,35 +12,44 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
       var icons = $($element).find("div.search-icons");
       var cars  = icons.find('button#search-cars');
 
-      $scope.text = "";
-
-      $scope.selector = {
-        filter: "",
-        url: $user.getUrl('helper','get-mft'),
-        mmodel: "alm",
-        models: {},
-        mfcs:  {},
-        descriptions: {},
-        descr: "поршн",
-        showDescr: false,
-        selMFCs: [],
-        selModels: [],
-        selDescr: []
-      };
-
+      $scope.filter = "tig"; 
+      $scope.typeFilter = "";
+      
+      $scope.typeInfo = false;
+/*    [{        
+        name: undefined,
+        power: undefined,
+        volume: undefined,
+        cyl: undefined,
+        val: undefined,
+        fuel: undefined,
+        drive: undefined,
+        start: undefined,
+        end: undefined
+      }];*/
+      
       $scope.treeModel = {
           text: "Категории",
           type: 'request',
           url: $user.getUrl('helper','get-groups'),
-          data: {path:""}
+          data: {path:"",type:""}
         };
+        
       $scope.typeSelector = {
           text: "Список автомобилей",
           type: 'request',
           url: $user.getUrl('helper','get-mmt'),          
           data: {path:""}
+        };        
+      
+      $scope.typeSelected = function(data){
+        function response(answer){          
+          $scope.typeInfo = answer;
+          $scope.typeFilter = data;
         };
-      $scope.filter = "tig"; 
+        
+        $user.findTypeDescr(data,response);        
+      };
 
       function toggle(window){
         return function(){
@@ -81,97 +90,6 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
           $scope.selector.descriptions  = ( data && data.descr )   ? selectAndConvert(text, data.descr, 'descr'): {};
         };
       }
-
-      $scope.onMMFind = function(){
-        var text = $scope.selector.mmodel;
-        
-        if( text.length < 2 ){
-          return ;
-        }
-
-        $user.findMModel($scope.selector.mmodel, $scope.tagsCtrl).then(mmodelAnswer(text));
-      };
-
-      $scope.onSelectMModel = function(mmodel){
-        $scope.tagsCtrl.pushTag(mmodel);
-        $scope.selector.mmodel    = "";
-        $scope.selector.selMFCs   = $scope.tagsCtrl.getTags('type','mfc');
-        $scope.selector.selModels = $scope.tagsCtrl.getTags('type','model');
-        $scope.selector.selDescr  = $scope.tagsCtrl.getTags('type','descr');
-         
-        
-        if( mmodel.type === "mfc"){
-          if( ($scope.selector.selMFCs.length !== 0) &&
-                     ($scope.selector.selModels.length !== 0) ){
-
-            $scope.selector.models = [];
-            $scope.selector.mfcs = [];
-            $scope.selector.showDescr = true;
-          } else {
-            $scope.selector.showDescr = false;
-          }
-          return;
-        } else if ( mmodel.type === 'model' ){
-          //Если производители модели не выбраны - нужно запросить и добавить их в теги          
-          if( $scope.selector.selMFCs.length === 0 ){
-            $user.findMFCs($scope.tagsCtrl).then(mmodelAnswer(' '));
-            return;
-          } else if( ($scope.selector.selMFCs.length !== 0) &&
-                     ($scope.selector.selModels.length !== 0) ){
-
-            $scope.selector.models = [];
-            $scope.selector.mfcs = [];
-            $scope.selector.showDescr = true;            
-          } else {
-            $scope.selector.showDescr = false;
-          }
-        } else if( mmodel.type === 'descr' ){
-          $user.findParts($scope.tagsCtrl).then(function(answer){
-            var data = answer && answer.data;
-            if( !data ){
-              return;
-            }
-
-            var window = $wndMng.createWindow({
-              title:  "Список подходящих деталей",
-              hPos:   $scope.carsWnd.hPos - $scope.carsWnd.hSize * 2 - 5,
-              vPos:   $scope.carsWnd.vPos,              
-              vSize:  $scope.carsWnd.vSize,
-              hSize:  $scope.carsWnd.hSize,
-              showStatusBar: false,
-            });            
-            
-            var newScope    = $scope.$new(true);
-            newScope.items  = data.parts;
-            newScope.mfc    = $scope.selector.selMFCs;
-            newScope.model  = $scope.selector.selModels;
-            newScope.descr  = $scope.selector.selDescr;
-            newScope.wnd    = window;
-            
-            $wndMng.setBodyByTemplate(window, '/parts/_car-select-articul-part.html', newScope);
-          });
-        }
-      };
-
-      $scope.onDescrFind = function(){
-        var text = $scope.selector.descr;
-        if( text.length < 2 ){
-          return;
-        }
-        $user.findDescr(text,$scope.tagsCtrl).then(mmodelAnswer(text));
-      };
-
-      $scope.onShowPartTree = function onShowPartTree(){
-        var models = [];
-        for(var i in $scope.selector.selModels){
-          models.push($scope.selector.selModels[i].id);
-        }
-        $scope.treeModel = {
-          type: 'request',
-          url: $user.getUrl('helper','get-groups'),
-          data: models
-        };
-      };
       
       $scope.carsWnd = $wndMng.createWindow({
         title: "Подобрать по автомобилю",

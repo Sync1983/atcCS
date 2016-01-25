@@ -1,60 +1,15 @@
 <div class="car-select">
   
-  <div class='row-line' id='tags' ng-show='tagsCtrl.length()'>
-    
-  </div>
-  
   <div class="row-line">
     <sinput class="car-select-input" 
-            placeholder="Введите производителя или марку автомобиля111" 
+            placeholder="Введите производителя или марку автомобиля (3+ символа)" 
             name="mmodel" 
             ng-model="filter" 
             submit="false">            
     </sinput>
   </div>
   
-  <tree ng-model="typeSelector" filter="{{filter}}">
+  <tree ng-model="typeSelector" filter="{{filter}}" on-select="typeSelected">
     
-  </tree>  
-  <!--
-  <div class="row-line" ng-show="selector.mfcs.length">
-    <label class='title'>Подходящие производители</label>
-    <ul>
-      <li ng-repeat="item in selector.mfcs" ng-click="onSelectMModel(item)" ng-bind-html="item.trustedHtml">
-        <span>{{ item.trustedHtml }}</span>
-      </li>
-    </ul>
-  </div>
-  
-  <div class="row-line" ng-show="selector.models.length">
-    <label class='title'>Подходящие модели</label>
-    <ul>
-      <li ng-repeat="item in selector.models" ng-click="onSelectMModel(item)" ng-bind-html="item.trustedHtml">
-        <span>{{ item.trustedHtml }}</span>
-      </li>
-    </ul>
-  </div>
-  
-  <div class="row-line" ng-show="selector.showDescr">
-    <sinput class="car-select-input" 
-            placeholder="Введите описание детали" 
-            name="descr" 
-            ng-model="selector.descr" 
-            submit="true" 
-      submit-function="onDescrFind()">            
-    </sinput>
-  </div>
-  <div class="row-line" ng-show="selector.showDescr">
-    <a href="#" ng-click="onShowPartTree();">Выбрать из списка</a>
-  </div>
-  
-  <div class="row-line" ng-show="selector.descriptions.length">
-    <label class='title'>Подходящие описания</label>
-    <ul>
-      <li ng-repeat="item in selector.descriptions" ng-click="onSelectMModel(item)" ng-bind-html="item.trustedHtml">
-        <span>{{ item.trustedHtml }}</span>
-      </li>
-    </ul>
-  </div>
-  -->
+  </tree>   
 </div>

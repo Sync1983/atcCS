@@ -12,7 +12,8 @@ class GetGroupsAction extends Action{
     $data     = json_decode($params,true);
     /* @var $db yii\db\Connection */
     $db       = \yii::$app->getDb();
-    $path     = isset($data['path'])?$data['path']:"null";
+    $path     = isset($data['path'])?$data['path']:false;
+    $filter   = isset($data['filter'])?$data['filter']:false;
     $pid      = isset($data['pid'])?$data['pid']:0;
     $answer   = [];
 
@@ -23,7 +24,6 @@ class GetGroupsAction extends Action{
     }
 
     $SQL = <<<SQL
-
         SELECT
           s.id,
           s.type,

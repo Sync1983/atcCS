@@ -9,8 +9,9 @@ atcCS.directive( 'tree',['$http', function ($http){
     transclude: false,
     templateUrl: '/parts/_tree-part.html',
     scope: {
-      filter: "@"
-    },
+      filter: "@",
+      onSelect: "="
+    }, 
     controller: function controller($scope, $element, $attrs, $transclude){      
       var UL    = $($element);  
       $scope.filterText = false;
@@ -27,10 +28,10 @@ atcCS.directive( 'tree',['$http', function ($http){
           }
            
           if( data.isRoot === true){
+            $scope.filterText = false;
             delete data.isRoot;            
             $scope.data.subItems = data;
-            $scope.data.open = true;     
-            console.log('a',$scope.data,data);
+            $scope.data.open = true;                 
             $scope.update();
             return;
           }
@@ -65,6 +66,14 @@ atcCS.directive( 'tree',['$http', function ($http){
         return function(event){
           event.stopPropagation();
           $(listItem).toggleClass('open');
+          
+          if( $(listItem).hasClass('node') ){            
+            if( ($scope.onSelect instanceof Function) && (item.data) ){
+              $scope.onSelect(item.data);
+              return;
+            }
+          }
+          
           if( $(listItem).hasClass('open') && itemLoadable(item) ){              
             serverRequest(item,listItem);
           }          
@@ -81,6 +90,10 @@ atcCS.directive( 'tree',['$http', function ($http){
         
         if( item.open ){
           listItem.addClass('open');
+        }
+        
+        if( span.hasClass('node') ){
+          listItem.addClass('node');
         }
         
         span.text(text);
@@ -108,8 +121,7 @@ atcCS.directive( 'tree',['$http', function ($http){
       }
 
       $scope.update = function (){        
-        createItems([$scope.data], UL);        
-        console.log('c',$scope.data);
+        createItems([$scope.data], UL);
       };
       
       $scope.load = function (){
@@ -136,8 +148,7 @@ atcCS.directive( 'tree',['$http', function ($http){
       scope.$watch(
         function() {return scope.filter;},
         function(newVal, oldVal){
-          var strLen = String(newVal).length;
-          console.log(strLen,newVal, scope.data);
+          var strLen = String(newVal).length;          
           scope.clear();            
           
           if( newVal && (newVal !== oldVal) && (strLen > 3) ){

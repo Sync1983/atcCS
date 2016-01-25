@@ -40,6 +40,9 @@ class HelperController extends Controller{
       ],
       'get-mmt' =>[
         'class'  => helper\GetMMTAction::className(),
+      ],
+      'get-type-description' =>[
+        'class'  => helper\GetTypeDescrAction::className(),
       ]
     ];
   }
