@@ -16,17 +16,6 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
       $scope.typeFilter = "";
       
       $scope.typeInfo = false;
-/*    [{        
-        name: undefined,
-        power: undefined,
-        volume: undefined,
-        cyl: undefined,
-        val: undefined,
-        fuel: undefined,
-        drive: undefined,
-        start: undefined,
-        end: undefined
-      }];*/
       
       $scope.treeModel = {
           text: "Категории",

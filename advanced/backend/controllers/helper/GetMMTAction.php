@@ -89,7 +89,7 @@ SQL;
 
       $item_data = [
           'path'  => $path,
-          'open'  => true,
+          'open'  => ($level==1)?true:false,
           'type'  => ($level<4)?'request':'node car',
           'url'   => "http://rest.atc58.bit/index.php?r=helper/get-mmt",
           'data'  => ($level<4)?['path'=>$row['path']]:$id,

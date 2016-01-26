@@ -69,7 +69,7 @@ atcCS.directive( 'tree',['$http', function ($http){
           
           if( $(listItem).hasClass('node') ){            
             if( ($scope.onSelect instanceof Function) && (item.data) ){
-              $scope.onSelect(item.data);
+              $scope.onSelect(item.data,item,$scope);
               return;
             }
           }
@@ -149,7 +149,7 @@ atcCS.directive( 'tree',['$http', function ($http){
         function() {return scope.filter;},
         function(newVal, oldVal){
           var strLen = String(newVal).length;          
-          scope.clear();            
+          scope.clear();
           
           if( newVal && (newVal !== oldVal) && (strLen > 3) ){
             scope.filterText = newVal;

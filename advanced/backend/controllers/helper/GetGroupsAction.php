@@ -16,6 +16,14 @@ class GetGroupsAction extends Action{
     $filter   = isset($data['filter'])?$data['filter']:false;
     $pid      = isset($data['pid'])?$data['pid']:0;
     $answer   = [];
+    
+    if ( (!$path) && $filter ){
+      return $this->getByFilter($filter,$path);
+    }
+
+    if( $path && $filter ){
+      return $this->getByPathAndFilter($path, $filter);
+    }
 
     if( !$path || ($path=="null") ){
       $path = "*{1}";
@@ -57,6 +65,125 @@ SQL;
       }
 
     return $answer;
+  }
+
+  public function getByPathAndFilter($path, $filter){
+    $spath    = explode('.', $path);
+    $path_id  = array_pop($spath);
+    $filter   = intval($filter);
+    
+    $SQL = <<<SQL
+      SELECT
+        ln.articul_id as art_id,
+        at.number as articul,
+        ds.desc as name,
+        sp.brand as supplier
+      FROM "StrLookup" sl
+      INNER JOIN "Links" ln
+        ON ln.group_id=sl.ga_id AND ln.type_id=$filter
+      INNER JOIN "ArticleInfo" at
+        ON at.id = ln.articul_id
+      LEFT JOIN "Description" ds
+        ON ds.id=at.description
+      LEFT JOIN "Supplier" sp
+        ON sp.id=at.supplier
+      WHERE str_id=$path_id;
+SQL;
+    $query  = \yii::$app->getDb()->createCommand($SQL)->queryAll();
+    $answer = [];
+    foreach ($query as $row){
+      $articul_id = $row['art_id'];
+      $articul    = $row['articul'];
+      $name       = $row['name'];
+      $supplier   = $row['supplier'];
+
+      $answer[] = [
+          'type'  => 'node',
+          //'url'   => "http://rest.atc58.bit/index.php?r=helper/get-groups",
+          'data'  => ['aid' => $articul_id],
+          'text'  => "$name [$articul-$supplier]"
+        ];
+    }
+    
+    return $answer;
+  }
+
+  public function getByFilter($filter){
+    $filter = intval($filter);
+
+    $SQL = <<<SQL
+      WITH path_id AS (
+        SELECT
+          DISTINCT group_id, 
+          sl.str_id::text as str_id
+        FROM "Links" ln
+        INNER JOIN "StrLookup" sl
+          ON sl.ga_id = ln.group_id
+        WHERE type_id=$filter
+        ORDER BY group_id )
+        
+        SELECT
+          DISTINCT st1.path as path,
+          ds.desc as desc,
+          nlevel(st1.path) as level
+        FROM path_id
+        INNER JOIN "SearchTree" st
+          ON st.path ~ concat('*.',str_id,'.*')::lquery
+        INNER JOIN "SearchTree" st1
+          ON st1.path @> st.path
+        INNER JOIN "Description" ds
+          ON ds.id = st1.des_id
+        ORDER BY level ;
+SQL;
+    $query  = \yii::$app->getDb()->createCommand($SQL)->queryAll();
+    $answer = [];
+    foreach ($query as $row){
+      $path   = $row['path'];
+      $desc   = $row['desc'];
+      $level  = $row['level'];
+      
+      $item_data = [
+        'path'  => $path,
+        'open'  => ($level==1)?true:false,
+        'type'  => 'request',
+        'url'   => "http://rest.atc58.bit/index.php?r=helper/get-groups",
+        'data'  => ['path'=>$row['path']],
+        'text'  => $desc
+      ];
+      $this->insertByPath($item_data, $answer);
+    }
+
+    return $answer;
+  }
+
+  protected function insertByPath($data, &$array){
+    $path = explode('.', $data['path']);
+    array_pop($path);
+    $root     = implode('.', $path);
+
+    if( !$root ){
+      $array[] = $data;
+    }
+
+    foreach ($array as &$row){
+      if( !is_array($row)){
+        continue;
+      }
+
+      if( $row['path'] == $root ){
+        if( !isset($row['subItems']) ){
+          $row['subItems'] = [];
+        }
+        $row['subItems'][] = $data;
+        continue;
+      }
+
+      if( isset($row['subItems']) ){
+        $this->insertByPath($data, $row['subItems']);
+      }
+    }
+
+    return true;
   }
 
   public function getGroupByPID($pid){
