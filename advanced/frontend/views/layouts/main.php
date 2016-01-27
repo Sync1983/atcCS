@@ -98,7 +98,7 @@ AAppAsset::register($this);
 </script>
  <!-- Collect from 'frontend/views/site/angular//search-line.html' file -->
 <script type="text/ng-template" id="/search-line.html">
-<div class="search-line">  <input type="text" id="search-text" placeholder="Номер детали или её описание" ng-model="text"/>  <div class="search-icons">    <ul>      <li><button id="search-sub"><span class="glyphicon glyphicon-download"></span></button></li>      <li><button id="search-cars"><span class="glyphicon cars"></span></button></li>      <li><button id="search-cfg"><span class="glyphicon glyphicon-cog"></span></button></li>      <li><button id="search-request"><span class="glyphicon glyphicon-search"></span></button></li>    </ul>  </div>  </div>
+<div class="search-line">  <input type="text" id="search-text" placeholder="Номер детали или её описание" ng-model="text" />  <div class="search-icons">    <ul>      <li><button id="search-sub"><span class="glyphicon glyphicon-download"></span></button></li>      <li><button id="search-cars"><span class="glyphicon cars"></span></button></li>      <li><button id="search-cfg"><span class="glyphicon glyphicon-cog"></span></button></li>      <li><button id="search-request"><span class="glyphicon glyphicon-search"></span></button></li>    </ul>  </div>  </div>
 </script>
  <!-- Collect from 'frontend/views/site/angular//window.html' file -->
 <script type="text/ng-template" id="/window.html">

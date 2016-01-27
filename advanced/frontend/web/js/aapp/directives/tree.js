@@ -15,6 +15,7 @@ atcCS.directive( 'tree',['$http', function ($http){
     controller: function controller($scope, $element, $attrs, $transclude){      
       var UL    = $($element);  
       $scope.filterText = false;
+      $scope.loaded     = false;
 
       function itemLoadable(item){
         return !item.subItems && item.url && item.type && (item.type === 'request');
@@ -22,16 +23,19 @@ atcCS.directive( 'tree',['$http', function ($http){
 
       function serverResponse(item, listItem){
         return function(answer){
+          $scope.loaded = false;
+          listItem.removeClass('preloader');
           var data = answer && answer.data;
           if( !data ){
             return;
           }
            
           if( data.isRoot === true){
-            $scope.filterText = false;
+            $scope.clear();
+            //$scope.filterText = false;
             delete data.isRoot;            
             $scope.data.subItems = data;
-            $scope.data.open = true;                 
+            $scope.data.open = true;
             $scope.update();
             return;
           }
@@ -51,14 +55,20 @@ atcCS.directive( 'tree',['$http', function ($http){
           }
         };
         
+        if( $scope.loaded ){
+          return;
+        }
+        
+        $scope.loaded = true;
+        
         for(var i in item.data){
           request.params.params[i] = item.data[i];
         }
-        
         if ( $scope.filterText ){
           request.params.params.filter = $scope.filterText;
-        }
+        }        
         
+        listItem.addClass('preloader');
         $http(request).then( serverResponse(item, listItem) );
       }
 
@@ -69,12 +79,12 @@ atcCS.directive( 'tree',['$http', function ($http){
           
           if( $(listItem).hasClass('node') ){            
             if( ($scope.onSelect instanceof Function) && (item.data) ){
-              $scope.onSelect(item.data,item,$scope);
+              $scope.onSelect(item.data,item,$scope,event);
               return;
             }
           }
           
-          if( $(listItem).hasClass('open') && itemLoadable(item) ){              
+          if( $(listItem).hasClass('open') && itemLoadable(item) ){            
             serverRequest(item,listItem);
           }          
         };
@@ -86,17 +96,21 @@ atcCS.directive( 'tree',['$http', function ($http){
         var span      = $('<span></span>');
         var text      = item.text || "???";
         
-        span.addClass(item.type);
+        span.addClass(item.type);        
         
         if( item.open ){
           listItem.addClass('open');
+        }
+        
+        if( item.title ){
+          span.attr('title',item.title);          
         }
         
         if( span.hasClass('node') ){
           listItem.addClass('node');
         }
         
-        span.text(text);
+        span.html(text);
         listItem.append(span);
         listItem.append(ul);
         
@@ -126,7 +140,9 @@ atcCS.directive( 'tree',['$http', function ($http){
       
       $scope.load = function (){
         if( $scope.data.type === 'request' ){          
-          serverRequest($scope.data,UL);
+          var li = UL.find('li').first();
+          li.removeClass('open');
+          serverRequest($scope.data,li);
         }
       };
       
@@ -149,14 +165,14 @@ atcCS.directive( 'tree',['$http', function ($http){
         function() {return scope.filter;},
         function(newVal, oldVal){
           var strLen = String(newVal).length;          
-          scope.clear();
           
-          if( newVal && (newVal !== oldVal) && (strLen > 3) ){
-            scope.filterText = newVal;
+          if( newVal && (newVal !== oldVal) && (strLen >= 2) ){
+            scope.filterText = newVal;            
             scope.load();
             return newVal;
           }
           
+          scope.clear();
           scope.filterText = false;
           scope.update();
           

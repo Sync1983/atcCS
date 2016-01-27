@@ -12,18 +12,19 @@ class GetMMTAction extends Action{
     $data     = json_decode($params,true);
     /* @var $db yii\db\Connection */
     $db       = \yii::$app->getDb();
-    $path     = isset($data['path'])?$data['path']:'null';
+    $path     = isset($data['path'])?$data['path']:false;
     $filter   = isset($data['filter'])?$data['filter']:false;
 
-    if ($filter){
+    if ($filter && !$path){
       return $this->filter($filter);
     }
 
-    if( !$path || ($path=="null") ){
+    if( !$path ){
       $path = "*{1}";
     } else {
       $path .= ".*{1}";
     }
+
 
     $SQL = <<<SQL
         SELECT
@@ -57,7 +58,7 @@ SQL;
      /* @var $db yii\db\Connection */
     $db       = \yii::$app->getDb();
     $filter   = strtoupper( strval($filter) );
-    
+
     $SQL = <<<SQL
         WITH items as (
           SELECT

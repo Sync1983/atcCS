@@ -87,7 +87,8 @@ SQL;
         ON ds.id=at.description
       LEFT JOIN "Supplier" sp
         ON sp.id=at.supplier
-      WHERE str_id=$path_id;
+      WHERE str_id=$path_id
+      ORDER BY at.number;
 SQL;
     $query  = \yii::$app->getDb()->createCommand($SQL)->queryAll();
     $answer = [];
@@ -100,8 +101,9 @@ SQL;
       $answer[] = [
           'type'  => 'node',
           //'url'   => "http://rest.atc58.bit/index.php?r=helper/get-groups",
-          'data'  => ['aid' => $articul_id],
-          'text'  => "$name [$articul-$supplier]"
+          'data'  => ['aid' => $articul_id, 'number'=>$articul],
+          'text'  => "<button class=\"search-btn\"></button><button class=\"info-btn\"></button> <b>$articul</b> <i>$supplier</i> [$name] ",
+          'title' => "Артикул: $articul Производитель: $supplier Название: $name"
         ];
     }
     
@@ -110,7 +112,7 @@ SQL;
 
   public function getByFilter($filter){
     $filter = intval($filter);
-
+    
     $SQL = <<<SQL
       WITH path_id AS (
         SELECT
@@ -152,7 +154,7 @@ SQL;
       ];
       $this->insertByPath($item_data, $answer);
     }
-
+    $answer['isRoot'] = true;
     return $answer;
   }
 

@@ -55,12 +55,19 @@ div.tree-view{
       span{
         width: 100%;
         margin-left: 16px;
-        text-overflow: ellipsis;    
+        line-height: 1em;
+        height: 13px;
+        text-overflow: ellipsis;
+        overflow: hidden;
         white-space: nowrap;
         display: inline-block;
         
         &:hover{
-          font-weight: bold;          
+          font-weight: bold;       
+          background-color: #CBCEDA;
+          border-radius: 7px;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
         }
         
         &::before{          
@@ -93,6 +100,16 @@ div.tree-view{
         ul{
           display: block;
         }
+      }
+      
+      &.preloader{        
+        background-color: rgba(164, 164, 164, 0.53);
+        background-image: url("/img/preloader.gif");
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-blend-mode: hue;
+        border-radius: 10px;        
       }
       
       &:not(.open){

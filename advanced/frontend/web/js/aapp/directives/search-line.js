@@ -7,14 +7,16 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
     replace: true,
     templateUrl: '/search-line.html',
     transclude: true,
-    scope: {},
+    scope: {
+      query: "=",
+    },
     controller: function controller($scope, $element, $attrs, $transclude){      
       var icons = $($element).find("div.search-icons");
-      var cars  = icons.find('button#search-cars');
+      var cars  = icons.find('button#search-cars');    
+      var input = $($element).find("input");
 
       $scope.filter = "tig"; 
-      $scope.typeFilter = "";
-      
+      $scope.typeFilter = "";      
       $scope.typeInfo = false;
       
       $scope.treeModel = {
@@ -35,48 +37,26 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
         function response(answer){          
           $scope.typeInfo = answer;
           $scope.typeFilter = data;
+          $wndMng.show($scope.treeWnd);
         };
         
         $user.findTypeDescr(data,response);        
+      };
+      
+      $scope.groupSelected = function(data,item,lscope,event){
+        var target = $(event.target);
+        
+        if( target.hasClass('search-btn') ){
+          input.val( data['number'] );
+          input.trigger('change');          
+          return;
+        }
+        console.log(event);
       };
 
       function toggle(window){
         return function(){
           $wndMng.toggle(window);
-        };
-      }
-
-      function selectAndConvert(text,data, type){
-        var result = [];
-        for(var i in data){
-
-          var value = data[i];
-          var regReplace = new RegExp(text,'im');
-
-          result.push({
-            id: i,
-            type: type,
-            text: value,
-            trustedHtml:  $sce.trustAsHtml(
-                            String(value).
-                              replace( regReplace, '<b>' + text.toUpperCase() + '</b>')
-                          )
-          });
-        }
-
-        return result;
-      }
-
-      function mmodelAnswer(text){
-        return function(answer){          
-          var data = answer && answer.data;
-          if( !data ){
-            return ;
-          }
-
-          $scope.selector.models        = ( data && data.model ) ? selectAndConvert(text, data.model, 'model'): {};
-          $scope.selector.mfcs          = ( data && data.mfc )   ? selectAndConvert(text, data.mfc, 'mfc'): {};
-          $scope.selector.descriptions  = ( data && data.descr )   ? selectAndConvert(text, data.descr, 'descr'): {};
         };
       }
       
@@ -101,7 +81,7 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
         hAlign: 'right',
         vAlign: 'top',
         hideIfClose: true,
-        //show: false
+        show: false
       });
       
       $wndMng.setBodyByTemplate($scope.carsWnd, '/parts/_car-select-part.html', $scope);
@@ -110,21 +90,19 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
       cars.click( toggle($scope.carsWnd) );
 
     },    
-    link: function link(scope, element, attrs, modelCtrl){    
-      
+    link: function link(scope, element, attrs, modelCtrl){      
       scope.$watch(
         function() { return modelCtrl.$viewValue; },
         function(newVal){
-          scope.text = newVal;
+          scope.text = newVal;          
           return newVal;
       });
 
-      scope.$watch(
-        function(scope) { return scope.text; },
-        function(newVal){
+      scope.$watch("text",
+        function(newVal){          
           modelCtrl.$setViewValue(newVal);
           return newVal;
-      });
+      },true);
     }
   };
 }] );

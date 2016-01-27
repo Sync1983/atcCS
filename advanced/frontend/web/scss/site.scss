@@ -140,3 +140,33 @@ form.login-form{
   line-height: initial;
   top: 100px;
 }
+
+div.tree-view{
+  ul{
+    li{
+      button{        
+        top: -3px;
+        width: 14px;
+        height: 14px;
+        background-color: transparent;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        border:none;
+        outline: none;
+        position: relative;
+        
+        &:hover{
+          background-color: #D4D4F5;
+        }
+        
+        &.search-btn{
+          background-image: url('/img/search_icon.png');
+        }
+        &.info-btn{
+          background-image: url('/img/info_icon.png');
+          background-size: 100% 95%;
+        }
+      }
+    }
+  }
+}

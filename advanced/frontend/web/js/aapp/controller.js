@@ -4,7 +4,7 @@
 atcCS.controller( 'searchControl', ['$scope','$filter', 'User', function($scope,$filter,$user) {
     'use strict';
     $scope.markup = null;
-    $scope.query  = "asd";
+    $scope.query  = "asda";
 
     $scope.searchListLodaded = function listLoaded(){
       $("body").popover({

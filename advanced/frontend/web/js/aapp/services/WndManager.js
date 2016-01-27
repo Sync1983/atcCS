@@ -95,7 +95,7 @@ function wndManagerClass($templateCache, $compile){
     _stack: [],
     _inTray: [],
     area: "body",
-    tray: "div.tray-bar",
+    tray: "div.tray-bar"
   };
 
   function initDrag(wnd, area, header, resize){
@@ -131,7 +131,11 @@ function wndManagerClass($templateCache, $compile){
 
                             var dx = event.pageX - wnd._wnd_data.resize.posX;
                             var dy = event.pageY - wnd._wnd_data.resize.posY;
-
+                            
+                            if( wnd.hAlign == 'right'){
+                              dx = -dx;
+                            }
+                            
                             wnd._wnd_data.resize = {
                               posX: event.pageX,
                               posY: event.pageY
@@ -285,6 +289,8 @@ function wndManagerClass($templateCache, $compile){
         left  = wnd._hPos;
         break;
       case 'right':
+        var resize  = $(body).find("div.resize");
+        resize.addClass('left-angle');
         left  = wnd._hPos -  wnd.hSize - 5;
         break;
       case 'center':
@@ -328,19 +334,21 @@ function wndManagerClass($templateCache, $compile){
   }
 
   function uVisible(wnd, body){
-    if( wnd.show !== body.is(':visible') ){
-      if( wnd.show ){
-        body.fadeIn(200);
-      } else {
-        body.fadeOut(200);
-      }
-    }
-
     var close = body.find('button.destroy');
     var min   = body.find('button.minimize');
     var resize= body.find('div.resize');
     var status= body.find('div.statusbar');
     var content = body.find('div.content');
+    
+    if( wnd.show !== body.is(':visible') ){
+      if( wnd.show ){
+        body.fadeIn(200);
+        content.fadeIn(200);
+      } else {
+        body.fadeOut(200);
+      }
+    }
+
     
     function changeState(item, key){
       if( key ){
@@ -453,7 +461,23 @@ function wndManagerClass($templateCache, $compile){
   };
 
   model.toggle = function toggle(wnd){
+    if( wnd._wnd_data._minimize ){
+      popFromTray(wnd,this);
+      return;
+    }
     wnd.show = !wnd.show;
+  };
+  
+  model.show = function show(wnd){
+    if( wnd._wnd_data._minimize ){
+      popFromTray(wnd,this);
+      return;
+    }
+    wnd.show = true;
+  };
+  
+  model.hide = function hide(wnd){
+    wnd.show = false;
   };
 
   return model;
