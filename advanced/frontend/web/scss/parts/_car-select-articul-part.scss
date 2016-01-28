@@ -155,8 +155,10 @@ div.articuls-info{
       */
       & button.load-info{
         top: -35px;
-        line-height: 20px;
-        color: $atc_color;
+        width: 25px;
+        height: 25px;
+        background: url('/img/info_icon.png') no-repeat;
+        background-size: 24px 24px;
         position: relative;
       }
     }    

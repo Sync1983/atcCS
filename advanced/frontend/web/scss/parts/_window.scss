@@ -67,7 +67,16 @@
     bottom: 26px;
     padding: 5px;
     overflow-y: auto;
-    position: absolute;    
+    position: absolute;   
+    
+    & div.preloader{
+      width: 100%;
+      height: 16px;
+      border-radius: 10px;
+      background-image: url('/img/preloader.gif');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
   }
   
   & > div.resize{

@@ -1,4 +1,5 @@
-<div class="articuls-info" ng-controller="articulListController">
+<div class="articuls-info" ng-controller="articulListController">  
+  <div class="preloader" ng-if="!id "></div>
   <div class="row-line">
     <div class="sub-row">
       <strong>Информация по артикулу:</strong><br>      
@@ -35,7 +36,7 @@
         <label>Производитель</label><span>{{item.brand}}</span>
       </div>
       
-      <button ng-click="onLoadArticulInfo(item);" class="btn pull-right load-info" title="Информация по артикулу"><span class="glyphicon glyphicon-list-alt"></span></button>
+      <button ng-click="onLoadArticulInfo(item);" class="btn pull-right load-info" title="Информация по артикулу"></button>
     </li>
   </ul>  
 </div>

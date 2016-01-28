@@ -1,4 +1,4 @@
-atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function ($user, $tagsControl, $wndMng, $sce){
+atcCS.directive('searchLine', ['User','$wndMng','$sce','$articulWnd', '$searchDropdown' ,function ($user, $wndMng, $sce, $articulWnd, $searchDropdown){
   return {
     require: "ngModel",
     priority: 0,
@@ -16,9 +16,9 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
       var input = $($element).find("input");
 
       $scope.filter = "tig"; 
-      $scope.typeFilter = "";      
+      $scope.typeFilter = false;
       $scope.typeInfo = false;
-      
+            
       $scope.treeModel = {
           text: "Категории",
           type: 'request',
@@ -51,8 +51,15 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
           input.trigger('change');          
           return;
         }
+        if( target.hasClass('info-btn') ){
+          $articulWnd.requestInfo(data['aid'],$scope.treeWnd,data['number']);
+          return;
+        }
+        
         console.log(event);
       };
+      
+      $searchDropdown.setParent(input);
 
       function toggle(window){
         return function(){
@@ -87,8 +94,7 @@ atcCS.directive('searchLine', ['User','tagsControl','$wndMng','$sce', function (
       $wndMng.setBodyByTemplate($scope.carsWnd, '/parts/_car-select-part.html', $scope);
       $wndMng.setBodyByTemplate($scope.treeWnd, '/parts/_car-select-group.html', $scope);
       
-      cars.click( toggle($scope.carsWnd) );
-
+      cars.click( toggle($scope.carsWnd) );      
     },    
     link: function link(scope, element, attrs, modelCtrl){      
       scope.$watch(
