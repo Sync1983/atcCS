@@ -80,6 +80,10 @@ AAppAsset::register($this);
 <script type="text/ng-template" id="/parts/_login-part.html">
 <?php $form = yii\widgets\ActiveForm::begin([        'options' => [          'class' => 'login-form'       ]    ]);?><div class="row-line">  <sinput class="login-input" placeholder="Введите логин или адрес почты" name="login" ng-model="login.name" submit="true" submit-function="onLogin()"></sinput></div><div class="row-line">  <sinput class="login-input" placeholder="Введите пароль" name="password" ng-model="login.password" submit="true" submit-function="onLogin()"></sinput></div><div class="row-line" style="text-align:center;">  <scheckbox name="rememberMe" label="Запомнить меня" ng-model="login.remember"/></div><div class="row-line" style="text-align:center;">  <label ng-click="onLogin()">Войти</label>  <label>Регистрация</label></div>    <?php yii\widgets\ActiveForm::end();?>
 </script>
+ <!-- Collect from 'frontend/views/site/angular//parts/_search-dropdown-part.html' file -->
+<script type="text/ng-template" id="/parts/_search-dropdown-part.html">
+<div class="searh-history">  <span class="header">Прошлые запросы:</span>  <span ng-repeat="hitem in history">    {{hitem}}  </span></div><div class="search-helper">  <div class="row-line" ng-repeat="shitem in helper">    <span class="header">Артикул: </span>    <span class="search-articul" ng-click="onArticulSelect(shitem.number)">{{shitem.number}}</span>    <span class="header">Производитель:</span>    <span class="search-brand">{{shitem.brand}}</span>  </div></div>
+</script>
  <!-- Collect from 'frontend/views/site/angular//parts/_sinput.html' file -->
 <script type="text/ng-template" id="/parts/_sinput.html">
 <div class="sinput">  <input class="sinput"          placeholder="{{placeholder}}"          value="{{value}}"          name="{{name}}"          ng-value="value"          ng-model="model"/>  </div> 

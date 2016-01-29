@@ -10,15 +10,19 @@ atcCS.directive('searchLine', ['User','$wndMng','$sce','$articulWnd', '$searchDr
     scope: {
       query: "=",
     },
-    controller: function controller($scope, $element, $attrs, $transclude){      
+    controller: function controller($scope, $element, $attrs, $transclude){
       var icons = $($element).find("div.search-icons");
       var cars  = icons.find('button#search-cars');    
+      var subs  = icons.find('button#search-sub');    
       var input = $($element).find("input");
+      $scope.history  = ['123','qwrasd3134','1124aasdadf'];
+      $scope.helper   = [];
+      $scope.keyTimer = false;
 
-      $scope.filter = "tig"; 
+      $scope.filter = ''; 
       $scope.typeFilter = false;
       $scope.typeInfo = false;
-            
+      //Создание структур данных      
       $scope.treeModel = {
           text: "Категории",
           type: 'request',
@@ -58,14 +62,8 @@ atcCS.directive('searchLine', ['User','$wndMng','$sce','$articulWnd', '$searchDr
         
         console.log(event);
       };
-      
-      $searchDropdown.setParent(input);
-
-      function toggle(window){
-        return function(){
-          $wndMng.toggle(window);
-        };
-      }
+      //Создание дополнительных отображений
+      $searchDropdown.setParent($element);
       
       $scope.carsWnd = $wndMng.createWindow({
         title: "Подобрать по автомобилю",
@@ -76,7 +74,7 @@ atcCS.directive('searchLine', ['User','$wndMng','$sce','$articulWnd', '$searchDr
         hAlign: 'right',
         vAlign: 'top',
         hideIfClose: true,
-        //show: false
+        show: false
       });
 
       $scope.treeWnd = $wndMng.createWindow({
@@ -90,11 +88,42 @@ atcCS.directive('searchLine', ['User','$wndMng','$sce','$articulWnd', '$searchDr
         hideIfClose: true,
         show: false
       });
-      
+      //Установка темплейтов
       $wndMng.setBodyByTemplate($scope.carsWnd, '/parts/_car-select-part.html', $scope);
       $wndMng.setBodyByTemplate($scope.treeWnd, '/parts/_car-select-group.html', $scope);
+      $searchDropdown.setTemplate('/parts/_search-dropdown-part.html', $scope);
+      //Установка слушателей
+      cars.click( toggle($scope.carsWnd) ); 
+      subs.click( $searchDropdown.toggle );
+      input.keydown(onKeyDown);      
       
-      cars.click( toggle($scope.carsWnd) );      
+      $scope.onArticulSelect = function (number){
+        input.val( number );
+        input.trigger('change'); 
+        $searchDropdown.hide();
+      };
+      
+      function onKeyDown(event){        
+        if( $scope.keyTimer ){
+          clearTimeout($scope.keyTimer);
+        }
+        $scope.keyTimer = setTimeout(typingTimerOn,700);
+      };
+      
+      function typingTimerOn(event){        
+        $user.getTypingHelper( input.val(), function (data){
+          if( (data instanceof Array) && data.length ){
+            $scope.helper = data;
+            $searchDropdown.show();
+          }          
+        });
+      };  
+      
+      function toggle(window){
+        return function(){
+          $wndMng.toggle(window);
+        };
+      }
     },    
     link: function link(scope, element, attrs, modelCtrl){      
       scope.$watch(

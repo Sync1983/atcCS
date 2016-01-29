@@ -43,6 +43,9 @@ class HelperController extends Controller{
       ],
       'get-type-description' =>[
         'class'  => helper\GetTypeDescrAction::className(),
+      ],
+      'get-typed-helper' =>[
+        'class'  => helper\GetTypedHelperAction::className(),
       ]
     ];
   }

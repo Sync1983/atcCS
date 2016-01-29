@@ -1,0 +1,15 @@
+<div class="searh-history">
+  <span class="header">Прошлые запросы:</span>
+  <span ng-repeat="hitem in history">
+    {{hitem}}
+  </span>
+</div>
+
+<div class="search-helper">
+  <div class="row-line" ng-repeat="shitem in helper">
+    <span class="header">Артикул: </span>
+    <span class="search-articul" ng-click="onArticulSelect(shitem.number)">{{shitem.number}}</span>
+    <span class="header">Производитель:</span>
+    <span class="search-brand">{{shitem.brand}}</span>
+  </div>
+</div>

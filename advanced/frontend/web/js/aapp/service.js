@@ -226,6 +226,26 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification', functio
 
     $http(req).then(serverResponse);
   };
+  
+  model.getTypingHelper = function getTypingHelper(typedText, callback){
+    var req = {
+      method: 'GET',
+      url: URLto('helper','get-typed-helper'),
+      responseType: 'json',
+      params: {
+        params: String(typedText)
+      }
+    };
+    
+    function serverResponse(answer){
+      var data = answer && answer.data;
+      if( data && (callback instanceof Function) ){
+        callback(data);
+      }      
+    }
+
+    $http(req).then(serverResponse);
+  };
 
   $rootScope.user = model;
   for(var index in model.alerts){
