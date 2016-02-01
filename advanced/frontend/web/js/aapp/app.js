@@ -1,1 +1,1 @@
-var atcCS = angular.module('atcCS',['ngCookies']);
+var atcCS = angular.module('atcCS',['ngCookies','ngRoute']);

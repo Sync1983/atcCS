@@ -1,8 +1,4 @@
-<?php
-use yii\helpers\Url;
-
-?>
-
+<?php use yii\helpers\Url; ?>
 <!-- Строка контактов -->
 <div class="info">
   <div class="header-up">
@@ -24,26 +20,6 @@ use yii\helpers\Url;
   <search-line ng-model="query">
 
   </search-line>
-  <!--inputhelper
-                    input-class = "form-control"
-                    ng-model    = "query"
-                    placeholder = "Введите артикул запчасти... "
-                    url         = "http://rest.atc58.bit/index.php?r=helper/articul"
-                    param       = "search-string"
-                    start-length= "3"
-                    sub-filter  = "inputHelper"
-                    on-load     = "searchListLodaded()"
-                    >
-    <div>
-      <span class="header">Артикул: {{item.article}}</span>
-      <small>Производитель: {{item.supply}} <span ng-show="item.descrRU" class="descr">Описание: {{item.descrRU}}</span></small>
-      <ajax-button title="{{item.article}} - {{item.supply}}" data="{{item.article}}" url = "http://rest.atc58.bit/index.php?r=helper/cross" name="cross-selector">
-        <span class="glyphicon glyphicon-random"></span>
-      </ajax-button>      
-      <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>
-    </div>
-  </inputhelper -->
-
 </div>
 <!-- Блок меню -->
 <div class="main-menu-left">  
@@ -77,8 +53,3 @@ use yii\helpers\Url;
     <notification-items></notification-items>      
   </window>
 </div>
-
-<?php
-  /* @var $this yii\web\View */
-  //$this->registerJs("$('.circle').tooltip({});");
-  //$this->registerJs("$('[data-toggle=\"dropdown\"').dropdown({});");

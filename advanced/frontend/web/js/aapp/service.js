@@ -246,6 +246,26 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification', functio
 
     $http(req).then(serverResponse);
   };
+  
+  model.getBrands = function getBrands(searchText, callback){
+    var req = {
+      method: 'GET',
+      url: URLto('search','get-brands'),
+      responseType: 'json',
+      params: {
+        params: String(searchText)
+      }
+    };
+    
+    function serverResponse(answer){
+      var data = answer && answer.data;
+      if( data && (callback instanceof Function) ){
+        callback(data);
+      }      
+    }
+
+    $http(req).then(serverResponse);
+  };
 
   $rootScope.user = model;
   for(var index in model.alerts){

@@ -1,18 +1,11 @@
 /* global atcCS */
 
-
-atcCS.controller( 'searchControl', ['$scope','$filter', 'User', function($scope,$filter,$user) {
+atcCS.controller( 'searchControl', [
+    '$scope','$filter', 'User' ,'$routeParams',
+    function($scope,$filter,$user,$routeParams ) {
     'use strict';
     $scope.markup = null;
-    $scope.query  = "asda";
-
-    $scope.searchListLodaded = function listLoaded(){
-      $("body").popover({
-        container: "body",
-        selector: "[data-toggle=popover]"
-      });
-    };
-    
+    $scope.query  = "3192066200";    
 }]);
 
 atcCS.controller( 'headControl',['$scope','User','$wndMng','$templateCache', function($scope,$user,$wndMng,$templateCache) {

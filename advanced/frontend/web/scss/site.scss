@@ -44,6 +44,10 @@ html, body{
     margin: 0;
     width: 100%;
   }
+  
+  & p.powerd-by{
+    font-size: 0.85em;
+  }
 }
 
 @import "_parts.scss";

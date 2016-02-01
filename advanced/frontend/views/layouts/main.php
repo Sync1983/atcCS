@@ -19,6 +19,7 @@ AAppAsset::register($this);
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" xmlns:ng="http://angularjs.org">
 <head>
+    <base href="/">
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
@@ -32,7 +33,9 @@ AAppAsset::register($this);
   <div class="container-fluid">
     <?php $this->beginContent('@app/views/layouts/menu.php');
           $this->endContent(); ?>
-    <div ng-view class="view">&nbsp;</div>
+    <div class="view">
+      <div ng-view></div>
+    </div>
   </div>
   <div class="tray-bar">
     
@@ -42,7 +45,7 @@ AAppAsset::register($this);
 <footer class="footer">
     <div class="container-fluid">
         <p class="">&copy; АвтоТехСнаб <?= date('Y') ?></p>
-        <p class=""><?= Yii::powered() ?></p>
+        <p class="powerd-by"><?= Yii::powered() ?></p>
     </div>
 </footer>
   
@@ -54,7 +57,7 @@ AAppAsset::register($this);
 </script>
  <!-- Collect from 'frontend/views/site/angular//main-page.html' file -->
 <script type="text/ng-template" id="/main-page.html">
-<!DOCTYPE html><!-- --><html>  <head>    <title>TODO supply a title</title>    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">  </head>  <body>    <div>TODO write content</div>  </body></html>
+MainPage
 </script>
  <!-- Collect from 'frontend/views/site/angular//modal-window.html' file -->
 <script type="text/ng-template" id="/modal-window.html">
@@ -62,7 +65,7 @@ AAppAsset::register($this);
 </script>
  <!-- Collect from 'frontend/views/site/angular//parts/_articul-info-part.html' file -->
 <script type="text/ng-template" id="/parts/_articul-info-part.html">
-<div class="articuls-info" ng-controller="articulListController">    <div class="preloader" ng-if="!id "></div>  <div class="row-line">    <div class="sub-row">      <strong>Информация по артикулу:</strong><br>          </div>    <div class="sub-row">      <label>Артикул</label><span>{{number}}</span><br>    </div>    <div class="sub-row">      <label>Производитель</label><span>{{supplier}}</span><br>    </div>    <div class="sub-row">      <label>Описание</label><span>{{description}}</span>    </div>  </div>  <div class="row-line">    <div class="sub-row">      <strong>Варианты замены:</strong><br>          </div>  </div>  <ul>        <li ng-repeat="item in cross" articul-id="{{item.id}}">            <div class="sub-row" ng-switch on="item.type">        <label>Номер</label>          <span><strong>{{item.full_number}}[{{item.number}}]</strong></span>          <span ng-switch-when="1">Номер производителя</span>          <span ng-switch-when="2">?</span>          <span ng-switch-when="3">Оригинальный номер</span>          <span ng-switch-when="4">Аналог</span>          <span ng-switch-when="5">?</span>      </div>            <div class="sub-row">        <label>Производитель</label><span>{{item.brand}}</span>      </div>            <button ng-click="onLoadArticulInfo(item);" class="btn pull-right load-info" title="Информация по артикулу"></button>    </li>  </ul>  </div>
+<div class="articuls-info">    <div class="preloader" ng-if="!id "></div>  <div class="row-line">    <div class="sub-row">      <strong>Информация по артикулу:</strong><br>          </div>    <div class="sub-row">      <label>Артикул</label><span>{{number}}</span><br>    </div>    <div class="sub-row">      <label>Производитель</label><span>{{supplier}}</span><br>    </div>    <div class="sub-row">      <label>Описание</label><span>{{description}}</span>    </div>  </div>  <div class="row-line">    <div class="sub-row">      <strong>Варианты замены:</strong><br>          </div>  </div>  <ul>        <li ng-repeat="item in cross track by $index" articul-id="{{item.aid}}">            <div class="sub-row" ng-switch on="item.type">        <label>Номер</label>          <span><strong>{{item.full_number}}[{{item.number}}]</strong></span>          <span ng-switch-when="1">Номер производителя</span>          <span ng-switch-when="2">?</span>          <span ng-switch-when="3">Оригинальный номер</span>          <span ng-switch-when="4">Аналог</span>          <span ng-switch-when="5">?</span>      </div>            <div class="sub-row">        <label>Производитель</label><span>{{item.brand}}</span>      </div>            <button ng-click="onLoadArticulInfo(item);" class="btn pull-right load-info" title="Информация по артикулу"></button>    </li>  </ul>  </div>
 </script>
  <!-- Collect from 'frontend/views/site/angular//parts/_car-select-articul-part.html' file -->
 <script type="text/ng-template" id="/parts/_car-select-articul-part.html">
@@ -82,7 +85,7 @@ AAppAsset::register($this);
 </script>
  <!-- Collect from 'frontend/views/site/angular//parts/_search-dropdown-part.html' file -->
 <script type="text/ng-template" id="/parts/_search-dropdown-part.html">
-<div class="searh-history">  <span class="header">Прошлые запросы:</span>  <span ng-repeat="hitem in history">    {{hitem}}  </span></div><div class="search-helper">  <div class="row-line" ng-repeat="shitem in helper">    <span class="header">Артикул: </span>    <span class="search-articul" ng-click="onArticulSelect(shitem.number)">{{shitem.number}}</span>    <span class="header">Производитель:</span>    <span class="search-brand">{{shitem.brand}}</span>  </div></div>
+<div class="searh-history">  <span class="header">Прошлые запросы:</span>  <span ng-repeat="hitem in history">    {{hitem}}  </span></div><div class="search-helper">  <div class="row-line" ng-repeat="shitem in helper">    <span class="header">Артикул: </span>    <span class="search-articul" ng-click="onArticulSelect(shitem.number)">{{shitem.number}}</span>    <button class="info-item" title="Информация..." ng-click="onDropDownInfo(shitem.aid,shitem.number)"></button>    <span class="header">Производитель:</span>    <span class="search-brand">{{shitem.brand}}</span>  </div></div>
 </script>
  <!-- Collect from 'frontend/views/site/angular//parts/_sinput.html' file -->
 <script type="text/ng-template" id="/parts/_sinput.html">
@@ -96,9 +99,13 @@ AAppAsset::register($this);
 <script type="text/ng-template" id="/parts/_tree-part.html">
 <div class="tree-view" >  <ul>      </ul>  </div>
 </script>
+ <!-- Collect from 'frontend/views/site/angular//search-brands.html' file -->
+<script type="text/ng-template" id="/search-brands.html">
+Ищем епт! {{searchText}}
+</script>
  <!-- Collect from 'frontend/views/site/angular//search-line.html' file -->
 <script type="text/ng-template" id="/search-line.html">
-<div class="search-line">  <input type="text" id="search-text" placeholder="Номер детали или её описание" ng-model="text" />  <div class="search-icons">    <ul>      <li><button id="search-sub"><span class="glyphicon glyphicon-download"></span></button></li>      <li><button id="search-cars"><span class="glyphicon cars"></span></button></li>      <li><button id="search-cfg"><span class="glyphicon glyphicon-cog"></span></button></li>      <li><button id="search-request"><span class="glyphicon glyphicon-search"></span></button></li>    </ul>  </div>  </div>
+<div class="search-line">  <input type="text" id="search-text" placeholder="Номер детали или её описание" ng-model="text" />  <div class="search-icons">    <ul>      <li><button id="search-sub"><span class="glyphicon glyphicon-download"></span></button></li>      <li><button id="search-cars"><span class="glyphicon cars"></span></button></li>      <li><button id="search-cfg"><span class="glyphicon glyphicon-cog"></span></button></li>      <li><button id="search-request"><span class="glyphicon glyphicon-search"></span></button></li>          </ul>  </div>  </div>
 </script>
  <!-- Collect from 'frontend/views/site/angular//window.html' file -->
 <script type="text/ng-template" id="/window.html">

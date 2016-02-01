@@ -9,6 +9,7 @@
   <div class="row-line" ng-repeat="shitem in helper">
     <span class="header">Артикул: </span>
     <span class="search-articul" ng-click="onArticulSelect(shitem.number)">{{shitem.number}}</span>
+    <button class="info-item" title="Информация..." ng-click="onDropDownInfo(shitem.aid,shitem.number)"></button>
     <span class="header">Производитель:</span>
     <span class="search-brand">{{shitem.brand}}</span>
   </div>

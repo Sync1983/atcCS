@@ -29,7 +29,7 @@ SQL;
     $answer = [];
     foreach ($query as $row){
       $answer[] = [
-        'id' => $row['part_id'],
+        'aid' => $row['part_id'],
         'number'  => $row['part_full_number'],
         'brand'  => $row['brand']
       ];

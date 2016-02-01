@@ -21,7 +21,9 @@ class AngularAsset extends AssetBundle
     public $js = [
         'angular/angular.min.js',
         'angular-sanitize/angular-sanitize.min.js',
-        'angular-cookies/angular-cookies.min.js'
+        'angular-cookies/angular-cookies.min.js',
+        'angular-route/angular-route.js'
+
     ];
     public $depends = [      
     ];

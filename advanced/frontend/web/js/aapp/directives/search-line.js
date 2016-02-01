@@ -1,4 +1,6 @@
-atcCS.directive('searchLine', ['User','$wndMng','$sce','$articulWnd', '$searchDropdown' ,function ($user, $wndMng, $sce, $articulWnd, $searchDropdown){
+atcCS.directive('searchLine', [
+  'User','$wndMng','$articulWnd', '$searchDropdown','$location',
+  function ($user, $wndMng, $articulWnd, $searchDropdown,$location){
   return {
     require: "ngModel",
     priority: 0,
@@ -14,6 +16,7 @@ atcCS.directive('searchLine', ['User','$wndMng','$sce','$articulWnd', '$searchDr
       var icons = $($element).find("div.search-icons");
       var cars  = icons.find('button#search-cars');    
       var subs  = icons.find('button#search-sub');    
+      var search= icons.find('button#search-request');    
       var input = $($element).find("input");
       $scope.history  = ['123','qwrasd3134','1124aasdadf'];
       $scope.helper   = [];
@@ -95,6 +98,7 @@ atcCS.directive('searchLine', ['User','$wndMng','$sce','$articulWnd', '$searchDr
       //Установка слушателей
       cars.click( toggle($scope.carsWnd) ); 
       subs.click( $searchDropdown.toggle );
+      search.click( onSearchClick );
       input.keydown(onKeyDown);      
       
       $scope.onArticulSelect = function (number){
@@ -103,9 +107,32 @@ atcCS.directive('searchLine', ['User','$wndMng','$sce','$articulWnd', '$searchDr
         $searchDropdown.hide();
       };
       
+      $scope.onDropDownInfo = function (aid,number){
+        $articulWnd.requestInfo(aid,$scope.treeWnd,number);
+      };
+      
+      $scope.onStartSearch = function(){
+        var searchText = input.val();
+        $searchDropdown.hide();
+        $scope.$apply(function() {
+          $location.path('brands/'+searchText);          
+        });        
+      };
+      
+      function onSearchClick(event){
+        $searchDropdown.hide();
+        $scope.onStartSearch();
+        return;
+      }
+      
       function onKeyDown(event){        
         if( $scope.keyTimer ){
           clearTimeout($scope.keyTimer);
+        }
+        
+        if( event.keyCode === 13 ){
+          $scope.onStartSearch();
+          return;
         }
         $scope.keyTimer = setTimeout(typingTimerOn,700);
       };
