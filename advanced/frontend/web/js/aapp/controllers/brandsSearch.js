@@ -6,14 +6,13 @@ atcCS.controller( 'brandsSearch', [
     'use strict';    
     $scope.searchText = $routeParams.searchText || false;
     
-    console.log("Load");
-    console.log($scope);
-    console.log($routeParams);
     if( $scope.searchText ){
+      $scope.inSearch = true;
       $user.getBrands( $scope.searchText, serverResponse);
     }
     
     function serverResponse(data){
+      $scope.inSearch = false;
       console.log(data);
     }
     

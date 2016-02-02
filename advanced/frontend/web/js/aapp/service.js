@@ -253,13 +253,16 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification', functio
       url: URLto('search','get-brands'),
       responseType: 'json',
       params: {
-        params: String(searchText)
+        params: {
+          text: String(searchText),
+          use_analog: model.analogShow 
+        }
       }
     };
     
     function serverResponse(answer){
       var data = answer && answer.data;
-      if( data && (callback instanceof Function) ){
+      if( callback instanceof Function ){
         callback(data);
       }      
     }

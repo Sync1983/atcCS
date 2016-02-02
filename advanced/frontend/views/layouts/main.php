@@ -101,7 +101,7 @@ MainPage
 </script>
  <!-- Collect from 'frontend/views/site/angular//search-brands.html' file -->
 <script type="text/ng-template" id="/search-brands.html">
-Ищем епт! {{searchText}}
+<div class="brands-out">  <div ng-if="!inSearch" class="in-search">Поиск...</div>  </div>Ищем епт! {{searchText}}
 </script>
  <!-- Collect from 'frontend/views/site/angular//search-line.html' file -->
 <script type="text/ng-template" id="/search-line.html">
