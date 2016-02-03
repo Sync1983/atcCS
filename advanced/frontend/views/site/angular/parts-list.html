@@ -1,0 +1,31 @@
+<div class="parts-out">
+  <div class="breadcrumb">
+    <span>Поиск</span>
+    <span>{{searchText}}</span>
+    <span><a href="/brands/{{searchText}}/{{timestamp}}">Производители</a></span>
+    <span>{{brand}}</span>
+  </div>
+  <div ng-if="inSearch" class="in-search"></div>    
+  <div ng-if="!inSearch" class="count">Варианты деталей по запросу "<b>{{searchText}}</b>" от производителя <b>{{brand}}</b>:</div>  
+  
+  <table ng-table="tableParams" class="table table-condensed table-bordered table-striped">
+    <colgroup>
+      <col width="10%"/>
+      <col width="15%"/>
+      <col width="40%"/>
+      <col width="8%"/>
+      <col width="8%"/>
+      <col width="8%"/>
+      <col width="8%"/>
+    </colgroup>
+        <tr ng-repeat="row in $data">
+          <td data-title="'Производитель'" sortable="'a'">{{row.a}}</td>
+          <td data-title="'Артикул'">{{row.b}}</td>
+          <td data-title="'Наименование'">{{row.c}}</td>
+          <td data-title="'Цена'"></td>
+          <td data-title="'Срок'"></td>
+          <td data-title="'Наличие'"></td>
+          <td data-title="'В корзину'"></td>
+        </tr>
+      </table>
+</div>

@@ -25,7 +25,7 @@ function userModel(){
       {head: "Ошибка авторизации", text: "Ошибка при авторизации", style:"btn-danger", new:1},*/
     ],
 
-    analogShow  : false,      //Отображать аналоги
+    analogShow  : true,      //Отображать аналоги
     isLogin     : false,      //Вход выполнен
     accessToken : false       //access-token для запросов
     

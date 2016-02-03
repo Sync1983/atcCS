@@ -2,6 +2,7 @@ List of included views
 ajax-button.html
 main-page.html
 modal-window.html
+parts-list.html
 parts/_articul-info-part.html
 parts/_car-select-articul-part.html
 parts/_car-select-group.html

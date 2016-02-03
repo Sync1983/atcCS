@@ -24,7 +24,8 @@
         "bower-asset/angular-sanitize": "*",
         "bower-asset/angular-bootstrap-checkbox": "*",
         "bower-asset/angular-route": "*",
-        "bower-asset/angular-cookies": "*"
+        "bower-asset/angular-cookies": "*",
+        "bower-asset/ng-table": "*"        
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "14eb22e6344afed6c93596d942df4f9b",
-    "content-hash": "6795f78850f3237c306b62903c73e5d8",
+    "hash": "bb0d698ba1f5e69d020938c0f18dd519",
+    "content-hash": "3527e27023e9a2bcad924f52e9ff77c1",
     "packages": [
         {
             "name": "bower-asset/angular",
-            "version": "v1.4.8",
+            "version": "v1.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/angular/bower-angular.git",
-                "reference": "572a4fcc552c27c0f4bb1b9aab395249218c1255"
+                "reference": "a69eba562dc18df13f27ca0274c90ee26c29004e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/angular/bower-angular/zipball/572a4fcc552c27c0f4bb1b9aab395249218c1255",
-                "reference": "572a4fcc552c27c0f4bb1b9aab395249218c1255",
+                "url": "https://api.github.com/repos/angular/bower-angular/zipball/a69eba562dc18df13f27ca0274c90ee26c29004e",
+                "reference": "a69eba562dc18df13f27ca0274c90ee26c29004e",
                 "shasum": ""
             },
             "type": "bower-asset-library",
@@ -71,20 +71,20 @@
         },
         {
             "name": "bower-asset/angular-cookies",
-            "version": "v1.4.8",
+            "version": "v1.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/angular/bower-angular-cookies.git",
-                "reference": "bd9a2031fae9c33ba6ee8433e820c82641e44d22"
+                "reference": "cf2e23660fbbc0d9e74eaa8a535b42ae58b70805"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/angular/bower-angular-cookies/zipball/bd9a2031fae9c33ba6ee8433e820c82641e44d22",
-                "reference": "bd9a2031fae9c33ba6ee8433e820c82641e44d22",
+                "url": "https://api.github.com/repos/angular/bower-angular-cookies/zipball/cf2e23660fbbc0d9e74eaa8a535b42ae58b70805",
+                "reference": "cf2e23660fbbc0d9e74eaa8a535b42ae58b70805",
                 "shasum": ""
             },
             "require": {
-                "bower-asset/angular": "1.4.8"
+                "bower-asset/angular": "1.4.9"
             },
             "type": "bower-asset-library",
             "extra": {
@@ -94,20 +94,20 @@
         },
         {
             "name": "bower-asset/angular-route",
-            "version": "v1.4.8",
+            "version": "v1.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/angular/bower-angular-route.git",
-                "reference": "623c956a4151bd8e864ba7d166eb8744413dde7d"
+                "reference": "7636556e472878aea93bedfcdb6c1a809794ac00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/angular/bower-angular-route/zipball/623c956a4151bd8e864ba7d166eb8744413dde7d",
-                "reference": "623c956a4151bd8e864ba7d166eb8744413dde7d",
+                "url": "https://api.github.com/repos/angular/bower-angular-route/zipball/7636556e472878aea93bedfcdb6c1a809794ac00",
+                "reference": "7636556e472878aea93bedfcdb6c1a809794ac00",
                 "shasum": ""
             },
             "require": {
-                "bower-asset/angular": "1.4.8"
+                "bower-asset/angular": "1.4.9"
             },
             "type": "bower-asset-library",
             "extra": {
@@ -117,20 +117,20 @@
         },
         {
             "name": "bower-asset/angular-sanitize",
-            "version": "v1.4.8",
+            "version": "v1.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/angular/bower-angular-sanitize.git",
-                "reference": "0c5944519fbac1d6a633f6a647efbc4cf6a1c5c9"
+                "reference": "698bf7b7801e3a901df670b929b50fca1eefbe4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/angular/bower-angular-sanitize/zipball/0c5944519fbac1d6a633f6a647efbc4cf6a1c5c9",
-                "reference": "0c5944519fbac1d6a633f6a647efbc4cf6a1c5c9",
+                "url": "https://api.github.com/repos/angular/bower-angular-sanitize/zipball/698bf7b7801e3a901df670b929b50fca1eefbe4d",
+                "reference": "698bf7b7801e3a901df670b929b50fca1eefbe4d",
                 "shasum": ""
             },
             "require": {
-                "bower-asset/angular": "1.4.8"
+                "bower-asset/angular": "1.4.9"
             },
             "type": "bower-asset-library",
             "extra": {
@@ -140,16 +140,16 @@
         },
         {
             "name": "bower-asset/angular-ui-select",
-            "version": "v0.13.2",
+            "version": "v0.14.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/angular-ui/ui-select.git",
-                "reference": "a7dc9d0226130d288fbc97ad93930da38225234a"
+                "reference": "85401e081c4e048b7a32bde0ee513ab1dbdecf9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/angular-ui/ui-select/zipball/a7dc9d0226130d288fbc97ad93930da38225234a",
-                "reference": "a7dc9d0226130d288fbc97ad93930da38225234a",
+                "url": "https://api.github.com/repos/angular-ui/ui-select/zipball/85401e081c4e048b7a32bde0ee513ab1dbdecf9b",
+                "reference": "85401e081c4e048b7a32bde0ee513ab1dbdecf9b",
                 "shasum": ""
             },
             "require": {
@@ -326,6 +326,41 @@
                 "mask",
                 "plugins"
             ]
+        },
+        {
+            "name": "bower-asset/ng-table",
+            "version": "v0.8.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/esvit/ng-table.git",
+                "reference": "44c9cd566b6010b31f7cf960d75d5a87a9058eb3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/esvit/ng-table/zipball/44c9cd566b6010b31f7cf960d75d5a87a9058eb3",
+                "reference": "44c9cd566b6010b31f7cf960d75d5a87a9058eb3",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/angular": ">=1.2.0,<2.0.0"
+            },
+            "require-dev": {
+                "bower-asset/angular-digest-hud": "~0.1.9",
+                "bower-asset/angular-mocks": "~1.4.3",
+                "bower-asset/angular-resource": "~1.4.3",
+                "bower-asset/lodash": "~3.10.0"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "./dist/ng-table.min.js",
+                    "./dist/ng-table.min.css"
+                ],
+                "bower-asset-ignore": [
+                    "examples",
+                    "src"
+                ]
+            }
         },
         {
             "name": "bower-asset/punycode",

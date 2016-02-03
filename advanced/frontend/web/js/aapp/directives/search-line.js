@@ -112,10 +112,11 @@ atcCS.directive('searchLine', [
       };
       
       $scope.onStartSearch = function(){
-        var searchText = input.val();
+        var searchText  = input.val();
+        var clearText   = String(searchText).replace(/\W*/gi,"");
         $searchDropdown.hide();
         $scope.$apply(function() {
-          $location.path('brands/'+searchText);          
+          $location.path('brands/'+clearText);
         });        
       };
       

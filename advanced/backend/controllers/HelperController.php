@@ -14,24 +14,12 @@ class HelperController extends Controller{
   
   public function actions() {
     return [
-      'articul' => [
-        'class'  => helper\ArticulAction::className(),
-      ],
-      'parse-search' => [
-        'class'  => helper\ParseSearchAction::className(),
-      ],
       'mmodel-search' =>[
         'class'  => helper\MModelSearchAction::className(),
-      ],
-      'mfcs-search' =>[
-        'class'  => helper\MFCSearchAction::className(),
-      ],
+      ],      
       'description-search' =>[
         'class'  => helper\DescriptionSearchAction::className(),
-      ],
-      'parts-search' =>[
-        'class'  => helper\PartsSearchAction::className(),
-      ],
+      ],      
       'articul-info' =>[
         'class'  => helper\ArticulInfoAction::className(),
       ],

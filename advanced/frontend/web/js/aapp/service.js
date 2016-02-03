@@ -269,6 +269,36 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification', functio
 
     $http(req).then(serverResponse);
   };
+  
+  model.getParts = function getParts(CLSID, ident, callback){
+    var req = {
+      method: 'GET',
+      url: URLto('search','get-parts'),
+      responseType: 'json',
+      params: {
+        params: {
+          clsid: String(CLSID),
+          ident: String(ident)
+        }
+      }
+    };
+    
+    function serverResponse(answer){
+      var data = answer && answer.parts;
+      if ( callback instanceof Function ){
+        callback(data);
+      }
+    }
+    
+    function serverError(error){
+      console.log('getParts Server error:', error );
+      if ( callback instanceof Function ){
+        callback({});
+      }
+    }
+    
+    $http(req).then(serverResponse,serverError);
+  };
 
   $rootScope.user = model;
   for(var index in model.alerts){
