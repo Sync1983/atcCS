@@ -31,7 +31,7 @@ atcCS.controller( 'partsSearch', [
         count: 2        
       },
       {
-        counts: [25,50,100,-1],        
+        counts: [25,50,100],        
         paginationMaxBlocks: 13,
         paginationMinBlocks: 2,
         data: dta 

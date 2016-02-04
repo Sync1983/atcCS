@@ -27,6 +27,8 @@
   }  
   
   .ng-table{
+    margin: 0;
+      
     thead{
       line-height: 1rem;      
       font-size: 0.75rem;
@@ -65,5 +67,28 @@
         }
       }      
     }
+  }
+  
+  .ng-table-counts{
+    button.btn {      
+      padding: 0px 12px;
+      
+      span {
+        height: 1rem;
+        line-height: 1rem;
+        font-size: 0.75rem;
+      }      
+      
+    }
+  }
+  .pagination{
+    margin: 0;
+    font-size: 0.75rem;
+    line-height: 1rem;    
+    
+    li > a{
+      padding: 0.2rem 0.55rem;
+    }
+      
   }
 }
