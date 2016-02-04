@@ -123,6 +123,17 @@ abstract class Provider extends Object implements SearchInterface{
     return $answer;
   }
 
+  protected function executeRequest($request){
+    $answer = curl_exec($request);
+
+    if(curl_errno($request) !== 0){
+      \yii::info("Curl error: ". curl_error($request));
+      return false;
+    }
+
+    return $answer;
+  }
+
   protected abstract function getRowName();
   protected abstract function getNamesMap();
 

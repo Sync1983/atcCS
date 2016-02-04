@@ -51,6 +51,22 @@ class SearchEngine extends Object{
     return $answer;
   }
 
+  public function getParts($clsid, $ident){
+    if( !$clsid || !$ident || !isset($this->providers[$clsid]) ){
+      return [];
+    }
+    /* @var $provider SearchInterface */
+    $provider = $this->providers[$clsid];
+    $result = $provider->getParts($ident);
+    foreach ($result as &$row){
+      $row['maker_id'] = $clsid;
+      $row['price']   = round(floatval($row['price']),2);
+      $row['maker']   = $this->brandsRename(strtoupper($row['maker']));
+      $row['articul'] = preg_replace('/\W*/i', "", $row['articul']);
+    }
+    return $result;
+  }
+
   protected function providersMap($method,$data){
     $requests     = curl_multi_init();
     $requestsList = [];
@@ -92,10 +108,14 @@ class SearchEngine extends Object{
   protected function brandsRename($brand){
     $renameMap = [
       'KIAHYUNDAIMOBIS' => 'HYUNDAI-KIA-MOBIS',
-      'HYUNDAI'         => 'HYUNDAI-KIA-MOBIS',
       'HYUNDAIKIA'      => 'HYUNDAI-KIA-MOBIS',
       'HYUNDAIKIAMOBIS' => 'HYUNDAI-KIA-MOBIS',
-      'KIA'             => 'HYUNDAI-KIA-MOBIS'
+      'HYUNDAI'         => 'HYUNDAI-KIA-MOBIS',
+      'HYUNDAI/KIA MOBIS'=> 'HYUNDAI-KIA-MOBIS',
+      'MOBIS'           => 'HYUNDAI-KIA-MOBIS',
+      'KIA'             => 'HYUNDAI-KIA-MOBIS',
+      'MB'              => 'MERCEDES-BENZ',
+      'MERCEDES'        => 'MERCEDES-BENZ'
     ];
     
     return isset($renameMap[$brand])?$renameMap[$brand]:$brand;

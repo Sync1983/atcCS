@@ -24,6 +24,12 @@ class ProviderPartcom extends Provider{
     return $answer;
   }
 
+  public function getParts($ident) {
+    list($maker,$code) = explode("@@", $ident);
+    $data = ['number'=>$code,'maker_id'=>$maker,'find_substitutes'=>"on"];
+    return $this->prepareRequest($data,false,  $this->_url."search/parts");
+  }
+
   protected function onlineRequestHeaders($ch) {
     $headers = [
       "Authorization: Basic ".  base64_encode($this->_default_params['Login']. ":" .$this->_default_params['Password']),

@@ -7,7 +7,24 @@ function storage($rootScope){
   };
   
   function clearLocalStorage(){
+    if( !isLocalStorageAvailable() ){
+      return;
+    }
     
+    var time = Math.round( (new Date()).getTime() / 1000);
+    
+    for (var i  in localStorage){       
+      if( i === String(i*1) && ((time-i*1) > 60*60*30) ){
+        localStorage.removeItem(i);
+        continue;
+      }
+      if( String(i).indexOf('@') !== -1 ){
+        var keyTime = String(i).substr(0,i.indexOf('@')) * 1;        
+        if( (time-keyTime) > 60*60*30 ) {
+          localStorage.removeItem(i);
+        }        
+      }       
+    }
   };
   
   function isLocalStorageAvailable() {

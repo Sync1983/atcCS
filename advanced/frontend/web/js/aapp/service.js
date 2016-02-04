@@ -278,13 +278,13 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification', functio
       params: {
         params: {
           clsid: String(CLSID),
-          ident: String(ident)
+          ident: String(ident)          
         }
       }
     };
     
-    function serverResponse(answer){
-      var data = answer && answer.parts;
+    function serverResponse(answer){      
+      var data = answer && answer.data;
       if ( callback instanceof Function ){
         callback(data);
       }

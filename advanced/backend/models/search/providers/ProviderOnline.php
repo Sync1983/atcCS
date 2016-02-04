@@ -32,14 +32,55 @@ class ProviderOnline extends Provider{
     return $answer;
   }
   
+  public function getParts($ident) {
+    $data   = ['ident'=>$ident];
+    $reqest = $this->prepareRequest($data);
+
+    $answer = $this->executeRequest($reqest);
+    
+    $array  = $this->xmlToArray($answer);
+    if( isset($array['uid']) ){
+      $array = ['detail' => $array];
+    }
+
+    $data   = $array[$this->getRowName()];
+    
+    $result = [];
+    foreach ($data as $item){
+      $converted = $this->renameByMap($item, $this->getNamesMap());
+      if( is_array($converted["lot_quantity"]) ){
+        $converted["lot_quantity"] = 0;
+      }
+      if( is_array($converted["is_original"]) ){
+        $converted["is_original"] = false;
+      }
+      if( is_array($converted["name"]) ){
+        $converted["name"] = "--";
+      }
+
+      $result[] = $converted;
+    }
+    return $result;    
+  }
+
   protected function getNamesMap() {
-    return [      
+    return [
+      "code"      => "articul",
+      "producer"  => "maker",
+      "uid"       => "code",
+      "caption"   => "name",
+      "price"     => "price",
+      "deliverydays" => "shiping",
+      "stock"     => "stock",
+      "stockinfo" => "info",
+      "analog"    => "is_original",
+      "rest"      => "count",
+      "amount"    => "lot_quantity"
     ];
   }
 
   protected function getRowName() {
     return 'detail';
   }
-
 
 }

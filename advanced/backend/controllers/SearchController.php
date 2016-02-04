@@ -17,6 +17,9 @@ class SearchController extends Controller{
       'get-brands' => [
         'class'  => search\GetBrandsAction::className(),
       ],
+      'get-parts' => [
+        'class'  => search\GetPartsAction::className(),
+      ],
     ];
   }
 

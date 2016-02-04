@@ -6,45 +6,50 @@ atcCS.controller( 'partsSearch', [
     'use strict';    
     var brands = false;
     var requestParams = {};
-    $scope.loading = {};    
-    var dta = [
-      {
-        a:1,
-        b:2,
-        c:3
-      },
-      {
-        a:2,
-        b:3,
-        c:4
-      },
-      {
-        a:4,
-        b:5,
-        c:6
-      }
-    ];
-    
-    $scope.tableParams = new NgTableParams(
-      {
-        page: 1,
-        count: 2        
-      },
-      {
-        counts: [25,50,100],        
-        paginationMaxBlocks: 13,
-        paginationMinBlocks: 2,
-        data: dta 
-      }
-    );
-    
-    console.log($scope.tableParams);
-    
+    $scope.loading    = {};    
+    $scope.data       = [];
     $scope.timestamp  = $routeParams.timestamp  || false;
     $scope.searchText = $routeParams.searchText || false;
     $scope.brand      = $routeParams.brand      || false;
     
-    if( $scope.timestamp && (brands = $storage.get($scope.timestamp)) ) {      
+    $scope.tableParams = new NgTableParams(
+      {  },
+      {        
+        counts: [],
+        total: 0,
+        groupBy: function (item) {          
+          //return item.articul + ' - ' + item.maker;
+          return item.maker;
+        },
+        getData: function($defer, params){          
+          var sorting = params.sorting();
+          
+          var originalArray = [];
+          var notOriginalArray = [];
+          var resultArray = [];
+          
+          for( var key in $scope.data){
+            var item = $scope.data[key];
+            if( (item.maker === $scope.brand) && (item.articul === $scope.searchText) ){
+              originalArray.push(item);              
+            } else {
+              notOriginalArray.push(item);
+            }
+          }
+          
+          originalArray.sort(sortFunction(sorting));
+          notOriginalArray.sort(sortFunction(sorting));
+          
+          resultArray = Array.concat(originalArray,notOriginalArray);
+          
+          $defer.resolve(resultArray);
+        }
+      }
+    );    
+    
+    brands = $storage.get($scope.timestamp);
+    
+    if( $scope.timestamp && brands ) {      
       for(var brand in brands.rows){        
         if( brand !== $scope.brand ){
           continue;
@@ -56,15 +61,46 @@ atcCS.controller( 'partsSearch', [
     for(var i in requestParams){
       var clsid = requestParams[i].id;
       var ident = requestParams[i].uid;
-      /*$user.getParts(clsid,ident,function(data){
-        serverResponse(clsid,data);
-      });*/
-      $scope.loading[clsid] = clsid;
+      if( $storage.get($scope.timestamp+'@'+clsid+'@'+ident) ){
+        
+        serverResponse(clsid,ident,$storage.get($scope.timestamp+'@'+clsid+'@'+ident) );
+                
+      } else{
+        $user.getParts(clsid,ident,serverResponseCall(clsid, ident));
+        $scope.loading[clsid] = clsid;        
+      }
     }
     
-    function serverResponse(clsid,data){
-      delete($scope.loading[clsid]);
-      
+    function serverResponseCall($clsid, $ident){
+      return function(data){
+        serverResponse($clsid,$ident,data);
+      };
     }
-    console.log(requestParams);
+    
+    function serverResponse(clsid,ident,data){
+      delete($scope.loading[clsid]);      
+      $storage.set($scope.timestamp+'@'+clsid+'@'+ident,data);
+      $scope.data = Array.concat($scope.data,data.rows);      
+      $scope.tableParams.reload();
+    }
+    
+    function sortFunction($sort){
+      return function(itemA,itemB){
+        var result = 0;        
+        for(var key in $sort){
+          var direct = ($sort[key]==='desc')?-1:1;
+          var valA   = itemA[key];
+          var valB   = itemB[key];
+          if( (key==='price') || (key==='shiping') || (key==='count') ){
+            valA  *= 1;
+            valB  *= 1;            
+          }
+          
+          result += (valA>valB)?direct:0;
+          result -= (valA<valB)?direct:0;
+        }
+        return result;
+      };
+    }
+    
 }]);

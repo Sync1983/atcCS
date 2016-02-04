@@ -31,7 +31,7 @@ class ProviderMoskovia extends Provider{
     foreach ($data as $row){
       $maker  = strtoupper($row['brand']);
       $maker  = preg_replace('/\W*/i', "", $maker);
-      $answer[ $maker ] = ['id'=>$this->getCLSID(), 'uid'=>$row['nr']];
+      $answer[ $maker ] = ['id'=>$this->getCLSID(), 'uid'=>$row['brand'] . "@@" .$row['nr']];
     }
     return $answer;
   }
@@ -43,11 +43,43 @@ class ProviderMoskovia extends Provider{
       return call_user_func([$this,$method."Parse"],$json);
     } 
 
-    return [];
+    return $json;
   }
   
+  public function getParts($ident) {
+    list($maker,$code) = explode("@@", $ident);
+
+    $param = [
+      'act' => 'price_by_nr_firm',
+      'nr'  => $code,
+      'f'   => $maker,
+      'avail' => 1,
+      'alt' => 1,
+      'oe'  => 1
+    ];
+
+    $request = $this->prepareRequest($param,true);
+    $answer  = $this->executeRequest($request);
+    $data    = $this->parseResponse($answer, false);
+    $rows    = $data[$this->getRowName()];
+    $result  = [];
+    foreach ($rows as $row){
+      $converted  = $this->renameByMap($row, $this->getNamesMap());
+      $converted['shiping'] = intval($converted['shiping']);
+      $result[] = $converted;
+    }    
+    return $result;
+  }
+
   protected function getNamesMap() {
-    return [      
+    return [
+      "nr"      => "articul",
+      "brand"  => "maker",
+      "name"   => "name",
+      "price"     => "price",
+      "delivery" => "shiping",
+      "stock"      => "count",
+      "minq"    => "lot_quantity"
     ];
   }
 

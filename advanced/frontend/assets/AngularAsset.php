@@ -24,7 +24,7 @@ class AngularAsset extends AssetBundle
         'angular-sanitize/angular-sanitize.min.js',
         'angular-cookies/angular-cookies.min.js',
         'angular-route/angular-route.js',
-        'ng-table/dist/ng-table.min.js'
+        'ng-table/dist/ng-table.js'
 
     ];
     public $depends = [      
