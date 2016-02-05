@@ -20,6 +20,10 @@ class ProviderPartcom extends Provider{
       return [];
     }
     $answer   = [];
+    foreach($json as $row){
+			$maker = strtoupper($row['name']);
+			$answer[ $maker ] = ['id'=> $this->getCLSID(), 'uid' => $row['id'] . '@@' . $row['name']];
+    }
     
     return $answer;
   }
@@ -27,7 +31,15 @@ class ProviderPartcom extends Provider{
   public function getParts($ident) {
     list($maker,$code) = explode("@@", $ident);
     $data = ['number'=>$code,'maker_id'=>$maker,'find_substitutes'=>"on"];
-    return $this->prepareRequest($data,false,  $this->_url."search/parts");
+    $request 	= $this->prepareRequest($data,false,  $this->_url."search/parts");
+		$response	= $this->executeRequest($request);
+		$answer		= $this->parseResponse($response,false);
+		$result 	= [];
+		foreach($answer as $row){
+			$converted = $this->renameByMap($row, $this->getNamesMap());
+			$result[] = $converted;
+		}
+		return $result;
   }
 
   protected function onlineRequestHeaders($ch) {
@@ -46,12 +58,20 @@ class ProviderPartcom extends Provider{
       return call_user_func([$this,$method."Parse"],$json);
     }
     
-    return [];
+    return $json;
   }
 
 
   protected function getNamesMap() {
-    return [      
+    return [ 
+			"number"      				=> "articul",
+  		"maker"  							=> "maker",
+  		"makerId"       			=> "code",
+		  "description"  				=> "name",
+		  "price"     					=> "price",
+		  "averageDeliveryDays" => "shiping",
+      "quantity"      			=> "count",
+      "minQuantity"    			=> "lot_quantity"     
     ];
   }
 
