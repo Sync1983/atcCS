@@ -27,7 +27,7 @@
           </td>
         </tr>
         <tr ng-hide="group.$hideRows" ng-repeat="row in group.data" ng-repeat-end
-            ng-class="(row.articul===searchText)? 'original' :''">
+            ng-class="(String(row.articul).toUpperCase()===searchText.toUpperCas())? 'original' :''">
           <td data-title="'Производитель'" sortable="'maker'">{{row.maker}}</td>
           <td data-title="'Артикул'" sortable="'articul'">{{row.articul}}</td>
           <td data-title="'Наименование'" class="name"><span title='{{row.name}}'>{{row.name}}</span></td>
