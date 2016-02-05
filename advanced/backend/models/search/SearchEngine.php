@@ -61,7 +61,8 @@ class SearchEngine extends Object{
     foreach ($result as &$row){
       $row['maker_id'] = $clsid;
       $row['price']   = round(floatval($row['price']),2);
-      $row['maker']   = $this->brandsRename(strtoupper($row['maker']));
+      $maker          = preg_replace('/\W*/i', "", $row['maker']);      
+      $row['maker']   = $this->brandsRename(strtoupper($maker));
       $row['articul'] = preg_replace('/\W*/i', "", $row['articul']);
     }
     return $result;
