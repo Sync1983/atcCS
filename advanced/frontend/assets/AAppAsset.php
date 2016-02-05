@@ -19,7 +19,7 @@ class AAppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [        
     ];
-    public $js = [        
+    public $js = [
         '_aapp.js'        
     ];
     public $depends = [

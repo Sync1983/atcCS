@@ -6,7 +6,7 @@
 atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification', function($http, $cookies, $rootScope, $notify){
   'use strict';
   
-  var URL   = "http://api.atc58.bit/index.php";
+  var URL   = serverURL + "/index.php";
   var model = new userModel();
 
   function URLto(controller,funct,local){
