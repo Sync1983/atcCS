@@ -17,10 +17,7 @@ atcCS.controller( 'partsSearch', [
       {        
         counts: [],
         total: 0,
-        groupBy: function (item) {          
-          //return item.articul + ' - ' + item.maker;
-          return item.maker;
-        },
+        groupBy: "maker",
         getData: function($defer, params){          
           var sorting = params.sorting();
           
@@ -30,7 +27,10 @@ atcCS.controller( 'partsSearch', [
           
           for( var key in $scope.data){
             var item = $scope.data[key];
-            if( (item.maker === $scope.brand) && (item.articul === $scope.searchText) ){
+            if( item.maker && 
+                item.articul && 
+                (item.maker === $scope.brand) && 
+                ( String(item.articul).toUpperCase() === $scope.searchText.toUpperCase() ) ){
               originalArray.push(item);              
             } else {
               notOriginalArray.push(item);
