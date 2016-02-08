@@ -21,7 +21,7 @@ class GetTypeDescrAction extends Action{
     $SQL = <<<SQL
         SELECT
           tp.text_id    as name,
-          CONCAT(tp.hp, '/', tp.kw) as power,
+          CONCAT(tp.hp, "/", tp.kw) as power,
           tp.volume     as volume,
           tp.cylinder   as cylinder,
           tp.valves     as valves,
