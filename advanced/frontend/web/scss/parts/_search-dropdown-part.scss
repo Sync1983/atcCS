@@ -18,7 +18,7 @@
     border-radius: 5px;
     background-color: rgb(245, 245, 245);
     text-overflow: ellipsis;
-    overflow: none;
+    overflow: hidden;
     
     & > span.header{
       color:black;
@@ -32,6 +32,8 @@
       border-bottom: 1px dashed blue;
       margin: 0 10px;
       cursor: pointer;
+      display: inline-block;
+      overflow: hidden;
     }
   }
   
@@ -41,57 +43,57 @@
     padding: 5px 20px;
     
     .row-line{
-      line-height: 20px;
+      width: 100%;
+      line-height: 0.8rem;
       border-radius: 5px;
-      font-size: 0.75em;
+      font-size: 0.75em;   
+      
+      .header{
+        color:black;
+        font-weight: bold;
+        border: none;
+        margin: 0;
+        padding: 0 10px;
+      }
+
+      .search-articul{
+        border:none;
+        border-bottom: 1px dashed blue;
+        padding: 0 0;      
+        cursor: pointer;
+      }
+
+      div {
+        min-width: 100px;
+        display: inline-block;
+        line-height: 0.8rem;        
+      }
+
+      div.info-item{      
+        top: 2px;
+        width: 0.75rem;
+        height: 0.75rem;
+        padding: 0;
+        margin: 0;
+        border: none;
+        background-color: transparent;
+        background: url('/img/info_icon.png') no-repeat;
+        min-width: auto;
+        background-size: 0.75rem 0.75rem;      
+        position: relative;
+          
+        &:hover {        
+          background-color: #88C4FF;
+          border-radius: 0.85rem;
+        }
+      }
     }
     
     .row-line:hover{
       background-color: #DDD;
     }
     
-    span.header{
-      color:black;
-      font-weight: bold;
-      border: none;
-      margin: 0;
-      padding: 0 10px;
-    }
     
-    span.search-articul{
-      border:none;
-      border-bottom: 1px dashed blue;
-      padding: 0 0;
-      line-height: 11px;
-      cursor: pointer;
-    }
-    
-    span {
-      min-width: 100px;
-      display: inline-block;
-    }
-    
-    button.info-item{
-      top: -4px;
-      width: 16px;
-      height: 16px;
-      padding: 0;
-      margin: 0;
-      border: none;
-      background-color: transparent;
-      background: url('/img/info_icon.png') no-repeat;
-      background-size: 16px 16px;
-      position: relative;      
-      
-      &:hover {
-        top: -4px;
-        height: 18px;
-        width: 18px;        
-        margin-left: -1px;
-        background: url('/img/info_icon.png') no-repeat;
-        background-size: 18px 18px;
-      }
-    }
     
   }
 }

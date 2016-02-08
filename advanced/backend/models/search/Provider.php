@@ -113,6 +113,9 @@ abstract class Provider extends Object implements SearchInterface{
 
   protected function renameByMap($data,$renameMap, $append=false){
     $answer = [];
+    if( !is_array($data) ){
+      return [];
+    }
     foreach ($data as $key=>$value){
       if( isset($renameMap[$key]) ){
         $answer[$renameMap[$key]] = $value;

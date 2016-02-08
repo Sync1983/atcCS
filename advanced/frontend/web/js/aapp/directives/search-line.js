@@ -1,6 +1,8 @@
+/* global ObjectHelper */
+
 atcCS.directive('searchLine', [
-  'User','$wndMng','$articulWnd', '$searchDropdown','$location',
-  function ($user, $wndMng, $articulWnd, $searchDropdown,$location){
+  'User','$wndMng','$articulWnd', '$searchDropdown','$location','storage',
+  function ($user, $wndMng, $articulWnd, $searchDropdown,$location, $storage){
   return {
     require: "ngModel",
     priority: 0,
@@ -18,7 +20,7 @@ atcCS.directive('searchLine', [
       var subs  = icons.find('button#search-sub');    
       var search= icons.find('button#search-request');    
       var input = $($element).find("input");
-      $scope.history  = ['123','qwrasd3134','1124aasdadf'];
+      $scope.history  = $storage.get('history') || new Array(0);
       $scope.helper   = [];
       $scope.keyTimer = false;
 
@@ -114,6 +116,11 @@ atcCS.directive('searchLine', [
       $scope.onStartSearch = function(){
         var searchText  = input.val();
         var clearText   = String(searchText).replace(/\W*/gi,"");
+        
+        ObjectHelper.addUniq($scope.history, clearText);
+        $scope.history.splice(20);        
+        $storage.set('history',$scope.history);        
+        
         $searchDropdown.hide();
         $scope.$apply(function() {
           $location.path('brands/'+clearText);

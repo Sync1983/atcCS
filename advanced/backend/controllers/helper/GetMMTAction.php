@@ -45,7 +45,7 @@ SQL;
         $level    =  $row['level'];
         $answer[] = [
           'type'  => ($level<4)?'request':'node',
-          'url'   => "http://rest.atc58.bit/index.php?r=helper/get-mmt",
+          'url'   => \yii\helpers\Url::to(['helper/get-mmt'], true),
           'data'  => ($level<4)?['path'=>$row['path']]:$row['tid'],
           'text'  => $row['name']
         ];        
@@ -92,7 +92,7 @@ SQL;
           'path'  => $path,
           'open'  => ($level==1)?true:false,
           'type'  => ($level<4)?'request':'node car',
-          'url'   => "http://rest.atc58.bit/index.php?r=helper/get-mmt",
+          'url'   => \yii\helpers\Url::to(['helper/get-mmt'], true),
           'data'  => ($level<4)?['path'=>$row['path']]:$id,
           'text'  => $name
         ];      
