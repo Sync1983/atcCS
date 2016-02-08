@@ -153,6 +153,7 @@ atcCS.directive( 'tree',['$http', function ($http){
       };
     },
     link: function link(scope, element, attrs, modelCtrl){
+      var timer = null;
       scope.$watch(
         function() { return modelCtrl.$viewValue; },
         function(newVal){
@@ -164,19 +165,28 @@ atcCS.directive( 'tree',['$http', function ($http){
       scope.$watch(
         function() {return scope.filter;},
         function(newVal, oldVal){
-          var strLen = String(newVal).length;          
+          var strLen = String(newVal).length;
           
-          if( newVal && (newVal !== oldVal) && (strLen >= 2) ){
-            scope.filterText = newVal;            
-            scope.load();
-            return newVal;
+          if (timer){
+            clearTimeout(timer);
           }
           
-          scope.clear();
-          scope.filterText = false;
-          scope.update();
+          timer = setTimeout(function(){
+            console.log("Timeout");
+            if( strLen >= 3  ){
+              scope.filterText = newVal;            
+              scope.load();
+              return ;
+            }
+          }, 1000);
           
-          return newVal;
+          if (strLen < 3){
+            scope.clear();
+            scope.filterText = false;
+            scope.update();
+          }
+          
+         return newVal;
       });
     }
   };
