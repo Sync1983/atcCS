@@ -130,7 +130,7 @@ SQL;
           nlevel(st1.path) as level
         FROM path_id
         INNER JOIN "SearchTree" st
-          ON st.path ~ concat('*.',str_id,'.*')::lquery
+          ON st.path ~ ('*.' || str_id || '.*')::lquery
         INNER JOIN "SearchTree" st1
           ON st1.path @> st.path
         INNER JOIN "Description" ds
