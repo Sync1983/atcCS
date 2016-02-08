@@ -35,10 +35,11 @@ function storage($rootScope){
     }
   }
 
-  model.set = function set(name,value){
-    if( typeof value === 'object' ){
+  model.set = function set(name,value){    
+    if( (typeof value === 'object') ||
+        (typeof value === 'array') ){
       value = angular.toJson(value);
-    }
+    }    
     if ( isLocalStorageAvailable() ){
       localStorage.setItem(name,value);
     } else {
@@ -49,13 +50,15 @@ function storage($rootScope){
   
   model.get = function get(name){
     var result = null;
+    var firstSymbol = null;
     if ( model.storage[name] ){
       result = model.storage[name];
     } else if( isLocalStorageAvailable() ) {
       result = localStorage.getItem(name);
     }
-    if ( String(result).substr(0,1) === '{' ){
-      result = angular.fromJson(result);
+    firstSymbol = String(result).substr(0,1);
+    if ( (firstSymbol === '{') || (firstSymbol === '[') ){      
+      result = angular.fromJson(result);      
     }
     return result;
   };

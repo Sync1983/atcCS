@@ -3,7 +3,8 @@
 /*
  * Сервис для обслуживания модели пользователя и общения с сервером
  */
-atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification', function($http, $cookies, $rootScope, $notify){
+atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification', 
+  function($http, $cookies, $rootScope, $notify){
   'use strict';
   
   var URL   = serverURL + "/index.php";

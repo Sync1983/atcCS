@@ -8,7 +8,7 @@
   <div ng-if="inSearch" class="in-search"></div>    
   <div ng-if="!inSearch" class="count">Варианты деталей по запросу "<b>{{searchText}}</b>" от производителя <b>{{brand}}</b>:</div>  
   
-  <table ng-table="tableParams" class="table table-condensed table-bordered table-striped">
+  <table ng-table="tableParams" class="table table-condensed table-bordered table-striped">    
     <colgroup>
       <col width="10%"/>
       <col width="15%"/>
@@ -24,7 +24,7 @@
               <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
               <strong>{{ group.value }}</strong>
             </a>
-          </td>
+          </td>          
         </tr>
         <tr ng-hide="group.$hideRows" ng-repeat="row in group.data" ng-repeat-end
             ng-class="(String(row.articul).toUpperCase()===searchText.toUpperCas())? 'original' :''">  

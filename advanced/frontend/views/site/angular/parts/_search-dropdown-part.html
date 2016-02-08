@@ -1,16 +1,16 @@
 <div class="searh-history">
   <span class="header">Прошлые запросы:</span>
-  <span ng-repeat="hitem in history">
+  <span ng-repeat="hitem in history track by $index" ng-click="onArticulSelect(hitem)">
     {{hitem}}
   </span>
 </div>
 
-<div class="search-helper">
-  <div class="row-line" ng-repeat="shitem in helper">
-    <span class="header">Артикул: </span>
-    <span class="search-articul" ng-click="onArticulSelect(shitem.number)">{{shitem.number}}</span>
-    <button class="info-item" title="Информация..." ng-click="onDropDownInfo(shitem.aid,shitem.number)"></button>
-    <span class="header">Производитель:</span>
-    <span class="search-brand">{{shitem.brand}}</span>
-  </div>
-</div>
+<ul class="search-helper">
+  <li class="row-line" ng-repeat="shitem in helper">    
+    <div class="header">Артикул: </div>
+    <div class="search-articul" ng-click="onArticulSelect(shitem.number)">{{shitem.number}}</div> 
+    <div class="info-item" title="Информация..." ng-click="onDropDownInfo(shitem.aid,shitem.number)"></div>
+    <div class="header">Производитель:</div>
+    <div class="search-brand">{{shitem.brand}}</div>
+  </li>
+</ul>

@@ -99,3 +99,8 @@ $atc_color: #0C557F;
   -ms-user-select: none;
   user-select: none;
 }
+
+*::-moz-focus-inner{
+  padding:0;
+  border:0
+}

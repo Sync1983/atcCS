@@ -1,4 +1,4 @@
-/* global atcCS */
+/* global atcCS, ObjectHelper */
 
 atcCS.controller( 'partsSearch', [
     '$scope','$filter', 'User' ,'$routeParams','$rootScope','searchNumberControl', 'storage', 'NgTableParams',
@@ -40,7 +40,7 @@ atcCS.controller( 'partsSearch', [
           originalArray.sort(sortFunction(sorting));
           notOriginalArray.sort(sortFunction(sorting));
           
-          resultArray = Array.concat(originalArray,notOriginalArray);
+          resultArray = ObjectHelper.concat(originalArray,notOriginalArray);
           
           $defer.resolve(resultArray);
         }
@@ -80,7 +80,7 @@ atcCS.controller( 'partsSearch', [
     function serverResponse(clsid,ident,data){
       delete($scope.loading[clsid]);      
       $storage.set($scope.timestamp+'@'+clsid+'@'+ident,data);
-      $scope.data = Array.concat($scope.data,data.rows);      
+      $scope.data = ObjectHelper.concat($scope.data,data.rows);      
       $scope.tableParams.reload();
     }
     

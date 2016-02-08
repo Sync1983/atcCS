@@ -116,7 +116,8 @@ class SearchEngine extends Object{
       'MOBIS'           => 'HYUNDAI-KIA-MOBIS',
       'KIA'             => 'HYUNDAI-KIA-MOBIS',
       'MB'              => 'MERCEDES-BENZ',
-      'MERCEDES'        => 'MERCEDES-BENZ'
+      'MERCEDES'        => 'MERCEDES-BENZ',
+      'GENERALMOTORS'   => 'GENERAL-MOTORS',
     ];
     
     return isset($renameMap[$brand])?$renameMap[$brand]:$brand;

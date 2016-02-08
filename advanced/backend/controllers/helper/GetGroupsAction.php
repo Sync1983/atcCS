@@ -54,7 +54,7 @@ SQL;
         }
         $answer[] = [
           'type'  => 'request',
-          'url'   => "http://rest.atc58.bit/index.php?r=helper/get-groups",
+          'url'   => \yii\helpers\Url::to(['helper/get-groups'], true),
           'data'  => ['path'=>$row['path'], 'pid' => $row['pid']],
           'text'  => $row['desc']
         ];        
@@ -148,7 +148,7 @@ SQL;
         'path'  => $path,
         'open'  => ($level==1)?true:false,
         'type'  => 'request',
-        'url'   => "http://rest.atc58.bit/index.php?r=helper/get-groups",
+        'url'   => \yii\helpers\Url::to(['helper/get-groups'], true),
         'data'  => ['path'=>$row['path']],
         'text'  => $desc
       ];
