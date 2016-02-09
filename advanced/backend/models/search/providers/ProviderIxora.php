@@ -8,8 +8,10 @@ use backend\models\search\Provider;
 
 class ProviderIxora extends Provider{
   protected $_url = "http://ws.ixora-auto.ru/soap/ApiService.asmx";
+  protected $_search_text = null;
 
   public function getBrands($search_text, $use_analog) {
+    $this->_search_text = $search_text;
     $data= ['Number'=>$search_text];
     return $this->prepareRequest($data, true,  $this->_url."/GetMakersXML");
   }
@@ -24,7 +26,7 @@ class ProviderIxora extends Provider{
     foreach ($data as $row){
       $maker  = strtoupper($row['name']);
       $maker  = preg_replace('/\W*/i', "", $maker);
-      $answer[ $maker ] = ['id' => $this->getCLSID(),'uid' => $row['id'] . '@@' . $row['name']];
+      $answer[ $maker ] = ['id' => $this->getCLSID(),'uid' => $this->_search_text . '@@' . $row['name']];
     } 
     return $answer;
   }
