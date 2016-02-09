@@ -33,7 +33,7 @@ ObjectHelper.addUniq = function(array,value){
 };
 
 ObjectHelper.concat = function (a,b){
-  a.push.apply(a, b)
+  a.push.apply(a, b);
   return a;
 };
 

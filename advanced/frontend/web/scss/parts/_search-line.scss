@@ -50,10 +50,15 @@
           background: none;
           border:none;
           opacity: 0.3;
+          outline: none;
           color: $atc_color;          
           
           &:hover{
             opacity: 1;            
+          }
+          &:active:not(:-moz-handler-blocked) {
+            position: relative;  
+            left: -1px;
           }
         }
       }

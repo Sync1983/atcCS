@@ -148,8 +148,8 @@ form.login-form{
 div.tree-view{
   ul{
     li{
-      button{        
-        top: -3px;
+      div{       
+        top: -2px;
         width: 14px;
         height: 14px;
         background-color: transparent;
@@ -157,6 +157,7 @@ div.tree-view{
         background-size: 100% 100%;
         border:none;
         outline: none;
+        display: inline-block;
         position: relative;
         
         &:hover{
@@ -169,6 +170,19 @@ div.tree-view{
         &.info-btn{
           background-image: url('/img/info_icon.png');
           background-size: 100% 95%;
+        }
+      }
+      span.item{
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin-left: 4px;
+        &::before{
+          display: none;
+        }
+        &::hover{
+          font-weight: inherit;
+          background-color: inherit;          
+          border-radius: inherit;
         }
       }
     }

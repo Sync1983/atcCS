@@ -102,7 +102,7 @@ SQL;
           'type'  => 'node',
           //'url'   => "http://rest.atc58.bit/index.php?r=helper/get-groups",
           'data'  => ['aid' => $articul_id, 'number'=>$articul],
-          'text'  => "<button class=\"search-btn\"></button><button class=\"info-btn\"></button> <b>$articul</b> <i>$supplier</i> [$name] ",
+          'text'  => "<div class=\"search-btn\"></div><div class=\"info-btn\"></div><span class=\"item\"><b>$articul</b> <i>$supplier</i> [$name]</span>",
           'title' => "Артикул: $articul Производитель: $supplier Название: $name"
         ];
     }
