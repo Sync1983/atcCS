@@ -21,6 +21,7 @@
         "yiisoft/yii2-mongodb": "~2.0.0",
         "yiisoft/yii2-redis": "~2.0.0",
         "bower-asset/angular-ui-select": "*",
+        "bower-asset/angular-ui-switch": "*",
         "bower-asset/angular-sanitize": "*",
         "bower-asset/angular-bootstrap-checkbox": "*",
         "bower-asset/angular-route": "*",

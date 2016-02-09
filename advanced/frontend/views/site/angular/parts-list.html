@@ -18,7 +18,7 @@
       <col width="8%"/>
       <col width="8%"/>
     </colgroup>
-        <tr class="ng-table-group" ng-repeat-start="group in $groups">
+        <tr class="ng-table-group" ng-repeat-start="group in $groups | partOut:brand:true">
           <td colspan="7">
             <a href="" ng-click="group.$hideRows = !group.$hideRows">
               <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>

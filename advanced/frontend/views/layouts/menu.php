@@ -17,7 +17,7 @@
 </div>
 <!-- Строка поиска и список выбора -->
 <div class="search-bar row-md-top btn-group-justified" ng-controller="searchControl">
-  <search-line ng-model="query">
+  <search-line ng-model="query" analog-show="analog">
 
   </search-line>
 </div>

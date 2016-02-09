@@ -13,13 +13,16 @@ atcCS.directive('searchLine', [
     transclude: true,
     scope: {
       query: "=",
+      analogShow: "=",
     },
     controller: function controller($scope, $element, $attrs, $transclude){
       var icons = $($element).find("div.search-icons");
       var cars  = icons.find('button#search-cars');    
       var subs  = icons.find('button#search-sub');    
+      var cnfg  = icons.find('button#search-cfg');    
       var search= icons.find('button#search-request');    
       var input = $($element).find("input");
+      
       $scope.history  = $storage.get('history') || new Array(0);
       $scope.helper   = [];
       $scope.keyTimer = false;
@@ -93,13 +96,27 @@ atcCS.directive('searchLine', [
         hideIfClose: true,
         show: false
       });
+      
+      $scope.cfgWnd = $wndMng.createWindow({
+        title: "Настройки",
+        vPos: cnfg.offset().top + cnfg.position().top + cnfg.height(),
+        hPos: cnfg.offset().left + cnfg.position().left - cnfg.width()*5,
+        hSize: '10%',
+        vSize: '25%',
+        hAlign: 'right',
+        vAlign: 'top',
+        hideIfClose: true,
+        show: true
+      });
       //Установка темплейтов
-      $wndMng.setBodyByTemplate($scope.carsWnd, '/parts/_car-select-part.html', $scope);
-      $wndMng.setBodyByTemplate($scope.treeWnd, '/parts/_car-select-group.html', $scope);
-      $searchDropdown.setTemplate('/parts/_search-dropdown-part.html', $scope);
+      $wndMng.setBodyByTemplate($scope.carsWnd, '/parts/_car-select-part.html',   $scope);
+      $wndMng.setBodyByTemplate($scope.treeWnd, '/parts/_car-select-group.html',  $scope);
+      $wndMng.setBodyByTemplate($scope.cfgWnd,  '/parts/_settings.html',          $scope);
+      $searchDropdown.setTemplate('/parts/_search-dropdown-part.html',            $scope);
       //Установка слушателей
       cars.click( toggle($scope.carsWnd) ); 
       subs.click( $searchDropdown.toggle );
+      cnfg.click( toggle($scope.cfgWnd) ); 
       search.click( onSearchClick );
       input.keydown(onKeyDown);      
       

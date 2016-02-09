@@ -4,28 +4,31 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "09adb61920eb5678832dfbcfaeb4fcd2",
-    "content-hash": "3527e27023e9a2bcad924f52e9ff77c1",
+    "hash": "e6a0f6f808c3517a2e4b21aedd98a9f5",
+    "content-hash": "38cb1c7f027fcbcc3359369c3c00d975",
     "packages": [
         {
             "name": "bower-asset/angular",
-            "version": "v1.4.9",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/angular/bower-angular.git",
-                "reference": "a69eba562dc18df13f27ca0274c90ee26c29004e"
+                "reference": "017a583b226a335740c5b50b3e9381a52d0bb260"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/angular/bower-angular/zipball/a69eba562dc18df13f27ca0274c90ee26c29004e",
-                "reference": "a69eba562dc18df13f27ca0274c90ee26c29004e",
+                "url": "https://api.github.com/repos/angular/bower-angular/zipball/017a583b226a335740c5b50b3e9381a52d0bb260",
+                "reference": "017a583b226a335740c5b50b3e9381a52d0bb260",
                 "shasum": ""
             },
             "type": "bower-asset-library",
             "extra": {
                 "bower-asset-main": "./angular.js",
                 "bower-asset-ignore": []
-            }
+            },
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "bower-asset/angular-bootstrap-checkbox",
@@ -71,72 +74,81 @@
         },
         {
             "name": "bower-asset/angular-cookies",
-            "version": "v1.4.9",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/angular/bower-angular-cookies.git",
-                "reference": "cf2e23660fbbc0d9e74eaa8a535b42ae58b70805"
+                "reference": "3852e28d49ee37a9b28bb788f0e3b14aa0c9ea14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/angular/bower-angular-cookies/zipball/cf2e23660fbbc0d9e74eaa8a535b42ae58b70805",
-                "reference": "cf2e23660fbbc0d9e74eaa8a535b42ae58b70805",
+                "url": "https://api.github.com/repos/angular/bower-angular-cookies/zipball/3852e28d49ee37a9b28bb788f0e3b14aa0c9ea14",
+                "reference": "3852e28d49ee37a9b28bb788f0e3b14aa0c9ea14",
                 "shasum": ""
             },
             "require": {
-                "bower-asset/angular": "1.4.9"
+                "bower-asset/angular": "1.5.0"
             },
             "type": "bower-asset-library",
             "extra": {
                 "bower-asset-main": "./angular-cookies.js",
                 "bower-asset-ignore": []
-            }
+            },
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "bower-asset/angular-route",
-            "version": "v1.4.9",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/angular/bower-angular-route.git",
-                "reference": "7636556e472878aea93bedfcdb6c1a809794ac00"
+                "reference": "6f03a206107b3ae860ee7f7fd061db252c452903"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/angular/bower-angular-route/zipball/7636556e472878aea93bedfcdb6c1a809794ac00",
-                "reference": "7636556e472878aea93bedfcdb6c1a809794ac00",
+                "url": "https://api.github.com/repos/angular/bower-angular-route/zipball/6f03a206107b3ae860ee7f7fd061db252c452903",
+                "reference": "6f03a206107b3ae860ee7f7fd061db252c452903",
                 "shasum": ""
             },
             "require": {
-                "bower-asset/angular": "1.4.9"
+                "bower-asset/angular": "1.5.0"
             },
             "type": "bower-asset-library",
             "extra": {
                 "bower-asset-main": "./angular-route.js",
                 "bower-asset-ignore": []
-            }
+            },
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "bower-asset/angular-sanitize",
-            "version": "v1.4.9",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/angular/bower-angular-sanitize.git",
-                "reference": "698bf7b7801e3a901df670b929b50fca1eefbe4d"
+                "reference": "ba852e624a011a529197a53957063712094898bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/angular/bower-angular-sanitize/zipball/698bf7b7801e3a901df670b929b50fca1eefbe4d",
-                "reference": "698bf7b7801e3a901df670b929b50fca1eefbe4d",
+                "url": "https://api.github.com/repos/angular/bower-angular-sanitize/zipball/ba852e624a011a529197a53957063712094898bf",
+                "reference": "ba852e624a011a529197a53957063712094898bf",
                 "shasum": ""
             },
             "require": {
-                "bower-asset/angular": "1.4.9"
+                "bower-asset/angular": "1.5.0"
             },
             "type": "bower-asset-library",
             "extra": {
                 "bower-asset-main": "./angular-sanitize.js",
                 "bower-asset-ignore": []
-            }
+            },
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "bower-asset/angular-ui-select",
@@ -181,6 +193,51 @@
                 "MIT"
             ],
             "description": "AngularJS ui-select"
+        },
+        {
+            "name": "bower-asset/angular-ui-switch",
+            "version": "0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/xpepermint/angular-ui-switch.git",
+                "reference": "bde4711ed82d4e54c8173232e2e6fc17c2d2b3e4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/xpepermint/angular-ui-switch/zipball/bde4711ed82d4e54c8173232e2e6fc17c2d2b3e4",
+                "reference": "bde4711ed82d4e54c8173232e2e6fc17c2d2b3e4",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "angular-ui-switch.js",
+                    "angular-ui-switch.css"
+                ],
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "node_modules",
+                    "bower_components",
+                    "test",
+                    "tests"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "iOS 7 style switch directive for AngularJS",
+            "keywords": [
+                "angular",
+                "angularjs",
+                "button",
+                "checkbox",
+                "directive",
+                "form",
+                "off",
+                "on",
+                "switch",
+                "ui"
+            ]
         },
         {
             "name": "bower-asset/bootstrap",
@@ -720,20 +777,20 @@
         },
         {
             "name": "yiisoft/yii2-composer",
-            "version": "2.0.3",
+            "version": "2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-composer.git",
-                "reference": "ca8d23707ae47d20b0454e4b135c156f6da6d7be"
+                "reference": "7452fd908a5023b8bb5ea1b123a174ca080de464"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-composer/zipball/ca8d23707ae47d20b0454e4b135c156f6da6d7be",
-                "reference": "ca8d23707ae47d20b0454e4b135c156f6da6d7be",
+                "url": "https://api.github.com/repos/yiisoft/yii2-composer/zipball/7452fd908a5023b8bb5ea1b123a174ca080de464",
+                "reference": "7452fd908a5023b8bb5ea1b123a174ca080de464",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "1.0.0"
+                "composer-plugin-api": "^1.0"
             },
             "type": "composer-plugin",
             "extra": {
@@ -763,7 +820,7 @@
                 "extension installer",
                 "yii2"
             ],
-            "time": "2015-03-01 06:22:44"
+            "time": "2016-02-06 00:49:24"
         },
         {
             "name": "yiisoft/yii2-mongodb",

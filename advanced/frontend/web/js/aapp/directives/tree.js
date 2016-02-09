@@ -171,8 +171,7 @@ atcCS.directive( 'tree',['$http', function ($http){
             clearTimeout(timer);
           }
           
-          timer = setTimeout(function(){
-            console.log("Timeout");
+          timer = setTimeout(function(){            
             if( strLen >= 3  ){
               scope.filterText = newVal;            
               scope.load();

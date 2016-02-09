@@ -1,8 +1,8 @@
 /* global atcCS, ObjectHelper */
 
 atcCS.controller( 'partsSearch', [
-    '$scope','$filter', 'User' ,'$routeParams','$rootScope','searchNumberControl', 'storage', 'NgTableParams',
-    function($scope,$filter,$user,$routeParams,$rootScope,$snCtrl, $storage, NgTableParams ) {
+    '$scope','$filter', 'User' ,'$routeParams','$rootScope','searchNumberControl', 'storage', 'NgTableParams', 'partOutFilter',
+    function($scope,$filter,$user,$routeParams,$rootScope,$snCtrl, $storage, NgTableParams, $partOut ) {
     'use strict';    
     var brands = false;
     var requestParams = {};
@@ -11,6 +11,8 @@ atcCS.controller( 'partsSearch', [
     $scope.timestamp  = $routeParams.timestamp  || false;
     $scope.searchText = $routeParams.searchText || false;
     $scope.brand      = $routeParams.brand      || false;
+    
+    $snCtrl.change($scope.searchText);
     
     $scope.tableParams = new NgTableParams(
       {  },
