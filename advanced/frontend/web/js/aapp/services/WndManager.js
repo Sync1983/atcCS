@@ -88,7 +88,7 @@ function wndStruc(callbackFunction){
   return struct;
 };
 
-function wndManagerClass($templateCache, $compile){
+function wndManagerClass($templateCache, $compile, $scope){
   'use strict'; 
   var model = {
     _idCnt: 0,
@@ -457,7 +457,7 @@ function wndManagerClass($templateCache, $compile){
 
   model.setBodyByTemplate = function setBodyByTemplate(wnd, template, scope){
     var html = $templateCache.get(template);
-    this.getBody(wnd).html( $compile(html)(scope) );
+    this.getBody(wnd).html( $compile(html)(scope) );    
   };
 
   model.toggle = function toggle(wnd){
@@ -474,17 +474,19 @@ function wndManagerClass($templateCache, $compile){
       return;
     }
     wnd.show = true;
+    $scope.$broadcast('visibleChange',{value:true});
   };
   
   model.hide = function hide(wnd){
     wnd.show = false;
+    $scope.$broadcast('visibleChange',{value:false});
   };
 
   return model;
 }
 
-atcCS.service("$wndMng", ["$templateCache",'$compile',
-  function($templateCache, $compile) {
-    return wndManagerClass($templateCache, $compile);
+atcCS.service("$wndMng", ["$templateCache",'$compile','$rootScope',
+  function($templateCache, $compile, $scope) {
+    return wndManagerClass($templateCache, $compile, $scope);
 } ] );
 

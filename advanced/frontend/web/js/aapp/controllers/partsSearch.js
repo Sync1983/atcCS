@@ -11,6 +11,8 @@ atcCS.controller( 'partsSearch', [
     $scope.timestamp  = $routeParams.timestamp  || false;
     $scope.searchText = $routeParams.searchText || false;
     $scope.brand      = $routeParams.brand      || false;
+    $scope.analogShow = $user.analogShow;
+    $scope.markup     = 0;
     
     $snCtrl.change($scope.searchText);
     
@@ -29,6 +31,10 @@ atcCS.controller( 'partsSearch', [
           
           for( var key in $scope.data){
             var item = $scope.data[key];
+            item.viewPrice = item.price.toFixed(2);
+            if( $scope.markup ){
+              item.viewPrice = (item.price * (1 + $scope.markup/100)).toFixed(2);
+            }
             if( item.maker && 
                 item.articul && 
                 (item.maker === $scope.brand) && 
@@ -39,10 +45,11 @@ atcCS.controller( 'partsSearch', [
             }
           }
           
-          originalArray.sort(sortFunction(sorting));
-          notOriginalArray.sort(sortFunction(sorting));
-          
-          resultArray = ObjectHelper.concat(originalArray,notOriginalArray);
+          resultArray = originalArray.sort(sortFunction(sorting));
+          if( $scope.analogShow ){
+            notOriginalArray.sort(sortFunction(sorting));
+            resultArray = ObjectHelper.concat(originalArray,notOriginalArray);            
+          }
           
           $defer.resolve(resultArray);
         }
@@ -104,5 +111,15 @@ atcCS.controller( 'partsSearch', [
         return result;
       };
     }
+    
+    $rootScope.$on('analogStateChange', function(event,data){
+      $scope.analogShow  = data.value;    
+      $scope.tableParams.reload();
+    });
+    
+    $rootScope.$on('markupValueChange', function(event, data){
+      $scope.markup = data.value;
+      $scope.tableParams.reload();      
+    });
     
 }]);

@@ -1,4 +1,4 @@
-<div class="settings">  
+<div class="prices" ng-controller="pricesController">  
   <div class="row-line analog">    
     <switch id="show-analog" ng-model="analogShow" class="green"></switch><b> Показывать аналоги</b>
   </div>
@@ -13,6 +13,6 @@
   </div>  
   <div class="divider" ng-show="isAdmin"></div>
   <div class="row-line" ng-show="isAdmin">    
-    <a href="#" ng-click="loadPrices()">Загрузить прайс-листы</a>
+    <a href="#" ng-click="loadPrices">Загрузить прайс-листы</a>
   </div>
 </div>

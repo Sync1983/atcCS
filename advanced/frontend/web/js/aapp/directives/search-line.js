@@ -14,6 +14,7 @@ atcCS.directive('searchLine', [
     scope: {
       query: "=",
       analogShow: "=",
+      markup: "=",
     },
     controller: function controller($scope, $element, $attrs, $transclude){
       var icons = $($element).find("div.search-icons");
@@ -26,6 +27,7 @@ atcCS.directive('searchLine', [
       $scope.history  = $storage.get('history') || new Array(0);
       $scope.helper   = [];
       $scope.keyTimer = false;
+      $scope.isAdmin  = $user.isAdmin;
 
       $scope.filter = ''; 
       $scope.typeFilter = false;
@@ -102,16 +104,31 @@ atcCS.directive('searchLine', [
         vPos: cnfg.offset().top + cnfg.position().top + cnfg.height(),
         hPos: cnfg.offset().left + cnfg.position().left - cnfg.width()*5,
         hSize: '10%',
-        vSize: '25%',
+        vSize: '30%',
         hAlign: 'right',
         vAlign: 'top',
         hideIfClose: true,
         show: true
       });
+      
+      $scope.priceWnd = $wndMng.createWindow({
+        title: "Прайс-листы",
+        vPos: cnfg.offset().top + cnfg.position().top + cnfg.height(),
+        hPos: cnfg.offset().left + cnfg.position().left - cnfg.width()*5,
+        hSize: '50%',
+        vSize: '50%',
+        hAlign: 'right',
+        vAlign: 'top',
+        hideIfClose: false,
+        show: false
+      });
+      var priceScope  = $scope.$new();
+      priceScope.wnd  = $scope.priceWnd;
       //Установка темплейтов
       $wndMng.setBodyByTemplate($scope.carsWnd, '/parts/_car-select-part.html',   $scope);
-      $wndMng.setBodyByTemplate($scope.treeWnd, '/parts/_car-select-group.html',  $scope);
+      $wndMng.setBodyByTemplate($scope.treeWnd, '/parts/_car-select-group.html',  $scope);      
       $wndMng.setBodyByTemplate($scope.cfgWnd,  '/parts/_settings.html',          $scope);
+      $wndMng.setBodyByTemplate($scope.priceWnd,'/parts/_prices.html',            priceScope);
       $searchDropdown.setTemplate('/parts/_search-dropdown-part.html',            $scope);
       //Установка слушателей
       cars.click( toggle($scope.carsWnd) ); 
@@ -142,6 +159,10 @@ atcCS.directive('searchLine', [
         $scope.$apply(function() {
           $location.path('brands/'+clearText);
         });        
+      };
+      
+      $scope.loadPrices = function(){        
+        $wndMng.show($scope.priceWnd);        
       };
       
       function onSearchClick(event){

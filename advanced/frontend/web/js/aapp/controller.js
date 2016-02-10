@@ -1,20 +1,5 @@
 /* global atcCS */
 
-atcCS.controller( 'searchControl', [
-    '$scope','$filter', 'User' ,'$routeParams',
-    function($scope,$filter,$user,$routeParams ) {
-    'use strict';
-    $scope.markup = null;
-    $scope.query  = "3192066200";
-    $scope.analog = $user.analogShow; 
-    
-    $scope.$watch('analog',
-      function(newVal,oldVal){
-        console.log('Analog change to ',newVal);
-    });
-      
-}]);
-
 atcCS.controller( 'headControl',['$scope','User','$wndMng','$templateCache', function($scope,$user,$wndMng,$templateCache) {
     'use strict';
 

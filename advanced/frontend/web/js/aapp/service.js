@@ -30,6 +30,10 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
     
     return false;
   };
+  
+  $rootScope.$on('analogStateChange', function(event,data){
+    model.analogShow  = data.value;    
+  });
 
   model.getUrl = function getUrl(controller, funct){
     return URLto(controller, funct);

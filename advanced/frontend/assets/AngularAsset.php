@@ -16,13 +16,13 @@ class AngularAsset extends AssetBundle
     public $sourcePath = '@bower';
     public $jsOptions = ['position' => View::POS_END];
     public $css = [        
-        'angular/angular-csp.css',
+        'angular/angular-csp.css',        
         'angular-ui-switch/angular-ui-switch.css',
         'ng-table/dist/ng-table.min.css'
     ];
     public $js = [
         'angular/angular.min.js',
-        'angular-sanitize/angular-sanitize.min.js',
+        'angular-sanitize/angular-sanitize.min.js',        
         'angular-ui-switch/angular-ui-switch.min.js',
         'angular-cookies/angular-cookies.min.js',
         'angular-route/angular-route.js',

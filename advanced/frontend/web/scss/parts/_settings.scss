@@ -1,7 +1,13 @@
-div.settings {
+div.settings {  
   width: 100%;
   height: 100%;
   padding: 5px 10px;  
+  
+  div.divider{
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px solid $atc_color;
+  }
   
   .switch {
     top:0 !important;
@@ -27,20 +33,35 @@ div.settings {
   .row-line{    
     width: 100%;
     height: 1.1rem;
+    margin: 4px 0;
     line-height: 1.1rem;
+    text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 0.75rem;
-    white-space: nowrap;
+    white-space: nowrap; 
     
-    span {            
-      padding: 0;
-      margin: 0;
-      font-weight: bold;
-      text-overflow: ellipsis;
-      word-break: break-all;
+    &.analog > b{
+      top: -4px;
       position: relative;
-      display: inline-block;
+    }
+    
+    select {
+      width: 100%;
+      border-radius: 1rem;
+      outline: none;
+    }
+    
+    a {
+      color: $atc_color;
+      font-weight: bold;
+      font-size: 0.75rem;
+      text-decoration: none;
+      border-bottom: 1px dashed $atc_color;
+      
+      &:hover{
+        color: $atc_color + #444444;
+      }
     }
   }
   
