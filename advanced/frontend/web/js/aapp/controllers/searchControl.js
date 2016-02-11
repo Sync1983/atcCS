@@ -14,6 +14,10 @@ atcCS.controller( 'searchControl', [
     
     $scope.markup.values.unshift({n:'Без наценки',v:0});
     
+    $('body').on('click',function(){
+      $rootScope.$broadcast('onBgClick',{});
+    });
+    
     $scope.$watch('analog',
       function(newVal,oldVal){
         if( oldVal === newVal ){

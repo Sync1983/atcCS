@@ -20,6 +20,7 @@ class ProviderPartcom extends Provider{
       return [];
     }
     $answer   = [];
+   
     foreach($json as $row){
 			$maker = strtoupper($row['name']);
 			$answer[ $maker ] = ['id'=> $this->getCLSID(), 'uid' => $row['id'] . '@@' . $row['name']];
@@ -51,13 +52,18 @@ class ProviderPartcom extends Provider{
     curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
   }
 
-  public function parseResponse($answer_string, $method) {
+  public function parseResponse($answer_string, $method) {    
     $json = json_decode($answer_string,true);
+
+    if( !is_array($json) ){
+      \yii::info("PartCom error: ".$answer_string);
+      return [];
+    }
 
     if( $this->hasMethod($method."Parse") ){
       return call_user_func([$this,$method."Parse"],$json);
     }
-    
+
     return $json;
   }
 

@@ -14,7 +14,17 @@ function searchDropdown($rootScope,$user,$templateCache,$compile){
   
   function init(){
     model.body = $('<div></div>');
-    model.body.addClass('dropdown-helper');
+    model.body.addClass('dropdown-helper');    
+    
+    $(model.body).click(function(event){
+      event.stopPropagation();
+    });
+    
+    $rootScope.$on('onBgClick',function(even,data){      
+      if( model.showBody){
+        model.hide();        
+      }
+    });    
   }
   
   model.setParent   = function setParent(parent){
@@ -63,7 +73,8 @@ function searchDropdown($rootScope,$user,$templateCache,$compile){
     model.showBody = false;
   };
   
-  model.toggle = function toggle(){
+  model.toggle = function toggle(event){
+    event.stopPropagation();
     if( model.showBody ){
       model.hide();
       return;

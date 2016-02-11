@@ -89,13 +89,17 @@ function wndStruc(callbackFunction){
 };
 
 function wndManagerClass($templateCache, $compile, $scope){
-  'use strict'; 
+  'use strict';
+  var $this = this;
   var model = {
     _idCnt: 0,
     _stack: [],
     _inTray: [],
     area: "body",
     tray: "div.tray-bar"
+  };
+  
+  function init(){    
   };
 
   function initDrag(wnd, area, header, resize){
@@ -384,6 +388,21 @@ function wndManagerClass($templateCache, $compile, $scope){
     
     wnd._manager.updateWindow(wnd);
   };
+  
+  function toForvard(window){
+    return function(){      
+      var body = window.body;      
+      $scope.$broadcast('toBack',{});
+      $(body).css('z-index',1001);      
+    };
+  };
+  
+  function toBack(window){
+    return function(even,data){
+      var body = window.body;      
+      $(body).css('z-index',1000);
+    };
+  }
 
   model.initWindow = function initWindow(wnd){
     var body    = wnd.body;
@@ -400,6 +419,9 @@ function wndManagerClass($templateCache, $compile, $scope){
     initDrag(wnd, area, header, resize);
     $(sysicons).find("button.minimize").click(trayToggle(wnd, $this));
     $(sysicons).find("button.destroy").click(closeWindow(wnd, $this));
+    
+    $(body).on('click',toForvard(wnd));
+    $scope.$on('toBack',toBack(wnd));
   };
 
   model.updateWindow = function updateWindow(wnd){
@@ -466,6 +488,10 @@ function wndManagerClass($templateCache, $compile, $scope){
       return;
     }
     wnd.show = !wnd.show;
+    $scope.$broadcast('visibleChange',{value:wnd.show});
+    if( wnd.show ){
+      toForvard(wnd)();      
+    }
   };
   
   model.show = function show(wnd){
@@ -475,13 +501,16 @@ function wndManagerClass($templateCache, $compile, $scope){
     }
     wnd.show = true;
     $scope.$broadcast('visibleChange',{value:true});
+    toForvard(wnd)();
   };
   
   model.hide = function hide(wnd){
     wnd.show = false;
     $scope.$broadcast('visibleChange',{value:false});
   };
-
+  
+  init();
+  
   return model;
 }
 

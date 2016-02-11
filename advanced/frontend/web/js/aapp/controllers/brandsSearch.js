@@ -12,12 +12,13 @@ atcCS.controller( 'brandsSearch', [
       $scope.timestamp = Math.round( (new Date()).getTime() / 1000 );
     }
     
+    $snCtrl.change($scope.searchText);
+    
     if( $storage.get($scope.timestamp) ){
       //Было закешировано      
       serverResponse($storage.get($scope.timestamp));
     } else if( $scope.searchText ){      
-      //Надо загрузить
-      $snCtrl.change($scope.searchText);
+      //Надо загрузить      
       $scope.inSearch = true;
       $user.getBrands( $scope.searchText, serverResponse);
     }

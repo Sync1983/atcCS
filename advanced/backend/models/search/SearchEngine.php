@@ -94,8 +94,12 @@ class SearchEngine extends Object{
       }
       do {
         $requests_state = curl_multi_exec($requests, $active);
+        if( $requests_state > 0){
+          \yii::info("Curl Error: ".  curl_multi_strerror($requests_state));
+        }
       } while ($requests_state == CURLM_CALL_MULTI_PERFORM);
     }
+    
     foreach ($requestsList as $clsid => $request){
       $answer = curl_multi_getcontent($request);
       curl_multi_remove_handle($requests, $request);
@@ -117,7 +121,12 @@ class SearchEngine extends Object{
       'KIA'             => 'HYUNDAI-KIA-MOBIS',
       'MB'              => 'MERCEDES-BENZ',
       'MERCEDES'        => 'MERCEDES-BENZ',
+      'MERCEDESBENZ'    => 'MERCEDES-BENZ',
       'GENERALMOTORS'   => 'GENERAL-MOTORS',
+      'CHRYSLERDODGEMOPAR' => 'CHRYSLER-DODGE-MOPAR',
+      'CITROENPEUGEOT'  => 'CITROEN-PEUGEOT',
+      'PEUGEOT'         => 'CITROEN-PEUGEOT',
+      'CITROEN'         => 'CITROEN-PEUGEOT'
     ];
     
     return isset($renameMap[$brand])?$renameMap[$brand]:$brand;

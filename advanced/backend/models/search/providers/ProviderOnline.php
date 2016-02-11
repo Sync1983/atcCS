@@ -39,27 +39,28 @@ class ProviderOnline extends Provider{
     $answer = $this->executeRequest($reqest);
     
     $array  = $this->xmlToArray($answer);
-    if( isset($array['uid']) ){
-      $array = ['detail' => $array];
-    }
-
     $data   = $array[$this->getRowName()];
+    if( isset($data['uid']) ){
+      $data = [$data];
+    }
     
     $result = [];
     foreach ($data as $item){
       $converted = $this->renameByMap($item, $this->getNamesMap());
+      
       if( is_array($converted["lot_quantity"]) ){
-        $converted["lot_quantity"] = 0;
+        $converted["lot_quantity"] = 1;
       }
       if( is_array($converted["is_original"]) ){
         $converted["is_original"] = false;
       }
       if( is_array($converted["name"]) ){
         $converted["name"] = "--";
-      }
+      }   
 
       $result[] = $converted;
     }
+    
     return $result;    
   }
 
