@@ -17,6 +17,10 @@ abstract class ProviderFile extends Provider{
     return isset($this->_default_params['path'])?$this->_default_params['path']:false;
   }
 
+  protected function clearPrice(){
+   return \backend\models\price\PriceModel::clearProvider($this->_CLSID);
+  }
+
   abstract public function loadFromFile();
 
 }
