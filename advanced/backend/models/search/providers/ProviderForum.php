@@ -21,6 +21,7 @@ class ProviderForum extends ProviderFile{
       $fp = fopen($path . "/" . $file, "r");
       $this->loadFile($fp);
       fclose($fp);
+      unlink($path . "/" . $file);
     }
     $timestamp = time() - $timestamp;
     echo "Load by $timestamp sec. \r\n";
