@@ -76,7 +76,11 @@ class SearchEngine extends Object{
     foreach ($this->providers as $provider){
       if( !method_exists($provider, $method) ){
         continue;
-      }      
+      }
+      if( is_subclass_of($provider, ProviderFile::className()) ){
+        $results[$provider->getCLSID()] = $provider->getBrands($data['search_text'], $data['use_analog']);
+        continue;
+      }
       $request = call_user_func_array([$provider,$method], $data);
       $requestsList[$provider->getCLSID()] = $request;
       curl_multi_add_handle($requests,$request);

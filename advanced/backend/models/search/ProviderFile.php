@@ -12,6 +12,14 @@ abstract class ProviderFile extends Provider{
 
     return parent::__construct($CLSID, $NAME, $FIELDS, $config);
   }
+
+  public function getBrands($search_text, $use_analog) {
+    return \backend\models\price\PriceModel::searchBrands($search_text, $this->_CLSID);
+  }
+
+  public function getParts($ident) {
+    return \backend\models\price\PriceModel::searchPart($ident, $this->_CLSID);
+  }
   
   protected function getPath(){
     return isset($this->_default_params['path'])?$this->_default_params['path']:false;
@@ -19,6 +27,18 @@ abstract class ProviderFile extends Provider{
 
   protected function clearPrice(){
    return \backend\models\price\PriceModel::clearProvider($this->_CLSID);
+  }
+
+  public function getBrandsParse($xml) {
+    throw new \BadFunctionCallException('Function not allowed for this provider type.');
+  }
+
+  protected function getNamesMap() {
+    throw new \BadFunctionCallException('Function not allowed for this provider type.');
+  }
+
+  protected function getRowName() {
+    throw new \BadFunctionCallException('Function not allowed for this provider type.');
   }
 
   abstract public function loadFromFile();

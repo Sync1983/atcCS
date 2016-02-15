@@ -23,6 +23,27 @@ class PricesController extends Controller {
     }
   }
 
+  public function actionGetList(){
+    foreach ($this->providers as $provider){
+      /* @var $provider \backend\models\search\ProviderFile */
+      echo $provider->getName()."\r\n";
+    }
+  }
+
+  public function actionLoad($name){
+    if( !$name ){
+      echo "Enter provider name. All name you can see by load get-list action.\r\n";
+      return;
+    }
+    foreach ($this->providers as $provider){
+      /* @var $provider \backend\models\search\ProviderFile */
+      $pname = $provider->getName();
+      if( $pname === $name ){
+        $provider->loadFromFile();
+      }
+    }
+  }
+
   public function init() {
     $provider_list    = \yii\helpers\ArrayHelper::getValue(\yii::$app->params, 'providers',[]);
     $this->providers  = [];
