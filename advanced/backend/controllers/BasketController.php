@@ -8,18 +8,15 @@ namespace backend\controllers;
 
 use yii\web\Controller;
 
-class SearchController extends Controller{
+class BasketController extends Controller{
 
   public $enableCsrfValidation = false;
   
   public function actions() {
     return [
-      'get-brands' => [
-        'class'  => search\GetBrandsAction::className(),
-      ],
-      'get-parts' => [
-        'class'  => search\GetPartsAction::className(),
-      ],
+      'add' => [
+        'class'  => basket\AddAction::className(),
+      ],      
     ];
   }
 
@@ -38,7 +35,7 @@ class SearchController extends Controller{
           'auth'        => [\backend\controllers\user\LoginAction::className(),'authHttpBasic'],
           'authToken'   => [\backend\controllers\user\LoginAction::className(),'authToken'],
           'exceptMethods' => ['OPTIONS'],
-          'exceptActions' => ['get-brands'],
+          'exceptActions' => [],
         ],
         'contentNegotiator' => [
             'class' => \yii\filters\ContentNegotiator::className(),

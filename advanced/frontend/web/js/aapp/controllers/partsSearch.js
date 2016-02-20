@@ -12,7 +12,7 @@ atcCS.controller( 'partsSearch', [
     $scope.searchText = $routeParams.searchText || false;
     $scope.brand      = $routeParams.brand      || false;
     $scope.analogShow = $user.analogShow;
-    $scope.markup     = 0;
+    $scope.markup     = $user.activeMarkup || 0;
     
     $snCtrl.change($scope.searchText);
     
@@ -22,7 +22,7 @@ atcCS.controller( 'partsSearch', [
         counts: [],
         total: 0,
         groupBy: "maker",
-        getData: function($defer, params){          
+        getData: function($defer, params){              
           var sorting = params.sorting();
           
           var originalArray = [];
@@ -32,8 +32,9 @@ atcCS.controller( 'partsSearch', [
           for( var key in $scope.data){
             var item = $scope.data[key];
             item.viewPrice = item.price.toFixed(2);
+            item.key  = key;
             if( $scope.markup ){
-              item.viewPrice = (item.price * (1 + $scope.markup/100)).toFixed(2);
+              item.viewPrice = (item.price * (1 + $scope.markup/100)).toFixed(2);              
             }
             if( item.maker && 
                 item.articul && 
@@ -87,7 +88,10 @@ atcCS.controller( 'partsSearch', [
     }
     
     function serverResponse(clsid,ident,data){
-      delete($scope.loading[clsid]);      
+      delete($scope.loading[clsid]); 
+      for(var i in data.rows){
+        data.rows[i].provider = clsid;
+      }
       $storage.set($scope.timestamp+'@'+clsid+'@'+ident,data);
       $scope.data = ObjectHelper.concat($scope.data,data.rows);      
       $scope.tableParams.reload();
@@ -111,6 +115,15 @@ atcCS.controller( 'partsSearch', [
         return result;
       };
     }
+    
+    $scope.Add  = function(key){
+      if( key === undefined ){
+        return;
+      }
+      var item = $scope.data[key];
+      item.sell_count = 1;      
+      $user.toBasket(item);
+    };
     
     $rootScope.$on('analogStateChange', function(event,data){
       $scope.analogShow  = data.value;    

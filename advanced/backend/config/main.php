@@ -48,6 +48,12 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        'response' => [
+          'formatters' => [
+            'xml' => backend\models\response\AtcXmlResponse::class,
+          ],
+        ],
+
     ],
     'params' => $params,
 ];

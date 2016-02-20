@@ -148,6 +148,7 @@ atcCS.directive('searchLine', [
       };
       
       $scope.onStartSearch = function(){
+        console.log("StartSearch");
         var searchText  = input.val();
         var clearText   = String(searchText).replace(/\W*/gi,"");
         

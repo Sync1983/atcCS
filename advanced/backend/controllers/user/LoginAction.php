@@ -19,9 +19,11 @@ class LoginAction extends Action {
     $user = User::findByUsername($name);
     \yii::info("Try Auth for user $name:$pass");
     if( $user && ( $user->validatePassword($pass) || ($user->user_pass === $pass) ) ){
+      //\yii::$app->user->setIdentity($user);
+      \yii::$app->user->login($user);
       return $user;
     }    
-    \yii::error("AuthError! user-name: $name  pass: $pass");    
+    \yii::info("AuthError! user-name: $name  pass: $pass");
     return null;
   }
 
@@ -31,10 +33,12 @@ class LoginAction extends Action {
     $user = AccessTokenModel::getUserByToken($token);
     
     if( $user ){
+      //\yii::$app->user->setIdentity($user);
+      \yii::$app->user->login($user);
       return $user;
     }
 
-    \yii::error("AuthError! token: $token");
+    \yii::info("AuthError! token: $token");
     return null;
   }
 

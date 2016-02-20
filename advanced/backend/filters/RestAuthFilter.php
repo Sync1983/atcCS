@@ -20,6 +20,8 @@ class RestAuthFilter extends AuthMethod{
    * @var Function called for acces-token auth
    */
   public $authToken     = null;
+
+  public $exceptActions = [];
   
 
   /**
@@ -39,6 +41,10 @@ class RestAuthFilter extends AuthMethod{
     $method = $request->getMethod();
     
     if( in_array($method, $this->exceptMethods) ){
+      return true;
+    }
+    
+    if( in_array($action->id, $this->exceptActions) ){
       return true;
     }
 
@@ -64,6 +70,7 @@ class RestAuthFilter extends AuthMethod{
         $user->switchIdentity($identity);
         return $identity;
       }
+
       $this->handleFailure($response);
       return null;
 

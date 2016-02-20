@@ -34,6 +34,10 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
   $rootScope.$on('analogStateChange', function(event,data){
     model.analogShow  = data.value;    
   });
+  
+  $rootScope.$on('markupValueChange', function(event,data){
+    model.activeMarkup = data.value;    
+  });
 
   model.getUrl = function getUrl(controller, funct){
     return URLto(controller, funct);
@@ -304,7 +308,33 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
     
     $http(req).then(serverResponse,serverError);
   };
-
+  
+  model.toBasket  = function toBasket(data,callback){
+    var req = {
+      method: 'GET',
+      url: URLto('basket','add'),
+      responseType: 'json',
+      params: {
+        params: data
+      }
+    };
+    
+    function serverResponse(answer){      
+      var data = answer && answer.data;
+      if ( callback instanceof Function ){
+        callback(data);
+      }
+    }
+    
+    function serverError(error){      
+      if ( callback instanceof Function ){
+        callback(false);
+      }
+    }
+    
+    $http(req).then(serverResponse,serverError);
+  };
+  
   $rootScope.user = model;
   for(var index in model.alerts){
     $notify.addObj(model.alerts[index]);

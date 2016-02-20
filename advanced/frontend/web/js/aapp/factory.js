@@ -11,6 +11,7 @@ atcCS.factory('atcServerToken', ['$q', '$rootScope', '$injector',
         if( $rootScope.user.isLogin ){
           config.headers.Authorization = 'Bearer ' + $rootScope.user.accessToken;
         }
+        
         return config;
       },
       response: function (response){
@@ -24,7 +25,7 @@ atcCS.factory('atcServerToken', ['$q', '$rootScope', '$injector',
         return response;
       },
       responseError: function(response){
-        if( response.status === 401){
+        if( response.status === 401 ){
           $rootScope.user.accessToken = null;
           $rootScope.user.isLogin = false;
         }

@@ -57,10 +57,13 @@ class SearchEngine extends Object{
     }
     /* @var $provider SearchInterface */
     $provider = $this->providers[$clsid];
-    $result = $provider->getParts($ident);
+    $result   = $provider->getParts($ident);
+    $standart_markup = \yii\helpers\ArrayHelper::getValue(\yii::$app->params, 'guestOverPrice', 20);
+    $markup   = \yii::$app->user->getIsGuest()?$standart_markup:\yii::$app->user->getIdentity()->over_price;
     foreach ($result as &$row){
+      $price          = floatval($row['price']);
       $row['maker_id'] = $clsid;
-      $row['price']   = round(floatval($row['price']),2);
+      $row['price']   = round($price + ($price*$markup)/100,2);
       $maker          = preg_replace('/\W*/i', "", $row['maker']);      
       $row['maker']   = $this->brandsRename(strtoupper($maker));
       $row['articul'] = preg_replace('/\W*/i', "", $row['articul']);
@@ -125,12 +128,20 @@ class SearchEngine extends Object{
       'KIA'             => 'HYUNDAI-KIA-MOBIS',
       'MB'              => 'MERCEDES-BENZ',
       'MERCEDES'        => 'MERCEDES-BENZ',
-      'MERCEDESBENZ'    => 'MERCEDES-BENZ',
-      'GENERALMOTORS'   => 'GENERAL-MOTORS',
-      'CHRYSLERDODGEMOPAR' => 'CHRYSLER-DODGE-MOPAR',
+      'MERCEDESBENZ'    => 'MERCEDES-BENZ',      
       'CITROENPEUGEOT'  => 'CITROEN-PEUGEOT',
       'PEUGEOT'         => 'CITROEN-PEUGEOT',
-      'CITROEN'         => 'CITROEN-PEUGEOT'
+      'CITROEN'         => 'CITROEN-PEUGEOT',
+      'GMOPELCHEVROLETDAEWOO' => 'GM-OPEL-CHEVROLET-DAEWOO',
+      'GENERALMOTORS'   => 'GM-OPEL-CHEVROLET-DAEWOO',
+      'DAEWOO'          => 'GM-OPEL-CHEVROLET-DAEWOO',
+      'CHEVROLET'       => 'GM-OPEL-CHEVROLET-DAEWOO',
+      'OPEL'            => 'GM-OPEL-CHEVROLET-DAEWOO',
+      'GM'              => 'GM-OPEL-CHEVROLET-DAEWOO',
+      'CHRYSLERDODGEMOPAR' => 'CHRYSLER-DODGE-MOPAR',
+      'MOPAR'           => 'CHRYSLER-DODGE-MOPAR',
+      'DODGE'           => 'CHRYSLER-DODGE-MOPAR',
+      'CHRYSLER'        => 'CHRYSLER-DODGE-MOPAR',
     ];
     
     return isset($renameMap[$brand])?$renameMap[$brand]:$brand;
