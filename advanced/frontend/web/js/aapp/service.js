@@ -98,43 +98,6 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
     
   };
 
-  model.findParts = function findDescr(tags){
-    var req = {
-      method: 'POST',
-      url: URLto('helper','parts-search'),
-      responseType: 'json',
-      params:{
-        params:{
-
-        }
-      },
-      data: {        
-          descr:  tags.getTagsOneField('type', 'descr', 'id'),
-          mfc:    tags.getTagsOneField('type', 'mfc',   'id'),
-          model:  tags.getTagsOneField('type', 'model', 'id')        
-      }
-    };
-
-    return $http(req);
-  };
-
-  model.findDescr = function findDescr(text, tags){
-    var req = {
-      method: 'POST',
-      url: URLto('helper','description-search'),
-      responseType: 'json',
-      params: {
-        params: {
-          descr:  text,
-          mfc:    tags.getTagsOneField('type', 'mfc',   'id'),
-          model:  tags.getTagsOneField('type', 'model', 'id')
-        }
-      }
-    };
-
-    return $http(req);
-  };
-
   model.getArticulInfo = function getArticulInfo(articul_id){
     var req = {
       method: 'GET',
@@ -143,38 +106,6 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
       params: {
         params: {
           articul_id:  articul_id
-        }
-      }
-    };
-
-    return $http(req);
-  };
-
-  model.findMModel = function findMModel(text, tags){
-    var req = {
-      method: 'POST',
-      url: URLto('helper','mmodel-search'),
-      responseType: 'json',      
-      params: {
-        params: {
-          mmodel: text,
-          mfc:    tags.getTagsOneField('type', 'mfc',   'id'),
-          model:  tags.getTagsOneField('type', 'model', 'id')
-        }
-      }
-    };
-
-    return $http(req);
-  };
-
-  model.findMFCs = function findMFCs(tags){
-    var req = {
-      method: 'POST',
-      url: URLto('helper','mfcs-search'),
-      responseType: 'json',
-      params: {
-        params: {
-          model:  tags.getTagsOneField('type', 'model', 'id')
         }
       }
     };

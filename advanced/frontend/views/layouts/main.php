@@ -97,7 +97,7 @@ MainPage
 </script>
  <!-- Collect from 'frontend/views/site/angular//parts/_settings.html' file -->
 <script type="text/ng-template" id="/parts/_settings.html">
-<div class="settings">    <div class="row-line analog">        <switch id="show-analog" ng-model="analogShow" class="green"></switch><b> Показывать аналоги</b>  </div>  <div class="divider"></div>  <div class="row-line markup">        <b>Уровень наценки:</b>  </div>  <div class="row-line">        <select ng-model="markup.selected">      <option ng-repeat="item in markup.values track by $index" value="{{item.v}}">{{item.n}} ({{item.v}}%)</option>    </select>  </div>    <div class="divider" ng-show="isAdmin"></div>  <div class="row-line" ng-show="isAdmin">        <a href="#" ng-click="loadPrices()">Загрузить прайс-листы</a>  </div></div>
+<div class="settings">    <div class="row-line analog">        <switch id="show-analog" ng-model="analog.analogShow" class="green"></switch><b> Показывать аналоги</b>    </div>    <div class="divider"></div>  <div class="row-line markup">        <b>Уровень наценки:</b>  </div>  <div class="row-line">        <select ng-model="markup.selected">      <option ng-repeat="item in markup.values track by $index" value="{{item.v}}">{{item.n}} ({{item.v}}%)</option>    </select>  </div>      <div class="divider"></div>  <div class="row-line markup">        <b>Активная корзина</b>  </div>  <div class="row-line">        <select ng-model="basket.selected">      <option ng-repeat="bitem in basket.values" value="{{bitem.id}}"><b>{{bitem.name}}</b></option>    </select>  </div>  </div>
 </script>
  <!-- Collect from 'frontend/views/site/angular//parts/_sinput.html' file -->
 <script type="text/ng-template" id="/parts/_sinput.html">

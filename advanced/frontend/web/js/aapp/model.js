@@ -15,6 +15,12 @@ function userModel(){
       { v:10,n:'Сложная'},
       { v:10,n:'Средняя'}
     ],
+    
+    baskets: [
+      { id:1,name:'Основная',active:false},
+      { id:2,name:'Вторая',active:false},
+      { id:3,name:'Третья',active:true}
+    ],
 
     alerts: [
       {head: "Добро пожаловать", text: "Добро пожаловать в нашу мега-супе-пупер-систему", style:"btn-info", new:1},

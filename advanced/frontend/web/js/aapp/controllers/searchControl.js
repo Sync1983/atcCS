@@ -3,23 +3,35 @@
 atcCS.controller( 'searchControl', [
   '$scope','$filter', 'User' ,'$routeParams','$rootScope',
   function($scope,$filter,$user,$routeParams,$rootScope ) {
-    'use strict';
-    $scope.markup = null;
+    'use strict';    
     $scope.query  = "";
-    $scope.analog = $user.analogShow; 
+    $scope.analog = {
+      analogShow: $user.analogShow,
+    };    
     $scope.markup = {
       values: $user.markup,
       selected: "0"
     }; 
     
+    $scope.basket = {
+      values: $user.baskets,
+      selected: null
+    }; 
+    
     $scope.markup.values.unshift({n:'Без наценки',v:0});
+    $user.baskets.every(function(item){      
+      if( item.active ){
+        $scope.basket.selected = item.id + "";
+      }
+      return true;
+    });    
     
     $('body').on('click',function(){
       $rootScope.$broadcast('onBgClick',{});
     });
     
-    $scope.$watch('analog',
-      function(newVal,oldVal){
+    $scope.$watch('analog.analogShow',
+      function(newVal,oldVal){        
         if( oldVal === newVal ){
           return newVal;
         }
@@ -34,6 +46,16 @@ atcCS.controller( 'searchControl', [
           return newVal;
         }
         $rootScope.$broadcast('markupValueChange', {
+          value: newVal
+        });
+    });
+    
+    $scope.$watch('basket.selected',
+      function(newVal,oldVal){
+        if( oldVal === newVal ){
+          return newVal;
+        }
+        $rootScope.$broadcast('basketValueChange', {
           value: newVal
         });
     });      

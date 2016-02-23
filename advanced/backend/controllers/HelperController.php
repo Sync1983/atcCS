@@ -13,13 +13,7 @@ class HelperController extends Controller{
   public $enableCsrfValidation = false;
   
   public function actions() {
-    return [
-      'mmodel-search' =>[
-        'class'  => helper\MModelSearchAction::className(),
-      ],      
-      'description-search' =>[
-        'class'  => helper\DescriptionSearchAction::className(),
-      ],      
+    return [  
       'articul-info' =>[
         'class'  => helper\ArticulInfoAction::className(),
       ],
@@ -45,7 +39,8 @@ class HelperController extends Controller{
           'cors'  => [
             'Origin' => ['*'],
             'Access-Control-Request-Headers' => ['*'],            
-            'Access-Control-Allow-Credentials' => true
+            'Access-Control-Allow-Credentials' => true,
+            'Access-Control-Max-Age' => 3600
           ]
         ],
         /*'authFilter' => [

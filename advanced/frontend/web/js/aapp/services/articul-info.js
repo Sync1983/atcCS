@@ -1,7 +1,7 @@
 /* global atcCS */
 
 /*
- * Сервис для обслуживания модели данных артикла
+ * Сервис для обслуживания модели данных артикула
  */
 
 function articulInfoModel($rootScope,$user,$wndMng){
