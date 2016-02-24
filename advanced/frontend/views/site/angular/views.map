@@ -1,5 +1,6 @@
 List of included views
 ajax-button.html
+basket.html
 main-page.html
 modal-window.html
 parts-list.html
@@ -8,7 +9,6 @@ parts/_car-select-articul-part.html
 parts/_car-select-group.html
 parts/_car-select-part.html
 parts/_login-part.html
-parts/_prices.html
 parts/_search-dropdown-part.html
 parts/_settings.html
 parts/_sinput.html

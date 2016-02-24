@@ -19,16 +19,29 @@ atcCS.controller( 'searchControl', [
     }; 
     
     $scope.markup.values.unshift({n:'Без наценки',v:0});
-    $user.baskets.every(function(item){      
-      if( item.active ){
-        $scope.basket.selected = item.id + "";
-      }
-      return true;
-    });    
+    setActiveBasket();
+    
+    function setActiveBasket(){      
+      $user.baskets.every( function(item){      
+        if( item.active ){
+          $scope.basket.selected  = item.id + "";
+          return false;
+        }
+        return true;
+      });    
+    }
     
     $('body').on('click',function(){
       $rootScope.$broadcast('onBgClick',{});
     });
+    
+    $rootScope.$on('userDataUpdate', 
+      function(event){        
+        $scope.basket.values = $user.baskets;
+        $scope.markup.values = $user.markup;
+        setActiveBasket();
+        $scope.markup.values.unshift({n:'Без наценки',v:0});
+     });
     
     $scope.$watch('analog.analogShow',
       function(newVal,oldVal){        
@@ -58,6 +71,7 @@ atcCS.controller( 'searchControl', [
         $rootScope.$broadcast('basketValueChange', {
           value: newVal
         });
-    });      
+    });
+        
 }]);
 

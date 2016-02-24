@@ -1,4 +1,4 @@
-/* global atcCS */
+/* global atcCS, cqEvents */
 
 /*
  * Сервис для обслуживания модели пользователя и общения с сервером
@@ -22,13 +22,20 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
 
     if ( name && pass ){
       console.log("Name:",name,"Pass:",pass);
-      model.login(name,pass,true).then(function(){
-        model.update();
-      });
+      model.login(name,pass,true);
       return true;
     }
     
     return false;
+  };
+  
+  function init(){
+    
+    $rootScope.user = model;
+    for(var index in model.alerts){
+      $notify.addObj(model.alerts[index]);
+    }
+    loadFormCookies();      //Пробуем войти через информацию в cookie
   };
   
   $rootScope.$on('analogStateChange', function(event,data){
@@ -69,6 +76,8 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
           $cookies.put('pass',hash,{expires:expires});
         }
         
+        model.update();
+        
       },
       function error(response){
         $notify.addItem("Ошибка","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
@@ -88,14 +97,18 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
     if( model.isLogin === false ){
       return false;
     }
-
-    console.log("User data update");
-    return $http(req).then(function succes(response){
-      
-      }, function error(response){
-      
-      });
     
+    $http(req).then(
+      function (response){        
+        var data = (response && response.data) || {};
+        model.baskets = data.baskets;
+        model.info    = data.info;
+        model.role    = data.role * 1;
+        $rootScope.$broadcast('userDataUpdate', {});
+      }, 
+      function (reason){        
+        $notify.addItem("Ошибка","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
+      });    
   };
 
   model.getArticulInfo = function getArticulInfo(articul_id){
@@ -266,12 +279,19 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
     $http(req).then(serverResponse,serverError);
   };
   
-  $rootScope.user = model;
-  for(var index in model.alerts){
-    $notify.addObj(model.alerts[index]);
-  }
-  loadFormCookies();      //Пробуем войти через информацию в cookie
+  model.getBasket = function getBasket(){    
+    var req = {
+      method: 'GET',
+      url: URLto('basket','get-data'),      
+      params: {        
+        params: 'get-data'
+      }
+    };
+    
+    return $http(req);
+  };
   
+  init();
   return model; 
 
 }]);

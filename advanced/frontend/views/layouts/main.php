@@ -55,6 +55,10 @@ AAppAsset::register($this);
 <script type="text/ng-template" id="/ajax-button.html">
 
 </script>
+ <!-- Collect from 'frontend/views/site/angular//basket.html' file -->
+<script type="text/ng-template" id="/basket.html">
+<div class="basket">  <h3 ng-show="!isLogin">Просмотр корзины доступен только авторизованным пользователям</h3>    <div>    <table ng-table="tableParams" class="table table-condensed table-bordered table-striped">          <colgroup>        <col width="2%"/>        <col width="2%"/>        <col width="5%"/>        <col width="5%"/>        <col width="20%"/>        <col width="2%"/>        <col width="2%"/>        <col width="2%"/>        <col width="2%"/>        <col width="5%"/>        <col width="2%"/>      </colgroup>      <tr ng-repeat="row in $data track by row.id">        <td data-title="''"                 sortable="'installationAt'">{{row.installationAt}}</td>        <td data-title="'Добавлено'"        sortable="'date'"         ><span title="{{row.fullDate}}">{{row.date}}</span></td>        <td data-title="'Артикул'"          sortable="'articul'"      > {{row.articul}}</td>        <td data-title="'Производитель'"    sortable="'maker'"        > {{row.maker}}</td>        <td data-title="'Название'"         sortable="'name'"         > {{row.name}}</td>        <td data-title="'Количество'"       sortable="'sell_count'"   > {{row.sell_count}}</td>        <td data-title="'Срок'"             sortable="'shiping'"      > {{row.shiping}}</td>        <td data-title="'Цена'"             sortable="'price'"        > {{row.price}}</td>        <td data-title="'Сумма'"            sortable="'sum'"          > {{row.price*row.sell_count}}</td>        <td data-title="'Комментарий'"      sortable="'commnet'"      > {{row.comment}}</td>        <td data-title="'Действия'"                                   > ---</td>      </tr>    </table>  </div>  </div>
+</script>
  <!-- Collect from 'frontend/views/site/angular//main-page.html' file -->
 <script type="text/ng-template" id="/main-page.html">
 MainPage
@@ -86,10 +90,6 @@ MainPage
  <!-- Collect from 'frontend/views/site/angular//parts/_login-part.html' file -->
 <script type="text/ng-template" id="/parts/_login-part.html">
 <?php $form = yii\widgets\ActiveForm::begin([        'options' => [          'class' => 'login-form'       ]    ]);?><div class="row-line">  <sinput class="login-input" placeholder="Введите логин или адрес почты" name="login" ng-model="login.name" submit="true" submit-function="onLogin()"></sinput></div><div class="row-line">  <sinput class="login-input" placeholder="Введите пароль" name="password" ng-model="login.password" submit="true" submit-function="onLogin()"></sinput></div><div class="row-line" style="text-align:center;">  <scheckbox name="rememberMe" label="Запомнить меня" ng-model="login.remember"/></div><div class="row-line" style="text-align:center;">  <label ng-click="onLogin()">Войти</label>  <label>Регистрация</label></div>    <?php yii\widgets\ActiveForm::end();?>
-</script>
- <!-- Collect from 'frontend/views/site/angular//parts/_prices.html' file -->
-<script type="text/ng-template" id="/parts/_prices.html">
-<div class="prices" ng-controller="pricesController">    <div class="row-line analog">        <switch id="show-analog" ng-model="analogShow" class="green"></switch><b> Показывать аналоги</b>  </div>  <div class="divider"></div>  <div class="row-line markup">        <b>Уровень наценки:</b>  </div>  <div class="row-line">        <select ng-model="markup.selected">      <option ng-repeat="item in markup.values track by $index" value="{{item.v}}">{{item.n}} ({{item.v}}%)</option>    </select>  </div>    <div class="divider" ng-show="isAdmin"></div>  <div class="row-line" ng-show="isAdmin">        <a href="#" ng-click="loadPrices">Загрузить прайс-листы</a>  </div></div>
 </script>
  <!-- Collect from 'frontend/views/site/angular//parts/_search-dropdown-part.html' file -->
 <script type="text/ng-template" id="/parts/_search-dropdown-part.html">

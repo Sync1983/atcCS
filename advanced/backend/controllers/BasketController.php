@@ -17,6 +17,9 @@ class BasketController extends Controller{
       'add' => [
         'class'  => basket\AddAction::className(),
       ],      
+      'get-data' => [
+        'class'  => basket\GetDataAction::className(),
+      ],
     ];
   }
 

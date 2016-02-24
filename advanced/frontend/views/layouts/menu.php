@@ -27,7 +27,7 @@
     <li> <a href="#">Новости</a>  <div class="divider"></div></li>
     <li> <a href="#">Каталоги</a> <div class="divider"></div></li>
     <li> <a href="#">Контакты</a> <div class="divider"></div></li>
-    <li> <a href="#">Корзина</a>  <div class="divider"></div></li>
+    <li> <a href="basket">Корзина</a>  <div class="divider"></div></li>
     <li> <a href="#">Заказы</a>   <div class="divider"></div></li>
     <li> <a href="#">Профиль</a>  <div class="divider"></div></li>
     <li> <a href="#">Баланс</a>   <div class="divider"></div></li>

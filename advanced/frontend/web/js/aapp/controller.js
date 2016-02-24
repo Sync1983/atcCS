@@ -29,7 +29,6 @@ atcCS.controller( 'headControl',['$scope','User','$wndMng','$templateCache', fun
     };
 
     $scope.onLogin = function(){      
-      //$scope.user.login('admin','test',true);
       $user.login($scope.login.name,$scope.login.password,$scope.login.remember);
       $scope.show = !$user.isLogin;
       return false;

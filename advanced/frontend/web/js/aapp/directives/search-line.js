@@ -104,7 +104,7 @@ atcCS.directive('searchLine', [
         hAlign: 'right',
         vAlign: 'top',
         hideIfClose: true,
-        show: true
+        show: false
       });
 
       //Установка темплейтов
