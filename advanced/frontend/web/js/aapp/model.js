@@ -6,9 +6,9 @@ function userModel(){
   'use strict';
   
   return {
-    name: false,
-    surname: false,
-    company: false,
+    name: undefined,
+    surname: undefined,
+    company: undefined,
     
     markup: [
       { v:15,n:'Простая'},

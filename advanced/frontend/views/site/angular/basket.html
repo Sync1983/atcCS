@@ -1,6 +1,6 @@
 <div class="basket">
   <h3 ng-show="!isLogin">Просмотр корзины доступен только авторизованным пользователям</h3>
-  
+  <h3 ng-show="isLogin">Корзина. Активная: {{basketName}}</h3>
   <div>
     <table ng-table="tableParams" class="table table-condensed table-bordered table-striped">    
       <colgroup>
@@ -18,7 +18,7 @@
       </colgroup>
       <tr ng-repeat="row in $data track by row.id">
         <td data-title="''"                 sortable="'installationAt'">{{row.installationAt}}</td>
-        <td data-title="'Добавлено'"        sortable="'date'"         > <span title="{{row.fullDate}}">{{row.date}}</span></td>
+        <td data-title="'Добавлено'"        sortable="'date'"         > <span title="{{row.date | date:'dd/MM/yyyy HH:mm'}}">{{row.date | date:'dd/MM/yyyy'}}</span></td>
         <td data-title="'Артикул'"          sortable="'articul'"      > {{row.articul}}</td>
         <td data-title="'Производитель'"    sortable="'maker'"        > {{row.maker}}</td>
         <td data-title="'Название'"         sortable="'name'"         > {{row.name}}</td>
@@ -27,7 +27,13 @@
         <td data-title="'Цена'"             sortable="'price'"        > {{row.price}}</td>
         <td data-title="'Сумма'"            sortable="'sum'"          > {{row.price*row.sell_count}}</td>
         <td data-title="'Комментарий'"      sortable="'commnet'"      > {{row.comment}}</td>
-        <td data-title="'Действия'"                                   > ---</td>
+        <td data-title="'Действия'"                                   >           
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default" title="Удалить"><span class="glyphicon glyphicon-erase"></span></button>
+            <button type="button" class="btn btn-default" title="Редактировать"><span class="glyphicon glyphicon-pencil"></span></button>
+            <button type="button" class="btn btn-default" title="Заказать"><span class="glyphicon glyphicon-plus"></span></button>
+          </div>
+        </td>
       </tr>
     </table>
   </div>  

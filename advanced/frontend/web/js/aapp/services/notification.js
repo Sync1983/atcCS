@@ -14,9 +14,12 @@ atcCS.service('Notification',['$rootScope', function($rootScope){
     model.list.push(obj);
   };
 
-  model.addItem = function(head,text,style){
-    if( !style ){
+  model.addItem = function(head,text,style_id){
+    if( !style_id ){
       style = "btn-info";
+    }
+    if( style_id === 1){
+      style = "btn-danger";
     }
     model.list.push({head:head,text:text,style:style, new:1});
   };

@@ -9,6 +9,7 @@ use yii\base\Model;
 use common\models\User;
 
 class AccessTokenModel extends Model{
+  const EXPIRE_TIME = 60*60*5;
   /**
    * Создаем связку между acces-token и пользователем
    * @param User $user
@@ -23,7 +24,7 @@ class AccessTokenModel extends Model{
     } while ($db->executeCommand("EXISTS",[$token]) === 1);
 
     $db->executeCommand("SET",[$token,$id]);
-    $db->executeCommand("EXPIRE",[$token, ( 60 * 5 )]);
+    $db->executeCommand("EXPIRE",[$token, ( self::EXPIRE_TIME )]);
 
     return $token;
   }
@@ -43,7 +44,7 @@ class AccessTokenModel extends Model{
     \yii::info("Token user uid");
     $uid = $db->executeCommand("GET",[$token]);
     \yii::info($uid);
-    $db->executeCommand("EXPIRE",[$token, ( 60 * 5 )]);
+    $db->executeCommand("EXPIRE",[$token, ( self::EXPIRE_TIME )]);
     if( !$uid ){
       return false;
     }

@@ -45,6 +45,22 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
   $rootScope.$on('markupValueChange', function(event,data){
     model.activeMarkup = data.value;    
   });
+  
+  $rootScope.$on('basketValueChange', function(event,data){
+    
+    model.changeBasket(data.value).then(
+      function(response){
+        var data = response && response.data;        
+        model.baskets = data || [];
+        model.baskets.each(function(item){
+        if( item.active ){
+          model.activeBasket = item;
+          return false;
+        }
+        return true;
+        });    
+    });
+  });
 
   model.getUrl = function getUrl(controller, funct){
     return URLto(controller, funct);
@@ -265,6 +281,9 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
     
     function serverResponse(answer){      
       var data = answer && answer.data;
+      if( data.error ){
+        $notify.addItem('Ошибка корзины',data.error,1);
+      }
       if ( callback instanceof Function ){
         callback(data);
       }

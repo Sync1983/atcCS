@@ -20,14 +20,21 @@ atcCS.controller( 'basketControl', [
             function answer(response){
               var data = (response && response.data) || [];
               for(var index in data){
-                var item = data[index];
-                var date = new Date(item.date * 1000);
-                console.log(date);
-                item.fullDate = date.getDate() + "/" + date.getMonth() + "/" +date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
-                item.date = date.getDate() + "/" + date.getMonth() + "/" +date.getFullYear();
+                var item = data[index];                
+                item.date *=  1000;
                 item.price = (item.price * 1).toFixed(2);
               }
-              console.log(data);
+              data.sort(function(itemA,itemB){                
+                var rWeight = 0;
+                for(var field in sorting){                  
+                  var sortSide  = sorting[field]==="desc"?-1:1;
+                  var weight    = sortSide;
+                  var valueA    = itemA[field] || null;
+                  var valueB    = itemB[field] || null;                  
+                  rWeight += (valueA===valueB)?0:((valueA>valueB)?weight:-weight);                  
+                }                
+                return rWeight;
+              });
               $defer.resolve(data);          
             }      
           );
