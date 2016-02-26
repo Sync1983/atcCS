@@ -20,6 +20,9 @@ class BasketController extends Controller{
       'get-data' => [
         'class'  => basket\GetDataAction::className(),
       ],
+      'change' => [
+        'class'  => basket\ChangeAction::className(),
+      ],
     ];
   }
 

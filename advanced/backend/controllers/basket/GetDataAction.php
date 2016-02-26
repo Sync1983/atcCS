@@ -26,7 +26,9 @@ class GetDataAction extends Action {
           articul, 
           maker, 
           name,
-          comment
+          comment,
+          lot_quantity,
+          count
         FROM "Basket" bs
         WHERE
           bs.basket_id IN (

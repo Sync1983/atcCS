@@ -131,6 +131,28 @@
     min-height: 25px;
     
     position: absolute;
+    
+    & > .status-buttons{
+      height: 2em;
+      text-align: center;
+      
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0.1em 0;
+        display: inline-block;
+        
+        li{
+          padding: 0 5px;
+          height: 1em;
+          display: inline;
+          
+          button {
+            padding: 0 10px;
+          }
+        }
+      }
+    }
   }  
   
   & > .content::-webkit-scrollbar {
@@ -147,4 +169,15 @@
     border: 1px solid slategrey;
     border-radius: 5px;
   }
+}
+
+div.cover{
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom:0;
+  right: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 10001;
+  display: none;
 }

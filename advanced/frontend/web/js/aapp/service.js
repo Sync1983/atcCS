@@ -29,8 +29,23 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
     return false;
   };
   
-  function init(){
+  function setActiveBasket(){
+    model.activeBasket = {id:null,name:null,active:false};
+    if( !model.baskets || !(model.baskets instanceof Array)){
+      return;
+    }
     
+    for(var i in model.baskets){
+      var item = model.baskets[i];
+      if( item.active ){
+          model.activeBasket = item;
+          return;
+      }      
+    }
+    return;
+  };
+  
+  function init(){    
     $rootScope.user = model;
     for(var index in model.alerts){
       $notify.addObj(model.alerts[index]);
@@ -46,19 +61,13 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
     model.activeMarkup = data.value;    
   });
   
-  $rootScope.$on('basketValueChange', function(event,data){
-    
+  $rootScope.$on('basketValueChange', function(event,data){    
     model.changeBasket(data.value).then(
       function(response){
-        var data = response && response.data;        
+        var data = response && response.data;
         model.baskets = data || [];
-        model.baskets.each(function(item){
-        if( item.active ){
-          model.activeBasket = item;
-          return false;
-        }
-        return true;
-        });    
+        setActiveBasket();
+        $rootScope.$broadcast('userDataUpdate', {});
     });
   });
 
@@ -120,6 +129,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
         model.baskets = data.baskets;
         model.info    = data.info;
         model.role    = data.role * 1;
+        setActiveBasket();
         $rootScope.$broadcast('userDataUpdate', {});
       }, 
       function (reason){        
@@ -298,7 +308,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
     $http(req).then(serverResponse,serverError);
   };
   
-  model.getBasket = function getBasket(){    
+  model.getBasket = function getBasket(){
     var req = {
       method: 'GET',
       url: URLto('basket','get-data'),      
@@ -309,6 +319,19 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
     
     return $http(req);
   };
+  
+  model.changeBasket = function changeBasket(newId){
+    var req = {
+      method: 'GET',
+      url: URLto('basket','change'),      
+      params: {        
+        params: newId
+      }
+    };
+    
+    return $http(req);
+  };
+  
   
   init();
   return model; 

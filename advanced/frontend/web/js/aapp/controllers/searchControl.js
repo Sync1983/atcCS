@@ -64,8 +64,8 @@ atcCS.controller( 'searchControl', [
     });
     
     $scope.$watch('basket.selected',
-      function(newVal,oldVal){
-        if( oldVal === newVal ){
+      function(newVal,oldVal){        
+        if( !oldVal || (oldVal === newVal) ){
           return newVal;
         }
         $rootScope.$broadcast('basketValueChange', {

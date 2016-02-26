@@ -1,12 +1,14 @@
 /* global atcCS */
 
 atcCS.controller( 'basketControl', [
-  '$scope', 'User' ,'$rootScope', 'NgTableParams',
-  function($scope,$user,$rootScope,NgTableParams ) {
+  '$scope', 'User' ,'$rootScope', 'NgTableParams', '$confirm','$wndMng',
+  function($scope,$user,$rootScope,NgTableParams,$confirm,$wndMng ) {
     'use strict';    
     
-    $scope.isLogin  = $user.isLogin;
-    $scope.tableData = undefined;
+    $scope.isLogin    = $user.isLogin;
+    $scope.basketName = $user.activeBasket.name;
+    $scope.tableData  = undefined;
+    $scope.editPart   = {};
     
     $scope.tableParams = new NgTableParams(
       {  },
@@ -40,11 +42,42 @@ atcCS.controller( 'basketControl', [
           );
         }
       }                
-    );     
+    );  
+    
+    $scope.editWnd = $wndMng.createWindow({
+        title: "Редактировать позицию",        
+        hSize: '30%',
+        vSize: '50%',
+        hAlign: 'center',
+        vAlign: 'center',
+        hideIfClose:  true,
+        showClose:    true,
+        showMin:      false,
+        modal:        true,
+        show:         true
+      });
+      
+    $wndMng.setBodyByTemplate($scope.editWnd, '/parts/_basket-edit.html',   $scope);  
+        
+    $scope.delete = function(row){
+      if( row === undefined ){
+        return;
+      }
+      var text = "Действительно удалить позицию в корзние " + row.articul + " - " + row.maker + " - " + row.name + "?";
+      
+      $confirm.request(text).then(function(status){
+        console.log(status);
+      });  
+    };
+    
+    $scope.edit = function(row){
+      $scope.editPart = row;
+    };
     
     $rootScope.$on('userDataUpdate', 
       function(event){        
         $scope.isLogin = $user.isLogin;
+        $scope.basketName = $user.activeBasket.name;        
         if( $user.isLogin && $scope.tableParams ){
           $scope.tableParams.reload();          
         }

@@ -14,9 +14,11 @@ function userModel(){
       { v:15,n:'Простая'},
       { v:10,n:'Сложная'},
       { v:10,n:'Средняя'}
-    ],
+    ],    
+    activeMarkup: null,
     
     baskets: [],
+    activeBasket: {id:null,name:null,active:false},
 
     alerts: [
       {head: "Добро пожаловать", text: "Добро пожаловать в нашу мега-супе-пупер-систему", style:"btn-info", new:1},      
