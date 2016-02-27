@@ -23,6 +23,12 @@ class BasketController extends Controller{
       'change' => [
         'class'  => basket\ChangeAction::className(),
       ],
+      'update' => [
+        'class'  => basket\UpdateAction::className(),
+      ],
+      'delete' => [
+        'class'  => basket\DeleteAction::className(),
+      ],
     ];
   }
 

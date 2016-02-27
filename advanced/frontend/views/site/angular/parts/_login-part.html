@@ -4,10 +4,10 @@
        ]
     ]);?>
 <div class="row-line">
-  <sinput class="login-input" placeholder="Введите логин или адрес почты" name="login" ng-model="login.name" submit="true" submit-function="onLogin()"></sinput>
+  <sinput class="login-input" placeholder="Введите логин или адрес почты" name="login" ng-model="login.name" submit-function="onLogin"></sinput>
 </div>
 <div class="row-line">
-  <sinput class="login-input" placeholder="Введите пароль" name="password" ng-model="login.password" submit="true" submit-function="onLogin()"></sinput>
+  <sinput class="login-input" placeholder="Введите пароль" name="password" ng-model="login.password" submit-function="onLogin"></sinput>
 </div>
 <div class="row-line" style="text-align:center;">
   <scheckbox name="rememberMe" label="Запомнить меня" ng-model="login.remember"/>

@@ -32,8 +32,8 @@
         ng-model="editPart.sell_count" 
         submit="false" 
         type="number" 
-        step="{{editPart.log_quantity}}" 
-        min="0" 
+        step="{{editPart.lot_quantity}}" 
+        min="{{editPart.lot_quantity}}" 
         max="{{editPart.count}}"
         changeFunction ="onCountChange"
         >
@@ -46,5 +46,8 @@
   </div>
   <div class="row-line">
     <label>Сумма</label><span>{{editPart.price * editPart.sell_count | number:2}} руб.</span>
+  </div>
+  <div class="row-line">
+    <span class="error" ng-show="error">{{error}}</span>
   </div>
 </div> 

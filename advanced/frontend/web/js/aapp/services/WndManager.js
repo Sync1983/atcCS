@@ -402,12 +402,10 @@ function wndManagerClass($templateCache, $compile, $scope){
   };
   
   function toBack(window){
-    return function(even,data){
-      console.log('toBack', window);
+    return function(even,data){      
       if( window.modal ){
         return;
-      }
-      console.log('1toBack', window);
+      }      
       var body = window.body;      
       $(body).css('z-index',1000);
     };

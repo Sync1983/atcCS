@@ -15,8 +15,8 @@ atcCS.directive('sinput', function (){
       value: "@",
       name: "@",
       submit: "@",
-      submitFunction: "&",
-      changeFunction: "&",
+      submitFunction: "=",
+      changeFunction: "=",
       step: "@",
       min: "@",
       max: "@",
@@ -35,7 +35,8 @@ atcCS.directive('sinput', function (){
       };
 
       var onKeyPress = function(event){
-        if( event.charCode === 13 ){
+        
+        if( event.keyCode === 13 ){
           $scope.submitFunction(event);
         }
       };
@@ -43,7 +44,7 @@ atcCS.directive('sinput', function (){
       input.on('focus',onFocus);
       input.on('blur',onBlur);
       
-      if( $scope.submit ){
+      if( $scope.submitFunction ){
         input.on('keypress',onKeyPress);
       }
 
@@ -61,6 +62,7 @@ atcCS.directive('sinput', function (){
       scope.$watch(
         function(scope) { return scope.model; },
         function(newVal, oldVal){
+          
           if( scope.changeFunction && !scope.changeFunction(newVal) ){
             return oldVal;
           }

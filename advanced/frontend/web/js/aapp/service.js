@@ -332,6 +332,33 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
     return $http(req);
   };
   
+  model.updatePartInfo = function updatePartInfo(partInfo){
+    var req = {
+      method: 'GET',
+      url: URLto('basket','update'),      
+      params: {        
+        params: {
+          count: partInfo.sell_count,
+          comment: partInfo.comment,
+          id: partInfo.id
+        }
+      }
+    };
+    
+    return $http(req);
+  };
+  
+  model.deletePart = function updatePartInfo(partId){
+    var req = {
+      method: 'GET',
+      url: URLto('basket','delete'),      
+      params: {        
+        params: partId
+      }
+    };
+    
+    return $http(req);
+  };
   
   init();
   return model; 

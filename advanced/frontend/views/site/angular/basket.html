@@ -16,7 +16,7 @@
         <col width="5%"/>
         <col width="2%"/>
       </colgroup>
-      <tr ng-repeat="row in $data track by row.id">
+      <tr ng-repeat="row in $data track by row.id" ng-show="!row.hide">
         <td data-title="''"                 sortable="'installationAt'">{{row.installationAt}}</td>
         <td data-title="'Добавлено'"        sortable="'date'"         > <span title="{{row.date | date:'dd/MM/yyyy HH:mm'}}">{{row.date | date:'dd/MM/yyyy'}}</span></td>
         <td data-title="'Артикул'"          sortable="'articul'"      > {{row.articul}}</td>
