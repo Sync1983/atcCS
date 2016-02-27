@@ -17,7 +17,7 @@
 </div>
 <!-- Строка поиска и список выбора -->
 <div class="search-bar row-md-top btn-group-justified" ng-controller="searchControl">
-  <search-line ng-model="query" analog-show="analog" markup="markup">
+  <search-line ng-model="query">
 
   </search-line>
 </div>
@@ -27,7 +27,7 @@
     <li> <a href="#">Новости</a>  <div class="divider"></div></li>
     <li> <a href="#">Каталоги</a> <div class="divider"></div></li>
     <li> <a href="#">Контакты</a> <div class="divider"></div></li>
-    <li> <a href="#">Корзина</a>  <div class="divider"></div></li>
+    <li> <a href="basket">Корзина</a>  <div class="divider"></div></li>
     <li> <a href="#">Заказы</a>   <div class="divider"></div></li>
     <li> <a href="#">Профиль</a>  <div class="divider"></div></li>
     <li> <a href="#">Баланс</a>   <div class="divider"></div></li>

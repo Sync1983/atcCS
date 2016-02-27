@@ -1,4 +1,4 @@
-/* global atcCS */
+/* global atcCS, cqEvents */
 
 /*
  * Сервис для обслуживания модели пользователя и общения с сервером
@@ -22,13 +22,35 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
 
     if ( name && pass ){
       console.log("Name:",name,"Pass:",pass);
-      model.login(name,pass,true).then(function(){
-        model.update();
-      });
+      model.login(name,pass,true);
       return true;
     }
     
     return false;
+  };
+  
+  function setActiveBasket(){
+    model.activeBasket = {id:null,name:null,active:false};
+    if( !model.baskets || !(model.baskets instanceof Array)){
+      return;
+    }
+    
+    for(var i in model.baskets){
+      var item = model.baskets[i];
+      if( item.active ){
+          model.activeBasket = item;
+          return;
+      }      
+    }
+    return;
+  };
+  
+  function init(){    
+    $rootScope.user = model;
+    for(var index in model.alerts){
+      $notify.addObj(model.alerts[index]);
+    }
+    loadFormCookies();      //Пробуем войти через информацию в cookie
   };
   
   $rootScope.$on('analogStateChange', function(event,data){
@@ -37,6 +59,16 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
   
   $rootScope.$on('markupValueChange', function(event,data){
     model.activeMarkup = data.value;    
+  });
+  
+  $rootScope.$on('basketValueChange', function(event,data){    
+    model.changeBasket(data.value).then(
+      function(response){
+        var data = response && response.data;
+        model.baskets = data || [];
+        setActiveBasket();
+        $rootScope.$broadcast('userDataUpdate', {});
+    });
   });
 
   model.getUrl = function getUrl(controller, funct){
@@ -69,6 +101,8 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
           $cookies.put('pass',hash,{expires:expires});
         }
         
+        model.update();
+        
       },
       function error(response){
         $notify.addItem("Ошибка","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
@@ -88,51 +122,19 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
     if( model.isLogin === false ){
       return false;
     }
-
-    console.log("User data update");
-    return $http(req).then(function succes(response){
-      
-      }, function error(response){
-      
-      });
     
-  };
-
-  model.findParts = function findDescr(tags){
-    var req = {
-      method: 'POST',
-      url: URLto('helper','parts-search'),
-      responseType: 'json',
-      params:{
-        params:{
-
-        }
-      },
-      data: {        
-          descr:  tags.getTagsOneField('type', 'descr', 'id'),
-          mfc:    tags.getTagsOneField('type', 'mfc',   'id'),
-          model:  tags.getTagsOneField('type', 'model', 'id')        
-      }
-    };
-
-    return $http(req);
-  };
-
-  model.findDescr = function findDescr(text, tags){
-    var req = {
-      method: 'POST',
-      url: URLto('helper','description-search'),
-      responseType: 'json',
-      params: {
-        params: {
-          descr:  text,
-          mfc:    tags.getTagsOneField('type', 'mfc',   'id'),
-          model:  tags.getTagsOneField('type', 'model', 'id')
-        }
-      }
-    };
-
-    return $http(req);
+    $http(req).then(
+      function (response){        
+        var data = (response && response.data) || {};
+        model.baskets = data.baskets;
+        model.info    = data.info;
+        model.role    = data.role * 1;
+        setActiveBasket();
+        $rootScope.$broadcast('userDataUpdate', {});
+      }, 
+      function (reason){        
+        $notify.addItem("Ошибка","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
+      });    
   };
 
   model.getArticulInfo = function getArticulInfo(articul_id){
@@ -143,38 +145,6 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
       params: {
         params: {
           articul_id:  articul_id
-        }
-      }
-    };
-
-    return $http(req);
-  };
-
-  model.findMModel = function findMModel(text, tags){
-    var req = {
-      method: 'POST',
-      url: URLto('helper','mmodel-search'),
-      responseType: 'json',      
-      params: {
-        params: {
-          mmodel: text,
-          mfc:    tags.getTagsOneField('type', 'mfc',   'id'),
-          model:  tags.getTagsOneField('type', 'model', 'id')
-        }
-      }
-    };
-
-    return $http(req);
-  };
-
-  model.findMFCs = function findMFCs(tags){
-    var req = {
-      method: 'POST',
-      url: URLto('helper','mfcs-search'),
-      responseType: 'json',
-      params: {
-        params: {
-          model:  tags.getTagsOneField('type', 'model', 'id')
         }
       }
     };
@@ -321,6 +291,9 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
     
     function serverResponse(answer){      
       var data = answer && answer.data;
+      if( data.error ){
+        $notify.addItem('Ошибка корзины',data.error,1);
+      }
       if ( callback instanceof Function ){
         callback(data);
       }
@@ -335,12 +308,59 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification',
     $http(req).then(serverResponse,serverError);
   };
   
-  $rootScope.user = model;
-  for(var index in model.alerts){
-    $notify.addObj(model.alerts[index]);
-  }
-  loadFormCookies();      //Пробуем войти через информацию в cookie
+  model.getBasket = function getBasket(){
+    var req = {
+      method: 'GET',
+      url: URLto('basket','get-data'),      
+      params: {        
+        params: 'get-data'
+      }
+    };
+    
+    return $http(req);
+  };
   
+  model.changeBasket = function changeBasket(newId){
+    var req = {
+      method: 'GET',
+      url: URLto('basket','change'),      
+      params: {        
+        params: newId
+      }
+    };
+    
+    return $http(req);
+  };
+  
+  model.updatePartInfo = function updatePartInfo(partInfo){
+    var req = {
+      method: 'GET',
+      url: URLto('basket','update'),      
+      params: {        
+        params: {
+          count: partInfo.sell_count,
+          comment: partInfo.comment,
+          id: partInfo.id
+        }
+      }
+    };
+    
+    return $http(req);
+  };
+  
+  model.deletePart = function updatePartInfo(partId){
+    var req = {
+      method: 'GET',
+      url: URLto('basket','delete'),      
+      params: {        
+        params: partId
+      }
+    };
+    
+    return $http(req);
+  };
+  
+  init();
   return model; 
 
 }]);

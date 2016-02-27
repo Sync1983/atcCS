@@ -26,6 +26,7 @@ function wndStruc(callbackFunction){
     canResize:      true,
     show:           true,
     hideIfClose:    false,
+    modal:          false,
     setId:  function(id){
               if( this._id === 0 ){
                 this._id = id;
@@ -391,14 +392,20 @@ function wndManagerClass($templateCache, $compile, $scope){
   
   function toForvard(window){
     return function(){      
-      var body = window.body;      
+      if( window.modal ){
+        return;
+      }
+      var body = window.body;            
       $scope.$broadcast('toBack',{});
       $(body).css('z-index',1001);      
     };
   };
   
   function toBack(window){
-    return function(even,data){
+    return function(even,data){      
+      if( window.modal ){
+        return;
+      }      
       var body = window.body;      
       $(body).css('z-index',1000);
     };
@@ -472,6 +479,16 @@ function wndManagerClass($templateCache, $compile, $scope){
     var content = wnd.body.find('div.content');
     return content;
   };
+  
+  model.getStatusBar = function getBody(wnd){    
+    if( !wnd ){
+      throw new Error("Запрос тела отсутствующего окна");
+      return false;
+    }
+    
+    var statusBar = wnd.body.find('div.statusbar');
+    return statusBar;
+  };
 
   model.setBody = function setBody(wnd, html, scope){
     this.getBody(wnd).html( $compile(html)(scope) );
@@ -480,6 +497,18 @@ function wndManagerClass($templateCache, $compile, $scope){
   model.setBodyByTemplate = function setBodyByTemplate(wnd, template, scope){
     var html = $templateCache.get(template);
     this.getBody(wnd).html( $compile(html)(scope) );    
+  };
+  
+  model.setStatusBar = function setBody(wnd, html, scope){
+    this.getStatusBar(wnd).html( $compile(html)(scope) );
+  };
+  
+  model.setStyle  = function setStyle(wnd,style,value){
+    if( value ){
+      return $(wnd.body).css(style,value);
+    }
+    
+    return $(wnd.body).css(style);
   };
 
   model.toggle = function toggle(wnd){

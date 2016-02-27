@@ -1,0 +1,40 @@
+<div class="basket">
+  <h5 ng-show="!isLogin">Просмотр корзины доступен только авторизованным пользователям</h5>
+  <h5 ng-show="isLogin">Позиции корзины: <u>{{basketName}}</u></h5>
+  <div>
+    <table ng-table="tableParams" class="table table-condensed table-bordered table-striped">    
+      <colgroup>
+        <col width="2%"/>
+        <col width="2%"/>
+        <col width="5%"/>
+        <col width="5%"/>
+        <col width="20%"/>
+        <col width="2%"/>
+        <col width="2%"/>
+        <col width="2%"/>
+        <col width="2%"/>
+        <col width="5%"/>
+        <col width="2%"/>
+      </colgroup>
+      <tr ng-repeat="row in $data track by row.id" ng-show="!row.hide">
+        <td data-title="''"                 sortable="'installationAt'">{{row.installationAt}}</td>
+        <td data-title="'Добавлено'"        sortable="'date'"         > <span title="{{row.date | date:'dd/MM/yyyy HH:mm'}}">{{row.date | date:'dd/MM/yyyy'}}</span></td>
+        <td data-title="'Артикул'"          sortable="'articul'"      > {{row.articul}}</td>
+        <td data-title="'Производитель'"    sortable="'maker'"        > {{row.maker}}</td>
+        <td data-title="'Название'"         sortable="'name'"         > {{row.name}}</td>
+        <td data-title="'Количество'"       sortable="'sell_count'"   > {{row.sell_count}}</td>
+        <td data-title="'Срок'"             sortable="'shiping'"      > {{row.shiping}}</td>
+        <td data-title="'Цена'"             sortable="'price'"        > {{row.price | number:2}}</td>
+        <td data-title="'Сумма'"            sortable="'sum'"          > {{row.price*row.sell_count | number:2}}</td>
+        <td data-title="'Комментарий'"      sortable="'commnet'"      > {{row.comment}}</td>
+        <td data-title="'Действия'"                                   >           
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default" title="Удалить"       ng-click="delete(row);">    <span class="glyphicon glyphicon-erase"></span> </button>
+            <button type="button" class="btn btn-default" title="Редактировать" ng-click="edit(row);">   <span class="glyphicon glyphicon-pencil"></span></button>
+            <button type="button" class="btn btn-default" title="Заказать"      ng-click="order(row.id);">  <span class="glyphicon glyphicon-plus"></span>  </button>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>  
+</div>

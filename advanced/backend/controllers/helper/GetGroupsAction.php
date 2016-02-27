@@ -8,7 +8,7 @@ use yii\base\Action;
 
 class GetGroupsAction extends Action{
 
-  public function run($params){
+  public function run($params){    
     $data     = json_decode($params,true);
     /* @var $db yii\db\Connection */
     $db       = \yii::$app->getDb();

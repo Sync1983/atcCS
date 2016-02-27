@@ -34,7 +34,7 @@
           <td data-title="'Цена'" sortable="'viewPrice'">{{row.viewPrice}}</td>
           <td data-title="'Срок'" sortable="'shiping'">{{row.shiping}}</td>
           <td data-title="'Наличие'" sortable="'count'">{{row.count}}</td>
-          <td data-title="'В корзину'"><a href='#' ng-click="Add(row.key)">Добавить</a></td>
+          <td data-title="'В корзину'"><a href='#' ng-click="Add(row.key)" ng-show="isLogin">Добавить</a></td>
         </tr>
       </table>
 </div>

@@ -13,6 +13,7 @@ atcCS.controller( 'partsSearch', [
     $scope.brand      = $routeParams.brand      || false;
     $scope.analogShow = $user.analogShow;
     $scope.markup     = $user.activeMarkup || 0;
+    $scope.isLogin    = $user.isLogin;
     
     $snCtrl.change($scope.searchText);
     
@@ -88,7 +89,10 @@ atcCS.controller( 'partsSearch', [
     }
     
     function serverResponse(clsid,ident,data){
-      delete($scope.loading[clsid]); 
+      delete($scope.loading[clsid]);
+      if( !data ){
+        return;
+      }
       for(var i in data.rows){
         data.rows[i].provider = clsid;
       }
@@ -134,5 +138,10 @@ atcCS.controller( 'partsSearch', [
       $scope.markup = data.value;
       $scope.tableParams.reload();      
     });
+    
+    $rootScope.$on('userDataUpdate', 
+      function(event){        
+        $scope.isLogin = $user.isLogin;        
+     });   
     
 }]);

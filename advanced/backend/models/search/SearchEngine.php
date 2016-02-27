@@ -60,6 +60,7 @@ class SearchEngine extends Object{
     $result   = $provider->getParts($ident);
     $standart_markup = \yii\helpers\ArrayHelper::getValue(\yii::$app->params, 'guestOverPrice', 20);
     $markup   = \yii::$app->user->getIsGuest()?$standart_markup:\yii::$app->user->getIdentity()->over_price;
+    $shiping  = \yii::$app->user->getIsGuest()?$standart_markup:\yii::$app->user->getIdentity()->shiping;
     foreach ($result as &$row){
       $price          = floatval($row['price']);
       $row['maker_id'] = $clsid;
@@ -67,6 +68,7 @@ class SearchEngine extends Object{
       $maker          = preg_replace('/\W*/i', "", $row['maker']);      
       $row['maker']   = $this->brandsRename(strtoupper($maker));
       $row['articul'] = preg_replace('/\W*/i', "", $row['articul']);
+      $row['shiping'] += $shiping;
     }
     return $result;
   }

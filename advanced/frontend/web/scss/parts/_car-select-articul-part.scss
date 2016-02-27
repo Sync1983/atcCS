@@ -1,6 +1,5 @@
 div.articuls-list{
-  padding: 5px;
-  @include no-select();
+  padding: 5px;  
   
   & > .row-line {
     padding: 0 0 5px 0;
@@ -14,6 +13,7 @@ div.articuls-list{
       display: block;
 
       & > label {
+        @include no-select();
         color: $atc_color;
         width: 15%;
         max-width: 15%;

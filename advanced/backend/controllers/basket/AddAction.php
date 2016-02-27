@@ -35,12 +35,18 @@ class AddAction extends Action {
     if( !$part->validate() ){
       return ['error' => $part->getErrors() ];
     }
-    
-    if( $part->save() ){
-      return ['save' => $part->count];
-    }
 
-    return ['error' => 'Ошибка сохранения'];
+    try{
+      return $part->save()?['save'=>$part->sell_count]:['error' => $part->getErrors()];
+    } catch (\yii\db\Exception $ex) {
+      $message  = $ex->getMessage();      
+      $message  = preg_replace('/CONTEXT:[.\s\S]*/im', '', $message);
+      $message  = preg_replace('/[.\s\S]*ОШИБКА:/im', '', $message);
+      return ['error' => [$ex->getCode()=>$message]];
+    }
+    
+
+    return ['error' => 'undefined'];
   }
   
 }

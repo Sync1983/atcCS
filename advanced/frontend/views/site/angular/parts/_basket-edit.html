@@ -1,0 +1,53 @@
+<div class="basket-edit">
+  <div class="row-line">
+    <label>Добавлено</label><span>{{editPart.date| date:'dd/MM/yyyy HH:mm:ss'}}</span>
+  </div>
+  <div class="row-line">
+    <label>Артикул</label><span>{{editPart.articul}}</span>
+  </div>
+  <div class="row-line">
+    <label>Производитель</label><span>{{editPart.maker}}</span>
+  </div>
+  <div class="row-line">
+    <label>Название</label><span>{{editPart.name}}</span>
+  </div>
+  <div class="row-line">
+    <label>Доступно</label><span>{{editPart.count}} шт.</span>
+  </div>
+  <div class="row-line">
+    <label>Партия</label><span>{{editPart.lot_quantity}} шт.</span>
+  </div>
+  <div class="row-line">
+    <label>Срок</label><span>{{editPart.shiping}} дн.</span>
+  </div>
+  <div class="row-line">
+    <label>Цена</label><span>{{editPart.price}} руб.</span>
+  </div>
+  <div class="row-line">
+    <label>Количество</label>
+    <div class="input">
+      <sinput 
+        placeholder="Введите количество деталей для заказа" 
+        name="sell_count" 
+        ng-model="editPart.sell_count" 
+        submit="false" 
+        type="number" 
+        step="{{editPart.lot_quantity}}" 
+        min="{{editPart.lot_quantity}}" 
+        max="{{editPart.count}}"
+        changeFunction ="onCountChange"
+        >
+      </sinput>
+    </div>
+  </div>
+  <div class="row-line">
+    <label>Комментарий</label>
+    <div class="input"><sinput placeholder="Введите коментарий для детали" name="comment" ng-model="editPart.comment" submit="false"></sinput></div>
+  </div>
+  <div class="row-line">
+    <label>Сумма</label><span>{{editPart.price * editPart.sell_count | number:2}} руб.</span>
+  </div>
+  <div class="row-line">
+    <span class="error" ng-show="error">{{error}}</span>
+  </div>
+</div> 

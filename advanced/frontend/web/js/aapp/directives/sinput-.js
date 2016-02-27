@@ -15,10 +15,16 @@ atcCS.directive('sinput', function (){
       value: "@",
       name: "@",
       submit: "@",
-      submitFunction: "&"
+      submitFunction: "=",
+      changeFunction: "=",
+      step: "@",
+      min: "@",
+      max: "@",
+      type: "@"
     },
-    controller: function controller($scope, $element, $attrs, $transclude){      
-      $scope.model = null;
+    controller: function controller($scope, $element, $attrs, $transclude){   
+      var input     = $($element).children('input');
+      $scope.model  = null;
 
       var onFocus = function(){        
         $($element).addClass('active');
@@ -29,15 +35,17 @@ atcCS.directive('sinput', function (){
       };
 
       var onKeyPress = function(event){
-        if( event.charCode === 13 ){
+        
+        if( event.keyCode === 13 ){
           $scope.submitFunction(event);
         }
       };
 
-      $($element).children('input').on('focus',onFocus);
-      $($element).children('input').on('blur',onBlur);
-      if( $scope.submit ){
-        $($element).children('input').on('keypress',onKeyPress);
+      input.on('focus',onFocus);
+      input.on('blur',onBlur);
+      
+      if( $scope.submitFunction ){
+        input.on('keypress',onKeyPress);
       }
 
     },
@@ -53,7 +61,11 @@ atcCS.directive('sinput', function (){
 
       scope.$watch(
         function(scope) { return scope.model; },
-        function(newVal){          
+        function(newVal, oldVal){
+          
+          if( scope.changeFunction && !scope.changeFunction(newVal) ){
+            return oldVal;
+          }
           modelCtrl.$setViewValue(newVal);          
           return newVal;
       });

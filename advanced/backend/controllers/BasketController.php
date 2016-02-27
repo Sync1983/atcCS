@@ -17,6 +17,18 @@ class BasketController extends Controller{
       'add' => [
         'class'  => basket\AddAction::className(),
       ],      
+      'get-data' => [
+        'class'  => basket\GetDataAction::className(),
+      ],
+      'change' => [
+        'class'  => basket\ChangeAction::className(),
+      ],
+      'update' => [
+        'class'  => basket\UpdateAction::className(),
+      ],
+      'delete' => [
+        'class'  => basket\DeleteAction::className(),
+      ],
     ];
   }
 

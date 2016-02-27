@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "30c11a5b0a6df74058df94f89242d198",
-    "content-hash": "38cb1c7f027fcbcc3359369c3c00d975",
+    "hash": "ca1de35c7d1e1d66362e1a2f475deac1",
+    "content-hash": "55c0d14c023579dd7e2561dd28f26f2c",
     "packages": [
         {
             "name": "bower-asset/angular",
@@ -155,16 +155,16 @@
         },
         {
             "name": "bower-asset/angular-ui-select",
-            "version": "v0.14.2",
+            "version": "v0.14.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/angular-ui/ui-select.git",
-                "reference": "85401e081c4e048b7a32bde0ee513ab1dbdecf9b"
+                "reference": "3b1496cb73103c593ab54c1fd04f4d69bc7ed8f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/angular-ui/ui-select/zipball/85401e081c4e048b7a32bde0ee513ab1dbdecf9b",
-                "reference": "85401e081c4e048b7a32bde0ee513ab1dbdecf9b",
+                "url": "https://api.github.com/repos/angular-ui/ui-select/zipball/3b1496cb73103c593ab54c1fd04f4d69bc7ed8f1",
+                "reference": "3b1496cb73103c593ab54c1fd04f4d69bc7ed8f1",
                 "shasum": ""
             },
             "require": {
@@ -811,54 +811,6 @@
                 "yii2"
             ],
             "time": "2016-02-06 00:49:24"
-        },
-        {
-            "name": "yiisoft/yii2-mongodb",
-            "version": "2.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/yiisoft/yii2-mongodb.git",
-                "reference": "8f959240e17bfdab6fb4e16be078b81b461988a2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-mongodb/zipball/8f959240e17bfdab6fb4e16be078b81b461988a2",
-                "reference": "8f959240e17bfdab6fb4e16be078b81b461988a2",
-                "shasum": ""
-            },
-            "require": {
-                "ext-mongo": ">=1.5.0",
-                "yiisoft/yii2": ">=2.0.4"
-            },
-            "type": "yii2-extension",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "yii\\mongodb\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Paul Klimov",
-                    "email": "klimov.paul@gmail.com"
-                }
-            ],
-            "description": "MongoDb extension for the Yii framework",
-            "keywords": [
-                "active-record",
-                "mongo",
-                "mongodb",
-                "yii2"
-            ],
-            "time": "2015-05-10 22:10:01"
         },
         {
             "name": "yiisoft/yii2-redis",

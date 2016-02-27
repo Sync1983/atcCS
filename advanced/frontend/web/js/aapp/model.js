@@ -6,24 +6,23 @@ function userModel(){
   'use strict';
   
   return {
-    name: 'Йожыг',
-    surname: 'Йожыгов',
-    company: 'ООО Йожыная ферма',
+    name: undefined,
+    surname: undefined,
+    company: undefined,
     
     markup: [
       { v:15,n:'Простая'},
       { v:10,n:'Сложная'},
       { v:10,n:'Средняя'}
-    ],
+    ],    
+    activeMarkup: null,
+    
+    baskets: [],
+    activeBasket: {id:null,name:null,active:false},
 
     alerts: [
-      {head: "Добро пожаловать", text: "Добро пожаловать в нашу мега-супе-пупер-систему", style:"btn-info", new:1},
-      {head: "Добро пожаловать", text: "Добро пожаловать в нашу мега-супе-пупер-систему", style:"btn-info", new:1},
-      {head: "Добро пожаловать", text: "Добро пожаловать в нашу мега-супе-пупер-систему", style:"btn-info", new:1},
-      {head: "Ошибка авторизации", text: "Ошибка при авторизации", style:"btn-danger", new:1},
-      {head: "Ошибка авторизации", text: "Ошибка при авторизации", style:"btn-danger", new:1},
-      {head: "Ошибка авторизации", text: "Ошибка при авторизации", style:"btn-danger", new:1},
-      {head: "Ошибка авторизации", text: "Ошибка при авторизации", style:"btn-danger", new:1},
+      {head: "Добро пожаловать", text: "Добро пожаловать в нашу мега-супе-пупер-систему", style:"btn-info", new:1},      
+      {head: "Ошибка авторизации", text: "Ошибка при авторизации", style:"btn-danger", new:1},     
     ],
 
     analogShow  : true,      //Отображать аналоги
