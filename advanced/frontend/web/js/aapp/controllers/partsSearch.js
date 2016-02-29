@@ -1,8 +1,8 @@
 /* global atcCS, ObjectHelper */
 
 atcCS.controller( 'partsSearch', [
-    '$scope','$filter', 'User' ,'$routeParams','$rootScope','searchNumberControl', 'storage', 'NgTableParams', 'partOutFilter',
-    function($scope,$filter,$user,$routeParams,$rootScope,$snCtrl, $storage, NgTableParams, $partOut ) {
+    '$scope','$filter', 'User' ,'$routeParams','$rootScope','searchNumberControl', 'storage', 'NgTableParams', 'partOutFilter', '$notify',
+    function($scope,$filter,$user,$routeParams,$rootScope,$snCtrl, $storage, NgTableParams, $partOut, $notify ) {
     'use strict';    
     var brands = false;
     var requestParams = {};
@@ -125,8 +125,22 @@ atcCS.controller( 'partsSearch', [
         return;
       }
       var item = $scope.data[key];
-      item.sell_count = 1;      
-      $user.toBasket(item);
+      var onAnswer = function(aitem){
+        return function(answer){
+          if( item.error ){
+            for(var i in item.error){
+              $notify.addItem("Ошибка корзины",item.error[i],1);
+            }
+            return;
+          }
+          item.adding = false;
+          console.log(answer);
+        };
+      };
+      
+      item.sell_count = item.lot_quantity;
+      item.adding = true;      
+      $user.toBasket(item, onAnswer(item));
     };
     
     $rootScope.$on('analogStateChange', function(event,data){

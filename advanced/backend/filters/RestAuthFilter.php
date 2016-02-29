@@ -11,17 +11,18 @@ class RestAuthFilter extends AuthMethod{
   /**
    * @var Array of reuqest methods, which will n`t use Auth system
    */
-  public $exceptMethods = [];
+  public $exceptMethods       = [];
   /**
    * @var Function called for user:password auth
    */
-  public $auth          = null;
+  public $auth                = null;
   /**
    * @var Function called for acces-token auth
    */
-  public $authToken     = null;
-
-  public $exceptActions = [];
+  public $authToken           = null;
+  public $action              = null;
+  public $exceptActions       = [];
+  public $silentAuthtActions  = [];
   
 
   /**
@@ -31,6 +32,7 @@ class RestAuthFilter extends AuthMethod{
     array_map(function($item){
       return strtoupper($item);
     }, $this->exceptMethods);
+    
     return parent::init();
   }
   /**
@@ -51,8 +53,13 @@ class RestAuthFilter extends AuthMethod{
     if( !$this->auth ){
       return true;
     }
+    $parent_action = parent::beforeAction($action);
+
+    if( !$parent_action && in_array($action->id, $this->silentAuthtActions) ){
+      return true;
+    }
     
-    return parent::beforeAction($action);
+    return $parent_action;
   }
   /**
    * @inheritdoc

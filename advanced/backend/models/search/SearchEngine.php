@@ -58,9 +58,13 @@ class SearchEngine extends Object{
     /* @var $provider SearchInterface */
     $provider = $this->providers[$clsid];
     $result   = $provider->getParts($ident);
-    $standart_markup = \yii\helpers\ArrayHelper::getValue(\yii::$app->params, 'guestOverPrice', 20);
-    $markup   = \yii::$app->user->getIsGuest()?$standart_markup:\yii::$app->user->getIdentity()->over_price;
-    $shiping  = \yii::$app->user->getIsGuest()?$standart_markup:\yii::$app->user->getIdentity()->shiping;
+    $isGuest  = \yii::$app->user->isGuest;
+    $user     = \yii::$app->user->getIdentity();
+    
+    $standart_markup  = \yii\helpers\ArrayHelper::getValue(\yii::$app->params, 'guestOverPrice', 23);
+    $standart_shiping = \yii\helpers\ArrayHelper::getValue(\yii::$app->params, 'guestShiping', 1);
+    $markup   = $isGuest?$standart_markup :$user->over_price * 1;
+    $shiping  = $isGuest?$standart_shiping:$user->shiping * 1;
     foreach ($result as &$row){
       $price          = floatval($row['price']);
       $row['maker_id'] = $clsid;
@@ -68,7 +72,7 @@ class SearchEngine extends Object{
       $maker          = preg_replace('/\W*/i', "", $row['maker']);      
       $row['maker']   = $this->brandsRename(strtoupper($maker));
       $row['articul'] = preg_replace('/\W*/i', "", $row['articul']);
-      $row['shiping'] += $shiping;
+      $row['shiping'] = intval($row['shiping']) + $shiping;
     }
     return $result;
   }

@@ -62,12 +62,16 @@
         &:hover{
           background-color: #D4EAFF; 
         }
+        
+        &.selected{
+          background-color: #ffdada;
+        }
       }    
       
     }
   }
   
-  button{
+  button.btn-icon{
     line-height: 1em;
     padding: 0 1px 0 3px;
     background: none;

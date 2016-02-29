@@ -5,19 +5,33 @@
 
 .notification-item{
   font-size: 0.8em;
-  & > button{
-    font-weight: bold;    
-    width: 100%;
-    font-size: 1em;    
-    border-radius: 5px;
-    box-shadow: 0 0 3px 0 #000;    
-    margin: 2px 0;     
-    padding: 5px 0;
-    
-    & > span{
-      margin: 0 5px;
-      font-size: 1.2em;
-    }
+  
+  width: 99%;
+  height: 2em;
+  line-height: 2em;  
+  text-align: center;  
+  overflow: hidden;
+  border-radius: 1em;
+  box-shadow: inset -2px 0px 3px black;
+  text-shadow: 0 0 1px black;
+  animation: add 0.5s cubic-bezier(.64,.01,0,.99) none;
+  animation-delay: 0  ;    
+  animation-iteration-count: 1;
+  
+  span.header{
+    font-weight: bold;
+    display: block;
+    cursor: pointer;
+  }  
+  
+}
+
+@keyframes add {
+  from {
+    transform: scale(2);
+  }
+  to {
+    transform: scale(1);
   }
 }
 

@@ -10,7 +10,7 @@ class User extends ActiveRecord implements IdentityInterface {
   const IS_ADMIN    = 1;  
 
   public function attributes() {
-    return ['id', 'user_name', 'user_pass', 'role', 'over_price', 'credit', 'is_init'];
+    return ['id', 'user_name', 'user_pass', 'role', 'over_price', 'credit', 'is_init', 'shiping'];
   }
 
   public static function tableName() {
@@ -25,7 +25,7 @@ class User extends ActiveRecord implements IdentityInterface {
       ['role','integer'],
       ['role','in','range'=>[static::IS_USER, static::IS_ADMIN]],
       ['over_price','integer','min' => 0],
-      ['credit','integer','min' => 0],
+      [['credit','shiping'],'integer','min' => 0],
       ['is_init','integer'],
       ['is_init','in','range'=>[0,1]],
       [['user_name', 'user_pass', 'role', 'over_price', 'credit', 'is_init'],'safe'],

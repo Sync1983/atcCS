@@ -1,7 +1,7 @@
 /* global atcCS */
 
 atcCS.controller( 'basketControl', [
-  '$scope', 'User' ,'$rootScope', 'NgTableParams', '$confirm','$wndMng','Notification',
+  '$scope', 'User' ,'$rootScope', 'NgTableParams', '$confirm','$wndMng','$notify',
   function($scope,$user,$rootScope,NgTableParams,$confirm,$wndMng,$notify ) {
     'use strict';    
     
@@ -12,6 +12,8 @@ atcCS.controller( 'basketControl', [
     $scope.tableData  = undefined;
     $scope.error      = undefined;
     $scope.editPart   = undefined;
+    $scope.items      = {};
+    $scope.selected   = false;
     $scope.confirmDisable = false;
     
     $scope.tableParams = new NgTableParams(
@@ -115,6 +117,18 @@ atcCS.controller( 'basketControl', [
       });
     };
     
+    $scope.order  = function(row){
+      var id = row.id;
+      if( $scope.items[id] ){
+        $scope.items[id].selected = false;
+        delete $scope.items[id];        
+        return;
+      }
+      $scope.items[id]  = row;
+      row.selected      = true;      
+    };    
+    
+    
     $rootScope.$on('userDataUpdate', 
       function(event){        
         $scope.isLogin = $user.isLogin;
@@ -122,7 +136,21 @@ atcCS.controller( 'basketControl', [
         if( $user.isLogin && $scope.tableParams ){
           $scope.tableParams.reload();          
         }
-     });    
+     });   
+     
+     $scope.$watch('items',
+      function(newVal){
+        var cnt = 0;
+        for(var i in newVal){
+          if( newVal.hasOwnProperty(i)){
+            cnt++;            
+          }
+        };
+        $scope.selected = cnt;
+        console.log(cnt);
+        return newVal;
+      },true
+     );
      
 }]);
 

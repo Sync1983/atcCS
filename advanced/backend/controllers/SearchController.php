@@ -38,7 +38,8 @@ class SearchController extends Controller{
           'auth'        => [\backend\controllers\user\LoginAction::className(),'authHttpBasic'],
           'authToken'   => [\backend\controllers\user\LoginAction::className(),'authToken'],
           'exceptMethods' => ['OPTIONS'],
-          'exceptActions' => ['get-brands','get-parts'],
+          'exceptActions' => ['get-brands'],
+          'silentAuthtActions' => ['get-parts']
         ],
         'contentNegotiator' => [
             'class' => \yii\filters\ContentNegotiator::className(),

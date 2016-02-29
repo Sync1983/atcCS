@@ -3,8 +3,7 @@
   <h5 ng-show="isLogin">Позиции корзины: <u>{{basketName}}</u></h5>
   <div>
     <table ng-table="tableParams" class="table table-condensed table-bordered table-striped">    
-      <colgroup>
-        <col width="2%"/>
+      <colgroup>        
         <col width="2%"/>
         <col width="5%"/>
         <col width="5%"/>
@@ -16,8 +15,7 @@
         <col width="5%"/>
         <col width="2%"/>
       </colgroup>
-      <tr ng-repeat="row in $data track by row.id" ng-show="!row.hide">
-        <td data-title="''"                 sortable="'installationAt'">{{row.installationAt}}</td>
+      <tr ng-repeat="row in $data track by row.id" ng-show="!row.hide" ng-class="{'selected':(row.selected)}">        
         <td data-title="'Добавлено'"        sortable="'date'"         > <span title="{{row.date | date:'dd/MM/yyyy HH:mm'}}">{{row.date | date:'dd/MM/yyyy'}}</span></td>
         <td data-title="'Артикул'"          sortable="'articul'"      > {{row.articul}}</td>
         <td data-title="'Производитель'"    sortable="'maker'"        > {{row.maker}}</td>
@@ -29,12 +27,18 @@
         <td data-title="'Комментарий'"      sortable="'commnet'"      > {{row.comment}}</td>
         <td data-title="'Действия'"                                   >           
           <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default" title="Удалить"       ng-click="delete(row);">    <span class="glyphicon glyphicon-erase"></span> </button>
-            <button type="button" class="btn btn-default" title="Редактировать" ng-click="edit(row);">   <span class="glyphicon glyphicon-pencil"></span></button>
-            <button type="button" class="btn btn-default" title="Заказать"      ng-click="order(row.id);">  <span class="glyphicon glyphicon-plus"></span>  </button>
+            <button type="button" class="btn btn-default btn-icon" title="Удалить"       ng-click="delete(row);"> <span class="glyphicon glyphicon-erase"></span> </button>
+            <button type="button" class="btn btn-default btn-icon" title="Редактировать" ng-click="edit(row);"  > <span class="glyphicon glyphicon-pencil"></span></button>
+            <button type="button" class="btn btn-default btn-icon" title="Заказать"      ng-click="order(row);" >
+              <span class="glyphicon glyphicon-plus"  ng-show="!row.selected"></span>  
+              <span class="glyphicon glyphicon-minus"  ng-show="row.selected"></span>  
+            </button>
           </div>
         </td>
       </tr>
     </table>
-  </div>  
+  </div>
+  <div class="row-line" style="text-align: center;" ng-show="selected">
+    <button class="btn btn-info">Заказать {{selected}} позиций(-ю)</button>
+  </div>
 </div>

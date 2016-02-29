@@ -35,21 +35,4 @@
   </ul>
 </div>
 
-<div class="login-menu" ng-controller="headControl" ng-submit="onLogin();" >
-
-  
-
-  <!--<window header="Пользователь" ng-show="!show" class="info-window">
-    <div class="row-line">
-      <label>Пользователь</label>
-      <label>{{login.name}}</label>
-    </div>
-  </window>-->
-
-</div>
-
-<div class="notifications">
-  <window header="Уведомления">    
-    <notification-items></notification-items>      
-  </window>
-</div>
+<div class="login-menu" ng-controller="headControl" ng-submit="onLogin();" ></div>

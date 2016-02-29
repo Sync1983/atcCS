@@ -108,13 +108,14 @@ form.login-form{
     }
   }
 
-
 .notifications{
-  top: $info_height + $sb_height + 170px; 
+  bottom: 70px; 
   left: 0;
   right: 100% - (100% - $menu_left_width) /2;
   min-height: 200px;
+  max-height: 50%;
   font-size: 0.8em;
+  overflow: hidden;
   position: absolute;
   
   & ul{

@@ -3,7 +3,7 @@
 /*
  * Сервис для обслуживания модели пользователя и общения с сервером
  */
-atcCS.service('User',['$http', '$cookies', '$rootScope', 'Notification', 
+atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', 
   function($http, $cookies, $rootScope, $notify){
   'use strict';
   
