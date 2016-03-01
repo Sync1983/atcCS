@@ -40,8 +40,10 @@ return [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['info', 'error', 'warning'],
+                    'class'       => 'yii\log\FileTarget',
+                    'levels'      => ['info', 'error', 'warning'],
+                    'categories'  => ['application'],
+                    'logVars'     => ['_GET', '_POST', '_COOKIE']
                 ],
             ],
         ],

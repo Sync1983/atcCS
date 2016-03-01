@@ -35,7 +35,7 @@
           <td data-title="'Срок'" sortable="'shiping'">{{row.shiping}}</td>
           <td data-title="'Наличие'" sortable="'count'">{{row.count}}</td>
           <td data-title="'В корзину'">
-            <a href='#' ng-click="Add(row.key)" ng-show="isLogin&&!row.adding">Добавить</a>
+            <a href='#' ng-click="Add(row.key)" ng-show="isLogin&&!row.adding&&!row.error">Добавить</a>
             <span class="load-info" ng-show="row.adding"></span>
           </td>
         </tr>

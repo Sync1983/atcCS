@@ -290,10 +290,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify',
     };
     
     function serverResponse(answer){      
-      var data = answer && answer.data;
-      if( data.error ){
-        $notify.addItem('Ошибка корзины',data.error,1);
-      }
+      var data = answer && answer.data;      
       if ( callback instanceof Function ){
         callback(data);
       }

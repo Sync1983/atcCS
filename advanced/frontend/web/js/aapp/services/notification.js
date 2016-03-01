@@ -30,7 +30,8 @@ function Notification($rootScope){
   
   function update(){
     var body    = $('<div class="notification-item"></div>');
-    var header  = $('<span class="header"></span>');    
+    var header  = $('<div class="header"></div>');    
+    var title   = $('<div class="header-title"></div>');    
     
     for(var i in model.list){
       var item = model.list[i];
@@ -38,7 +39,9 @@ function Notification($rootScope){
       if( !item.body ){
         header.text(item.head);
         header.attr('title',item.text);
+        title.text(item.text);
         body.append(header);      
+        body.append(title);      
         
         body.addClass(item.style);
         
@@ -66,6 +69,14 @@ function Notification($rootScope){
     model.list.push({head:head,text:text,style:style, new:1, view:0});
     
     update();
+  };
+  
+  model.error = function(head,text){
+    model.addItem(head,text,1);
+  };
+  
+  model.info = function(head,text){
+    model.addItem(head,text,0);
   };
   
   init();

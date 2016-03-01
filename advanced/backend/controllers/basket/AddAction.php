@@ -30,14 +30,21 @@ class AddAction extends Action {
     }
 
     $part->price = $part->price / (1+($over_price/100));
-    $part->is_original  = boolval($part->is_original);    
-
-    if( !$part->validate() ){
+    $part->is_original  = boolval($part->is_original);
+    
+    \yii::info("Add part validate");
+    if( !$part->validate(null,true) ){
       return ['error' => $part->getErrors() ];
     }
 
     try{
-      return $part->save()?['save'=>$part->sell_count]:['error' => $part->getErrors()];
+      $part->save(false);
+      if( count($part->getErrors()) ){
+        return ['error' => $part->getErrors()];
+      }
+      $part->refresh();
+      return ['save'=>$part->sell_count];
+      
     } catch (\yii\db\Exception $ex) {
       $message  = $ex->getMessage();      
       $message  = preg_replace('/CONTEXT:[.\s\S]*/im', '', $message);
@@ -46,7 +53,7 @@ class AddAction extends Action {
     }
     
 
-    return ['error' => 'undefined'];
+    return ['error' => [0=>'Неизвестная ошибка']];
   }
   
 }

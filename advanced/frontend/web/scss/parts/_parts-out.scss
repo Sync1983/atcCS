@@ -78,6 +78,16 @@
               display: block;
             }
           }
+          
+          span.load-info{
+            background: url('/img/preloader.gif');
+            background-repeat: no-repeat;
+            background-size: 7em 1em;
+            width: 7em;
+            height: 1em;
+            margin: auto;
+            display: block;
+          }
         }
         
         &:hover{

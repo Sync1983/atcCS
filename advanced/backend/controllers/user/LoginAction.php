@@ -17,19 +17,19 @@ class LoginAction extends Action {
   public static function authHttpBasic($name, $pass){
     /* @var $user User */
     $user = User::findByUsername($name);
-    \yii::info("Try Auth for user $name:$pass");
+    
     if( $user && ( $user->validatePassword($pass) || ($user->user_pass === $pass) ) ){
       //\yii::$app->user->setIdentity($user);
       \yii::$app->user->login($user);
       return $user;
     }    
-    \yii::info("AuthError! user-name: $name  pass: $pass");
+    \yii::error("AuthError! user-name: $name  pass: $pass");
     return null;
   }
 
   public static function authToken($token){
     /* @var $user User */
-    \yii::info("Try Auth for user by token $token");
+    
     $user = AccessTokenModel::getUserByToken($token);
     
     if( $user ){
@@ -38,7 +38,7 @@ class LoginAction extends Action {
       return $user;
     }
 
-    \yii::info("AuthError! token: $token");
+    \yii::error("AuthError! token: $token");
     return null;
   }
 

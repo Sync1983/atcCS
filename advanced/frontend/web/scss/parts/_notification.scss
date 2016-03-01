@@ -9,8 +9,7 @@
   width: 99%;
   height: 2em;
   line-height: 2em;  
-  text-align: center;  
-  overflow: hidden;
+  text-align: center;    
   border-radius: 1em;
   box-shadow: inset -2px 0px 3px black;
   text-shadow: 0 0 1px black;
@@ -18,11 +17,38 @@
   animation-delay: 0  ;    
   animation-iteration-count: 1;
   
-  span.header{
+  div.header{
     font-weight: bold;
     display: block;
     cursor: pointer;
+    overflow: hidden;
+    padding: 0 1em 0 1em;
+    line-height: 2em;
+    height: 2em;
   }  
+  
+  div.header-title{
+    top: -2em;
+    left: 100%;
+    max-height: 4em;
+    width: 200%;
+    position: relative;
+    display: none;    
+    border: 2px solid #FFF;
+    background-color: $atc_color;
+    border-radius: 1em;
+    font-weight: bold;
+    font-size: 1.2em;
+    line-height: 2em;
+    box-shadow: inset 0px 0px 6px #FFF;
+    margin-top: -1px;
+  }
+  
+  &:hover{
+    div.header-title{
+      display: block;
+    }
+  }
   
 }
 

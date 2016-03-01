@@ -125,16 +125,21 @@ atcCS.controller( 'partsSearch', [
         return;
       }
       var item = $scope.data[key];
+      
       var onAnswer = function(aitem){
         return function(answer){
-          if( item.error ){
-            for(var i in item.error){
-              $notify.addItem("Ошибка корзины",item.error[i],1);
+          item.adding = false;
+          if( answer.error ){
+            for(var i in answer.error){
+              aitem.error = true;
+              $notify.error("Ошибка корзины",answer.error[i]);
             }
             return;
           }
-          item.adding = false;
-          console.log(answer);
+          if( answer.save ){
+            $notify.info("Деталь добавлена","Деталь " + aitem.name + "добавлена в корзину");
+            return;
+          }          
         };
       };
       
