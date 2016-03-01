@@ -1,0 +1,17 @@
+<div class="basket-orders">  
+  <h5>Добавить следующие позиции в заказ:</h5>
+  <div class="order" ng-repeat="row in items track by $index">
+    <div class="row-line">
+      <span><label>Позиция</label>{{row.articul}} - {{row.maker}} - {{row.name}}</span>
+    </div>    
+    <div class="row-line">
+      <span><label>Количество</label>{{row.sell_count}}</span>
+    </div>    
+    <div class="row-line">
+      <span><label>Цена ( Сумма )</label>{{row.price}} ( {{(row.sell_count * row.price) | number:2}} )</span>
+    </div>
+    <div class="row-line">
+      <scheckbox ng-model="row.price_change" label="Перезаказ при изменении цены" name="price_change_{{row.id}}" />
+    </div>    
+  </div>  
+</div> 
