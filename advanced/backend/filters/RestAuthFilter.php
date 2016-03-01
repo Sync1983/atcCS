@@ -40,26 +40,26 @@ class RestAuthFilter extends AuthMethod{
    */
   public function beforeAction($action) {    
     $request = $this->request ? : \yii::$app->getRequest();
+    $response = $this->response ? : \yii::$app->getResponse();
     $method = $request->getMethod();
-    
-    if( in_array($method, $this->exceptMethods) ){
-      return true;
-    }
-    
-    if( in_array($action->id, $this->exceptActions) ){
-      return true;
-    }
 
-    if( !$this->auth ){
-      return true;
-    }
-    $parent_action = parent::beforeAction($action);
+    $identity = $this->authenticate(
+            $this->user ? : \yii::$app->getUser(),
+            $this->request ? : \yii::$app->getRequest(),
+            $response
+        );
 
-    if( !$parent_action && in_array($action->id, $this->silentAuthtActions) ){
+    if( $identity || 
+        (!$identity && in_array($action->id, $this->silentAuthtActions)) ||
+        (in_array($method, $this->exceptMethods)) ||
+        in_array($action->id, $this->exceptActions)     ){
       return true;
+    } elseif( !$identity ){
+      $this->handleFailure($response);
+      return false;
     }
     
-    return $parent_action;
+    return false;
   }
   /**
    * @inheritdoc
@@ -77,8 +77,7 @@ class RestAuthFilter extends AuthMethod{
         $user->switchIdentity($identity);
         return $identity;
       }
-
-      $this->handleFailure($response);
+      
       return null;
 
     }
@@ -95,8 +94,7 @@ class RestAuthFilter extends AuthMethod{
         $user->switchIdentity($identity);
         return $identity;
       }
-
-      $this->handleFailure($response);
+      
       return null;
 
     }
