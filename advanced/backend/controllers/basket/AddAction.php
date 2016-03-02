@@ -32,7 +32,6 @@ class AddAction extends Action {
     $part->price = $part->price / (1+($over_price/100));
     $part->is_original  = boolval($part->is_original);
     
-    \yii::info("Add part validate");
     if( !$part->validate(null,true) ){
       return ['error' => $part->getErrors() ];
     }

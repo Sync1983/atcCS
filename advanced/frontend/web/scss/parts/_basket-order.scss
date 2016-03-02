@@ -3,6 +3,16 @@ div.basket-orders{
   font-size: 0.65em;
   line-height: 0.7em;
   
+  .order{
+    border-bottom: 2px solid $atc_color;
+    padding-bottom: 0px;
+    margin-bottom: 4px;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  
   div.row-line {
     overflow: hidden;
     

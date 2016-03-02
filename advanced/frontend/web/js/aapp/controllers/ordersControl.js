@@ -1,6 +1,6 @@
 /* global atcCS */
 
-atcCS.controller( 'basketControl', [
+atcCS.controller( 'ordersControl', [
   '$scope', 'User' ,'$rootScope', 'NgTableParams', '$confirm','$wndMng','$notify',
   function($scope,$user,$rootScope,NgTableParams,$confirm,$wndMng,$notify ) {
     'use strict';    
@@ -52,7 +52,7 @@ atcCS.controller( 'basketControl', [
       }                
     );  
     
-    $scope.editWnd = $wndMng.createWindow({
+    /*$scope.editWnd = $wndMng.createWindow({
         title: "Редактировать позицию",        
         hSize: '20%',
         vSize: '50%',
@@ -178,18 +178,17 @@ atcCS.controller( 'basketControl', [
           $notify.info('В заказе', count + ' позиций были добавлены в заказ');
         }
       );
-    };
+    };*/
     
     $rootScope.$on('userDataUpdate', 
       function(event){        
-        $scope.isLogin = $user.isLogin;
-        $scope.basketName = $user.activeBasket.name;        
+        $scope.isLogin = $user.isLogin;        
         if( $user.isLogin && $scope.tableParams ){
           $scope.tableParams.reload();          
         }
      });   
      
-     $scope.$watch('items',
+     /*$scope.$watch('items',
       function(newVal){
         var cnt = 0;
         for(var i in newVal){
@@ -200,7 +199,7 @@ atcCS.controller( 'basketControl', [
         $scope.selected = cnt;        
         return newVal;
       },true
-     );
+     );*/
      
 }]);
 

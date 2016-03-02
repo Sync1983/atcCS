@@ -21,8 +21,7 @@ function userModel(){
     activeBasket: {id:null,name:null,active:false},
 
     alerts: [
-      {head: "Добро пожаловать", text: "Добро пожаловать в нашу мега-супе-пупер-систему", style:"btn-info", new:1},      
-      {head: "Ошибка авторизации123445365565656000", text: "Ошибка при авторизации", style:"btn-danger", new:1},      
+      {head: "Добро пожаловать", text: "АвтоТехСнаб приветствует Вас", style:"btn-info"}
     ],
 
     analogShow  : true,      //Отображать аналоги
