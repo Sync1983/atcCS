@@ -398,6 +398,18 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q',
     return defer.promise;
   };
   
+  model.getOrders = function getBasket(){
+    var req = {
+      method: 'GET',
+      url: URLto('orders','get-data'),      
+      params: {        
+        params: 'get-data'
+      }
+    };
+    
+    return $http(req);
+  };
+  
   init();
   return model; 
 

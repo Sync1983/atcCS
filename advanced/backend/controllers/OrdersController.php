@@ -16,6 +16,9 @@ class OrdersController extends Controller{
     return [
       'add' => [
         'class'  => orders\AddAction::className(),
+      ],
+      'get-data' => [
+        'class'  => orders\GetDataAction::className(),
       ]
     ];
   }

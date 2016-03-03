@@ -30,7 +30,7 @@ class AddAction extends Action {
       }
       $status = new \backend\models\parts\StatusModel();
       $status->setAttribute('part_id', $id);
-      $status->setAttribute('status', \backend\models\parts\StatusModel::STATE_WAIT_PLACEMENT);
+      $status->setAttribute('status',0);
       $status->save();
       if( count($status->getErrors()) ){
         $errors[$part->articuls] = $status->getErrors();

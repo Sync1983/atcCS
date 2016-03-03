@@ -21,11 +21,12 @@ atcCS.controller( 'ordersControl', [
       {  },
       {        
         counts: [],
-        total: 0,        
+        total: 0,
+        groupBy:'part_status',
         getData: function($defer,params){
           var sorting = params.sorting();
       
-          $user.getBasket().then(
+          $user.getOrders().then(
             function answer(response){
               var data = (response && response.data) || [];
               for(var index in data){

@@ -66,8 +66,20 @@
         &.selected{
           background-color: #ffdada;
         }
-      }    
+      }  
       
+      tr.ng-table-group{
+        & td{            
+          text-align: left;
+          font-size: 0.82rem;
+          background-color: #E5EDF2;
+          border-bottom: 1px solid #0C557F;
+          a{
+            color: black;
+            padding: 0 30px;
+          } 
+        }
+      }      
     }
   }
   
