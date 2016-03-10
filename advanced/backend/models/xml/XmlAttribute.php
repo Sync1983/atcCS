@@ -8,6 +8,7 @@ namespace backend\models\xml;
 class XmlAttribute extends \yii\base\Object{
 
   protected $name         = null;
+  protected $value        = null;
   protected $parent       = null;
   protected $childs       = [];
   protected $attributes   = [];
@@ -25,6 +26,14 @@ class XmlAttribute extends \yii\base\Object{
   public function getparent(){
     return $this->parent;
   }
+  
+  public function getvalue(){
+    return $this->value;
+  }
+  
+  public function setvalue($value){
+    $this->value = strval($value);
+  }
 
   public function getChilds(){
     return $this->childs;
@@ -34,8 +43,9 @@ class XmlAttribute extends \yii\base\Object{
    * @param XmlAttribute $child
    */
   public function appendChild($child){
-
-    if( !is_a($child, 'XmlAttribute' ) ){
+    $parent_class = XmlAttribute::className();
+    
+    if( !($child instanceof $parent_class) ){
       throw new \InvalidArgumentException("Потомок должен иметь тип " . XmlAttribute::className() . " или его потомков");
     }
     
@@ -53,21 +63,30 @@ class XmlAttribute extends \yii\base\Object{
   }
 
   public function __toString(){
-    $str = "<$this->name ";
+    $str = "<$this->name";
+    
     foreach ($this->attributes as $attr=>$value){
-      $str .= "$attr=\"$value\" \r";
+      $str .= " $attr=\"$value\" ";
     }
 
-    if( count($this->childs) == 0 ){
-      $str.= " />";
+    if( count($this->childs) == 0 && !$this->value){
+      
+      $str.= "/>";
       return $str;
-    } else {
+      
+    } elseif(count($this->childs)) {
+      
       $str .= ">";
+      foreach ($this->childs as $child){
+        $str .= sprintf("%s\r",$child);
+      }
+      
+    } else {
+      
+      $str .= "> \r $this->value \r ";
+      
     }
 
-    foreach ($this->childs as $child){
-      $str .= sprintf("%s\r",$child);
-    }
     $str .= "</$this->name>";
     return $str;
   }

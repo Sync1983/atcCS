@@ -15,16 +15,11 @@ class SoapXmlResponse extends XmlResponseFormatter{
     }
     $response->getHeaders()->set('Content-Type', $this->contentType);
 
-    if( !$response->data || !is_object($response->data) || is_subclass_of($response->data, \backend\models\xml\XmlAttribute::className()) ){
+    if( !$response->data || !is_object($response->data) || is_a($response->data, 'XmlAttribute') ){
       throw new \yii\base\InvalidValueException("Для формирования ответа обработчики должны вернуть тип XmlAttribute или его наследника");
     }
 
-    if( $this->rootTag ){
-      $root = new \backend\models\xml\XmlAttribute($this->rootTag);
-      $root->appendChild($response->data);
-    }
-
-    $response->content = sprintf("%s",$root);
+    $response->content = sprintf("<?xml version=\"%s\" encoding=\"%s\"?>\r%s", $this->version,  $charset, $response->data);
   }
 
 }

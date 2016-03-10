@@ -47,7 +47,7 @@ class SoapController extends Controller {
     $response->acceptParams = [];
 
     $controller_name  = \yii\helpers\ArrayHelper::getValue($params, 'item', false);
-    $wsdl_query       = \yii\helpers\ArrayHelper::keyExists('wsdl', $params);
+    $wsdl_query       = \yii\helpers\ArrayHelper::keyExists('wsdl', $params) || \yii\helpers\ArrayHelper::keyExists('WSDL', $params);
     /* @var $controller rest\RestItemController */
     $controller = $this->getController($controller_name);
     if( !$controller ){

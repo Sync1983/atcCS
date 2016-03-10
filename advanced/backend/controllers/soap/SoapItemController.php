@@ -33,8 +33,27 @@ abstract class SoapItemController extends Object{
       $fields[$row['column_name']] = $row['data_type'];
     }
 
-    $root = new \backend\models\xml\XmlAttribute('import');
-    $root->setAttributes(['namespace'=>\yii::$app->getUrlManager()->getBaseUrl(), 'location'=>\yii::$app->getUrlManager()->getBaseUrl()]);
+    $root = new \backend\models\xml\XmlAttribute('wsdl:definitions');
+    $docs = new \backend\models\xml\XmlAttribute('wsdl:documentation');
+
+    $docs->setAttributes(['xmlns:wsdl' => "http://schemas.xmlsoap.org/wsdl/"]);
+    $root->setAttributes([
+      'xmlns:soap'        => "http://schemas.xmlsoap.org/wsdl/soap/",
+      'xmlns:tm'          => "http://microsoft.com/wsdl/mime/textMatching/",
+      'xmlns:soapenc'     => "http://schemas.xmlsoap.org/soap/encoding/",
+      'xmlns:mime'        => "http://schemas.xmlsoap.org/wsdl/mime/",
+      'xmlns:s'           => "http://www.w3.org/2001/XMLSchema",
+      'xmlns:soap12'      => "http://schemas.xmlsoap.org/wsdl/soap12/",
+      'xmlns:http'        => "http://schemas.xmlsoap.org/wsdl/http/",
+      'xmlns:wsdl'        => "http://schemas.xmlsoap.org/wsdl/",
+      'xmlns:tns'         => \yii::$app->getRequest()->getServerName(),
+      'targetNamespace'   => \yii::$app->getRequest()->getServerName()
+      ]
+    );    
+    
+    $docs->value = "Describe service for model " . $table_name;
+    $root->appendChild($docs);
+    
     return $root;
     //$fields;
   }

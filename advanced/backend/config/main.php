@@ -55,7 +55,7 @@ return [
           'formatters' => [
             'soap' => [
               'class'   => backend\models\response\SoapXmlResponse::className(),
-              'rootTag' => 'description'
+              'rootTag' => 'wsdl:definitions'
             ]
           ],
         ],
