@@ -51,11 +51,14 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*'response' => [
+        'response' => [
           'formatters' => [
-            'xml' => backend\models\response\AtcXmlResponse::class,
+            'soap' => [
+              'class'   => backend\models\response\SoapXmlResponse::className(),
+              'rootTag' => 'description'
+            ]
           ],
-        ],*/
+        ],
         'urlManager' => [
           'enablePrettyUrl' => true,
           'showScriptName' => false,

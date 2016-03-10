@@ -28,5 +28,9 @@ class SoapUsers extends SoapItemController{
   public function all() {
         
   }
-  
+
+  public function model() {
+    return new \common\models\User();
+  }
+
 }

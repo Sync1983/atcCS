@@ -41,7 +41,7 @@ class SoapController extends Controller {
 
   public function runAction($id, $params = array()) {
     $response = \yii::$app->getResponse();
-    $response->format = \yii\web\Response::FORMAT_XML;    
+    $response->format = 'soap';
 
     $response->acceptMimeType = null;
     $response->acceptParams = [];
