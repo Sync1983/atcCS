@@ -8,7 +8,12 @@ namespace backend\controllers\soap;
 use backend\controllers\soap\SoapItemController;
 
 class SoapUsers extends SoapItemController{
-
+  /**
+   * @wsdl
+   * Создает пользователя
+   * @param \common\models\User $data
+   * @param string $text
+   */
   public function create($data) {
 
   }
@@ -16,7 +21,12 @@ class SoapUsers extends SoapItemController{
   public function delete($id) {
     
   }
-
+  /**
+   * @wsdl
+   * Обновляет пользователя
+   * @param integer $id
+   * @param \common\models\User $params
+   */
   public function update($id, $params) {
     
   }
@@ -27,10 +37,6 @@ class SoapUsers extends SoapItemController{
 
   public function all() {
         
-  }
-
-  public function model() {
-    return new \common\models\User();
-  }
+  }  
 
 }
