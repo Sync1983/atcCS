@@ -10,6 +10,10 @@ use backend\models\xml\XmlAttribute;
 /**
  * Для описания функций используется DocComment с тэгом @wsdl
  * Входные и выходные параметры должны иметь описание типов
+ * @property WSDLClass        $class
+ * @property \ReflectionClass $reflection
+ * @property XmlAttribute     $portType
+ * @property XmlAttribute     $document
  */
 class WSDL extends Object{
   /* @var $root XmlAttribute */
@@ -22,14 +26,8 @@ class WSDL extends Object{
   protected $portType   = null;
   /* @var $binding XmlAttribute */
   protected $binding    = null;
-
-  /* @var $class Object */
-  protected $class      = null;
-  protected $cname      = "";
-  protected $functions  = [];
-  protected $parameters = [];
-  protected $call_args  = [];
-  protected $args       = [];
+  /* @var $class WSDLClass */
+  protected $class      = null;  
   /* @var $reflection \ReflectionClass */
   protected $reflection = null;
 
@@ -47,37 +45,29 @@ class WSDL extends Object{
     'targetNamespace'   => 'atc58.ru'
   ];
 
+  public $wsdlPrefix    = 'wsdl:';
 
   public function __construct($class = false,$config = array()) {
 
-    if( !$class ){
+    if( is_a($class,  Object::className()) ){
+      $this->class = $class;
+    } else {
+      $this->class = \yii::createObject($class);
+    }
+
+    if( !$this->class ){
       throw new \InvalidArgumentException("Описываемый класс должен быть указан в конструкторе");
     }
-
-    if( !is_object($class) && !is_string($class) ){
-      throw new \InvalidArgumentException("Класс должен задаваться обектом, либо строкой имени");
-    }
-
-    if( is_string($class ) ){
-      $newClass = \yii::createObject($class);
-      if( !$newClass ){
-        throw new \yii\base\InvalidParamException("Ошибка при создании указанного класса");
-      }
-      $this->class = $newClass;
-    } else {
-      $this->class = $class;
-    }
-
-    $cname        = $this->class->className();
-    $name_split   = explode("\\", $cname);
-    $this->cname  = array_pop($name_split);
-
-    $this->reflection = new \ReflectionClass($this->class);
 
     return parent::__construct($config);
   }
 
   public function init() {
+
+    if( $this->class->className() !== WSDLClass::className() ){
+      $this->class  = new WSDLClass($this->class);
+    }
+
     $this->root     = new \backend\models\xml\XmlAttribute('wsdl:definitions');
     $this->document = new \backend\models\xml\XmlAttribute('wsdl:documentation');    
     $this->types    = new \backend\models\xml\XmlAttribute('wsdl:types');
@@ -91,31 +81,21 @@ class WSDL extends Object{
 
     $this->root->setAttributes($this->headerTags);
 
-    $this->document->setAttributes(['xmlns:wsdl' => "http://schemas.xmlsoap.org/wsdl/"]);
-    $this->document->value  = "Describe service for model " . $this->cname;
-
-    $this->portType->setAttributes('name','service'.$this->cname);
-
-    $schm = new XmlAttribute("wsdl:schema");
-    $schm->setAttributes([
-      'xmlns:xs'        => "http://www.w3.org/2001/XMLSchema",
-      'targetNamespace' => "http://greath.example.com/2004/schemas/resSvc"
-    ]);
-
-    $this->types->appendChild($schm);
-    $this->types = $schm;
-
-    $this->describe();
+    $this->document->setAttributes(['xmlns:wsdl' => "http://schemas.xmlsoap.org/wsdl/"]);    
     
     return parent::init();
   }
 
   public function getWSDL(){
-    $this->compile();
+    list($types,$messages,$portType,$binding) = $this->compile();
     return $this->root;
   }
 
 //======================================================================================================================
+  protected function getXmlAttribute($name){
+    return new XmlAttribute($this->wsdlPrefix . $name);
+  }
+  
   protected function describeMethods(){
     $methods = $this->reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
     foreach ($methods as $method){
@@ -204,9 +184,7 @@ class WSDL extends Object{
   }
 
   protected function describe(){
-
-    $this->describeMethods();
-    
+    $this->class->describe();
   }
   
   protected function compileMethods() {
@@ -278,10 +256,14 @@ class WSDL extends Object{
   }
 
   protected function compile(){
-
-    $this->compileTypes();
-    $this->compileMessages();
-    $this->compileMethods();
+    if( !is_array($this->class) ){
+      list($types,$messages,$portType,$binding) = $this->class->compile();
+      $this->types->appendChild($types);
+      $this->root->appendChild($messages);
+      $this->root->appendChild($portType);
+      $this->types->appendChild($types);
+    }
+    return [$this->types,null,null,$this->binding];
 
   }
 }

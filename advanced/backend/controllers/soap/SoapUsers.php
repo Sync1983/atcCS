@@ -6,7 +6,13 @@
 
 namespace backend\controllers\soap;
 use backend\controllers\soap\SoapItemController;
-
+/** s
+ * @wsdl_describe Сервис
+ * управления
+ * пользователями
+ * @wsdl_publicate create,
+ * delete, update, view, all, error
+ */
 class SoapUsers extends SoapItemController{
   /**
    * @wsdl
