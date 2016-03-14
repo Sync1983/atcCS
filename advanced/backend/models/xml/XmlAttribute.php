@@ -3,8 +3,9 @@ namespace backend\models\xml;
 
 /**
  * @author Sync
+ * @property String $value Текстовое значение внутри тэга
+ * @method null setAttributes(strign $name, string $value) Устанавливает аттрибут(или массив аттирбутов) для тэга
  */
-
 class XmlAttribute extends \yii\base\Object{
 
   protected $name         = null;
@@ -43,13 +44,26 @@ class XmlAttribute extends \yii\base\Object{
    * @param XmlAttribute $child
    */
   public function appendChild($child){
-    $parent_class = XmlAttribute::className();
-    
-    if( !($child instanceof $parent_class) ){
-      throw new \InvalidArgumentException("Потомок должен иметь тип " . XmlAttribute::className() . " или его потомков");
+    if( !$child ){
+      return;
     }
     
-    $this->childs[] = $child;
+    $parent_class = XmlAttribute::className();
+
+    if( !is_array($child) ){
+      $childs = [$child];
+    } else {
+      $childs = $child;
+    }
+
+    foreach ($childs as $child) {
+      if( !($child instanceof $parent_class) ){
+        throw new \InvalidArgumentException("Потомок должен иметь тип " . XmlAttribute::className() . " или его потомков");
+      }
+
+      $this->childs[] = $child;
+    }
+    
   }
 
   public function setAttributes($attribute,$value=null){

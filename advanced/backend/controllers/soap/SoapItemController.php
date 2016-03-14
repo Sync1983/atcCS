@@ -29,7 +29,7 @@ abstract class SoapItemController extends Object{
 //======================================================================================================================
 
   public function wsdl(){
-    return (new \backend\models\soap\WSDL($this))->getWSDL();
+    return \yii::$app->wsdl->getWSDL($this);
   }
 
 }

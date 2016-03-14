@@ -6,17 +6,15 @@
 
 namespace backend\controllers\soap;
 use backend\controllers\soap\SoapItemController;
-/** s
- * @wsdl_describe Сервис
- * управления
- * пользователями
- * @wsdl_publicate create,
- * delete, update, view, all, error
+/**
+ * WSDL сервис для управления клиентами
+ * @wsdl_describe Сервис управления пользователями
+ * @wsdl_publicate create, delete, update, view, all, error
  */
 class SoapUsers extends SoapItemController{
   /**
-   * @wsdl
-   * Создает пользователя
+   * @wsdl_name СоздатьПользователя
+   * @wsdl_description Создает пользователя
    * @param \common\models\User $data
    * @param string $text
    */
@@ -28,8 +26,7 @@ class SoapUsers extends SoapItemController{
     
   }
   /**
-   * @wsdl
-   * Обновляет пользователя
+   * @wsdl_description Обновляет пользователя
    * @param integer $id
    * @param \common\models\User $params
    */
