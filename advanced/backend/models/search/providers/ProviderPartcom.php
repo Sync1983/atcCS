@@ -31,7 +31,7 @@ class ProviderPartcom extends Provider{
 
   public function getParts($ident) {
     list($maker,$code) = explode("@@", $ident);
-    $data = ['number'=>$code,'maker_id'=>$maker,'find_substitutes'=>"on"];
+    $data = ['number'=>$code,'maker_id'=>$maker,'reCross'=>"on"];
     $request 	= $this->prepareRequest($data,false,  $this->_url."search/parts");
 		$response	= $this->executeRequest($request);
 		$answer		= $this->parseResponse($response,false);

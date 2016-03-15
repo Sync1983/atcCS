@@ -8,9 +8,9 @@ use yii\db\ActiveRecord;
 
 class StatusModel extends ActiveRecord{
   const STATE_IN_BASKET       = 0;
-  const STATE_IN_WORK         = 1;
-  const STATE_WAIT_PAY        = 2;
-  const STATE_WAIT_PLACEMENT  = 3;
+  const STATE_WAIT_PLACEMENT  = 1;
+  const STATE_IN_WORK         = 2;
+  const STATE_WAIT_PAY        = 3;
   const STATE_PLACEMENT       = 4;
   const STATE_IN_WAY          = 5;
   const STATE_IN_STORAGE      = 6;
@@ -19,9 +19,9 @@ class StatusModel extends ActiveRecord{
 
   public static $states = [
     self::STATE_IN_BASKET       => "В корзине",
+    self::STATE_WAIT_PLACEMENT  => "Ожидает размещения",
     self::STATE_IN_WORK         => "В работе",
     self::STATE_WAIT_PAY        => "Ожидает оплаты",
-    self::STATE_WAIT_PLACEMENT  => "Ожидает размещения",
     self::STATE_PLACEMENT       => "Заказано",
     self::STATE_IN_WAY          => "В пути",
     self::STATE_IN_STORAGE      => "На складе",

@@ -34,6 +34,8 @@ class GetDataAction extends Action {
           bs.basket_id IN (
             SELECT * FROM get_active_basket($uid)
           )
+        AND
+          (select count(*) FROM "Status" WHERE part_id=bs.id ) = 0
         ;
 SQL;
     /* @var $db \yii\db\Connection */

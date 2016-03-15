@@ -1,0 +1,121 @@
+.orders{
+  padding: 10px;
+  
+  h5 {
+    padding: 0 10px;
+  }
+  
+  .ng-table{
+    margin: 0;
+      
+    thead{
+      line-height: 1rem;      
+      font-size: 0.75rem;
+      height: 1rem;
+      padding: 0;
+      margin: 0;
+      //background: linear-gradient(to right,#054368 0%,#1599E6 35%,#097CBF 65%, #054368 100%);
+      background: $atc_color;
+      color:      #E5F7FF;
+      text-shadow:    0px 0px 1px #000;
+      border-collapse: collapse;
+      
+      tr{        
+        
+        th{
+          padding: 2px 0;
+          
+          .sort-indicator::before,.sort-indicator::after{
+            border-color:#FFF transparent;
+          } 
+        }
+      }
+    }
+    
+    tbody{
+      tr{
+        line-height: inherit;
+        height: auto;
+        font-size: 0.75rem;
+        background-color: white; 
+        text-align: center;
+        position: relative;
+        
+        td{
+          padding:1px 0;
+          &.name{
+            height: 1rem;
+            border: none;
+            text-align: left;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            display:block;
+            
+            span{
+              width: 100%;
+              height: 100%;
+              display: block;
+            }
+          }
+        }
+        
+        &:hover{
+          background-color: #D4EAFF; 
+        }
+        
+        &.selected{
+          background-color: #ffdada;
+        }
+      }  
+      
+      tr.ng-table-group{
+        & td{            
+          text-align: left;
+          font-size: 0.82rem;
+          background-color: #E5EDF2;
+          border-bottom: 1px solid #0C557F;
+          a{
+            color: black;
+            padding: 0 30px;
+          } 
+        }
+      }      
+    }
+  }
+  
+  button.btn-icon{
+    line-height: 1em;
+    padding: 0 1px 0 3px;
+    background: none;
+    color: rgba(0,0,0,0.3);
+    span{
+      font-size: 0.8em;
+    }
+    &:hover{
+      color: $atc_color;
+    }
+  }
+  
+  .ng-table-counts{
+    button.btn {      
+      padding: 0px 12px;
+      
+      span {
+        height: 1rem;
+        line-height: 1rem;
+        font-size: 0.75rem;
+      }      
+      
+    }
+  }
+  .pagination{
+    margin: 0;
+    font-size: 0.75rem;
+    line-height: 1rem;    
+    
+    li > a{
+      padding: 0.2rem 0.55rem;
+    }
+      
+  }
+}

@@ -12,8 +12,7 @@ class DateValidator extends Validator {
   public $skipOnError = false;
 
 
-  public function validateAttribute($model, $attribute) {
-    \yii::info("Validate date");
+  public function validateAttribute($model, $attribute) {    
     $model->setAttribute($attribute, strftime("%Y-%m-%d %H:%M:%S",time()));
     return true;
   }

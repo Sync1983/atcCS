@@ -3,16 +3,19 @@
           'class' => 'login-form'
        ]
     ]);?>
-<div class="row-line">
+<div class="row-line" ng-show="request">
+  <span class="login-loader"></span>
+</div>
+<div class="row-line" ng-show="!request">
   <sinput class="login-input" placeholder="Введите логин или адрес почты" name="login" ng-model="login.name" submit-function="onLogin"></sinput>
 </div>
-<div class="row-line">
+<div class="row-line" ng-show="!request">
   <sinput class="login-input" placeholder="Введите пароль" name="password" ng-model="login.password" submit-function="onLogin"></sinput>
 </div>
-<div class="row-line" style="text-align:center;">
+<div class="row-line" style="text-align:center;" ng-show="!request">
   <scheckbox name="rememberMe" label="Запомнить меня" ng-model="login.remember"/>
 </div>
-<div class="row-line" style="text-align:center;">
+<div class="row-line" style="text-align:center;" ng-show="!request">
   <label ng-click="onLogin()">Войти</label>
   <label>Регистрация</label>
 </div>    

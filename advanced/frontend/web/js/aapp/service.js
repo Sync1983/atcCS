@@ -3,8 +3,8 @@
 /*
  * Сервис для обслуживания модели пользователя и общения с сервером
  */
-atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', 
-  function($http, $cookies, $rootScope, $notify){
+atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q',
+  function($http, $cookies, $rootScope, $notify, $q){
   'use strict';
   
   var URL   = serverURL + "/index.php";
@@ -87,8 +87,9 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify',
         params: 'get-token' + (remember?'-hash':'')
       }
     };
+    var defer = $q.defer();
     
-    return $http(req).then(
+    $http(req).then(
       function success(response){        
         var hash        = response && response.data && response.data['hash'] || null;
 
@@ -99,15 +100,20 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify',
           
           $cookies.put('name',name,{expires:expires});
           $cookies.put('pass',hash,{expires:expires});
+          defer.resolve(true);
+        } else{
+          defer.reject();          
         }
         
         model.update();
         
       },
       function error(response){
-        $notify.addItem("Ошибка","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
+        $notify.addItem("Ошибка авторизации","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
+        defer.reject();          
     });
     
+    return defer.promise;    
   };
 
   model.update = function update(){    
@@ -351,6 +357,53 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify',
       url: URLto('basket','delete'),      
       params: {        
         params: partId
+      }
+    };
+    
+    return $http(req);
+  };
+  
+  model.orderParts = function orderParts(parts){
+    var defer = $q.defer();
+    var data = {};
+    
+    for(var i in parts){
+      var part = parts[i];
+      data[part.id] = part.price_change;
+    }
+    
+    var req = {
+      method: 'GET',
+      url: URLto('orders','add'),      
+      params: {        
+        params: data
+      }
+    };
+    
+    $http(req).then(
+      function(answer){
+        data = answer && answer.data;
+        if( !data ){
+          defer.reject();
+          $notify.error('Ошибка заказ','Ошибка добавления деталей в заказ');
+        }
+        defer.resolve(data);
+      },
+      function(reason){
+        $notify.error('Ошибка заказ','Ошибка добавления деталей в заказ');        
+        defer.reject();
+      }
+    );
+    
+    return defer.promise;
+  };
+  
+  model.getOrders = function getBasket(){
+    var req = {
+      method: 'GET',
+      url: URLto('orders','get-data'),      
+      params: {        
+        params: 'get-data'
       }
     };
     

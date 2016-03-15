@@ -21,6 +21,7 @@ atcCS.controller( 'headControl',['$scope','User','$wndMng','$templateCache', fun
     $wndMng.setBodyByTemplate(window, '/parts/_login-part.html', $scope);
 
     $scope.show = !$user.isLogin;
+    $scope.request = false;
     
     $scope.login      = {
       name: $user.name,
@@ -28,8 +29,15 @@ atcCS.controller( 'headControl',['$scope','User','$wndMng','$templateCache', fun
       remember: true
     };
 
-    $scope.onLogin = function(){      
-      $user.login($scope.login.name,$scope.login.password,$scope.login.remember);
+    $scope.onLogin = function(){
+      $scope.request = true;
+      
+      $user.login($scope.login.name,$scope.login.password,$scope.login.remember).then(function(answer){
+        $scope.request = false;        
+      },function(reason){
+        $scope.request = false;        
+      });
+      
       $scope.show = !$user.isLogin;
       return false;
     };

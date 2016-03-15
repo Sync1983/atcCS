@@ -6,6 +6,7 @@ $params = array_merge(
     require(__DIR__ . '/params-local.php')
 );
 
+
 return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
@@ -37,13 +38,13 @@ return [
           'queryCacheDuration' => -1
         ], // PostgreSQL
         'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
+            'traceLevel' => 3, //YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
                     'class'       => 'yii\log\FileTarget',
-                    'levels'      => ['info', 'error', 'warning'],
-                    'categories'  => ['application'],
-                    'logVars'     => ['_GET', '_POST', '_COOKIE']
+                    'levels'      => ['info', 'error', 'warning','trace'],
+                    //'categories'  => ['application'],
+                    //'logVars'     => ['_GET', '_POST', '_COOKIE']
                 ],
             ],
         ],
@@ -52,10 +53,49 @@ return [
         ],
         'response' => [
           'formatters' => [
-            'xml' => backend\models\response\AtcXmlResponse::class,
+            'soap' => [
+              'class'   => backend\models\response\SoapXmlResponse::className(),
+              'rootTag' => 'wsdl:definitions'
+            ]
           ],
         ],
+        'urlManager' => [
+          'enablePrettyUrl' => true,
+          'showScriptName' => false,
+          'enableStrictParsing' => false,
+          'rules' => [
+            //'rest' => [
+            //  'pattern'   => 'rest/<item>/<action>',
+            //  'route'     => //'rest/index',
+            //        [
+                      'POST   soap/<item>'            => 'soap/create',
+                      'GET    soap/<item>'            => 'soap/all',
+                      'PUT    soap/<item>/<id:\d+>'   => 'soap/update',
+                      'DELETE soap/<item>/<id:\d+>'   => 'soap/delete',
+                      'GET    soap/<item>/<id:\d+>'   => 'soap/view',
+            //        ],
+            //  'defaults'  => ['item' => 'rest', 'action' => 'list'],
+           // ]
+          ],
+        ],
+        'wsdl' => [
+          'class' => \backend\models\soap\WSDL::className(),
+          'headerTags' => [
+            'xmlns:soap'        => "http://schemas.xmlsoap.org/wsdl/soap/",
+            'xmlns:tm'          => "http://microsoft.com/wsdl/mime/textMatching/",
+            'xmlns:soapenc'     => "http://schemas.xmlsoap.org/soap/encoding/",
+            'xmlns:mime'        => "http://schemas.xmlsoap.org/wsdl/mime/",
+            'xmlns:s'           => "http://www.w3.org/2001/XMLSchema",
+            'xmlns:soap12'      => "http://schemas.xmlsoap.org/wsdl/soap12/",
+            'xmlns:http'        => "http://schemas.xmlsoap.org/wsdl/http/",
+            'xmlns:atcWSDL'        => "http://schemas.xmlsoap.org/wsdl/",
+            'xmlns:tns'         => 'atcWSDL',
+            'targetNamespace'   => 'atcWSDL'
+          ],
+          'wsdlPrefix'    => 'atcWSDL:'
+        ]
+
 
     ],
     'params' => $params,
-];
+];?>
