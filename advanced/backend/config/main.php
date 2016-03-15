@@ -82,17 +82,10 @@ return [
           'class' => \backend\models\soap\WSDL::className(),
           'headerTags' => [
             'xmlns:soap'        => "http://schemas.xmlsoap.org/wsdl/soap/",
-            'xmlns:tm'          => "http://microsoft.com/wsdl/mime/textMatching/",
-            'xmlns:soapenc'     => "http://schemas.xmlsoap.org/soap/encoding/",
-            'xmlns:mime'        => "http://schemas.xmlsoap.org/wsdl/mime/",
             'xmlns:s'           => "http://www.w3.org/2001/XMLSchema",
-            'xmlns:soap12'      => "http://schemas.xmlsoap.org/wsdl/soap12/",
-            'xmlns:http'        => "http://schemas.xmlsoap.org/wsdl/http/",
-            'xmlns:atcWSDL'        => "http://schemas.xmlsoap.org/wsdl/",
-            'xmlns:tns'         => 'atcWSDL',
-            'targetNamespace'   => 'atcWSDL'
+            'xmlns:wsdl'        => "http://schemas.xmlsoap.org/wsdl/",
           ],
-          'wsdlPrefix'    => 'atcWSDL:'
+          'wsdlPrefix'    => 'wsdl:'
         ]
 
 
