@@ -28,7 +28,7 @@ class WSDLClass extends Object{
   /* @var $portType XmlAttribute */
   protected $portType   = null;
   /* @var $binding XmlAttribute */
-  protected $binding    = null;
+  protected $binding    = null;  
   /* @var $class Object */
   protected $class      = null;
   /* @var $reflection \ReflectionClass */
@@ -61,8 +61,12 @@ class WSDLClass extends Object{
     $this->binding  = \yii::$app->wsdl->getXmlAttribute('binding');
 
     $this->root->appendChild([$this->document,$this->types,$this->portType,$this->binding]);
-    $this->root->setAttributes($this->headerTags);
-    $this->document->setAttributes(['xmlns:wsdl' => "http://schemas.xmlsoap.org/wsdl/"]);
+    $this->root->setAttributes($this->headerTags);    
+
+    $bindingXML = new XmlAttribute('soap:binding');
+    $bindingXML->setAttributes(['style'=>"document", 'transport'=>"http://schemas.xmlsoap.org/soap/http"]);
+
+    $this->binding->appendChild($bindingXML);    
 
     $this->reflection = new \ReflectionClass($this->class);
 
@@ -74,17 +78,25 @@ class WSDLClass extends Object{
   public function describe() {
     $this->parseComment();
 
-   if( !count($this->populate) ){
-     $this->set_publicate_all();
-   }
+    if( !count($this->populate) ){
+      $this->set_publicate_all();
+    }
 
-   foreach ($this->populate as $operation){
-     /* @var $operation WSDLFunction */
-     $this->portType->appendChild($operation->describe());
-     $this->root->appendChild($operation->getMessages());
-   }
-   return $this->root;
-  }  
+
+
+    foreach ($this->populate as $operation){
+      /* @var $operation WSDLFunction */
+      $this->portType->appendChild($operation->describe());
+      $this->root->appendChild($operation->getMessages());
+      $this->binding->appendChild($operation->getOperation());
+    }
+
+    $this->portType->setAttributes('name',$this->name);
+    $this->binding->setAttributes('name',  "bnd_" . $this->name);
+    $this->binding->setAttributes('type',  $this->name);
+    
+    return $this->root;
+  }
 //======================================================================================================================
   protected function parseComment(){
     
@@ -103,11 +115,11 @@ class WSDLClass extends Object{
   }
 
   protected function set_name($value){
-    $this->name = strval($value);
+    $this->name = trim(strval($value));
   }
 
   protected function set_describe($value){
-    $this->document->value = $value;
+    $this->document->value = trim($value);
   }
 
   protected function set_publicate($value){

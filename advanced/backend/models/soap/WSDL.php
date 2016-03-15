@@ -12,23 +12,15 @@ use backend\models\xml\XmlAttribute;
  * Входные и выходные параметры должны иметь описание типов
  */
 class WSDL extends Component{
- 
-  
 
   public $headerTags = [
-    'xmlns:soap'        => "http://schemas.xmlsoap.org/wsdl/soap/",
-    'xmlns:tm'          => "http://microsoft.com/wsdl/mime/textMatching/",
-    'xmlns:soapenc'     => "http://schemas.xmlsoap.org/soap/encoding/",
-    'xmlns:mime'        => "http://schemas.xmlsoap.org/wsdl/mime/",
-    'xmlns:s'           => "http://www.w3.org/2001/XMLSchema",
-    'xmlns:soap12'      => "http://schemas.xmlsoap.org/wsdl/soap12/",
-    'xmlns:http'        => "http://schemas.xmlsoap.org/wsdl/http/",
-    'xmlns:wsdl'        => "http://schemas.xmlsoap.org/wsdl/",
-    'xmlns:tns'         => 'atc58.ru',
-    'targetNamespace'   => 'atc58.ru'
+    'xmlns:soap'        => "http://schemas.xmlsoap.org/wsdl/soap/",    
+    'xmlns:s'           => "http://www.w3.org/2001/XMLSchema",    
+    'xmlns:wsdl'        => "http://schemas.xmlsoap.org/wsdl/",    
   ];
 
   public $wsdlPrefix    = 'wsdl:';
+  public $typePrefix    = 's:';
 
   public function getWSDL($class){
     $wsdl = new WSDLClass($class,['headerTags'=>  $this->headerTags]);
@@ -37,6 +29,10 @@ class WSDL extends Component{
 
   public function getXmlAttribute($name){
     return new XmlAttribute($this->wsdlPrefix . $name);
+  }
+
+  public function getTypeAttribute($name){
+    return new XmlAttribute($this->typePrefix. $name);
   }
   
 }

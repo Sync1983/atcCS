@@ -3,8 +3,7 @@ namespace backend\models\xml;
 
 /**
  * @author Sync
- * @property String $value Текстовое значение внутри тэга
- * @method null setAttributes(strign $name, string $value) Устанавливает аттрибут(или массив аттирбутов) для тэга
+ * @property String $value Текстовое значение внутри тэга 
  */
 class XmlAttribute extends \yii\base\Object{
 
@@ -77,32 +76,34 @@ class XmlAttribute extends \yii\base\Object{
   }
 
   public function __toString(){
-    $str = "<$this->name";
-    
+    $format_long  = "\n<%s%s>%s  %s</%s>";
+    $format_short = "\n<%s%s/>";
+    $childs       = "";
+    $attributes   = "";
+    $value        = "";
+
+    if( !count($this->attributes) && !count($this->childs) && !$this->value){
+      return "";
+    }
+
+    $format = $format_short;
+    if( $this->value || count($this->childs)){
+      $format = $format_long;
+    }
+
     foreach ($this->attributes as $attr=>$value){
-      $str .= " $attr=\"$value\" ";
+      $attributes .= " $attr=\"$value\"";
     }
 
-    if( count($this->childs) == 0 && !$this->value){
-      
-      $str.= "/>";
-      return $str;
-      
-    } elseif(count($this->childs)) {
-      
-      $str .= ">";
-      foreach ($this->childs as $child){
-        $str .= sprintf("%s\r",$child);
+    foreach ($this->childs as $child){
+      $text = "$child";
+      if( !$text ){
+        continue;
       }
-      
-    } else {
-      
-      $str .= "> \r $this->value \r ";
-      
+      $childs .= $text;
     }
-
-    $str .= "</$this->name>";
-    return $str;
+    
+    return sprintf($format,  $this->name, $attributes, $this->value, $childs, $this->name);
   }
 
 }

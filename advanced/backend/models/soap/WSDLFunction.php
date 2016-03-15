@@ -25,8 +25,8 @@ class WSDLFunction extends Object{
   protected $funct_name = null;
   protected $types      = [];
   protected $type_convert = [
-    'integer' => 'ws:number',
-    'string'  => 'ws:string',
+    'integer' => 's:decimal',
+    'string'  => 's:string',
   ];
 
   public function __construct(\ReflectionClass $reflection, $name){
@@ -61,7 +61,21 @@ class WSDLFunction extends Object{
   }
 
   public function getMessages(){
+    if( !$this->method ){
+      return null;
+    }
     return $this->createMessages();
+  }
+
+  public function getOperation(){
+    if( !$this->method ){
+      return null;
+    }
+    return $this->createOperation();
+  }
+
+  public function getName(){
+    return $this->name;
   }
 
 //======================================================================================================================
@@ -83,11 +97,11 @@ class WSDLFunction extends Object{
   }
 
   protected function set_wsdl_name($value){    
-    $this->name = strval($value);
+    $this->name = trim(strval($value));
   }
 
   protected function set_wsdl_description($value){
-    $this->document->value = strval($value);
+    $this->document->value = trim($value);
   }
 
   protected function set_param($value){
@@ -117,6 +131,28 @@ class WSDLFunction extends Object{
       }
     }
     return $xml;
+  }
+
+  protected function createOperation(){
+    $operation = \yii::$app->wsdl->getXmlAttribute('operation');
+
+    $opin   = new XmlAttribute('soap:operation');
+    $input  = \yii::$app->wsdl->getXmlAttribute('input');
+    $output = \yii::$app->wsdl->getXmlAttribute('output');
+    $body   = new XmlAttribute('soap:body');
+
+    $opin->setAttributes('soapAction',"http://example.com/getTerm");
+    $body->setAttributes('use',"literal");
+
+    $input  ->appendChild($body);
+    $output ->appendChild($body);
+
+    $operation->appendChild($opin);
+    $operation->appendChild($input);
+    $operation->appendChild($output);
+
+    $operation->setAttributes('name', $this->name);
+    return $operation;
   }
 
 
