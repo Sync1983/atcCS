@@ -30,7 +30,7 @@
             ng-class="(String(row.articul).toUpperCase()===searchText.toUpperCas())? 'original' :''">  
           <td data-title="'Производитель'" sortable="'maker'">{{row.maker}}</td>
           <td data-title="'Артикул'" sortable="'articul'">{{row.articul}}</td>
-          <td data-title="'Наименование'" class="name"><span title='{{row.name}}'><u ng-show="isAdmin">{{row.ps_inf}} : {{row.stock}}</u> {{row.name}}</span></td> 
+          <td data-title="'Наименование'" class="name"><span title='{{row.name}}'>{{row.name}}</span></td>
           <td data-title="'Цена'" sortable="'viewPrice'">{{row.viewPrice}}</td>
           <td data-title="'Срок'" sortable="'shiping'">{{row.shiping}}</td>
           <td data-title="'Наличие'" sortable="'count'">{{row.count}}</td>

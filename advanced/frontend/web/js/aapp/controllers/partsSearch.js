@@ -14,7 +14,6 @@ atcCS.controller( 'partsSearch', [
     $scope.analogShow = $user.analogShow;
     $scope.markup     = $user.activeMarkup || 0;
     $scope.isLogin    = $user.isLogin;
-    $scope.isAdmin    = $user.isAdmin;
     
     $snCtrl.change($scope.searchText);
     
