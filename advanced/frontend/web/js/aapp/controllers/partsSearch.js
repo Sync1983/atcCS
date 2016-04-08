@@ -15,7 +15,7 @@ atcCS.controller( 'partsSearch', [
     $scope.markup     = $user.activeMarkup || 0;
     $scope.isLogin    = $user.isLogin;
     
-    $snCtrl.change($scope.searchText);
+    $snCtrl.change($scope.searchText); 
     
     $scope.tableParams = new NgTableParams(
       {  },
