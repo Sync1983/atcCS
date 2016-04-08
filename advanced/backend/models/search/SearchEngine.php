@@ -73,6 +73,7 @@ class SearchEngine extends Object{
       $row['maker']   = $this->brandsRename(strtoupper($maker));
       $row['articul'] = preg_replace('/\W*/i', "", $row['articul']);
       $row['shiping'] = intval($row['shiping']) + $shiping;
+      $row['prvd']    = $provider->getName();
     }
     return $result;
   }
