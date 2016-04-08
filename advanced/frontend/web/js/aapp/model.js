@@ -26,8 +26,8 @@ function userModel(){
 
     analogShow  : true,      //Отображать аналоги
     isLogin     : false,     //Вход выполнен
-    isAdmin     : true,      //Администратор
-    accessToken : false      //access-token для запросов
+    isAdmin     : false,      //Администратор
+    accessToken : false      //access-token для запросов 
     
     
   };
