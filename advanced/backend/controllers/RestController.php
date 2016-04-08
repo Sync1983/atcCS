@@ -4,7 +4,7 @@ namespace backend\controllers;
 use yii\web\Controller;
 use yii\base\InvalidCallException;
 
-class SoapController extends Controller {
+class RestController extends Controller {
 
   public $enableCsrfValidation = false;  
     
@@ -30,39 +30,33 @@ class SoapController extends Controller {
 
   public function controllers(){
     return [
-      'users' => soap\SoapUsers:: className(),
+      'users' => rest\RestUsers:: className(),
     ];
   }
 
-  public function renderContent($view) {
-    echo 123;
-    \yii::info("Render");
-  }
 
   public function runAction($id, $params = array()) {
+    var_dump(123);
     $response = \yii::$app->getResponse();
-    $response->format = 'soap';
+    $response->format = 'rest';
 
     $response->acceptMimeType = null;
     $response->acceptParams = [];
 
     $controller_name  = \yii\helpers\ArrayHelper::getValue($params, 'item', false);
-    $wsdl_query       = \yii\helpers\ArrayHelper::keyExists('wsdl', $params) || \yii\helpers\ArrayHelper::keyExists('WSDL', $params);
+    $controller_id    = \yii\helpers\ArrayHelper::getValue($params, 'id', false);
+    
     /* @var $controller rest\RestItemController */
     $controller = $this->getController($controller_name);
     if( !$controller ){
       throw new \yii\base\InvalidRouteException("Не указан объект запроса");
     }
 
-    if( $wsdl_query ){
-      $id = 'wsdl';
-    }
-
     if( !$controller->hasMethod($id) ) {
       throw new \yii\base\InvalidParamException("Неизвестный способ обработки запроса ['$id']");
     }
     
-    return $controller->$id();    
+    return $controller->$id($controller_id, $params);
   }
   
   /**
@@ -88,7 +82,7 @@ class SoapController extends Controller {
       return \yii::createObject($name,$controller);
     }
 
-    if(is_string($controller) ){
+    if( is_string($controller) ){
       return \yii::createObject($controller);
     }
 

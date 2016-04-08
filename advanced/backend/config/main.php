@@ -53,12 +53,12 @@ return [
         ],
         'response' => [
           'formatters' => [
-            'soap' => [
+            'rest' => [
               'class'   => backend\models\response\SoapXmlResponse::className(),
-              'rootTag' => 'wsdl:definitions'
+              'rootTag' => 'answer'
             ]
           ],
-        ],
+        ]        
     ],
     'params' => $params,
 ];?>
