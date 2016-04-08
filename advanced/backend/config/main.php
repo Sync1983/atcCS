@@ -59,36 +59,6 @@ return [
             ]
           ],
         ],
-        'urlManager' => [
-          'enablePrettyUrl' => true,
-          'showScriptName' => false,
-          'enableStrictParsing' => false,
-          'rules' => [
-            //'rest' => [
-            //  'pattern'   => 'rest/<item>/<action>',
-            //  'route'     => //'rest/index',
-            //        [
-                      'POST   soap/<item>'            => 'soap/create',
-                      'GET    soap/<item>'            => 'soap/all',
-                      'PUT    soap/<item>/<id:\d+>'   => 'soap/update',
-                      'DELETE soap/<item>/<id:\d+>'   => 'soap/delete',
-                      'GET    soap/<item>/<id:\d+>'   => 'soap/view',
-            //        ],
-            //  'defaults'  => ['item' => 'rest', 'action' => 'list'],
-           // ]
-          ],
-        ],
-        'wsdl' => [
-          'class' => \backend\models\soap\WSDL::className(),
-          'headerTags' => [
-            'xmlns:soap'        => "http://schemas.xmlsoap.org/wsdl/soap/",
-            'xmlns:s'           => "http://www.w3.org/2001/XMLSchema",
-            'xmlns:wsdl'        => "http://schemas.xmlsoap.org/wsdl/",
-          ],
-          'wsdlPrefix'    => 'wsdl:'
-        ]
-
-
     ],
     'params' => $params,
 ];?>
