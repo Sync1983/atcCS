@@ -8,9 +8,11 @@ use backend\models\search\Provider;
 
 class ProviderPartcom extends Provider{
   protected $_url = "http://www.part-kom.ru/engine/api/v1/";
+  protected $_search_text = null;
 
   public function getBrands($search_text, $use_analog) {
     $data = ['number'=>$search_text];
+    $this->_search_text = $search_text;
     return $this->prepareRequest($data,false,  $this->_url."search/brands");
   }
 
@@ -20,10 +22,9 @@ class ProviderPartcom extends Provider{
       return [];
     }
     $answer   = [];
-   
     foreach($json as $row){
 			$maker = strtoupper($row['name']);
-			$answer[ $maker ] = ['id'=> $this->getCLSID(), 'uid' => $row['id'] . '@@' . $row['name']];
+			$answer[ $maker ] = ['id'=> $this->getCLSID(), 'uid' => $row['id'] . '@@' . $this->_search_text];
     }
     
     return $answer;

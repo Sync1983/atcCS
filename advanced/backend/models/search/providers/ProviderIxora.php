@@ -22,6 +22,11 @@ class ProviderIxora extends Provider{
       return [];
     }
     $data     = $xml[$field];
+
+    if(isset($data['name'])) {
+      $data = [$data];
+    };
+
     $answer   = [];
     foreach ($data as $row){
       if( !isset($row['name']) ){
@@ -30,7 +35,8 @@ class ProviderIxora extends Provider{
       $maker  = strtoupper($row['name']);
       $maker  = preg_replace('/\W*/i', "", $maker);
       $answer[ $maker ] = ['id' => $this->getCLSID(),'uid' => $this->_search_text . '@@' . $row['name']];
-    } 
+    }
+ 
     return $answer;
   }
   
