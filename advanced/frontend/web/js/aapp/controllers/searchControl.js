@@ -5,12 +5,14 @@ atcCS.controller( 'searchControl', [
   function($scope,$filter,$user,$routeParams,$rootScope ) {
     'use strict';    
     $scope.query  = "";
+    var defaultMarkup = {n:'Без наценки',v:0};
+    
     $scope.analog = {
       analogShow: $user.analogShow,
     };    
     $scope.markup = {
-      values: $user.markup,
-      selected: "0"
+      values:   $user.markup,
+      selected: JSON.stringify(defaultMarkup)
     }; 
     
     $scope.basket = {
@@ -18,7 +20,7 @@ atcCS.controller( 'searchControl', [
       selected: null
     }; 
     
-    $scope.markup.values.unshift({n:'Без наценки',v:0});
+    $scope.markup.values.unshift(defaultMarkup);
     setActiveBasket();
     
     function setActiveBasket(){      
@@ -40,7 +42,7 @@ atcCS.controller( 'searchControl', [
         $scope.basket.values = $user.baskets;
         $scope.markup.values = $user.markup;
         setActiveBasket();
-        $scope.markup.values.unshift({n:'Без наценки',v:0});
+        $scope.markup.values.unshift(defaultMarkup);
      });
     
     $scope.$watch('analog.analogShow',
@@ -54,12 +56,14 @@ atcCS.controller( 'searchControl', [
     });      
     
     $scope.$watch('markup.selected',
-      function(newVal,oldVal){
+      function(newVal,oldVal){        
         if( oldVal === newVal ){
           return newVal;
         }
+        var value = JSON.parse(newVal);        
         $rootScope.$broadcast('markupValueChange', {
-          value: newVal
+          value: value.v,
+          name: value.n
         });
     });
     

@@ -13,8 +13,10 @@ atcCS.controller( 'partsSearch', [
     $scope.brand      = $routeParams.brand      || false;
     $scope.analogShow = $user.analogShow;
     $scope.markup     = $user.activeMarkup || 0;
+    $scope.markupName = $user.activeMarkupName || '';
     $scope.isLogin    = $user.isLogin;
     $scope.isAdmin    = $user.isAdmin;
+    $scope.articulCmp = $scope.searchText.toUpperCase();
     
     $snCtrl.change($scope.searchText); 
     
@@ -32,16 +34,19 @@ atcCS.controller( 'partsSearch', [
           var resultArray = [];
           
           for( var key in $scope.data){
-            var item = $scope.data[key];
-            item.viewPrice = item.price.toFixed(2);
-            item.key  = key;
+            var item        = $scope.data[key];
+            item.viewPrice  = item.price.toFixed(2);
+            item.stdArticul = String(item.articul).toUpperCase();
+            item.key        = key;
+            
             if( $scope.markup ){
               item.viewPrice = (item.price * (1 + $scope.markup/100)).toFixed(2);              
             }
+            
             if( item.maker && 
                 item.articul && 
                 (item.maker === $scope.brand) && 
-                ( String(item.articul).toUpperCase() === $scope.searchText.toUpperCase() ) ){
+                (item.stdArticul  === $scope.articulCmp ) ){
               originalArray.push(item);              
             } else {
               notOriginalArray.push(item);
@@ -109,7 +114,7 @@ atcCS.controller( 'partsSearch', [
           var direct = ($sort[key]==='desc')?-1:1;
           var valA   = itemA[key];
           var valB   = itemB[key];
-          if( (key==='price') || (key==='shiping') || (key==='count') ){
+          if( (key==='viewPrice') || (key==='price') || (key==='shiping') || (key==='count') ){
             valA  *= 1;
             valB  *= 1;            
           }
@@ -149,13 +154,32 @@ atcCS.controller( 'partsSearch', [
       $user.toBasket(item, onAnswer(item));
     };
     
+    $scope.onCollapse = function(){
+      var data = $scope.tableParams.data;
+      angular.forEach(data,function(item){
+        console.log(item);
+        item.$hideRows = true;
+        return item;
+      });
+      console.log($scope.tableParams);
+      console.log($scope.tableParams.settings());
+      console.log($scope.tableParams.settings().getGroups());      
+      $scope.tableParams.reload();
+      return false;
+    };
+    
+    $scope.onExpand = function(){
+      return false;
+    };
+    
     $rootScope.$on('analogStateChange', function(event,data){
       $scope.analogShow  = data.value;    
       $scope.tableParams.reload();
     });
     
     $rootScope.$on('markupValueChange', function(event, data){
-      $scope.markup = data.value;
+      $scope.markup     = data.value;
+      $scope.markupName = data.value?data.name:'';
       $scope.tableParams.reload();      
     });
     

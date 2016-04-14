@@ -109,6 +109,7 @@
         
         &.original{
           font-weight: bold;
+          color: $atc_color;
         }
       }      
     }
@@ -135,5 +136,15 @@
       padding: 0.2rem 0.55rem;
     }
       
+  }
+  
+  .actions{
+    line-height: 0.8rem;
+    font-weight: bold;
+    font-size: 0.8rem;
+    a{
+      min-width: 100px;
+      display: inline-block;
+    }
   }
 }

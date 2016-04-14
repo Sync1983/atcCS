@@ -42,6 +42,7 @@ class UserGetDataAction extends Action{
     $answer['info']['company']  = 'Компания';
     $answer['role']             = $user->getAttribute('role');
     $answer['baskets']          = $baskets;
+    $answer['markup']           = \backend\models\user\UserMarkup::GetUserMarkups();
 
     return $answer;
   }

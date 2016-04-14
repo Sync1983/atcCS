@@ -57,8 +57,9 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q',
     model.analogShow  = data.value;    
   });
   
-  $rootScope.$on('markupValueChange', function(event,data){
-    model.activeMarkup = data.value;    
+  $rootScope.$on('markupValueChange', function(event,data){    
+    model.activeMarkup      = data.value; 
+    model.activeMarkupName  = data.name;
   });
   
   $rootScope.$on('basketValueChange', function(event,data){    
@@ -132,11 +133,14 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q',
     $http(req).then(
       function (response){        
         var data = (response && response.data) || {};
+        model.markup  = data.markup || [];
         model.baskets = data.baskets;
         model.info    = data.info;
         model.role    = data.role * 1;
         model.isAdmin = (model.role==1)?true:false;
+        
         setActiveBasket();
+        
         $rootScope.$broadcast('userDataUpdate', {});
       }, 
       function (reason){        

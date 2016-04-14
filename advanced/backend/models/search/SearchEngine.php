@@ -67,13 +67,18 @@ class SearchEngine extends Object{
     $shiping  = $isGuest?$standart_shiping:$user->shiping * 1;
     foreach ($result as &$row){
       $price          = floatval($row['price']);
+
+      if( $user->isAdmin() ){
+        $row['prvd']    = $provider->getName();
+        //$row['rp']      = $price;
+      }
+
       $row['maker_id'] = $clsid;
       $row['price']   = round($price + ($price*$markup)/100,2);
       $maker          = preg_replace('/\W*/i', "", $row['maker']);      
       $row['maker']   = $this->brandsRename(strtoupper($maker));
       $row['articul'] = preg_replace('/\W*/i', "", $row['articul']);
-      $row['shiping'] = intval($row['shiping']) + $shiping;
-      $row['prvd']    = $provider->getName();
+      $row['shiping'] = intval($row['shiping']) + $shiping;      
     }
     return $result;
   }

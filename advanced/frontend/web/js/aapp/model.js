@@ -10,12 +10,9 @@ function userModel(){
     surname: undefined,
     company: undefined,
     
-    markup: [
-      { v:15,n:'Простая'},
-      { v:10,n:'Сложная'},
-      { v:10,n:'Средняя'}
-    ],    
+    markup: [],    
     activeMarkup: null,
+    activeMarkupName: null,
     
     baskets: [],
     activeBasket: {id:null,name:null,active:false},
@@ -26,7 +23,7 @@ function userModel(){
 
     analogShow  : true,      //Отображать аналоги
     isLogin     : false,     //Вход выполнен
-    isAdmin     : false,      //Администратор
+    isAdmin     : false,     //Администратор
     accessToken : false      //access-token для запросов 
     
     

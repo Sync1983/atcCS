@@ -47,6 +47,10 @@ class User extends ActiveRecord implements IdentityInterface {
     return $this->getPrimaryKey();
   }
 
+  public function isAdmin(){
+    return $this->getAttribute('role')==self::IS_ADMIN;
+  }
+
   public function validatePassword($password) {
     return \yii::$app->security->validatePassword($password, $this->user_pass);
   }
