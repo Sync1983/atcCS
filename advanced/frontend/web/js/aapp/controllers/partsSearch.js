@@ -156,19 +156,21 @@ atcCS.controller( 'partsSearch', [
     
     $scope.onCollapse = function(){
       var data = $scope.tableParams.data;
-      angular.forEach(data,function(item){
-        console.log(item);
+      angular.forEach(data,function(item){        
         item.$hideRows = true;
         return item;
       });
-      console.log($scope.tableParams);
-      console.log($scope.tableParams.settings());
-      console.log($scope.tableParams.settings().getGroups());      
-      $scope.tableParams.reload();
+      
       return false;
     };
     
     $scope.onExpand = function(){
+      var data = $scope.tableParams.data;
+      angular.forEach(data,function(item){        
+        item.$hideRows = false;
+        return item;
+      });
+      
       return false;
     };
     

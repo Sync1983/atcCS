@@ -7,7 +7,7 @@
   </div>
   <div ng-if="inSearch" class="in-search"></div>    
   <div ng-if="!inSearch" class="count">Варианты деталей по запросу "<b>{{searchText}}</b>" от производителя <b>{{brand}}</b>:</div>   
-  <div class="actions"><a href="#" ng-click="onCollapse()">Свернуть</a><a href="#" ng-click="onExpand()">Развернуть</a></div>
+  <div class="actions"><a href="#" ng-click="onCollapse()"><span class="glyphicon glyphicon-minus-sign"></span>Свернуть все</a><a href="#" ng-click="onExpand()"><span class="glyphicon glyphicon-plus-sign"></span>Развернуть все</a></div>
   
   <table ng-table="tableParams" class="table table-condensed table-bordered table-striped">    
     <colgroup>
