@@ -134,7 +134,7 @@ MainPage
 </script>
  <!-- Collect from 'frontend/views/site/angular//window.html' file -->
 <script type="text/ng-template" id="/window.html">
-<div class="window">  <div class="header"></div>  <div class="sysicons">    <button class="minimize">      <span class="glyphicon glyphicon-save"></span>          </button>    <button class="destroy">      <span class="glyphicon glyphicon-remove"></span>    </button>  </div>  <div class="content">      </div>  <div class="statusbar">  </div>  <div class="resize"><span class="glyphicon glyphicon-chevron-right"></span></div></div>
+<div class="window">  <div class="header"></div>  <div class="sysicons">    <button class="destroy">      <span class="glyphicon glyphicon-remove"></span>    </button>    <button class="minimize">      <span class="glyphicon glyphicon-save"></span>          </button>  </div>  <div class="content">      </div>  <div class="statusbar">  </div>  <div class="resize"><span class="glyphicon glyphicon-chevron-right"></span></div></div>
 </script>
 <!-- Grunt views place stop -->
 

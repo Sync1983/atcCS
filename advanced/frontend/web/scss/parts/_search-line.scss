@@ -1,20 +1,21 @@
 .search-line{
-  top: 10px;
+  top: 14%;
   left: 20%;
   width: 60%;
-  height: 42px;
+  height: 75%;
   border-radius: 10px 10px;
   border: 2px $atc_color solid;  
   background-color: #FFF;
-  position:relative;  
+  position:relative;
+  max-height: 42px;
   
   & > input {
     width: 100%;
-    height: 36px;
-    width: 100%;
+    height: 100%;    
     padding: 0 10px;
     border-radius: 10px 10px;    
     border: none;
+    max-height: 36px;
     
     &:focus {
       border: none;
@@ -29,24 +30,21 @@
   }
   
   & > .search-icons {
-    top: 0px;    
-    right: 0;
-    height: 40px;
-    line-height: 40px;
-    
-    display: block;
+    top:      0px;    
+    right:    0;
+    height:   100%;
+    display:  block;
     position: absolute;
-    z-index: 3;
+    z-index:  3;
     
     & > ul{      
-      display: inline-block;
+      display: flex;
+      height: 100%;
       
       & > li{
-        display: inline;
+        display: flex;
         
-        & > button {
-          line-height: 40px;
-          height: 40px;
+        & > button {          
           background: none;
           border:none;
           opacity: 0.3;

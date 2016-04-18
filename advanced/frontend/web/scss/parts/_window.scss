@@ -17,7 +17,7 @@
     left:       0;
     right:      0;
     margin:     2px 2px 0 2px;
-    min-height: 20px;
+    height:     20px;
     color:      #E5F7FF;
     font-weight:bold;
     background:     linear-gradient(to right,#054368 0%,#1599E6 35%,#097CBF 65%, #054368 100%);
@@ -25,9 +25,12 @@
     text-align:     center;
     font-family:    "Georgia";
     font-size:      0.75rem;   
-    box-shadow:     0px 0px 3px 0px #054368;
+    box-shadow:     0px 1px 3px 1px #000; 
     text-shadow:    0px 0px 1px #000;
     cursor:         pointer;
+    
+    overflow: hidden;
+    text-overflow: ellipsis;
     
     @include no-select();
     
@@ -39,21 +42,22 @@
     top:        0;
     right:      0;
     min-height: 25px;
-    padding:    0 5px;
-    display:    inline-block;
+    padding:    4px 3px 0 0;
+    display:    block;
     position:   absolute;
     
     @include no-select();
     
     & > button{
-      background: none;
-      padding: 0;
-      border: none;
-      color: #E5F7FF;
-      font-size: 0.8rem;
-      margin: 0 3px;
-      text-shadow:    0px 0px 1px #000;
-      display: inline;
+      background:   none;
+      padding:      0;
+      border:       none;
+      color:        #E5F7FF;
+      font-size:    0.8rem;
+      margin:       0 1px;
+      text-shadow:  0px 0px 1px #000;
+      float:        right;
+      display:      block;
       
       &:hover{
         color: #0AA7FB;
