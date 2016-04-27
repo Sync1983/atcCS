@@ -31,6 +31,11 @@ class AddAction extends Action {
 
     $part->price        = $part->price / (1+($over_price/100));
     $part->is_original  = boolval($part->is_original);
+
+    if( $part->lot_quantity <= 0 ){
+      $part->lot_quantity = 0;
+    }
+    
     if( !is_int($part->count) ){
       $digit            = preg_replace( '/[^0-9]/', '', $part->count);
       $part->count      = intval($digit);
