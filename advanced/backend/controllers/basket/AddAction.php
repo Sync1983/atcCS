@@ -33,7 +33,10 @@ class AddAction extends Action {
     $part->is_original  = boolval($part->is_original);
     if( !is_int($part->count) ){
       $digit            = preg_replace( '/[^0-9]/', '', $part->count);
-      $part->count      = intval($digit);      
+      $part->count      = intval($digit);
+      if( $part->count <=0 ){
+        $part->count = $part->sell_count;
+      }
     }
     
     if( !$part->validate(null,true) ){
