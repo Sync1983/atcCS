@@ -32,6 +32,10 @@ class AddAction extends Action {
     $part->price        = $part->price / (1+($over_price/100));
     $part->is_original  = boolval($part->is_original);
 
+    if( is_array($part->info) && (count($part->info)==0) ) {
+      $part->info = null;
+    }
+
     if( $part->lot_quantity <= 0 ){
       $part->lot_quantity = 1;
       $part->sell_count = 1;
