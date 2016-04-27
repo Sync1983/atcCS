@@ -28,9 +28,7 @@ class PriceModel extends ActiveRecord{
       SELECT
         distinct maker
       FROM "Prices"
-      WHERE articul in (
-        SELECT *
-        FROM ids_ar)
+      WHERE ( articul in ( SELECT * FROM ids_ar) OR articul='$articul')
       AND
         pid=$clsid;
 SQL;
