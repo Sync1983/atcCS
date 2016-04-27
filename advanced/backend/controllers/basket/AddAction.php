@@ -33,7 +33,8 @@ class AddAction extends Action {
     $part->is_original  = boolval($part->is_original);
 
     if( $part->lot_quantity <= 0 ){
-      $part->lot_quantity = 0;
+      $part->lot_quantity = 1;
+      $part->sell_count = 1;
     }
     
     if( !is_int($part->count) ){
