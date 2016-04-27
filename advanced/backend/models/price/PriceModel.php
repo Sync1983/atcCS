@@ -65,9 +65,7 @@ SQL;
       SELECT
         *
       FROM "Prices"
-      WHERE articul in (
-        SELECT *
-        FROM ids_ar)
+      WHERE ( articul in ( SELECT * FROM ids_ar) OR articul='$articul' )
       AND
         pid=$clsid
       AND
@@ -81,7 +79,7 @@ SQL;
       $item['shiping']  = 1;
       $item['price']    = floatval($item['price']);
       $item["articul"]        = $row['visual_articul'];
-      $item["code"]           = $row['id'];
+      $item["code"]           = "Price" . $row['id'];
       $item["name"]           = $row['name'];
       $answer[] = $item;
     }    

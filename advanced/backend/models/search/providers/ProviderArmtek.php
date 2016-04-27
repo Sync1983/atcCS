@@ -70,7 +70,7 @@ class ProviderArmtek extends ProviderFile{
       }
 
       $newPriceRecord = new \backend\models\price\PriceModel();
-      
+            
       $newPriceRecord->setAttribute('pid',            $this->_CLSID);
       $newPriceRecord->setAttribute('articul',        $articul);
       $newPriceRecord->setAttribute('visual_articul', $visula_articul);
