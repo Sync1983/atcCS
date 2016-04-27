@@ -35,7 +35,7 @@ class StatusModel extends ActiveRecord{
 
   public function rules(){
     return [
-      [['id',"part_id","time"],'integer'],
+      [['id',"part_id"],'integer'],
       [['status'],'in','range'=>  array_keys(self::$states)]
     ];
   }
@@ -44,7 +44,8 @@ class StatusModel extends ActiveRecord{
     if( !$insert ){
       return false;
     }
-    $this->setAttribute('time', time());
+    $time = date('Y-m-d H:i:s', time());
+    $this->setAttribute('time', $time);
     return parent::beforeSave($insert);
   }
 
