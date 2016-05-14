@@ -167,4 +167,18 @@
       }
     }
   }
+  
+  .lot-quantity{
+    display: inline;
+    cursor: default;
+    color: RGBA(12, 85, 127, 0.31);
+    
+    &:hover{
+      color: $atc_color;
+    }
+    
+    span {
+      padding-left: 2px;
+    }
+  }
 }

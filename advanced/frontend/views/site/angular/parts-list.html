@@ -34,7 +34,7 @@
           <td data-title="'Наименование'" class="name"><span title='{{row.name}}'><u ng-show="isAdmin">{{row.prvd}} : {{row.stock}}</u>{{row.name}}</span></td>
           <td data-title="'Цена [' + markupName + ']'" sortable="'viewPrice'"><span title="{{row.price}}">{{row.viewPrice}}</span></td>
           <td data-title="'Срок'" sortable="'shiping'">{{row.shiping}}</td>
-          <td data-title="'Наличие'" sortable="'count'">{{row.count}}</td>
+          <td data-title="'Наличие'" sortable="'count'">{{row.count}}<div class="lot-quantity" title="Минимальное количество для заказа" ng-show="(row.lot_quantity>1)"><span class="glyphicon glyphicon-th-large"></span>{{row.lot_quantity}}</div> </td>
           <td data-title="'В корзину'">
             <a href='#' ng-click="Add(row.key)" ng-show="isLogin&&!row.adding&&!row.error">Добавить</a>
             <span class="load-info" ng-show="row.adding"></span>

@@ -154,6 +154,8 @@ class SearchEngine extends Object{
       'MOPAR'           => 'CHRYSLER-DODGE-MOPAR',
       'DODGE'           => 'CHRYSLER-DODGE-MOPAR',
       'CHRYSLER'        => 'CHRYSLER-DODGE-MOPAR',
+      'HANS PRIES'      => 'HANS-PRIES',
+      'HANSPRIES'       => 'HANS-PRIES'
     ];
     
     return isset($renameMap[$brand])?$renameMap[$brand]:$brand;
