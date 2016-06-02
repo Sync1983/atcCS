@@ -29,7 +29,7 @@ class AddAction extends Action {
       }
     }
 
-    $part->price        = $part->price / (1+($over_price/100));
+    //$part->price        = $part->price / (1+($over_price/100));
     $part->is_original  = boolval($part->is_original);
 
     if( is_array($part->info) && (count($part->info)==0) ) {
