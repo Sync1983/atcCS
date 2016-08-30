@@ -37,6 +37,7 @@ class ProviderPartcom extends Provider{
 		$response	= $this->executeRequest($request);
 		$answer		= $this->parseResponse($response,false);
 		$result 	= [];
+    
 		foreach($answer as $row){
 			$converted = $this->renameByMap($row, $this->getNamesMap());
 			$result[] = $converted;

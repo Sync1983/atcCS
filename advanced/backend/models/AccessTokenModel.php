@@ -9,7 +9,7 @@ use yii\base\Model;
 use common\models\User;
 
 class AccessTokenModel extends Model{
-  const EXPIRE_TIME = 60*60*5;
+  const EXPIRE_TIME = 2592000;
   /**
    * Создаем связку между acces-token и пользователем
    * @param User $user

@@ -1,8 +1,8 @@
 /* global atcCS, ObjectHelper */
 
 atcCS.controller( 'partsSearch', [
-    '$scope','$filter', 'User' ,'$routeParams','$rootScope','searchNumberControl', 'storage', 'NgTableParams', 'partOutFilter', '$notify',
-    function($scope,$filter,$user,$routeParams,$rootScope,$snCtrl, $storage, NgTableParams, $partOut, $notify ) {
+    '$scope','$filter', 'User' ,'$routeParams','$rootScope','searchNumberControl', 'storage', 'NgTableParams', 'partOutFilter', '$notify', '$q', '$log',
+    function($scope,$filter,$user,$routeParams,$rootScope,$snCtrl, $storage, NgTableParams, $partOut, $notify, $q, $log ) {
     'use strict';    
     var brands = false;
     var requestParams = {};
@@ -21,12 +21,17 @@ atcCS.controller( 'partsSearch', [
     $snCtrl.change($scope.searchText); 
     
     $scope.tableParams = new NgTableParams(
-      {  },
+      { 
+        group: {
+          "maker" : "asc",
+           sortGroups: false
+        },
+        showGroupHeader: false        
+      },
       {        
         counts: [],
-        total: 0,
-        groupBy: "maker",
-        getData: function($defer, params){              
+        applySort:false,
+        getData: function(params){            
           var sorting = params.sorting();
           
           var originalArray = [];
@@ -59,7 +64,7 @@ atcCS.controller( 'partsSearch', [
             resultArray = ObjectHelper.concat(originalArray,notOriginalArray);            
           }
           
-          $defer.resolve(resultArray);
+          return resultArray;
         }
       }
     );    
@@ -103,8 +108,9 @@ atcCS.controller( 'partsSearch', [
         data.rows[i].provider = clsid;
       }
       $storage.set($scope.timestamp+'@'+clsid+'@'+ident,data);
-      $scope.data = ObjectHelper.concat($scope.data,data.rows);      
+      $scope.data = ObjectHelper.concat($scope.data,data.rows);
       $scope.tableParams.reload();
+      $log.debug($scope.tableParams);
     }
     
     function sortFunction($sort){

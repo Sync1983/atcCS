@@ -112,7 +112,8 @@ module.exports = function(grunt) {
     
     list.forEach(function(name){
       var file = grunt.file.read(source + '/' + name);
-
+      
+      minimizeText = String(file);
       minimizeText = String(file).replace(new RegExp("[^:]\/\/.*$","igm"), "");
       minimizeText = String(minimizeText).replace(new RegExp("\/\*.*global.* \*\/",'ig'), "");
       minimizeText = String(minimizeText).replace(new RegExp("['\"]use.*strict['\"];*","g"), "");

@@ -18,15 +18,17 @@ atcCS.controller( 'ordersControl', [
     $scope.confirmDisable = false;
     
     $scope.tableParams = new NgTableParams(
-      {  },
+      {
+        group: {
+          part_status: "asc"
+        }
+      },
       {        
-        counts: [],
-        total: 0,
-        groupBy:'part_status',
-        getData: function($defer,params){
+        counts: [],                
+        getData: function(params){
           var sorting = params.sorting();
       
-          $user.getOrders().then(
+          return $user.getOrders().then(
             function answer(response){
               var data = (response && response.data) || [];
               for(var index in data){
@@ -46,7 +48,7 @@ atcCS.controller( 'ordersControl', [
                 }                
                 return rWeight;
               });
-              $defer.resolve(data);          
+              return data;          
             }      
           );
         }

@@ -1,4 +1,4 @@
-
+Error.stackTraceLimit = 25;
 atcCS.config(['$httpProvider', function ($httpProvider) {
     'use strict';
     
@@ -8,3 +8,7 @@ atcCS.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.defaults.useXDomain = true;    
     $httpProvider.interceptors.push('atcServerToken');
  }]);
+ 
+atcCS.config(function($logProvider){
+  $logProvider.debugEnabled(false);
+});

@@ -22,10 +22,10 @@ atcCS.controller( 'basketControl', [
       {        
         counts: [],
         total: 0,        
-        getData: function($defer,params){
+        getData: function(params){
           var sorting = params.sorting();
-      
-          $user.getBasket().then(
+          
+          return $user.getBasket().then(
             function answer(response){
               var data = (response && response.data) || [];
               for(var index in data){
@@ -45,7 +45,8 @@ atcCS.controller( 'basketControl', [
                 }                
                 return rWeight;
               });
-              $defer.resolve(data);          
+              
+              return data;
             }      
           );
         }

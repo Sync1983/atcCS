@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1f8ffb1f0eb8b688c0b5ff1534954e9a",
-    "content-hash": "55c0d14c023579dd7e2561dd28f26f2c",
+    "hash": "948a1de21f53798398df7abe96c686fa",
+    "content-hash": "02f7b63a2e25e928801062d967caff17",
     "packages": [
         {
             "name": "bower-asset/angular",
@@ -369,41 +369,6 @@
             ]
         },
         {
-            "name": "bower-asset/ng-table",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/esvit/ng-table.git",
-                "reference": "d6355591e09a3075cc895ba4f226156fa3c72d33"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/esvit/ng-table/zipball/d6355591e09a3075cc895ba4f226156fa3c72d33",
-                "reference": "d6355591e09a3075cc895ba4f226156fa3c72d33",
-                "shasum": ""
-            },
-            "require": {
-                "bower-asset/angular": ">=1.2.0,<2.0.0"
-            },
-            "require-dev": {
-                "bower-asset/angular-digest-hud": "~0.1.9",
-                "bower-asset/angular-mocks": "~1.4.3",
-                "bower-asset/angular-resource": "~1.4.3",
-                "bower-asset/lodash": "~3.10.0"
-            },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": [
-                    "./dist/ng-table.js",
-                    "./dist/ng-table.css"
-                ],
-                "bower-asset-ignore": [
-                    "examples",
-                    "src"
-                ]
-            }
-        },
-        {
             "name": "bower-asset/punycode",
             "version": "v1.3.2",
             "source": {
@@ -621,6 +586,26 @@
                 "mailer"
             ],
             "time": "2016-07-08 11:51:25"
+        },
+        {
+            "name": "sync/ng-table",
+            "version": "dev-dev-atc",
+            "source": {
+                "type": "git",
+                "url": "d:/gitHub/ng-table",
+                "reference": "00b0434965fb7b6c426ace2d2b37413ca50999bb"
+            },
+            "type": "library",
+            "license": [
+                "BSD"
+            ],
+            "authors": [
+                {
+                    "name": "Sync1983",
+                    "email": "1983sync@gmail.com"
+                }
+            ],
+            "time": "2016-08-30 07:54:22"
         },
         {
             "name": "yiisoft/yii2",
@@ -1221,7 +1206,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "sync/ng-table": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

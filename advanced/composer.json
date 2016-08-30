@@ -13,25 +13,31 @@
         "source": "https://github.com/yiisoft/yii2"
     },
     "minimum-stability": "stable",
+    "repositories": [
+      {
+        "type": "vcs",
+        "url": "https://github.com/Sync1983/ng-table.git"
+      }
+    ],
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": ">=2.0.6",
-        "yiisoft/yii2-bootstrap": "*",
-        "yiisoft/yii2-swiftmailer": "*",        
+        "yiisoft/yii2-bootstrap": "2.0.6",
+        "yiisoft/yii2-swiftmailer": "2.0.5",        
         "yiisoft/yii2-redis": "~2.0.0",
-        "bower-asset/angular-ui-select": "*",
-        "bower-asset/angular-ui-switch": "*",
-        "bower-asset/angular-sanitize": "*",
-        "bower-asset/angular-bootstrap-checkbox": "*",
-        "bower-asset/angular-route": "*",
-        "bower-asset/angular-cookies": "*",
-        "bower-asset/ng-table": "*"        
+        "bower-asset/angular-ui-select": "v0.19.4",
+        "bower-asset/angular-ui-switch": "0.1.1",
+        "bower-asset/angular-sanitize": "v1.5.8",
+        "bower-asset/angular-bootstrap-checkbox": "0.5.0",
+        "bower-asset/angular-route": "v1.5.8",
+        "bower-asset/angular-cookies": "v1.5.8",
+        "sync/ng-table": "dev-dev-atc"        
     },
     "require-dev": {
-        "yiisoft/yii2-codeception": "*",
-        "yiisoft/yii2-debug": "*",
-        "yiisoft/yii2-gii": "*",
-        "yiisoft/yii2-faker": "*"
+        "yiisoft/yii2-codeception": "2.0.5",
+        "yiisoft/yii2-debug": "2.0.6",
+        "yiisoft/yii2-gii": "2.0.5",
+        "yiisoft/yii2-faker": "2.0.3"
     },
     "config": {
         "process-timeout": 1800
@@ -39,7 +45,10 @@
     "extra": {
         "asset-installer-paths": {
             "npm-asset-library": "vendor/npm",
-            "bower-asset-library": "vendor/bower"
+            "bower-asset-library": "vendor/bower"            
+        },        
+        "installer-paths": {
+          "sync/ng-table": "vendor/bower"
         }
     }
 }

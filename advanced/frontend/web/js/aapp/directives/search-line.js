@@ -1,4 +1,4 @@
-/* global ObjectHelper */
+/* global ObjectHelper */ 
 
 atcCS.directive('searchLine', [
   'User','$wndMng','$articulWnd', '$searchDropdown','$location','storage',
