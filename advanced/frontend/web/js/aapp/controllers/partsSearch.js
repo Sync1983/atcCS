@@ -26,11 +26,14 @@ atcCS.controller( 'partsSearch', [
           "maker" : "asc",
            sortGroups: false
         },
-        showGroupHeader: false        
+        showGroupHeader: false,
+        total:0
       },
       {        
         counts: [],
+        total:0,
         applySort:false,
+        applyMultipage:false,
         getData: function(params){            
           var sorting = params.sorting();
           

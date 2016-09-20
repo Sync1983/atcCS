@@ -14,16 +14,18 @@ use yii\web\View;
 class NgTableAsset extends AssetBundle
 {
     public $sourcePath = '@sync';
+    
     public $jsOptions = ['position' => View::POS_END];
     public $publishOptions = [      
-      'only' => ['ng-table/dist/*']
+      'only' => ['ng-table/dist/*'],
+      'forceCopy'  => false
     ];
     
     public $css = [                
         'ng-table/dist/ng-table.min.css'
     ];
     public $js = [        
-        'ng-table/dist/ng-table.js'
+        'ng-table/dist/ng-table.min.js'
 
     ];
     public $depends = [
