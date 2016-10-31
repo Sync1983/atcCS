@@ -1,0 +1,16 @@
+<div class="catalog">
+  <div class="path">
+    <ul>
+      <li ng-repeat="row in path"><a href="#" ng-click="onPathSelect(row.path)">{{row.name}}</a></li>
+    </ul>
+  </div>
+  
+  <div class="nodes">
+    <ul>
+      <li ng-repeat="row in nodes|orderBy:['-is_group','name']" ng-class="row.is_group?'group':'part'">
+        <a ng-show="row.is_group" href="#" ng-click="onNodeSelect(row.path, row.name)">{{row.name}}</a>
+        <a ng-show="!row.is_group" href="#" ng-click="onPartSelect(row)">{{row.name}} [{{row.maker}}] <span ng-show="isAdmin">{{row.articul}}</span></a>
+      </li>      
+    </ul>
+  </div>  
+</div>
