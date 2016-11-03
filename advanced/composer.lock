@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "948a1de21f53798398df7abe96c686fa",
+    "hash": "a846b18354afca58357291d5c372ab0e",
     "content-hash": "02f7b63a2e25e928801062d967caff17",
     "packages": [
         {
@@ -432,16 +432,16 @@
         },
         {
             "name": "cebe/markdown",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cebe/markdown.git",
-                "reference": "54a2c49de31cc44e864ebf0500a35ef21d0010b2"
+                "reference": "c30eb5e01fe021cc5bba2f9ee0eeef96d4931166"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cebe/markdown/zipball/54a2c49de31cc44e864ebf0500a35ef21d0010b2",
-                "reference": "54a2c49de31cc44e864ebf0500a35ef21d0010b2",
+                "url": "https://api.github.com/repos/cebe/markdown/zipball/c30eb5e01fe021cc5bba2f9ee0eeef96d4931166",
+                "reference": "c30eb5e01fe021cc5bba2f9ee0eeef96d4931166",
                 "shasum": ""
             },
             "require": {
@@ -488,7 +488,7 @@
                 "markdown",
                 "markdown-extra"
             ],
-            "time": "2015-03-06 05:28:07"
+            "time": "2016-09-14 20:40:20"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -592,8 +592,14 @@
             "version": "dev-dev-atc",
             "source": {
                 "type": "git",
-                "url": "d:/gitHub/ng-table",
-                "reference": "00b0434965fb7b6c426ace2d2b37413ca50999bb"
+                "url": "https://github.com/Sync1983/ng-table.git",
+                "reference": "f3fa91333ba45e3c5f5162a54ec4f1754bbb2818"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Sync1983/ng-table/zipball/f3fa91333ba45e3c5f5162a54ec4f1754bbb2818",
+                "reference": "f3fa91333ba45e3c5f5162a54ec4f1754bbb2818",
+                "shasum": ""
             },
             "type": "library",
             "license": [
@@ -605,7 +611,10 @@
                     "email": "1983sync@gmail.com"
                 }
             ],
-            "time": "2016-08-30 07:54:22"
+            "support": {
+                "source": "https://github.com/Sync1983/ng-table/tree/dev-atc"
+            },
+            "time": "2016-09-20 08:39:31"
         },
         {
             "name": "yiisoft/yii2",
