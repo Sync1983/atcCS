@@ -114,11 +114,11 @@ module.exports = function(grunt) {
       var file = grunt.file.read(source + '/' + name);
       
       minimizeText = String(file);
-      minimizeText = String(file).replace(new RegExp("[^:]\/\/.*$","igm"), "");
+     /* minimizeText = String(file).replace(new RegExp("[^:]\/\/.*$","igm"), "");
       minimizeText = String(minimizeText).replace(new RegExp("\/\*.*global.* \*\/",'ig'), "");
       minimizeText = String(minimizeText).replace(new RegExp("['\"]use.*strict['\"];*","g"), "");
       minimizeText = String(minimizeText).replace(new RegExp("[\n\t]*","g"), "");
-      minimizeText = String(minimizeText).replace(new RegExp(" +","g"), " ");      
+      minimizeText = String(minimizeText).replace(new RegExp(" +","g"), " ");      */
 
       fileText = fileText + minimizeText + "\r\n";
       grunt.log.write("Collect: " + name + " ").ok();
