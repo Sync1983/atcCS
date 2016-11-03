@@ -1,10 +1,10 @@
 /* global ObjectHelper */ 
 
 atcCS.directive('searchLine', [
-  'User','$wndMng','$articulWnd', '$searchDropdown','$location','storage',
-  function ($user, $wndMng, $articulWnd, $searchDropdown,$location, $storage){
+  'User','$wndMng','$articulWnd', '$searchDropdown','$location','storage','$events',
+  function ($user, $wndMng, $articulWnd, $searchDropdown,$location, $storage, $events){
   return {
-    require: "ngModel",
+    require: "ngModel", 
     priority: 0,
     terminal: false,
     restrict: 'E',
@@ -28,6 +28,7 @@ atcCS.directive('searchLine', [
       $scope.filter = ''; 
       $scope.typeFilter = false;
       $scope.typeInfo = false;
+      $scope.events = $events.get("searchScope");
       //Создание структур данных      
       $scope.treeModel = {
           text: "Категории",
@@ -139,7 +140,7 @@ atcCS.directive('searchLine', [
         $storage.set('history',$scope.history);        
         
         $searchDropdown.hide();
-        $scope.$apply(function() {
+        $scope.$evalAsync(function() {
           $location.path('brands/'+clearText);
         });        
       };
@@ -180,8 +181,18 @@ atcCS.directive('searchLine', [
           $wndMng.toggle(window);
         };
       }
+      
+      $scope.events.setListner("SetSearchText", function(event, args){
+        input.val(args);
+      });
+      
+      $scope.events.setListner("StartSearchText", function(event, args){
+        input.val(args);
+        $scope.onStartSearch();
+      });
     },    
-    link: function link(scope, element, attrs, modelCtrl){      
+    link: function link(scope, element, attrs, modelCtrl){  
+      
       scope.$watch(
         function() { return modelCtrl.$viewValue; },
         function(newVal){

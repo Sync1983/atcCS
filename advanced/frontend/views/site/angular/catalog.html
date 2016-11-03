@@ -1,0 +1,13 @@
+<div class="catalog">
+  <div class="path">
+    <ul>
+      <li ng-repeat="rowH in path"><a href="#" ng-click='onPathSelect(rowH);'>{{rowH.name}}</a></li>
+    </ul>
+  </div>
+  
+  <div class="nodes">    
+    <ul>
+      <catalog-line ng-repeat="row in nodes|orderBy:['-is_group','name']" ng-model="row"/>
+    </ul>
+  </div>  
+</div>
