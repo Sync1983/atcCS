@@ -1,13 +1,14 @@
 /* global atcCS */
 
 atcCS.controller( 'catalogControl', [
-  '$scope', 'User' ,'$rootScope', '$confirm','$wndMng','$notify','searchNumberControl',
-  function($scope,$user,$rootScope,$confirm,$wndMng,$notify, $searchNumberControl ) {
+  '$scope', 'User' ,'$rootScope', '$confirm','$wndMng','$notify','searchNumberControl', '$events',
+  function($scope,$user,$rootScope,$confirm,$wndMng,$notify, $searchNumberControl, $events ) {
     'use strict';    
     
     $scope.isLogin    = $user.isLogin;
     $scope.isAdmin    = $user.isAdmin;
     $scope.basketName = $user.activeBasket.name;
+    $scope.searchEvents = $events.get("searchScope");
     $scope.path = [
       {
         name:"Каталог",
@@ -15,38 +16,38 @@ atcCS.controller( 'catalogControl', [
       }
     ];
     
-    updateNodes(false)
+    $scope.event = $events.get("catalogScope");
     
-    function updateNodes(path){
+    $scope.event.setListner("update",function(event, data){
+      var path = data && data.path || false;
+      var name = data && data.name || "";
+      
       $user.getCatalogNode(path,function(data){
         $scope.nodes = data;      
       });
-    }
-    
-    
-    $scope.onPathSelect = function(path){
-      var item = $scope.path.pop();
-      while( item.path != path ){        
-        item = $scope.path.pop();      
+      
+      if( name && path ) {
+        $scope.path.push({
+          name:name,
+          path:path
+        });
       }
       
-      $scope.path.push(item);
-      updateNodes(item.path);
-    };
-    
-    $scope.onNodeSelect = function(path, name){      
-      $user.getCatalogNode(path,function(data){
-        $scope.nodes = data;
-        $scope.path.push({
-          name: name,
-          path: path
-        });
     });
-    };
     
-    $scope.onPartSelect = function(part){
-      $searchNumberControl.search(part.articul);
-    };
+    $scope.onPathSelect = function(row){
+      
+      for(var i in $scope.path){
+        var item = $scope.path.pop();
+        if( row.path === item.path ){          
+          break;
+        }
+      }
+      //$scope.path.push(item);
+      $scope.event.broadcast("update",row);
+    };    
+    
+    $scope.event.broadcast("update",false);           
     
     $rootScope.$on('userDataUpdate', 
       function(event){        

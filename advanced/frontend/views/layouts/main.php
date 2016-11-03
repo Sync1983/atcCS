@@ -61,7 +61,7 @@ AAppAsset::register($this);
 </script>
  <!-- Collect from 'frontend/views/site/angular//catalog.html' file -->
 <script type="text/ng-template" id="/catalog.html">
-<div class="catalog">  <div class="path">    <ul>      <li ng-repeat="row in path"><a href="#" ng-click="onPathSelect(row.path)">{{row.name}}</a></li>    </ul>  </div>    <div class="nodes">    <ul>      <li ng-repeat="row in nodes|orderBy:['-is_group','name']" ng-class="row.is_group?'group':'part'">        <a ng-show="row.is_group" href="#" ng-click="onNodeSelect(row.path, row.name)">{{row.name}}</a>        <a ng-show="!row.is_group" href="#" ng-click="onPartSelect(row)">{{row.name}} [{{row.maker}}] <span ng-show="isAdmin">{{row.articul}}</span></a>      </li>          </ul>  </div>  </div>
+<div class="catalog">  <div class="path">    <ul>      <li ng-repeat="rowH in path"><a href="#" ng-click='onPathSelect(rowH);'>{{rowH.name}}</a></li>    </ul>  </div>    <div class="nodes">        <ul>      <catalog-line ng-repeat="row in nodes|orderBy:['-is_group','name']" ng-model="row"/>    </ul>  </div>  </div>
 </script>
  <!-- Collect from 'frontend/views/site/angular//main-page.html' file -->
 <script type="text/ng-template" id="/main-page.html">
