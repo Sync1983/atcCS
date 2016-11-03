@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "948a1de21f53798398df7abe96c686fa",
-    "content-hash": "02f7b63a2e25e928801062d967caff17",
+    "hash": "d151d94aa457afc60eadd6fe343ebe34",
+    "content-hash": "cfca0877b4de77f3662d979067fc4827",
     "packages": [
         {
             "name": "bower-asset/angular",
@@ -1063,6 +1063,7 @@
                 "codeception",
                 "yii2"
             ],
+            "abandoned": "codeception/codeception",
             "time": "2016-03-17 03:41:26"
         },
         {
