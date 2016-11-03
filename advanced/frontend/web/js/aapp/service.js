@@ -18,10 +18,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q',
     var name = $cookies.get('name');
     var pass = $cookies.get('pass');
 
-    console.log("Login from Cookies", name, pass);
-
-    if ( name && pass ){
-      console.log("Name:",name,"Pass:",pass);
+    if ( name && pass ){      
       model.login(name,pass,true);
       return true;
     }
@@ -97,7 +94,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q',
         // Если вернулся хэш, значит запомним для следующей авторизации
         if( hash && remember ){
           var now     = new Date();
-          var expires = new Date( now.getTime() + 30*24*3600 );
+          var expires = new Date( now.getTime() + 30*24*3600*1000 );          
           
           $cookies.put('name',name,{expires:expires});
           $cookies.put('pass',hash,{expires:expires});
@@ -413,6 +410,35 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q',
     };
     
     return $http(req);
+  };
+  
+  model.getCatalogNode = function getParts(node, callback){
+    var req = {
+      method: 'GET',
+      url: URLto('helper','get-catalog-node'),
+      responseType: 'json',
+      params: {
+        params: {
+          path: String(node)          
+        }
+      }
+    };
+    
+    function serverResponse(answer){      
+      var data = answer && answer.data;
+      if ( callback instanceof Function ){
+        callback(data); 
+      }
+    }
+    
+    function serverError(error){
+      console.log('getCatalogNode Server error:', error );
+      if ( callback instanceof Function ){
+        callback({});
+      }
+    }
+    
+    $http(req).then(serverResponse,serverError);
   };
   
   init();

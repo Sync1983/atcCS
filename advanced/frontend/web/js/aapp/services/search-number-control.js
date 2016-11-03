@@ -10,6 +10,15 @@ function searchNumberControl(){
     input.trigger('change'); 
     return;
   };
+  
+  model.search= function change(value){
+    var input = $('input#search-text');    
+    var btn   = $('button#search-request');    
+    input.val( String(value) );
+    input.trigger('change'); 
+    btn.click();
+    return;
+  };
 
   return model;
 };

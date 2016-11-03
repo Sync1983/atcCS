@@ -25,7 +25,7 @@
 <div class="main-menu-left">  
   <ul class="menu-line">
     <li> <a href="#">Новости</a>  <div class="divider"></div></li>
-    <li> <a href="#">Каталоги</a> <div class="divider"></div></li>
+    <li> <a href="catalog">Каталоги</a> <div class="divider"></div></li>
     <li> <a href="#">Контакты</a> <div class="divider"></div></li>
     <li> <a href="basket">  Корзина</a>  <div class="divider"></div></li>
     <li> <a href="orders">  Заказы</a>   <div class="divider"></div></li>

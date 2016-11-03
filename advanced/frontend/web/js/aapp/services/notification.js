@@ -48,6 +48,18 @@ function Notification($rootScope){
         model.body.prepend(body);
         item.body = body;
         item.body.click(clickItem(item));
+        item.timer = window.setTimeout(function(){
+          var self = item;
+          var index = model.list.indexOf(self);
+          angular.element(self.body).addClass('remove');
+          window.setTimeout(function(){
+            angular.element(self.body).remove();          
+            if( index > -1 ){
+              model.list.splice(index, 1);
+            }  
+          },500);
+          
+        },5000);
       }
     }
   }
