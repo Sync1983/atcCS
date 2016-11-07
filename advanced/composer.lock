@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9c055029c3f3b389d066b9e87f2ea4ac",
-    "content-hash": "6607044bef4c0ebaf17802cc2a2de2d8",
+    "hash": "afe3ad49a77153161d5f8a894d5754db",
+    "content-hash": "69251584e6dcf0fc31911d55e4fdda67",
     "packages": [
         {
             "name": "bower-asset/angular",
@@ -590,11 +590,6 @@
         {
             "name": "sync/ng-table",
             "version": "dev-dev-atc",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Sync1983/ng-table.git",
-                "reference": "f3fa91333ba45e3c5f5162a54ec4f1754bbb2818"
-            },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/Sync1983/ng-table/zipball/f3fa91333ba45e3c5f5162a54ec4f1754bbb2818",

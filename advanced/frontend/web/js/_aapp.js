@@ -731,6 +731,7 @@ atcCS.controller( 'partsSearch', [
            sortGroups: false
         },
         showGroupHeader: false,
+        hidePager: true,
         total:0
       },
       {        
