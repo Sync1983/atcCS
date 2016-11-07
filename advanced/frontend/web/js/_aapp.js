@@ -731,12 +731,10 @@ atcCS.controller( 'partsSearch', [
            sortGroups: false
         },
         showGroupHeader: false,
-        hidePager: true,
-        total:0
+        hidePager: true,        
       },
       {        
-        counts: [],
-        total:0,
+        counts: [],        
         applySort:false,
         applyMultipage:false,
         getData: function(params){            
