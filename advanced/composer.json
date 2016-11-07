@@ -15,8 +15,8 @@
     "minimum-stability": "stable",
     "repositories": [
       {
-        "type": "path",
-        "url": "vendor/sync/ng-table"
+        "type": "vcs",
+        "url": "https://github.com/Sync1983/ng-table.git"
       }
     ],
     "require": {
