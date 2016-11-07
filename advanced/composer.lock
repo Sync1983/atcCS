@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a846b18354afca58357291d5c372ab0e",
-    "content-hash": "02f7b63a2e25e928801062d967caff17",
+    "hash": "db9769006a8a9926a945b97464da7087",
+    "content-hash": "cfca0877b4de77f3662d979067fc4827",
     "packages": [
         {
             "name": "bower-asset/angular",
@@ -593,12 +593,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Sync1983/ng-table.git",
-                "reference": "f3fa91333ba45e3c5f5162a54ec4f1754bbb2818"
+                "reference": "fe85d1047d6d5178eed47ba3652e5cc6e5ffe0b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Sync1983/ng-table/zipball/f3fa91333ba45e3c5f5162a54ec4f1754bbb2818",
-                "reference": "f3fa91333ba45e3c5f5162a54ec4f1754bbb2818",
+                "url": "https://api.github.com/repos/Sync1983/ng-table/zipball/fe85d1047d6d5178eed47ba3652e5cc6e5ffe0b8",
+                "reference": "fe85d1047d6d5178eed47ba3652e5cc6e5ffe0b8",
                 "shasum": ""
             },
             "type": "library",
@@ -614,7 +614,7 @@
             "support": {
                 "source": "https://github.com/Sync1983/ng-table/tree/dev-atc"
             },
-            "time": "2016-09-20 08:39:31"
+            "time": "2016-11-07 10:07:58"
         },
         {
             "name": "yiisoft/yii2",
@@ -1063,6 +1063,7 @@
                 "codeception",
                 "yii2"
             ],
+            "abandoned": "codeception/codeception",
             "time": "2016-03-17 03:41:26"
         },
         {
