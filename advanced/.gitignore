@@ -6,6 +6,7 @@
 
 # netbeans project files
 /nbproject
+../nbproject
 
 # zend studio for eclipse project files
 .buildpath
