@@ -1,0 +1,52 @@
+/*
+*/
+/* 
+    Created on : 08.11.2016, 14:47:32
+    Author     : Sync
+*/
+
+span.editable-element{
+  
+  
+  & > input.editable-input {
+    border: none;
+    border-bottom: 1px solid $atc_color;
+    background: transparent;
+    display: none;    
+  }
+  
+  & > span.editable-text{
+    border-bottom: dashed 1px $atc_color;
+    display:initial;
+    
+    & + button:hover{
+      color:red;
+    }
+  }
+  
+  & > button.editable-start{
+    background-color: transparent;
+    border:none;
+    margin-left: 2px;
+    border-radius: 50%;
+    
+    &:hover{
+      color: $atc_color;
+    }
+  }
+  
+  &.edit{
+    & > input.editable-input {
+      display: initial;    
+    }
+    
+    & > span.editable-text{
+      display: none;
+    }    
+  }
+  
+  & span.editable-input-resize{
+    display: none;
+  }
+  
+}

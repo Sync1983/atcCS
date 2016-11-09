@@ -438,10 +438,14 @@ atcCS.controller( 'catalogControl', [
   function($scope,$user,$rootScope,$confirm,$wndMng,$notify, $searchNumberControl, $events ) {
     'use strict';    
     
+    var searchEvents = $events.get("searchScope");
+    
     $scope.isLogin    = $user.isLogin;
     $scope.isAdmin    = $user.isAdmin;
     $scope.basketName = $user.activeBasket.name;
     $scope.searchEvents = $events.get("searchScope");
+    $scope.editMode   = false;
+    $scope.nodes      = [];
     $scope.path = [
       {
         name:"Каталог",
@@ -456,7 +460,7 @@ atcCS.controller( 'catalogControl', [
       var name = data && data.name || "";
       
       $user.getCatalogNode(path,function(data){
-        $scope.nodes = data;      
+        $scope.nodes = data;                            
       });
       
       if( name && path ) {
@@ -475,19 +479,37 @@ atcCS.controller( 'catalogControl', [
         if( row.path === item.path ){          
           break;
         }
-      }
-      //$scope.path.push(item);
+      }      
       $scope.event.broadcast("update",row);
     };    
     
-    $scope.event.broadcast("update",false);           
+    $scope.event.broadcast("update",false); 
+    
+    $scope.onClick = function(row){
+      if(row.is_group){
+        $scope.event.broadcast("update",{path:row.path, name:row.name});          
+      } else {
+        searchEvents.broadcast("StartSearchText",row.articul);
+      };      
+    };
     
     $rootScope.$on('userDataUpdate', 
       function(event){        
         $scope.isLogin = $user.isLogin;
         $scope.basketName = $user.activeBasket.name;
         $scope.isAdmin    = $user.isAdmin;        
-     });        
+     });   
+     
+    var changeNodes = function(newVal, oldVal, scope){
+      if(angular.equals(newVal, oldVal) || (oldVal.length === 0)) {
+        return; // simply skip that
+      }
+      
+      console.log(oldVal,newVal,scope);
+    };
+     
+     
+    $scope.$watch(function(scope){return scope.nodes;}, changeNodes,true);          
      
      
 }]);
@@ -1034,64 +1056,6 @@ atcCS.directive('inject', function(){
 
 
 
-atcCS.directive( 'catalogLine',['$events', function ($events){
-  return {
-    require: "ngModel",    
-    //terminal: true,
-    restrict: 'E',
-    replace: true,    
-    //transclude: false,
-    template: '<li></li>',
-    scope: {
-      ngModel: "="
-    },
-    controller: function controller($scope, $element, $attrs, $transclude){
-      
-      var $a = angular.element('<a href="#"></a>');
-      var $d = angular.element('<div class="description"></div>');
-      var isGroup = $scope.ngModel.is_group;
-      var name    = $scope.ngModel.name;
-      var articul = $scope.ngModel.articul;
-      var descr   = $scope.ngModel.descr;
-      var maker   = $scope.ngModel.maker;
-      var path    = $scope.ngModel.path;
-      var event   = $events.get("catalogScope");
-      var searchEvents = $events.get("searchScope");
-      
-      $a.on('click',function(eventIn){
-        
-        if( isGroup ){
-          event.broadcast("update",{path:path, name:name});          
-        } else {
-          searchEvents.broadcast("StartSearchText",articul);
-        };
-        
-        eventIn.stopPropagation();
-        return false;
-      });
-      
-      if( isGroup ){
-        $a.text(name);
-        $element.addClass('group');
-        $element.append($a);
-      } else {
-        $a.text(articul + " : "+ name + " " + maker);
-        $d.text(descr);
-        $element.addClass('part');
-        $element.append($a);
-        $element.append($d);        
-      }
-    },
-    link: function link(scope, element, attrs, modelCtrl){      
-      
-    }
-  };
-}] );
-
-
-
-
-
 atcCS.directive('scheckbox', function (){
   return {
     require: "ngModel",
@@ -1148,6 +1112,55 @@ atcCS.directive('scheckbox', function (){
     }
   };
 } );
+
+
+
+atcCS.directive( 'editable',['$events', function ($events){
+  return {
+    restrict: 'A',
+    replace: true,
+    transclude:true,
+    template: '<span class="editable-element"><span class="editable-text" ng-transclude/><input class="editable-input" type="text" value={{text}} /><span class="editable-input-resize"/><button class="editable-start"><span class="glyphicon glyphicon-pencil"></span></button></span>',
+    scope:{      
+      eVal:"="
+    },
+    controller: function controller($scope, $element, $attrs, $transclude){
+      var btn = angular.element($element).children("button.editable-start");      
+      var txt = angular.element($element).children("span.editable-text");      
+      var input = angular.element($element).children("input.editable-input");      
+      var resize= angular.element($element).children("span.editable-input-resize");      
+      
+      $scope.resize = resize;
+      $scope.input  = input;
+      
+      btn.on('click', function(event){
+        input.val(txt.text());
+        input.width(txt.width());
+        $element.toggleClass('edit');
+        input.focus();    
+        event.stopPropagation();
+        return false;
+      });
+      
+    },
+    link: function link(scope, element, attrs, modelCtrl, transclude){ 
+      scope.input.keypress(function(event){        
+        scope.resize.text(scope.input.val());
+        scope.input.width(scope.resize.width());
+        
+        if (event.which === 13) {
+          element.removeClass('edit');  
+          scope.$apply(function(){
+            scope.eVal = scope.input.val();            
+          });                    
+        }
+      });  
+      
+    }
+  };
+}] );
+
+
 
 
 
