@@ -454,7 +454,8 @@ function catalogActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $event
     $scope.editMode   = false;
     $scope.nodes      = [];
     $scope.path       = [];
-    $scope.onClick    = self.onClick;    
+    $scope.onClick    = self.onClick; 
+    $scope.search     = "";
     //***************************************    
   };
   

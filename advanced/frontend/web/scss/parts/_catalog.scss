@@ -7,8 +7,20 @@ div.catalog{
   border: 0;
   
   div.editSwitch{
+    margin-bottom: 5px;
     & span {
       line-height: 2em;
+    }
+  }
+  
+  div.filter {
+    margin-left: 10px;
+    & > input {
+      height: 2rem;
+      border-radius: 1rem;
+      padding: 0.5rem;
+      line-height: 1.5rem;
+      width: auto;
     }
   }
   
