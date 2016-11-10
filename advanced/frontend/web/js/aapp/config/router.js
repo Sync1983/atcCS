@@ -23,7 +23,7 @@ atcCS.config(['$routeProvider', '$locationProvider',
         templateUrl: '/orders.html',
         controller: 'ordersControl',
         controllerAs: 'atcCS' 
-      }).when('/catalog', {
+      }).when('/catalog/:path?', {
         caseInsensitiveMatch: true,
         templateUrl: '/catalog.html',
         controller: 'catalogControl',

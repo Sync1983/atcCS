@@ -37,6 +37,8 @@ ObjectHelper.concat = function (a,b){
   return a;
 };
 
+
+var eventsNames = new eventsNamesList();
 var atcCS = angular.module('atcCS',['ngCookies','ngRoute', 'ngTable','uiSwitch']);
 
 Error.stackTraceLimit = 25;
@@ -78,7 +80,7 @@ atcCS.config(['$routeProvider', '$locationProvider',
         templateUrl: '/orders.html',
         controller: 'ordersControl',
         controllerAs: 'atcCS' 
-      }).when('/catalog', {
+      }).when('/catalog/:path?', {
         caseInsensitiveMatch: true,
         templateUrl: '/catalog.html',
         controller: 'catalogControl',
@@ -431,87 +433,73 @@ atcCS.controller( 'brandsSearch', [
      });
     
 }]);
-/* global atcCS */
+/* global atcCS, eventsNames */
 
-atcCS.controller( 'catalogControl', [
-  '$scope', 'User' ,'$rootScope', '$confirm','$wndMng','$notify','searchNumberControl', '$events',
-  function($scope,$user,$rootScope,$confirm,$wndMng,$notify, $searchNumberControl, $events ) {
-    'use strict';    
-    
-    var searchEvents = $events.get("searchScope");
-    
+function catalogActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $events, $routeParams, $route){  
+  'use strict';
+  var searchEvents;
+  var events;
+  var userEvents;
+  var path;
+  var self = this;
+  
+  function init(){
+    searchEvents = $events.get(eventsNames.eventsSearch());
+    events       = $events.get(eventsNames.eventsCatalog());
+    userEvents   = $events.get(eventsNames.eventsUser());    
+    path         = $routeParams.path || false;    
+    //***************************************
     $scope.isLogin    = $user.isLogin;
     $scope.isAdmin    = $user.isAdmin;
-    $scope.basketName = $user.activeBasket.name;
-    $scope.searchEvents = $events.get("searchScope");
     $scope.editMode   = false;
     $scope.nodes      = [];
-    $scope.path = [
-      {
-        name:"Каталог",
-        path:false
-      }
-    ];
+    $scope.path       = [];
+    $scope.onClick    = self.onClick;    
+    //***************************************    
+  };
+  
+  this.updateListner = function(event, data){    
     
-    $scope.event = $events.get("catalogScope");
-    
-    $scope.event.setListner("update",function(event, data){
-      var path = data && data.path || false;
-      var name = data && data.name || "";
-      
-      $user.getCatalogNode(path,function(data){
-        $scope.nodes = data;                            
-      });
-      
-      if( name && path ) {
-        $scope.path.push({
-          name:name,
-          path:path
-        });
-      }
-      
+    $user.getCatalogNode(data,function(data){
+      $scope.nodes  = data.nodes;                            
+      $scope.path   = data.path;                            
     });
-    
-    $scope.onPathSelect = function(row){
+  };
+  
+  this.onClick = function(row){
+    if(row.is_group){        
+        $route.updateParams({path:row.path});
+        return;
+     }
+     searchEvents.broadcast("StartSearchText",row.articul);     
+  };
+  
+  this.changeNodes = function(newVal, oldVal){
+    if(angular.equals(newVal, oldVal) || (oldVal.length === 0)) {
+      return; // simply skip that
+    }
       
-      for(var i in $scope.path){
-        var item = $scope.path.pop();
-        if( row.path === item.path ){          
-          break;
-        }
-      }      
-      $scope.event.broadcast("update",row);
-    };    
-    
-    $scope.event.broadcast("update",false); 
-    
-    $scope.onClick = function(row){
-      if(row.is_group){
-        $scope.event.broadcast("update",{path:row.path, name:row.name});          
-      } else {
-        searchEvents.broadcast("StartSearchText",row.articul);
-      };      
-    };
-    
-    $rootScope.$on('userDataUpdate', 
-      function(event){        
-        $scope.isLogin = $user.isLogin;
-        $scope.basketName = $user.activeBasket.name;
-        $scope.isAdmin    = $user.isAdmin;        
-     });   
-     
-    var changeNodes = function(newVal, oldVal, scope){
-      if(angular.equals(newVal, oldVal) || (oldVal.length === 0)) {
-        return; // simply skip that
-      }
-      
-      console.log(oldVal,newVal,scope);
-    };
-     
-     
-    $scope.$watch(function(scope){return scope.nodes;}, changeNodes,true);          
-     
-     
+    console.log(oldVal,newVal);
+  };
+  
+  this.userDataUpdate = function(event,data){    
+    $scope.isLogin    = data.isLogin;        
+    $scope.isAdmin    = data.isAdmin;    
+  };
+  
+  //******************************************
+  init();
+  events.setListner("update",self.updateListner);
+  events.broadcast("update",path);
+  userEvents.setListner("userDataUpdate",self.userDataUpdate);
+  $scope.$watch("nodes", self.changeNodes, true);
+  
+};
+
+atcCS.controller( 'catalogControl', [
+  '$scope', 'User' ,'$rootScope', '$confirm','$wndMng','$notify', '$events', '$routeParams', '$route', 
+  function($scope,$user,$rootScope,$confirm,$wndMng,$notify, $events, $routeParams, $route ) {
+        return new catalogActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $events, $routeParams, $route);
 }]);
 
 
@@ -1194,7 +1182,7 @@ atcCS.directive('searchLine', [
       $scope.filter = ''; 
       $scope.typeFilter = false;
       $scope.typeInfo = false;
-      $scope.events = $events.get("searchScope");
+      $scope.events = $events.get(eventsNames.eventsSearch());
       //Создание структур данных      
       $scope.treeModel = {
           text: "Категории",
@@ -1800,17 +1788,18 @@ function userModel(){
   };
   
 }
-/* global atcCS, cqEvents */
+/* global atcCS, cqEvents, eventsNames */
 
 /*
  * Сервис для обслуживания модели пользователя и общения с сервером
  */
-atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q',
-  function($http, $cookies, $rootScope, $notify, $q){
+atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$events',
+  function($http, $cookies, $rootScope, $notify, $q, $events){
   'use strict';
   
   var URL   = serverURL + "/index.php";
   var model = new userModel();
+  var events = $events.get(eventsNames.eventsUser());
 
   function URLto(controller,funct,local){
     return (local?"":URL) + "?r=" + controller + "/" + funct;
@@ -1940,7 +1929,8 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q',
         
         setActiveBasket();
         
-        $rootScope.$broadcast('userDataUpdate', {});
+        $rootScope.$broadcast('userDataUpdate', {});        
+        events.broadcast('userDataUpdate',model);
       }, 
       function (reason){        
         $notify.addItem("Ошибка","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
@@ -3065,65 +3055,88 @@ atcCS.service('$connectionQueue',['$rootScope',
     return connectionQueueModel($rootScope);
   }
 ]);
-/* global atcCS */
+/* global atcCS, eventsName */
 
-function event($name,$rootScope){
+function event($name){
   
-  var model = {
-    name:$name,
-    scope: $rootScope.$new(true)
-  };
+  var name;  
+  var listners = [];
+  var self = this;
   
   function init(){
+    name  = $name;    
+    listners = [];
+  };
+  
+  this.broadcast = function broadcast(eventName, args){
+    //console.log("Broadcast event scope '" + name +"'["+ eventName+"]");
+    
+    var list = listners[eventName] || [];
+    
+    for(var i in list){
+      //console.log("Listen event scope '" + name + "'["+eventName + "]");
+      list[i](eventName,args);
+    }
     
   };
   
-  model.broadcast = function broadcast(name, args){
-    console.log("Broadcast event scope '" + $name +"'["+name+"]");
-    model.scope.$broadcast(name, args);
-  };
-  
-  model.setListner = function setListner(eventName, callback){
-    console.log("Register event scope '" + $name + "'["+eventName + "]");
-    model.scope.$on(eventName, function(event,args){
-      console.log("Listen event scope '" + $name + "'["+eventName + "]");
-      if( callback instanceof Function ){
-        callback(event,args);
-      }
-    });    
+  this.setListner = function setListner(eventName, callback){    
+    
+    if( listners.indexOf(eventName) === -1 ){
+      listners[eventName] = [];
+    }
+    
+    if ( (listners[eventName].indexOf(callback) !== -1 ) || 
+        !(callback instanceof Function) ){
+      return;
+    };
+    
+    listners[eventName].push(callback);    
   };
   
   init();  
-  return model;
+  return this;
 };
 
-function events($rootScope,$q){
+function events($rootScope){
   'use strict';
-  var model = {
-    events:[]
-  };  
+  var events = [];
   
   function init(){        
+    events = [];
   }
   
-  model.get = function get(name){    
-    if ( !model.events[name] ){
-      model.events[name] = new event(name, $rootScope);
+  this.get = function get(name){    
+    if ( !(name in  events) ){
+      events[name] = new event(name);
     }    
     
-    return model.events[name];
+    return events[name];
   };  
   
   init();
-  return model;
+  return this;
 };
 
 atcCS.service('$events',[
   '$rootScope', '$q',
   function($rootScope,$q){
-    return events($rootScope,$q);
+    return new events($rootScope,$q);
 }]);
 
+function eventsNamesList(){
+  this.eventsUser = function(){
+    return 'eventUserScope';
+  };
+  
+  this.eventsCatalog = function(){
+    return 'eventCatalogScope';
+  };
+  
+  this.eventsSearch= function(){
+    return 'eventSearchScope';
+  };
+};
 /* global atcCS */
 
 /*

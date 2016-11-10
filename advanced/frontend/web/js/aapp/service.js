@@ -1,14 +1,15 @@
-/* global atcCS, cqEvents */
+/* global atcCS, cqEvents, eventsNames */
 
 /*
  * Сервис для обслуживания модели пользователя и общения с сервером
  */
-atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q',
-  function($http, $cookies, $rootScope, $notify, $q){
+atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$events',
+  function($http, $cookies, $rootScope, $notify, $q, $events){
   'use strict';
   
   var URL   = serverURL + "/index.php";
   var model = new userModel();
+  var events = $events.get(eventsNames.eventsUser());
 
   function URLto(controller,funct,local){
     return (local?"":URL) + "?r=" + controller + "/" + funct;
@@ -138,7 +139,8 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q',
         
         setActiveBasket();
         
-        $rootScope.$broadcast('userDataUpdate', {});
+        $rootScope.$broadcast('userDataUpdate', {});        
+        events.broadcast('userDataUpdate',model);
       }, 
       function (reason){        
         $notify.addItem("Ошибка","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");

@@ -37,4 +37,6 @@ ObjectHelper.concat = function (a,b){
   return a;
 };
 
+
+var eventsNames = new eventsNamesList();
 var atcCS = angular.module('atcCS',['ngCookies','ngRoute', 'ngTable','uiSwitch']);

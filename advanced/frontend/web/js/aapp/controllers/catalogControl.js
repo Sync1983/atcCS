@@ -1,83 +1,69 @@
-/* global atcCS */
+/* global atcCS, eventsNames */
 
-atcCS.controller( 'catalogControl', [
-  '$scope', 'User' ,'$rootScope', '$confirm','$wndMng','$notify','searchNumberControl', '$events',
-  function($scope,$user,$rootScope,$confirm,$wndMng,$notify, $searchNumberControl, $events ) {
-    'use strict';    
-    
-    var searchEvents = $events.get("searchScope");
-    
+function catalogActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $events, $routeParams, $route){  
+  'use strict';
+  var searchEvents;
+  var events;
+  var userEvents;
+  var path;
+  var self = this;
+  
+  function init(){
+    searchEvents = $events.get(eventsNames.eventsSearch());
+    events       = $events.get(eventsNames.eventsCatalog());
+    userEvents   = $events.get(eventsNames.eventsUser());    
+    path         = $routeParams.path || false;    
+    //***************************************
     $scope.isLogin    = $user.isLogin;
     $scope.isAdmin    = $user.isAdmin;
-    $scope.basketName = $user.activeBasket.name;
-    $scope.searchEvents = $events.get("searchScope");
     $scope.editMode   = false;
     $scope.nodes      = [];
-    $scope.path = [
-      {
-        name:"Каталог",
-        path:false
-      }
-    ];
+    $scope.path       = [];
+    $scope.onClick    = self.onClick;    
+    //***************************************    
+  };
+  
+  this.updateListner = function(event, data){    
     
-    $scope.event = $events.get("catalogScope");
-    
-    $scope.event.setListner("update",function(event, data){
-      var path = data && data.path || false;
-      var name = data && data.name || "";
-      
-      $user.getCatalogNode(path,function(data){
-        $scope.nodes = data;                            
-      });
-      
-      if( name && path ) {
-        $scope.path.push({
-          name:name,
-          path:path
-        });
-      }
-      
+    $user.getCatalogNode(data,function(data){
+      $scope.nodes  = data.nodes;                            
+      $scope.path   = data.path;                            
     });
-    
-    $scope.onPathSelect = function(row){
+  };
+  
+  this.onClick = function(row){
+    if(row.is_group){        
+        $route.updateParams({path:row.path});
+        return;
+     }
+     searchEvents.broadcast("StartSearchText",row.articul);     
+  };
+  
+  this.changeNodes = function(newVal, oldVal){
+    if(angular.equals(newVal, oldVal) || (oldVal.length === 0)) {
+      return; // simply skip that
+    }
       
-      for(var i in $scope.path){
-        var item = $scope.path.pop();
-        if( row.path === item.path ){          
-          break;
-        }
-      }      
-      $scope.event.broadcast("update",row);
-    };    
-    
-    $scope.event.broadcast("update",false); 
-    
-    $scope.onClick = function(row){
-      if(row.is_group){
-        $scope.event.broadcast("update",{path:row.path, name:row.name});          
-      } else {
-        searchEvents.broadcast("StartSearchText",row.articul);
-      };      
-    };
-    
-    $rootScope.$on('userDataUpdate', 
-      function(event){        
-        $scope.isLogin = $user.isLogin;
-        $scope.basketName = $user.activeBasket.name;
-        $scope.isAdmin    = $user.isAdmin;        
-     });   
-     
-    var changeNodes = function(newVal, oldVal, scope){
-      if(angular.equals(newVal, oldVal) || (oldVal.length === 0)) {
-        return; // simply skip that
-      }
-      
-      console.log(oldVal,newVal,scope);
-    };
-     
-     
-    $scope.$watch(function(scope){return scope.nodes;}, changeNodes,true);          
-     
-     
+    console.log(oldVal,newVal);
+  };
+  
+  this.userDataUpdate = function(event,data){    
+    $scope.isLogin    = data.isLogin;        
+    $scope.isAdmin    = data.isAdmin;    
+  };
+  
+  //******************************************
+  init();
+  events.setListner("update",self.updateListner);
+  events.broadcast("update",path);
+  userEvents.setListner("userDataUpdate",self.userDataUpdate);
+  $scope.$watch("nodes", self.changeNodes, true);
+  
+};
+
+atcCS.controller( 'catalogControl', [
+  '$scope', 'User' ,'$rootScope', '$confirm','$wndMng','$notify', '$events', '$routeParams', '$route', 
+  function($scope,$user,$rootScope,$confirm,$wndMng,$notify, $events, $routeParams, $route ) {
+        return new catalogActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $events, $routeParams, $route);
 }]);
 

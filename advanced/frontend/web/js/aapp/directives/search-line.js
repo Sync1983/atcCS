@@ -28,7 +28,7 @@ atcCS.directive('searchLine', [
       $scope.filter = ''; 
       $scope.typeFilter = false;
       $scope.typeInfo = false;
-      $scope.events = $events.get("searchScope");
+      $scope.events = $events.get(eventsNames.eventsSearch());
       //Создание структур данных      
       $scope.treeModel = {
           text: "Категории",
