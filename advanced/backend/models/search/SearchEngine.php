@@ -75,7 +75,7 @@ class SearchEngine extends Object{
 
       $row['maker_id'] = $clsid;
       $row['price']   = round($price + ($price*$markup)/100,2);
-      $maker          = preg_replace('/\W*/i', "", $row['maker']);      
+      $maker = mb_convert_encoding($row['maker'], 'UTF-8', 'UTF-8');//$maker          = preg_replace('/\W*/i', "", $row['maker']);      
       $row['maker']   = $this->brandsRename(strtoupper($maker));
       $row['articul'] = preg_replace('/\W*/i', "", $row['articul']);
       $row['shiping'] = intval($row['shiping']) + $shiping;      
@@ -122,7 +122,10 @@ class SearchEngine extends Object{
     foreach ($requestsList as $clsid => $request){
       $answer = curl_multi_getcontent($request);
       curl_multi_remove_handle($requests, $request);
-      $results[$clsid] = $this->providers[$clsid]->parseResponse($answer,$method);
+      try{
+        $results[$clsid] = $this->providers[$clsid]->parseResponse($answer,$method);
+      }catch(Exception $e) {
+      }
     }
 
     curl_multi_close($requests);

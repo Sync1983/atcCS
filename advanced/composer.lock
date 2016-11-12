@@ -4,13 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "hash": "db9769006a8a9926a945b97464da7087",
-    "content-hash": "cfca0877b4de77f3662d979067fc4827",
-=======
-    "hash": "afe3ad49a77153161d5f8a894d5754db",
-    "content-hash": "69251584e6dcf0fc31911d55e4fdda67",
->>>>>>> 5b5a916100a6e91aeb79d9afa3990406c2ccf90e
+    "hash": "5356d6afc40f344786d6b315ccdce152",
+    "content-hash": "6607044bef4c0ebaf17802cc2a2de2d8",
     "packages": [
         {
             "name": "bower-asset/angular",
@@ -595,18 +590,15 @@
         {
             "name": "sync/ng-table",
             "version": "dev-dev-atc",
-<<<<<<< HEAD
             "source": {
                 "type": "git",
                 "url": "https://github.com/Sync1983/ng-table.git",
-                "reference": "fe85d1047d6d5178eed47ba3652e5cc6e5ffe0b8"
+                "reference": "b4378400fc259c46e0d90b0a6a177328545bb51b"
             },
-=======
->>>>>>> 5b5a916100a6e91aeb79d9afa3990406c2ccf90e
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Sync1983/ng-table/zipball/fe85d1047d6d5178eed47ba3652e5cc6e5ffe0b8",
-                "reference": "fe85d1047d6d5178eed47ba3652e5cc6e5ffe0b8",
+                "url": "https://api.github.com/repos/Sync1983/ng-table/zipball/b4378400fc259c46e0d90b0a6a177328545bb51b",
+                "reference": "b4378400fc259c46e0d90b0a6a177328545bb51b",
                 "shasum": ""
             },
             "type": "library",
@@ -622,7 +614,7 @@
             "support": {
                 "source": "https://github.com/Sync1983/ng-table/tree/dev-atc"
             },
-            "time": "2016-11-07 10:07:58"
+            "time": "2016-11-07 11:10:02"
         },
         {
             "name": "yiisoft/yii2",
