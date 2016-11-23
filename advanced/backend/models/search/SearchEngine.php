@@ -132,7 +132,9 @@ class SearchEngine extends Object{
     return $results;
   }
 
-  protected function brandsRename($brand){
+  protected function brandsRename($brand){    
+    $brand = preg_replace('/[\-, ,-,\/]*/', "", $brand);
+    
     $renameMap = [
       'KIAHYUNDAIMOBIS' => 'HYUNDAI-KIA-MOBIS',
       'HYUNDAIKIA'      => 'HYUNDAI-KIA-MOBIS',

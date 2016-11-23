@@ -1,4 +1,6 @@
-"use strict";var ObjectHelper = {};
+"use strict";/* global ObjectHelper */
+
+var ObjectHelper = {};
 
 ObjectHelper.count = function(obj){
   var count = 0;  
@@ -35,6 +37,21 @@ ObjectHelper.addUniq = function(array,value){
 ObjectHelper.concat = function (a,b){
   a.push.apply(a, b);
   return a;
+};
+
+ObjectHelper.URLto = function(controller,funct,local){
+  var URL   = serverURL + "/index.php";
+  return (local?"":URL) + "?r=" + controller + "/" + funct;  
+};
+
+ObjectHelper.createRequest = function(controller, funct, params,isPost){
+  var req = {
+      method: (isPost?'POST':'GET'),
+      url: ObjectHelper.URLto(controller,funct),
+      responseType: 'json',
+      params: params
+    };
+  return req;
 };
 
 
@@ -459,12 +476,9 @@ function catalogActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $event
     //***************************************    
   };
   
-  this.updateListner = function(event, data){    
-    
-    $user.getCatalogNode(data,function(data){
-      $scope.nodes  = data.nodes;                            
-      $scope.path   = data.path;                            
-    });
+  this.updateListner = function(event, data){      
+      $scope.nodes  = data.nodes;
+      $scope.path   = data.path;  
   };
   
   this.onClick = function(row){
@@ -475,7 +489,7 @@ function catalogActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $event
      searchEvents.broadcast("StartSearchText",row.articul);     
   };
   
-  this.changeNodes = function(newVal, oldVal){
+  this.changeNodes = function(newVal, oldVal){    
     if(angular.equals(newVal, oldVal) || (oldVal.length === 0)) {
       return; // simply skip that
     }
@@ -490,8 +504,10 @@ function catalogActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $event
   
   //******************************************
   init();
+  
   events.setListner("update",self.updateListner);
-  events.broadcast("update",path);
+  events.broadcast("getData",path);
+  
   userEvents.setListner("userDataUpdate",self.userDataUpdate);
   $scope.$watch("nodes", self.changeNodes, true);
   
@@ -1106,12 +1122,12 @@ atcCS.directive('scheckbox', function (){
 
 atcCS.directive( 'editable',['$events', function ($events){
   return {
-    restrict: 'A',
+    restrict: 'A',    
     replace: true,
     transclude:true,
     template: '<span class="editable-element"><span class="editable-text" ng-transclude/><input class="editable-input" type="text" value={{text}} /><span class="editable-input-resize"/><button class="editable-start"><span class="glyphicon glyphicon-pencil"></span></button></span>',
-    scope:{      
-      eVal:"="
+    scope: {      
+      eVal:"="      
     },
     controller: function controller($scope, $element, $attrs, $transclude){
       var btn = angular.element($element).children("button.editable-start");      
@@ -1132,19 +1148,55 @@ atcCS.directive( 'editable',['$events', function ($events){
       });
       
     },
-    link: function link(scope, element, attrs, modelCtrl, transclude){ 
+    link: function link(scope, element, attrs, modelCtrl, transclude){       
       scope.input.keypress(function(event){        
         scope.resize.text(scope.input.val());
         scope.input.width(scope.resize.width());
         
         if (event.which === 13) {
+          console.log(scope);
           element.removeClass('edit');  
           scope.$apply(function(){
             scope.eVal = scope.input.val();            
-          });                    
+          });           
         }
       });  
       
+    }
+  };
+}] );
+
+
+
+
+
+/* global atcCS */
+
+atcCS.directive( 'modelChange',[function (){
+    'use strict';
+  return {
+    restrict: 'A',
+    require: "ngModel",
+    replace: false,
+    transclude:false,
+    template: '',
+    scope: false,   
+    controller: function controller($scope, $element, $attrs){      
+    },
+    link: function link(scope, element, attrs, modelCtrl, transclude){ 
+      
+      scope.$watch(function(modelCtrl){return modelCtrl.$viewValue ;},
+      function(oldVal,newVal){
+        console.log(123);
+        if( angular.equals(oldVal, newVal) ){
+          return;
+        }
+        
+        console.log("asd");
+        if( scope.onModelChaange instanceof Function ){          
+          scope.onModelChaange(oldVal,newVal, modelCtrl);
+        }
+      }, true);
     }
   };
 }] );
@@ -1789,11 +1841,43 @@ function userModel(){
   };
   
 }
-/* global atcCS, cqEvents, eventsNames */
+/* global atcCS, cqEvents, eventsNames, ObjectHelper */
 
 /*
  * Сервис для обслуживания модели пользователя и общения с сервером
  */
+
+var catalogBack = function($http, $events){
+  'use strict';
+  var self = this;
+  self.events = null;
+  const EVENT_GETDATA = 'getData';
+  const EVENT_UPDATE  = 'update';
+  
+  function init(){
+    self.events = $events.get(eventsNames.eventsCatalog());    
+    self.events.setListner(EVENT_GETDATA, getData);
+  };
+  
+  function getData(event, node){
+    var request = ObjectHelper.createRequest('catalog','get-data',{ params: { path: String(node) }});    
+    
+    function serverResponse(data){      
+      var answer = data && data.data;
+      self.events.broadcast(EVENT_UPDATE,answer);
+    };
+    
+    function serverError( error ){
+      console.log('getCatalogNode Server error:', error );      
+    }
+    
+    $http(request).then(serverResponse,serverError);
+  };
+  
+  init();  
+    
+};
+
 atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$events',
   function($http, $cookies, $rootScope, $notify, $q, $events){
   'use strict';
@@ -2205,34 +2289,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
     return $http(req);
   };
   
-  model.getCatalogNode = function getParts(node, callback){
-    var req = {
-      method: 'GET',
-      url: URLto('helper','get-catalog-node'),
-      responseType: 'json',
-      params: {
-        params: {
-          path: String(node)          
-        }
-      }
-    };
-    
-    function serverResponse(answer){      
-      var data = answer && answer.data;
-      if ( callback instanceof Function ){
-        callback(data); 
-      }
-    }
-    
-    function serverError(error){
-      console.log('getCatalogNode Server error:', error );
-      if ( callback instanceof Function ){
-        callback({});
-      }
-    }
-    
-    $http(req).then(serverResponse,serverError);
-  };
+  model.catalog = new catalogBack($http,$events);
   
   init();
   return model; 

@@ -1,8 +1,40 @@
-/* global atcCS, cqEvents, eventsNames */
+/* global atcCS, cqEvents, eventsNames, ObjectHelper */
 
 /*
  * Сервис для обслуживания модели пользователя и общения с сервером
  */
+
+var catalogBack = function($http, $events){
+  'use strict';
+  var self = this;
+  self.events = null;
+  const EVENT_GETDATA = 'getData';
+  const EVENT_UPDATE  = 'update';
+  
+  function init(){
+    self.events = $events.get(eventsNames.eventsCatalog());    
+    self.events.setListner(EVENT_GETDATA, getData);
+  };
+  
+  function getData(event, node){
+    var request = ObjectHelper.createRequest('catalog','get-data',{ params: { path: String(node) }});    
+    
+    function serverResponse(data){      
+      var answer = data && data.data;
+      self.events.broadcast(EVENT_UPDATE,answer);
+    };
+    
+    function serverError( error ){
+      console.log('getCatalogNode Server error:', error );      
+    }
+    
+    $http(request).then(serverResponse,serverError);
+  };
+  
+  init();  
+    
+};
+
 atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$events',
   function($http, $cookies, $rootScope, $notify, $q, $events){
   'use strict';
@@ -414,34 +446,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
     return $http(req);
   };
   
-  model.getCatalogNode = function getParts(node, callback){
-    var req = {
-      method: 'GET',
-      url: URLto('helper','get-catalog-node'),
-      responseType: 'json',
-      params: {
-        params: {
-          path: String(node)          
-        }
-      }
-    };
-    
-    function serverResponse(answer){      
-      var data = answer && answer.data;
-      if ( callback instanceof Function ){
-        callback(data); 
-      }
-    }
-    
-    function serverError(error){
-      console.log('getCatalogNode Server error:', error );
-      if ( callback instanceof Function ){
-        callback({});
-      }
-    }
-    
-    $http(req).then(serverResponse,serverError);
-  };
+  model.catalog = new catalogBack($http,$events);
   
   init();
   return model; 

@@ -24,12 +24,9 @@ function catalogActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $event
     //***************************************    
   };
   
-  this.updateListner = function(event, data){    
-    
-    $user.getCatalogNode(data,function(data){
-      $scope.nodes  = data.nodes;                            
-      $scope.path   = data.path;                            
-    });
+  this.updateListner = function(event, data){      
+      $scope.nodes  = data.nodes;
+      $scope.path   = data.path;  
   };
   
   this.onClick = function(row){
@@ -40,7 +37,7 @@ function catalogActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $event
      searchEvents.broadcast("StartSearchText",row.articul);     
   };
   
-  this.changeNodes = function(newVal, oldVal){
+  this.changeNodes = function(newVal, oldVal){    
     if(angular.equals(newVal, oldVal) || (oldVal.length === 0)) {
       return; // simply skip that
     }
@@ -55,8 +52,10 @@ function catalogActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $event
   
   //******************************************
   init();
+  
   events.setListner("update",self.updateListner);
-  events.broadcast("update",path);
+  events.broadcast("getData",path);
+  
   userEvents.setListner("userDataUpdate",self.userDataUpdate);
   $scope.$watch("nodes", self.changeNodes, true);
   
