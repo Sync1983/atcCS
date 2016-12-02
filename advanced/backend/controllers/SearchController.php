@@ -30,7 +30,8 @@ class SearchController extends Controller{
           'cors'  => [
             'Origin' => ['*'],
             'Access-Control-Request-Headers' => ['*'],            
-            'Access-Control-Allow-Credentials' => true
+            'Access-Control-Allow-Credentials' => true,
+            'Access-Control-Allow-Origin' => ['*']
           ]
         ],
         'authFilter' => [
