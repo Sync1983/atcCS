@@ -37,7 +37,7 @@
           </td>
           <td data-title="'Наименование'" class="name">
             <span title='{{row.name}}'>
-              <u ng-show="isAdmin">{{row.prvd}} : {{row.stock}}</u>{{row.name}}
+              <u ng-show="isAdmin">[{{row.prvd}} : {{row.stock}}]</u>&nbsp{{row.name}}
             </span>
           </td>
           <td data-title="'Цена [' + markupName + ']'" sortable="'viewPrice'">
