@@ -39,6 +39,25 @@ ObjectHelper.concat = function (a,b){
   return a;
 };
 
+ObjectHelper.merge = function (a,b){
+  var result = new Object();
+  
+  
+  for(var keyA in a){
+    result[keyA] = a[keyA];
+  }
+  
+  for(var keyB in b){
+    if( result.hasOwnProperty(keyB) ){
+      result[keyB] = ObjectHelper.concat(result[keyB,b[keyB]]);
+    } else{
+      result[keyB] = b[keyB];      
+    }
+  }  
+  
+  return result;
+};
+
 ObjectHelper.URLto = function(controller,funct,local){
   var URL   = serverURL + "/index.php";
   return (local?"":URL) + "?r=" + controller + "/" + funct;  

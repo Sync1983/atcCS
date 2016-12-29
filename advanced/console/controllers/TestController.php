@@ -19,7 +19,7 @@ class TestController extends Controller {
     $url = "www.e-det.ru/web/getprice.php";
     $vars = [
       "key"     => urlencode("b800c715d13b98909cd4e5587048d05d"),
-      "number"  => urlencode("6203"),
+      "number"  => urlencode("MOF4500"),
       "format"  => urldecode("json")
     ];
 
@@ -30,10 +30,10 @@ class TestController extends Controller {
     curl_setopt($ch, CURLINFO_HEADER_OUT, true);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_VERBOSE, true);
-    /*$headers = [
+    $headers = [
       'Accept: application/json',
       'Content-Type: application/x-www-form-urlencoded; charset=utf-8'      
-    ];*/
+    ];
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
@@ -53,7 +53,7 @@ class TestController extends Controller {
 
   public function actionTestSearch(){
     $engine = new \backend\models\search\SearchEngine();
-    $answer   = $engine->getBrands("5632", true);
+    $answer   = $engine->getBrands("MOF4500", true);
     var_dump($answer);
   }
 

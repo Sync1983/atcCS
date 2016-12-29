@@ -9,18 +9,32 @@
   <div ng-if="!inSearch" class="count">Варианты деталей по запросу "<b>{{searchText}}</b>" от производителя <b>{{brand}}</b>:</div>   
   <div class="actions"><a href="#" ng-click="onCollapse()"><span class="glyphicon glyphicon-minus-sign"></span>Свернуть все</a><a href="#" ng-click="onExpand()"><span class="glyphicon glyphicon-plus-sign"></span>Развернуть все</a></div>
   
-  <table ng-table="tableParams" class="table table-condensed table-bordered table-striped">    
+  <table ng-atable="tableParams" class="table table-condensed table-bordered table-striped">    
     <colgroup>
       <col width="10%"/>
       <col width="15%"/>
+      <col width="8%"/>
       <col width="40%"/>
       <col width="8%"/>
       <col width="8%"/>
       <col width="8%"/>
       <col width="8%"/>
     </colgroup>
-        <tr class="ng-table-group" ng-repeat-start="group in $groups"><!-- | partOut:brand:true-->
-          <td colspan="7">
+    
+    <tr class="ng-table-group" ng-repeat-start="(key,group) in data">
+      <td colspan="8">
+        <a href="" ng-click="group.hide = !group.hide">
+          <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': group.hide, 'glyphicon-chevron-down': !group.hide}"></span>
+          <strong>{{ key }}</strong>
+        </a>
+      </td>                
+    </tr>
+    <tr ng-hide="group.hide" ng-repeat="row in group" ng-repeat-end 
+            ng-class="(row.stdArticul===articulCmp)? 'original' :''" ng-text="{{articulCmp}}" ng-text1="{{row.stdArticul}}">  
+      {{row}}
+    </tr>
+<!--        <tr class="ng-table-group" ng-repeat-start="group in $groups"><!-- | partOut:brand:true--
+          <td colspan="8">
             <a href="" ng-click="group.$hideRows = !group.$hideRows">
               <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
               <strong>{{ group.value }}</strong>
@@ -35,9 +49,12 @@
           <td data-title="'Артикул'" sortable="'articul'">
             {{row.articul}}
           </td>
+          <td data-title="'Поставщик'" sortable="'prvd'" ng-show="isAdmin">
+            {{row.prvd}} : {{row.stock}}
+          </td>
           <td data-title="'Наименование'" class="name">
             <span title='{{row.name}}'>
-              <u ng-show="isAdmin">[{{row.prvd}} : {{row.stock}}]</u>&nbsp{{row.name}}
+              {{row.name}}
             </span>
           </td>
           <td data-title="'Цена [' + markupName + ']'" sortable="'viewPrice'">
@@ -56,6 +73,6 @@
             <a href='#' ng-click="Add(row.key)" ng-show="isLogin&&!row.adding&&!row.error">Добавить</a>
             <span class="load-info" ng-show="row.adding"></span>
           </td>
-        </tr>
+        </tr>-->
       </table>
 </div>

@@ -12,20 +12,15 @@ function storage($rootScope){
     }
     
     var time = Math.round( (new Date()).getTime() / 1000);
-    console.log("lS Actual time: " + time);
     
-    for (var i  in localStorage){       
-      if( i === String(i*1) && ((time-i*1) > 60*60*12) ){
-        console.log("lS Item time: "+ i);
-        localStorage.removeItem(i);
+    for (var i  in localStorage){  
+      var itemTime = parseInt(i);
+      if( isNaN(itemTime) ){
         continue;
       }
-      if( String(i).indexOf('@') !== -1 ){
-        var keyTime = String(i).substr(0,i.indexOf('@')) * 1;        
-        console.log("lS Item time: "+ keyTime);
-        if( (time-keyTime) > 60*60*12 ) {
-          localStorage.removeItem(i);
-        }        
+      
+      if( (time-itemTime) > 60*60*12 ) {
+        localStorage.removeItem(i);      
       }       
     }
   };

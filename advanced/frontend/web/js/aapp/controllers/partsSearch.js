@@ -39,7 +39,7 @@ atcCS.controller( 'partsSearch', [
           var originalArray = [];
           var notOriginalArray = [];
           var resultArray = [];
-          
+          console.profile('sorting');
           for( var key in $scope.data){
             var item        = $scope.data[key];
             item.viewPrice  = item.price.toFixed(2);
@@ -65,7 +65,7 @@ atcCS.controller( 'partsSearch', [
             notOriginalArray.sort(sortFunction(sorting));
             resultArray = ObjectHelper.concat(originalArray,notOriginalArray);            
           }
-          
+          console.profileEnd('sorting');
           return resultArray;
         }
       }
@@ -85,10 +85,10 @@ atcCS.controller( 'partsSearch', [
     for(var i in requestParams){
       var clsid = requestParams[i].id;
       var ident = requestParams[i].uid;
-      if( $storage.get($scope.timestamp+'@'+clsid+'@'+ident) ){
-        
-        serverResponse(clsid,ident,$storage.get($scope.timestamp+'@'+clsid+'@'+ident) );
-                
+      var storage = $storage.get($scope.timestamp+'@'+clsid+'@'+ident);
+      if( storage ){        
+        console.log('a',storage);
+        serverResponse(clsid,ident,storage);                
       } else{
         $user.getParts(clsid,ident,serverResponseCall(clsid, ident));
         $scope.loading[clsid] = clsid;        
@@ -103,16 +103,21 @@ atcCS.controller( 'partsSearch', [
     
     function serverResponse(clsid,ident,data){
       delete($scope.loading[clsid]);
+      
       if( !data ){
         return;
       }
+      
       for(var i in data.rows){
         data.rows[i].provider = clsid;
       }
+      
       $storage.set($scope.timestamp+'@'+clsid+'@'+ident,data);
-      $scope.data = ObjectHelper.concat($scope.data,data.rows);
-      $scope.tableParams.reload();
-      $log.debug($scope.tableParams);
+      $scope.data = ObjectHelper.merge($scope.data, data.rows); 
+      console.log(data.rows);
+      console.log($scope.data);
+      //$scope.tableParams.reload();
+      //$log.debug($scope.tableParams);
     }
     
     function sortFunction($sort){
