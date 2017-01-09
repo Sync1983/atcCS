@@ -21,23 +21,24 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "yiisoft/yii2": ">=2.0.6",
+        "yiisoft/yii2": "^2.0.6",
         "yiisoft/yii2-bootstrap": "~2.0.6",
         "yiisoft/yii2-swiftmailer": "~2.0.5",        
         "yiisoft/yii2-redis": "~2.0.0",
         "bower-asset/angular-ui-select": "~v0.19.4",
         "bower-asset/angular-ui-switch": "~0.1.1",
-        "bower-asset/angular-sanitize": "~v1.5.9",
+        "bower-asset/angular-sanitize": "~1.5.9",
         "bower-asset/angular-bootstrap-checkbox": "~0.5.0",
-        "bower-asset/angular-cookies": "~v1.5.9",
-        "bower-asset/angular-route": "~v1.5.9"
+        "bower-asset/angular-cookies": "~1.5.9",
+        "bower-asset/angular-route": "~1.5.9"
     },
     "require-dev": {        
         "yiisoft/yii2-debug": "~2.0.6",
         "yiisoft/yii2-gii": "~2.0.5"        
     },
     "config": {
-        "process-timeout": 2800
+        "process-timeout": 2800,        
+        "cache-dir": "/home/atcCS/advanced/.cache"        
     },
     "extra": {
         "asset-installer-paths": {

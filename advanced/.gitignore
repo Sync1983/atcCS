@@ -5,7 +5,9 @@
 .idea
 
 # netbeans project files
-nbproject
+/nbproject
+../nbproject
+../nbproject/*
 
 # zend studio for eclipse project files
 .buildpath
@@ -34,3 +36,8 @@ phpunit.phar
 .csv
 /console/migrate_data
 /node_modules
+
+.sass-cahce
+/.sass-cahce
+/.sass-cahce/*
+composer.lock
