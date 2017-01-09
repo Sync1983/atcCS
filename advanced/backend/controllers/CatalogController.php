@@ -8,17 +8,26 @@ namespace backend\controllers;
 
 use yii\web\Controller;
 
-class SearchController extends Controller{
+class CatalogController extends Controller{
 
   public $enableCsrfValidation = false;
   
   public function actions() {
     return [
-      'get-brands' => [
-        'class'  => search\GetBrandsAction::className(),
+      'add' => [
+        'class'  => basket\AddAction::className(),
+      ],      
+      'get-data' => [
+        'class'  => catalog\GetDataAction::className(),
       ],
-      'get-parts' => [
-        'class'  => search\GetPartsAction::className(),
+      'change' => [
+        'class'  => basket\ChangeAction::className(),
+      ],
+      'update' => [
+        'class'  => basket\UpdateAction::className(),
+      ],
+      'delete' => [
+        'class'  => basket\DeleteAction::className(),
       ],
     ];
   }
@@ -30,18 +39,9 @@ class SearchController extends Controller{
           'cors'  => [
             'Origin' => ['*'],
             'Access-Control-Request-Headers' => ['*'],            
-            'Access-Control-Allow-Credentials' => true,
-            'Access-Control-Allow-Origin' => ['*']
+            'Access-Control-Allow-Credentials' => true
           ]
-        ],
-        'authFilter' => [
-          'class'       => \backend\filters\RestAuthFilter::className(),
-          'auth'        => [\backend\controllers\user\LoginAction::className(),'authHttpBasic'],
-          'authToken'   => [\backend\controllers\user\LoginAction::className(),'authToken'],
-          'exceptMethods' => ['OPTIONS'],
-          'exceptActions' => ['get-brands'],
-          'silentAuthtActions' => ['get-parts']
-        ],
+        ],        
         'contentNegotiator' => [
             'class' => \yii\filters\ContentNegotiator::className(),
             'formats' => [

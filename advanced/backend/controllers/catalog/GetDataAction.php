@@ -3,11 +3,11 @@
 /**
  * @author Sync
  */
-namespace backend\controllers\helper;
+namespace backend\controllers\catalog;
 use yii\base\Action;
 use backend\models\catalog\CatalogItemModel;
 
-class GetCatalogNodeAction extends Action{
+class GetDataAction extends Action{
   
   public function run($params){    
     $data = json_decode($params, true);

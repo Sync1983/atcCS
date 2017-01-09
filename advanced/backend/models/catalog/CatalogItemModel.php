@@ -13,14 +13,20 @@ class CatalogItemModel extends \yii\db\ActiveRecord{
     }
     $start = (string) $start;    
     $Query = "SELECT * FROM \"Catalog\" where path~'$start.*{1}'";
+    $QueryP= "SELECT name,path,is_group FROM \"Catalog\" where path @> '$start'";
 
     $result = CatalogItemModel::findBySql($Query)->all();
 
     if( !$result ){
-      return [];
+      $result = [];
     }
 
-    return $result;
+    $resultPath = CatalogItemModel::findBySql($QueryP)->all();
+    if( !$resultPath ){
+      $resultPath = [];
+    }
+
+    return ['nodes' => $result, 'path' => $resultPath];
   }
 
   public function attributes(){

@@ -1,58 +1,82 @@
-/* global atcCS */
+/* global atcCS, eventsName */
 
-function event($name,$rootScope){
+function event($name){
   
-  var model = {
-    name:$name,
-    scope: $rootScope.$new(true)
-  };
+  var name;  
+  var listners = [];
+  var self = this;
   
   function init(){
+    name  = $name;    
+    listners = [];
+  };
+  
+  this.broadcast = function broadcast(eventName, args){
+    //console.log("Broadcast event scope '" + name +"'["+ eventName+"]");
+    
+    var list = listners[eventName] || [];
+    
+    for(var i in list){
+      //console.log("Listen event scope '" + name + "'["+eventName + "]");
+      list[i](eventName,args);
+    }
     
   };
   
-  model.broadcast = function broadcast(name, args){
-    console.log("Broadcast event scope '" + $name +"'["+name+"]");
-    model.scope.$broadcast(name, args);
-  };
-  
-  model.setListner = function setListner(eventName, callback){
-    console.log("Register event scope '" + $name + "'["+eventName + "]");
-    model.scope.$on(eventName, function(event,args){
-      console.log("Listen event scope '" + $name + "'["+eventName + "]");
-      if( callback instanceof Function ){
-        callback(event,args);
-      }
-    });    
+  this.setListner = function setListner(eventName, callback){    
+    
+    if( listners.indexOf(eventName) === -1 ){
+      listners[eventName] = [];
+    }
+    
+    if ( (listners[eventName].indexOf(callback) !== -1 ) || 
+        !(callback instanceof Function) ){
+      return;
+    };
+    
+    listners[eventName].push(callback);    
   };
   
   init();  
-  return model;
+  return this;
 };
 
-function events($rootScope,$q){
+function events($rootScope){
   'use strict';
-  var model = {
-    events:[]
-  };  
+  var events = [];
   
   function init(){        
+    events = [];
   }
   
-  model.get = function get(name){    
-    if ( !model.events[name] ){
-      model.events[name] = new event(name, $rootScope);
+  this.get = function get(name){    
+    if ( !(name in  events) ){
+      events[name] = new event(name);
     }    
     
-    return model.events[name];
+    return events[name];
   };  
   
   init();
-  return model;
+  return this;
 };
 
 atcCS.service('$events',[
   '$rootScope', '$q',
   function($rootScope,$q){
-    return events($rootScope,$q);
+    return new events($rootScope,$q);
 }]);
+
+function eventsNamesList(){
+  this.eventsUser = function(){
+    return 'eventUserScope';
+  };
+  
+  this.eventsCatalog = function(){
+    return 'eventCatalogScope';
+  };
+  
+  this.eventsSearch= function(){
+    return 'eventSearchScope';
+  };
+};

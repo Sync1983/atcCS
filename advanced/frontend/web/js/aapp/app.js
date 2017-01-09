@@ -1,3 +1,5 @@
+/* global ObjectHelper */
+
 var ObjectHelper = {};
 
 ObjectHelper.count = function(obj){
@@ -37,4 +39,21 @@ ObjectHelper.concat = function (a,b){
   return a;
 };
 
+ObjectHelper.URLto = function(controller,funct,local){
+  var URL   = serverURL + "/index.php";
+  return (local?"":URL) + "?r=" + controller + "/" + funct;  
+};
+
+ObjectHelper.createRequest = function(controller, funct, params,isPost){
+  var req = {
+      method: (isPost?'POST':'GET'),
+      url: ObjectHelper.URLto(controller,funct),
+      responseType: 'json',
+      params: params
+    };
+  return req;
+};
+
+
+var eventsNames = new eventsNamesList();
 var atcCS = angular.module('atcCS',['ngCookies','ngRoute', 'ngTable','uiSwitch']);

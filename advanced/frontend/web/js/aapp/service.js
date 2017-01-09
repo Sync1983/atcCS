@@ -1,14 +1,47 @@
-/* global atcCS, cqEvents */
+/* global atcCS, cqEvents, eventsNames, ObjectHelper */
 
 /*
  * Сервис для обслуживания модели пользователя и общения с сервером
  */
-atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q',
-  function($http, $cookies, $rootScope, $notify, $q){
+
+var catalogBack = function($http, $events){
+  'use strict';
+  var self = this;
+  self.events = null;
+  const EVENT_GETDATA = 'getData';
+  const EVENT_UPDATE  = 'update';
+  
+  function init(){
+    self.events = $events.get(eventsNames.eventsCatalog());    
+    self.events.setListner(EVENT_GETDATA, getData);
+  };
+  
+  function getData(event, node){
+    var request = ObjectHelper.createRequest('catalog','get-data',{ params: { path: String(node) }});    
+    
+    function serverResponse(data){      
+      var answer = data && data.data;
+      self.events.broadcast(EVENT_UPDATE,answer);
+    };
+    
+    function serverError( error ){
+      console.log('getCatalogNode Server error:', error );      
+    }
+    
+    $http(request).then(serverResponse,serverError);
+  };
+  
+  init();  
+    
+};
+
+atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$events',
+  function($http, $cookies, $rootScope, $notify, $q, $events){
   'use strict';
   
   var URL   = serverURL + "/index.php";
   var model = new userModel();
+  var events = $events.get(eventsNames.eventsUser());
 
   function URLto(controller,funct,local){
     return (local?"":URL) + "?r=" + controller + "/" + funct;
@@ -138,7 +171,8 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q',
         
         setActiveBasket();
         
-        $rootScope.$broadcast('userDataUpdate', {});
+        $rootScope.$broadcast('userDataUpdate', {});        
+        events.broadcast('userDataUpdate',model);
       }, 
       function (reason){        
         $notify.addItem("Ошибка","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
@@ -412,34 +446,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q',
     return $http(req);
   };
   
-  model.getCatalogNode = function getParts(node, callback){
-    var req = {
-      method: 'GET',
-      url: URLto('helper','get-catalog-node'),
-      responseType: 'json',
-      params: {
-        params: {
-          path: String(node)          
-        }
-      }
-    };
-    
-    function serverResponse(answer){      
-      var data = answer && answer.data;
-      if ( callback instanceof Function ){
-        callback(data); 
-      }
-    }
-    
-    function serverError(error){
-      console.log('getCatalogNode Server error:', error );
-      if ( callback instanceof Function ){
-        callback({});
-      }
-    }
-    
-    $http(req).then(serverResponse,serverError);
-  };
+  model.catalog = new catalogBack($http,$events);
   
   init();
   return model; 

@@ -1,17 +1,20 @@
 <div class="catalog">
   <div class="row editSwitch">
     <switch id="editMode" ng-model="editMode" class="green"></switch><span style="font-weight: bold;">Редактировать список</span>
+    <div class="filter">
+      <input ng-model="search" type="text" placeholder="Введите часть названия, артикула или примечания" />
+    </div>
   </div>
   
   <div class="path">
     <ul>
-      <li ng-repeat="rowH in path"><a href="#" ng-click='onPathSelect(rowH);'>{{rowH.name}}</a></li>
+      <li ng-repeat="rowH in path"><a href="#" ng-click='onClick(rowH);'>{{rowH.name}}</a></li>
     </ul>
   </div>
   
   <div class="nodes">    
     <ul>
-      <li ng-repeat="row in nodes|orderBy:['-is_group','name']" ng-model="row" ng-class="row.is_group?'group':'part'">
+      <li ng-repeat="row in nodes|orderBy:['-is_group','name']|filter:search" ng-model="row" ng-class="row.is_group?'group':'part'">
         <span class="ref" ng-click="onClick(row)" editable e-val="row.name" ng-if="editMode">{{row.name}}</span>        
         <div class="description" ng-if="editMode">
           <b><span editable e-val="row.marker">{{row.maker}}</span></b> [<span editable e-val="row.descr">{{row.articul}}</span>] : <span editable e-val="row.descr">{{row.descr}}</span>

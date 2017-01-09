@@ -29,15 +29,17 @@ class ProviderAutoEuro extends Provider{
   public function getBrandsParse($array) {
     $answer   = [];
     foreach ($array as $row){      
-      $maker  = strtoupper($row['maker']);
-      $maker  = preg_replace('/\W*/i', "", $maker);
-      $answer[ $maker ] = ['id'=>$this->getCLSID(), 'uid'=>$row['maker']. "@@" .$row['code']];
+      $maker_utf = mb_convert_encoding($row['maker'],"UTF-8","Windows-1251");
+      $maker  = strtoupper($maker_utf);
+//      $maker  = preg_replace('/\W*/i', "", $maker);
+      $answer[ $maker ] = ['id'=>$this->getCLSID(), 'uid'=>$maker_utf. "@@" .$row['code']];
     }
     return $answer;
   }
 
   public function getParts($ident) {
     list($maker,$code) = explode("@@", $ident);
+    $maker = mb_convert_encoding($maker,"Windows-1251","UTF-8");
     $param = [
       'postdata' => serialize([
         'command' => [
@@ -56,11 +58,11 @@ class ProviderAutoEuro extends Provider{
 
     $answer   = $this->executeRequest($request);
     $data     = $this->parseResponse($answer, false);
-
     $result   = [];
     foreach ($data as $row){
       $converted  = $this->renameByMap($row, $this->getNamesMap());
       $converted['name'] = mb_convert_encoding($converted['name'], 'UTF8','CP1251');
+      $converted['maker']= mb_convert_encoding($converted['maker'],"UTF-8","Windows-1251");
       
       if( $converted['shiping'] && strpos($converted['shiping'],'-') ){
         list($min_time,$max_time) = explode('-', $converted['shiping']);

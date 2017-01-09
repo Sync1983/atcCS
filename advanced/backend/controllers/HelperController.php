@@ -28,10 +28,7 @@ class HelperController extends Controller{
       ],
       'get-typed-helper' =>[
         'class'  => helper\GetTypedHelperAction::className(),
-      ],
-      'get-catalog-node' =>[
-        'class'  => helper\GetCatalogNodeAction::className(),
-      ]
+      ]      
     ];
   }
 
