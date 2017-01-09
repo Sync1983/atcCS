@@ -9,7 +9,9 @@
   <div ng-if="!inSearch" class="count">Варианты деталей по запросу "<b>{{searchText}}</b>" от производителя <b>{{brand}}</b>:</div>   
   <div class="actions"><a href="#" ng-click="onCollapse()"><span class="glyphicon glyphicon-minus-sign"></span>Свернуть все</a><a href="#" ng-click="onExpand()"><span class="glyphicon glyphicon-plus-sign"></span>Развернуть все</a></div>
   
-  <table ng-atable="tableParams" class="table table-condensed table-bordered table-striped">    
+  <table-view ng-model="data" fields="tableField"/>
+  
+  <!--<table ng-atable="tableParams" class="table table-condensed table-bordered table-striped">    
     <colgroup>
       <col width="10%"/>
       <col width="15%"/>
@@ -73,6 +75,6 @@
             <a href='#' ng-click="Add(row.key)" ng-show="isLogin&&!row.adding&&!row.error">Добавить</a>
             <span class="load-info" ng-show="row.adding"></span>
           </td>
-        </tr>-->
-      </table>
+        </tr>->
+      </table>-->
 </div>

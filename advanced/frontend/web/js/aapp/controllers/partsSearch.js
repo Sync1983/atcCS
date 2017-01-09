@@ -69,7 +69,17 @@ atcCS.controller( 'partsSearch', [
           return resultArray;
         }
       }
-    );    
+    ); 
+    
+    $scope.tableField = {
+      maker:    {name: "Производитель", width:"10"},
+      articul:  {name: "Артикул",       width:"15"},
+      name:     {name: "Наименование",  width:"40"},
+      price:    {name: "Цена",          width:"8"},
+      shiping:  {name: "Срок",          width:"8"},
+      count:    {name: "Наличие",       width:"8"},
+      basket:   {name: "В корзину",     width:"8"}
+    };
     
     brands = $storage.get($scope.timestamp);
     
@@ -86,8 +96,7 @@ atcCS.controller( 'partsSearch', [
       var clsid = requestParams[i].id;
       var ident = requestParams[i].uid;
       var storage = $storage.get($scope.timestamp+'@'+clsid+'@'+ident);
-      if( storage ){        
-        console.log('a',storage);
+      if( storage ){                
         serverResponse(clsid,ident,storage);                
       } else{
         $user.getParts(clsid,ident,serverResponseCall(clsid, ident));
@@ -112,10 +121,9 @@ atcCS.controller( 'partsSearch', [
         data.rows[i].provider = clsid;
       }
       
-      $storage.set($scope.timestamp+'@'+clsid+'@'+ident,data);
+      $storage.set($scope.timestamp+'@'+clsid+'@'+ident,data);      
       $scope.data = ObjectHelper.merge($scope.data, data.rows); 
-      console.log(data.rows);
-      console.log($scope.data);
+      
       //$scope.tableParams.reload();
       //$log.debug($scope.tableParams);
     }

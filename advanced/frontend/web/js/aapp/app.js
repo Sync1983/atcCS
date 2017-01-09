@@ -41,7 +41,12 @@ ObjectHelper.concat = function (a,b){
 
 ObjectHelper.merge = function (a,b){
   var result = new Object();
-  
+  if( !a ){
+    a = {};
+  }
+  if( !b ){
+    b = {};
+  }
   
   for(var keyA in a){
     result[keyA] = a[keyA];
@@ -49,7 +54,7 @@ ObjectHelper.merge = function (a,b){
   
   for(var keyB in b){
     if( result.hasOwnProperty(keyB) ){
-      result[keyB] = ObjectHelper.concat(result[keyB,b[keyB]]);
+      result[keyB] = ObjectHelper.concat(result[keyB],b[keyB]);
     } else{
       result[keyB] = b[keyB];      
     }

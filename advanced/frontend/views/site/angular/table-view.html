@@ -1,0 +1,11 @@
+<table class="table table-condensed table-bordered table-striped">
+  <colgroup>
+      <col ng-repeat="item in fieldNames track by $index" widht ="{{item.width}}%"/>      
+    </colgroup>
+  <thead>    
+    <th ng-repeat="item in fieldNames track by $index" class="table-header" width="{{item.width}}%">{{item.name}}</th>    
+  </thead>
+  <tbody>
+    
+  </tbody>
+</table>

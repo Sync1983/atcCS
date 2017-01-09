@@ -41,7 +41,12 @@ ObjectHelper.concat = function (a,b){
 
 ObjectHelper.merge = function (a,b){
   var result = new Object();
-  
+  if( !a ){
+    a = {};
+  }
+  if( !b ){
+    b = {};
+  }
   
   for(var keyA in a){
     result[keyA] = a[keyA];
@@ -49,7 +54,7 @@ ObjectHelper.merge = function (a,b){
   
   for(var keyB in b){
     if( result.hasOwnProperty(keyB) ){
-      result[keyB] = ObjectHelper.concat(result[keyB,b[keyB]]);
+      result[keyB] = ObjectHelper.concat(result[keyB],b[keyB]);
     } else{
       result[keyB] = b[keyB];      
     }
@@ -819,7 +824,17 @@ atcCS.controller( 'partsSearch', [
           return resultArray;
         }
       }
-    );    
+    ); 
+    
+    $scope.tableField = {
+      maker:    {name: "Производитель", width:"10"},
+      articul:  {name: "Артикул",       width:"15"},
+      name:     {name: "Наименование",  width:"40"},
+      price:    {name: "Цена",          width:"8"},
+      shiping:  {name: "Срок",          width:"8"},
+      count:    {name: "Наличие",       width:"8"},
+      basket:   {name: "В корзину",     width:"8"}
+    };
     
     brands = $storage.get($scope.timestamp);
     
@@ -836,8 +851,7 @@ atcCS.controller( 'partsSearch', [
       var clsid = requestParams[i].id;
       var ident = requestParams[i].uid;
       var storage = $storage.get($scope.timestamp+'@'+clsid+'@'+ident);
-      if( storage ){        
-        console.log('a',storage);
+      if( storage ){                
         serverResponse(clsid,ident,storage);                
       } else{
         $user.getParts(clsid,ident,serverResponseCall(clsid, ident));
@@ -862,10 +876,9 @@ atcCS.controller( 'partsSearch', [
         data.rows[i].provider = clsid;
       }
       
-      $storage.set($scope.timestamp+'@'+clsid+'@'+ident,data);
+      $storage.set($scope.timestamp+'@'+clsid+'@'+ident,data);      
       $scope.data = ObjectHelper.merge($scope.data, data.rows); 
-      console.log(data.rows);
-      console.log($scope.data);
+      
       //$scope.tableParams.reload();
       //$log.debug($scope.tableParams);
     }
@@ -1513,6 +1526,44 @@ atcCS.directive('sinput', function (){
     }
   };
 } );
+atcCS.directive('tableView', function (){
+  return {
+    require: "ngModel",
+    priority: 0,
+    terminal: false,
+    restrict: 'E',
+    replace: true,
+    templateUrl: "/table-view.html",
+    transclude: false,
+    scope: {  
+      bindModel:'=ngModel',
+      fieldNames:'=fields'
+    },
+    controller: function controller($scope, $element, $attrs, $transclude){   
+      var model     = $scope.bindModel || {};
+      var fields    = $scope.fieldNames;
+      var fieldList = model[Object.keys(model)[0]];
+      var header    = [];
+      
+      for(var hKey in fields){
+        var hName = fields[hKey];
+        if( hName !== false ){
+          
+        }
+      }
+      
+      
+      
+      console.log($scope.bindModel);
+    },    
+    link: function link(scope, element, attrs, modelCtrl){
+      console.log(modelCtrl);
+    }
+  };
+} );
+
+
+
 atcCS.directive( 'tileSelector',['$http', function ($http){
   return {
     require: "ngModel",
