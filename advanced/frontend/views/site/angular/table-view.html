@@ -1,11 +1,36 @@
 <table class="table table-condensed table-bordered table-striped">
   <colgroup>
-      <col ng-repeat="item in fieldNames track by $index" widht ="{{item.width}}%"/>      
-    </colgroup>
-  <thead>    
-    <th ng-repeat="item in fieldNames track by $index" class="table-header" width="{{item.width}}%">{{item.name}}</th>    
+    <col ng-repeat="item in header track by $index" width ="{{item.width}}%"/>      
+  </colgroup>
+  <thead> 
+    <tr>
+      <th ng-repeat="item in header track by $index" class="table-header" width="{{item.width}}%">
+        <div class="table-head-text">
+          {{item.name}}
+          <div class="table-head-sort">
+            <span class="glyphicon glyphicon-sort-by-attributes" ng-if="item.sort==1"></span>
+            <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-if="item.sort==-1"></span>
+          </div>
+        </div>
+      </th>
+    </tr>
   </thead>
   <tbody>
+    <tr ng-repeat-start="item in makers track by $index">
+      <td colspan="{{item.cols}}" class="group" ng-class="(item.show)?'group-open':'group-close'">
+        <div ng-click="onToggle(item)">
+          {{item.name}}          
+        </div>
+      </td>
+    </tr>  
+    <tr ng-if="item.show" ng-repeat-start="row in item.data" ng-class="isHightlight(row)&&'table-row-hightlight'">
+      <td ng-repeat="(col,info) in header" style = "text-align: {{info.align}}">        
+        <table-template data="row" template='info.template'>
     
+        </table-template>
+      </td>
+    </tr>
+    <tr ng-repeat-end=""></tr>  
+    <tr ng-repeat-end=""></tr>  
   </tbody>
 </table>

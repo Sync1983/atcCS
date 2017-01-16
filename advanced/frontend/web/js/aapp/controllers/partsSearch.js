@@ -71,14 +71,23 @@ atcCS.controller( 'partsSearch', [
       }
     ); 
     
-    $scope.tableField = {
-      maker:    {name: "Производитель", width:"10"},
-      articul:  {name: "Артикул",       width:"15"},
-      name:     {name: "Наименование",  width:"40"},
-      price:    {name: "Цена",          width:"8"},
-      shiping:  {name: "Срок",          width:"8"},
-      count:    {name: "Наличие",       width:"8"},
-      basket:   {name: "В корзину",     width:"8"}
+    $scope.table = {
+      fields:{        
+        maker:    {name: "Производитель", width:"10"},
+        articul:  {name: "Артикул",       width:"15"},
+        name:     {name: "Наименование",  width:"40", align: "left"},
+        price:    {name: "Цена",          width:"8"},
+        shiping:  {name: "Срок",          width:"8"},
+        count:    {name: "Наличие",       width:"8"},
+        basket:   {name: "В корзину",     width:"8"}
+      },
+      templates: {        
+      },
+      hightlight: {
+        articul: $scope.articulCmp
+      },
+      data: {}//$scope.data
+      
     };
     
     brands = $storage.get($scope.timestamp);
@@ -122,10 +131,7 @@ atcCS.controller( 'partsSearch', [
       }
       
       $storage.set($scope.timestamp+'@'+clsid+'@'+ident,data);      
-      $scope.data = ObjectHelper.merge($scope.data, data.rows); 
-      
-      //$scope.tableParams.reload();
-      //$log.debug($scope.tableParams);
+      $scope.table.data = ObjectHelper.merge($scope.table.data, data.rows);       
     }
     
     function sortFunction($sort){

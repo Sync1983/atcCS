@@ -19,7 +19,7 @@ class TestController extends Controller {
     $url = "www.e-det.ru/web/getprice.php";
     $vars = [
       "key"     => urlencode("b800c715d13b98909cd4e5587048d05d"),
-      "number"  => urlencode("MOF4500"),
+      "number"  => urlencode("1516041S"),
       "format"  => urldecode("json")
     ];
 
@@ -46,8 +46,8 @@ class TestController extends Controller {
     curl_close($ch);
 
     var_dump($headerSent);
-
-    var_dump($answer);
+    $answer = json_decode($answer);
+    print_r($answer);
 
   }
 

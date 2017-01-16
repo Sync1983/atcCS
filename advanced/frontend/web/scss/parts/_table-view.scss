@@ -21,6 +21,79 @@
       line-height: 1rem;
       cursor: pointer;
       text-align: center;  
+      padding: 2px;
+      margin: 0px;
+      float: clear;
+      
+      & .table-head-sort{
+        top: 1px;
+        float: right;
+        position: relative;
+      }
+    }
+  }
+  
+  tbody {
+    line-height: 1rem;
+    
+    tr{
+      font-size: 0.75rem;
+      background-color: white;
+      border: none;
+      color: $atc_color;
+      
+      &:hover{
+        background-color: #D4EAFF;        
+      }
+      
+      &.table-row-hightlight{
+        font-weight: bold;
+      }
+    }    
+    
+    td{
+      padding: 2px;
+      margin: 0;
+      border: none;
+    }
+    
+    td.group{
+      padding: 4px 24px;
+      text-align: left;
+      font-size: 0.82rem;
+      font-weight: bold;
+      background-color: #E5EDF2;
+      cursor: pointer;
+      border-bottom: 2px solid $atc_color;
+      
+      &.group-open{
+        border-bottom: 1px solid $atc_color;
+      }
+      
+      & > div {
+        display: inline-block;
+      }
+      
+      &.group-close:before{
+        content: "\25B6";
+        padding: 0;
+        left: -12px;
+        position: relative;
+        color: $atc_color;
+        width: 10px;
+        display: inline-block;
+      }
+      
+      &.group-open:before{
+        content: "\25B6";
+        transform: rotate(90deg);
+        padding: 0;
+        left: -12px;
+        position: relative;
+        color: black;
+        width: 10px;
+        display: inline-block;
+      }
     }
   }
   
