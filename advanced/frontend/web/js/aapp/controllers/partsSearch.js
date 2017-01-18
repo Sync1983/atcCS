@@ -81,13 +81,26 @@ atcCS.controller( 'partsSearch', [
         count:    {name: "Наличие",       width:"8"},
         basket:   {name: "В корзину",     width:"8"}
       },
-      templates: {        
+      templates: {   
+        articul: ["<span style='float:none'>{{row.articul}}",
+                  "  <div class='articul-search-div'>",
+                  "    <button ng-click='onArticulSearch(row.articul)'>",
+                  "      <span class='glyphicon glyphicon-search'>",
+                  "      </span>",
+                  "    </button>",
+                  "  </div>",
+                  "</span>"].join(""),
+        basket: "<span><button ng-click=\"onAdd(row)\" ng-show=\"isLogin&&!row.adding&&!row.error\">Добавить</button><span class=\"load-info\" ng-show=\"row.adding\"></span></span>"
       },
       hightlight: {
         articul: $scope.articulCmp
       },
-      data: {}//$scope.data
-      
+      data: {}
+    };
+    
+    $scope.onArticulSearch = function(articul){
+      console.log(123);      
+      console.log(articul);      
     };
     
     brands = $storage.get($scope.timestamp);
@@ -153,11 +166,10 @@ atcCS.controller( 'partsSearch', [
       };
     }
     
-    $scope.Add  = function(key){
-      if( key === undefined ){
+    $scope.onAdd  = function(item){      
+      /*if( item === undefined ){
         return;
-      }
-      var item = $scope.data[key];
+      }      
       
       var onAnswer = function(aitem){
         return function(answer){
@@ -176,9 +188,10 @@ atcCS.controller( 'partsSearch', [
         };
       };
       
-      item.sell_count = item.lot_quantity;
+      item.sell_count = item.lot_quantity;*/
       item.adding = true;      
-      $user.toBasket(item, onAnswer(item));
+      //$user.toBasket(item, onAnswer(item));
+      return false;
     };
     
     $scope.onCollapse = function(){

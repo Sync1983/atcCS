@@ -4,12 +4,12 @@
   </colgroup>
   <thead> 
     <tr>
-      <th ng-repeat="item in header track by $index" class="table-header" width="{{item.width}}%">
+      <th ng-repeat="(key,item) in header track by $index" class="table-header" width="{{item.width}}%" ng-click="onSortClick($event,key)">
         <div class="table-head-text">
           {{item.name}}
           <div class="table-head-sort">
-            <span class="glyphicon glyphicon-sort-by-attributes" ng-if="item.sort==1"></span>
-            <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-if="item.sort==-1"></span>
+            <span class="glyphicon glyphicon-sort-by-attributes" ng-if="sortDir(key)===1"></span>
+            <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-if="sortDir(key)===-1"></span>
           </div>
         </div>
       </th>

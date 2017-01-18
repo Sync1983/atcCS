@@ -26,6 +26,17 @@
     }
   }  
   
+  div.articul-search-div{
+    float: right;
+    display: inline-block;
+    & > button{
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin: 0;
+    }
+  }
+  
   .ng-table{
     margin: 0;
       
