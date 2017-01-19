@@ -144,7 +144,7 @@ atcCS.controller( 'partsSearch', [
       }
       
       $storage.set($scope.timestamp+'@'+clsid+'@'+ident,data);      
-      $scope.table.data = ObjectHelper.merge($scope.table.data, data.rows);       
+      $scope.table.data = ObjectHelper.merge($scope.table.data, data.rows);        
     }
     
     function sortFunction($sort){

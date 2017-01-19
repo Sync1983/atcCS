@@ -899,7 +899,7 @@ atcCS.controller( 'partsSearch', [
       }
       
       $storage.set($scope.timestamp+'@'+clsid+'@'+ident,data);      
-      $scope.table.data = ObjectHelper.merge($scope.table.data, data.rows);       
+      $scope.table.data = ObjectHelper.merge($scope.table.data, data.rows);        
     }
     
     function sortFunction($sort){
@@ -1550,7 +1550,7 @@ atcCS.directive('tableTemplate', function ($compile){
   return {    
     priority: 0,
     terminal: false,
-    restrict: 'AE',
+    restrict: 'E',
     replace: true,
     template: "",
     transclude: false,    
@@ -1564,9 +1564,30 @@ atcCS.directive('tableTemplate', function ($compile){
   };
 } );
 
+function dataController(data){
+  var self = this;
+  
+  self.$headers = [];
+  self.$group = [];
+  self.$data = data;
+  
+  self.appendData = function( newData ){
+    
+    for(var key in newData){
+      
+    }
+  };
+  
+  self.initHeaders = function(){
+    
+  }
+  
+  
+}
+
 function tableViewController($compile, $parse){
   return function($scope, $element, $attrs, $transclude){
-    
+    console.log($scope);
     var model     ;
     var header    ;
     var templates ;
@@ -1685,7 +1706,8 @@ atcCS.directive('tableView', function ($compile){
     templateUrl: "/table-view.html",
     transclude: false,
     scope: true,
-    controller: tableViewController($compile),    
+    bindToController: true,
+    controller: tableViewController($compile),
     link: function link(scope, element, attrs, modelCtrl){  
       
       scope.modelValue = function () {        
