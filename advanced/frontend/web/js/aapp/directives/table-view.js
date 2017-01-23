@@ -1,3 +1,12 @@
+import angular from 'angular';
+
+tableViewFactory.$inject = ['$q', '$log', '$filter'];
+function tableViewFactory($q, $log, $filter){
+  
+}
+
+export { tableViewFactory };
+
 
 atcCS.directive('tableTemplate', function ($compile){
   return {    
