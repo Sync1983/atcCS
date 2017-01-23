@@ -1,8 +1,8 @@
 /* global atcCS, ObjectHelper */
 
 atcCS.controller( 'partsSearch', [
-    '$scope','$filter', 'User' ,'$routeParams','$rootScope','searchNumberControl', 'storage', 'NgTableParams', 'partOutFilter', '$notify', '$q', '$log',
-    function($scope,$filter,$user,$routeParams,$rootScope,$snCtrl, $storage, NgTableParams, $partOut, $notify, $q, $log ) {
+    '$scope','$filter', 'User' ,'$routeParams','$rootScope','searchNumberControl', 'storage', 'NgTableParams', 'partOutFilter', '$notify', '$q', '$log', 'tableViewData',
+    function($scope,$filter,$user,$routeParams,$rootScope,$snCtrl, $storage, NgTableParams, $partOut, $notify, $q, $log, tableViewData ) {
     'use strict';    
     var brands = false;
     var requestParams = {};
@@ -73,15 +73,27 @@ atcCS.controller( 'partsSearch', [
     
     $scope.table = {
       fields:{        
+      },
+      templates: {   
+        
+      },
+      hightlight: {
+        articul: $scope.articulCmp
+      },
+      data: {}
+    };
+    
+    $scope.table = new tableViewData({
+      $columns: {
         maker:    {name: "Производитель", width:"10"},
         articul:  {name: "Артикул",       width:"15"},
         name:     {name: "Наименование",  width:"40", align: "left"},
         price:    {name: "Цена",          width:"8"},
         shiping:  {name: "Срок",          width:"8"},
         count:    {name: "Наличие",       width:"8"},
-        basket:   {name: "В корзину",     width:"8"}
+        basket:   {name: "В корзину",     width:"8"}        
       },
-      templates: {   
+      template: {
         articul: ["<span style='float:none'>{{row.articul}}",
                   "  <div class='articul-search-div'>",
                   "    <button ng-click='onArticulSearch(row.articul)'>",
@@ -90,13 +102,11 @@ atcCS.controller( 'partsSearch', [
                   "    </button>",
                   "  </div>",
                   "</span>"].join(""),
-        basket: "<span><button ng-click=\"onAdd(row)\" ng-show=\"isLogin&&!row.adding&&!row.error\">Добавить</button><span class=\"load-info\" ng-show=\"row.adding\"></span></span>"
-      },
-      hightlight: {
-        articul: $scope.articulCmp
-      },
-      data: {}
-    };
+        basket: "<span><button ng-click=\"onAdd(row)\" ng-show=\"isLogin&&!row.adding&&!row.error\">'Добавить'</button><span class=\"load-info\" ng-show=\"row.adding\"></span></span>"
+      }
+    });
+    
+    console.log($scope.table);
     
     $scope.onArticulSearch = function(articul){
       console.log(123);      
@@ -139,12 +149,8 @@ atcCS.controller( 'partsSearch', [
         return;
       }
       
-      for(var i in data.rows){
-        data.rows[i].provider = clsid;
-      }
-      
       $storage.set($scope.timestamp+'@'+clsid+'@'+ident,data);      
-      $scope.table.data = ObjectHelper.merge($scope.table.data, data.rows);        
+      $scope.table.addData(data.rows);
     }
     
     function sortFunction($sort){
@@ -194,7 +200,7 @@ atcCS.controller( 'partsSearch', [
       return false;
     };
     
-    $scope.onCollapse = function(){
+    $scope.onCollapse = function(){      
       var data = $scope.tableParams.data;
       angular.forEach(data,function(item){        
         item.$hideRows = true;

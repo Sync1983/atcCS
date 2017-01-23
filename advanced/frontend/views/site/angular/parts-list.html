@@ -9,7 +9,7 @@
   <div ng-if="!inSearch" class="count">Варианты деталей по запросу "<b>{{searchText}}</b>" от производителя <b>{{brand}}</b>:</div>   
   <div class="actions"><a href="#" ng-click="onCollapse()"><span class="glyphicon glyphicon-minus-sign"></span>Свернуть все</a><a href="#" ng-click="onExpand()"><span class="glyphicon glyphicon-plus-sign"></span>Развернуть все</a></div>
   
-  <table-view ng-model="table" />
+  <table-view ng-model="table" isLogin="isLogin" />
   
   <!--<table ng-atable="tableParams" class="table table-condensed table-bordered table-striped">    
     <colgroup>

@@ -1,11 +1,90 @@
-import angular from 'angular';
+/* global atcCS, ObjectHelper */
 
-tableViewFactory.$inject = ['$q', '$log', '$filter'];
-function tableViewFactory($q, $log, $filter){
+function tableViewFactory($rootScope, $log, $filter){
+  return tableViewCtrl;
+  
+  function tableViewCtrl($conf){
+    
+    var self = this;
+    
+    function sortHeader(sort){
+      return function(headA, headB){
+        if( headA.name > headB.name ){
+          return 1;
+        } else if( headA.name < headB.name ){
+          return -1;
+        }
+        return 0;
+      };
+    }
+    
+    function sortRows(){
+      
+    }
+    
+    function onEvent($event){
+      $log.info("Fired event" + $event);
+    }
+    
+    function onHeader($id){
+      
+    }
+    
+    function addRowGroup($group, $data){      
+      for(var i in $data){        
+        $data[i]['$group'] = $group;
+      }
+    }
+    
+    function addRowData($data){
+      for(var i in $data){
+        self.$data.push($data[i]);
+      }
+    }
+    
+    function addData($newData){
+      
+      for(var mKey in $newData){
+        var data = $newData[mKey];
+        
+        addRowGroup(mKey, data);
+        addRowData(data);
+        
+        self.$rowGroups.push({
+          name: mKey, 
+          show: false, 
+          extend: false});
+      }
+      self.$rowGroups.sort(self.sortHeader(self.sort));
+    }
+    
+    function initDefault($init){      
+      self.$columns    = {};
+      self.$rowGroups  = [];
+      self.$rows       = [];
+      self.$data       = [];
+      self.hlight      = {};
+      self.template    = {};
+      self.addData     = addData;
+      self.sortHeader  = sortHeader;
+      self.sortRows    = sortRows;
+      self.onEvent     = onEvent;      
+      self.sort        = {};
+      
+      for(var i in $init){
+        self[i] = $init[i];
+      }
+    }
+    
+    initDefault($conf);
+    
+    return self;
+    
+  }
   
 }
 
-export { tableViewFactory };
+atcCS.factory('tableViewData', ['$rootScope', '$log', '$filter', tableViewFactory]);
 
 
 atcCS.directive('tableTemplate', function ($compile){
@@ -14,7 +93,7 @@ atcCS.directive('tableTemplate', function ($compile){
     terminal: false,
     restrict: 'E',
     replace: true,
-    template: "",
+    template: "", 
     transclude: false,    
     scope: {
       tpl: "=template",
@@ -26,74 +105,23 @@ atcCS.directive('tableTemplate', function ($compile){
   };
 } );
 
-function dataController(data){
-  var self = this;
-  
-  self.$headers = [];
-  self.$group = [];
-  self.$data = data;
-  
-  self.appendData = function( newData ){
+function tableViewController($compile, $parse, $sce){
+  return function($scope, $element, $attrs, $transclude){        
+    var model         = $scope.bindModel;    
     
-    for(var key in newData){
-      
-    }
-  };
-  
-  self.initHeaders = function(){
+    $scope.$columns   = model.$columns;
+    $scope.$rows      = model.$rows;
+    $scope.$rowGroups = model.$rowGroups;
+    $scope.$sort      = model.sort;
+    $scope.$data      = model.$data;
+    $scope.template   = model.template;
     
-  }
-  
-  
-}
-
-function tableViewController($compile, $parse){
-  return function($scope, $element, $attrs, $transclude){
-    console.log($scope);
-    var model     ;
-    var header    ;
-    var templates ;
-    var hlight    ;
-    var makers    ;
-    var cols      ;   
-    var sort      ;
     
-    function updateVars(){
-      model     = $scope.modelValue() || {};
-      header    = model && model.fields;        
-      templates = model && model.templates || {};
-      hlight    = model && model.hightlight || {};
-      makers    = makers || [];
-      sort      = {};
-      cols      = 1;
-      $scope.header = header;
-     
-      for(var hKey in header){        
-        header[hKey].align = header[hKey].align || "center";
-        header[hKey].template = templates[hKey] || ("<span>{{row." + hKey + "}}</span>");
-        cols++;
-      }
-    }
-  
-    $scope.dataUpdate = function(updateFull = true){
-      if(updateFull){
-        updateVars();        
-      }
-      
-      for( var mKey in model.data ){
-        var maker = makers[mKey] || {};
-        var show = maker.show || false;
-        console.log(mKey);
-        makers.push({name: mKey, show: show, extend: false, data: model.data[mKey], cols: cols});
-      }
-      console.log(makers);
-      $scope.makers = makers;      
-    };
-    
-    $scope.isHightlight = function(row){
+    $scope.isHiLight = function(row){
       var flag = true;
-      for( var hKey in hlight){
-        if( String(row[hKey]).toUpperCase() !== String(hlight[hKey]).toUpperCase() ){
+      
+      for( var hKey in model.hlight){
+        if((!model.hlight[hKey]) || ( String(row[hKey]).toUpperCase() !== String(model.hlight[hKey]).toUpperCase() )){
           flag = false;
         }
       }
@@ -112,30 +140,24 @@ function tableViewController($compile, $parse){
       var newVal = (val*-1);
               
       if( !add ){
-        sort = {};
+        $scope.sort = {};
       }
       
-      sort[key] = newVal;
+      $scope.sort[key] = newVal;
      
-      $scope.reSort();
+      //$scope.reSort();
     };
     
     $scope.sortDir = function(key){
-      return sort[key] || 0;
+      return ($scope.$sort[key] || 0);
     };
     
-    function sortMakers(m,s){
-      var newObj = {};      
-      var keys   = Object.keys(m);
-      
-      keys.sort();
-      
-      for(var i in keys){
-        var key = keys[i];        
-        newObj[key] = m[key];
-      }
-      
-      return newObj;
+    $scope.getTemplate = function (key){           
+      return ($scope.template[key] || "<span>{{row."+key+"}}</span>");
+    };
+    
+    $scope.getColumnsCount = function (){
+      return Object.keys($scope.$columns).length;
     }
     
     $scope.headerComparator = function(a,b,c){
@@ -158,7 +180,7 @@ function tableViewController($compile, $parse){
   };
 }
 
-atcCS.directive('tableView', function ($compile){
+function tableViewDirective ($compile,$parse, $sce){
   return {
     require: "ngModel",
     priority: 0,
@@ -167,22 +189,16 @@ atcCS.directive('tableView', function ($compile){
     replace: true,
     templateUrl: "/table-view.html",
     transclude: false,
-    scope: true,
-    bindToController: true,
-    controller: tableViewController($compile),
-    link: function link(scope, element, attrs, modelCtrl){  
-      
-      scope.modelValue = function () {        
-        return modelCtrl.$viewValue;
-      };
-            
-      scope.$watch(
-        function() { return modelCtrl.$viewValue; }, 
-        function(){
-          scope.dataUpdate();
-      },true);
+    scope: {
+      bindModel: "=ngModel"
+    },
+    controller: tableViewController($compile,$parse,$sce),
+    link: function(scope, element,attributes){
+      console.log(attributes);
     }
   };
-} );
+}
+
+atcCS.directive('tableView', ["$compile", "$parse", "$sce", tableViewDirective] );
 
 
