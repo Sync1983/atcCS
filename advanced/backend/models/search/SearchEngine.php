@@ -70,18 +70,27 @@ class SearchEngine extends Object{
       $price          = floatval($row['price']);
 
       if( is_object($user) && $user->isAdmin() ){
-        $row['prvd']    = $provider->getName();
-        //$row['rp']      = $price;
+        $row['prvd']    = $provider->getName();        
       }
 
-      $row['maker_id'] = $clsid;
-      $row['price']   = round($price + ($price*$markup)/100,2);
-      $maker = mb_convert_encoding($row['maker'], 'UTF-8', 'UTF-8');//$maker          = preg_replace('/\W*/i', "", $row['maker']);      
-      $row['maker']   = $this->brandsRename(strtoupper($maker));
-      $row['articul'] = preg_replace('/\W*/i', "", $row['articul']);
-      $row['shiping'] = intval($row['shiping']) + $shiping;      
+      $row['maker_id']  = $clsid;
+      $row['price']     = round($price + ($price*$markup)/100,2);
+      $maker            = mb_convert_encoding($row['maker'], 'UTF-8', 'UTF-8');//$maker          = preg_replace('/\W*/i', "", $row['maker']);
+      $row['maker']     = $this->brandsRename(strtoupper($maker));
+      $row['articul']   = preg_replace('/\W*/i', "", $row['articul']);
+      $row['shiping']   = intval($row['shiping']) + $shiping;
     }
-    return $result;
+    
+    $struct = [];
+    foreach ($result as &$row){
+      $maker = $row['maker'];
+      if( !isset($struct[$maker])){
+        $struct[$maker] = [];
+      }
+      $struct[$maker][] = $row;
+    }
+
+    return $struct;
   }
 
   protected function providersMap($method,$data){
@@ -89,17 +98,18 @@ class SearchEngine extends Object{
     $requestsList = [];
     $results      = [];
     /* @var $provider Provider */
-    foreach ($this->providers as $provider){
+    foreach ($this->providers as $provider){      
       if( !method_exists($provider, $method) ){
         continue;
       }
+      
       if( is_subclass_of($provider, ProviderFile::className()) ){
         $results[$provider->getCLSID()] = $provider->getBrands($data['search_text'], $data['use_analog']);
         continue;
       }
       $request = call_user_func_array([$provider,$method], $data);
       $requestsList[$provider->getCLSID()] = $request;
-      curl_multi_add_handle($requests,$request);
+      curl_multi_add_handle($requests,$request);      
     }
 
     $active = null;
@@ -107,24 +117,26 @@ class SearchEngine extends Object{
     do {
       $requests_state = curl_multi_exec($requests, $active);
     } while ($requests_state == CURLM_CALL_MULTI_PERFORM);
-
+   
     while ($active && $requests_state == CURLM_OK) {
       if (curl_multi_select($requests) == -1) {
-        usleep(1);
-      }
+        usleep(10);
+      }      
+
       do {
         $requests_state = curl_multi_exec($requests, $active);
         if( $requests_state > 0){
           \yii::info("Curl Error: ".  curl_multi_strerror($requests_state));
         }
       } while ($requests_state == CURLM_CALL_MULTI_PERFORM);
-    }
-    
-    foreach ($requestsList as $clsid => $request){      
+    }   
+
+     
+    foreach ($requestsList as $clsid => $request){
       $answer = curl_multi_getcontent($request);
       curl_multi_remove_handle($requests, $request);
       try{
-        $results[$clsid] = $this->providers[$clsid]->parseResponse($answer,$method);        
+        $results[$clsid] = $this->providers[$clsid]->parseResponse($answer,$method);
       }catch(Exception $e) {
       }
     }

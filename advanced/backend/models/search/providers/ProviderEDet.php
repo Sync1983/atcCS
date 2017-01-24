@@ -15,8 +15,12 @@ class ProviderEDet extends Provider{
   }
 
   public function getBrandsParse($json) {
+
     $brands = [];
-    
+    if( !$json ){
+      return $brands;
+    }
+
     foreach ($json as $answer_type){
 
       if( !isset($answer_type['offers'])){
