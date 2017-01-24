@@ -89,7 +89,7 @@ function tableViewFactory($rootScope, $log, $filter){
       
       self.$rowGroups.push({
           name: name, 
-          show: false, 
+          show: true, 
           extend: false});
     }
     

@@ -167,7 +167,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
         model.baskets = data.baskets;
         model.info    = data.info;
         model.role    = data.role * 1;
-        model.isAdmin = (model.role==1)?true:false;
+        model.isAdmin = (model.role === 1)?true:false;
         
         setActiveBasket();
         

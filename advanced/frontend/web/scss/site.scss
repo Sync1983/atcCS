@@ -199,3 +199,15 @@ div.tree-view{
     }
   }
 }
+
+.small-preloader{  
+  
+  &:before{
+    content: " ";
+    background-image: url("/img/preloader-small.gif");
+    background-size: 12px 12px;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+  }
+}
