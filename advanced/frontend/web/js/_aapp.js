@@ -1017,7 +1017,7 @@ atcCS.controller( 'partsSearch', [
     $scope.onAdd  = function(item){      
       /*if( item === undefined ){
         return;
-      }      
+      }*/      
       
       var onAnswer = function(aitem){
         return function(answer){
@@ -1036,9 +1036,9 @@ atcCS.controller( 'partsSearch', [
         };
       };
       
-      item.sell_count = item.lot_quantity;*/
+      item.sell_count = item.lot_quantity;
       item.adding = true;      
-      //$user.toBasket(item, onAnswer(item));
+      $user.toBasket(item, onAnswer(item));
       return false;
     };
     
