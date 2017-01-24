@@ -28,6 +28,7 @@
   
   div.articul-search-div{
     float: right;
+    margin-right: 5px;
     display: inline-block;
     & > button{
       background: transparent;
@@ -177,6 +178,12 @@
         color: #d1ebfc;
       }
     }
+  }
+  
+  button.basket-add-button{
+    line-height: 0.75;
+    background: none;    
+    border: none;
   }
   
   .lot-quantity{

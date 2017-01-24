@@ -23,13 +23,27 @@
         </div>
       </td>
     </tr>  
-    <tr ng-if="item.show" ng-repeat-start="row in $data" ng-class="isHiLight(row)&&'table-row-hilight'">
+    <tr ng-if="item.show" ng-repeat-start="row in $data| filter:{$group: item.name} | filter:dataFilter | limitTo:item.extend?undefined:15 as showed" ng-class="isHiLight(row)&&'table-row-hilight'">
       <td ng-repeat="(col,info) in $columns" style = "text-align: {{info.align?info.align:'center'}}">        
-        <table-template data="row" template="getTemplate(col)">    
+        <table-template data="row" template="getTemplate(col)" parent-scope="extScope">    
         </table-template>
       </td>
     </tr>
     <tr ng-repeat-end=""></tr>  
+    <tr ng-if="item.show && (showed.length >= 15)">
+      <td colspan="{{getColumnsCount()}}">
+        <div ng-click="item.extend = !item.extend" class="extend-show">
+          Показать <span ng-if="!item.extend">весь</span><span ng-if="item.extend">краткий</span> список {{}}
+        </div>
+      </td>
+    </tr>
+    <tr ng-if="item.show && (showed.length === 0)">
+      <td colspan="{{getColumnsCount()}}">
+        <div class="extend-show">
+          Нет данных
+        </div>
+      </td>
+    </tr>
     <tr ng-repeat-end=""></tr>  
   </tbody>
 </table>

@@ -7,7 +7,7 @@ function tableViewFactory($rootScope, $log, $filter){
     
     var self = this;
     
-    function sortHeader(sort){
+    function sortGroups(sort){
       return function(headA, headB){
         if( headA.name > headB.name ){
           return 1;
@@ -18,16 +18,53 @@ function tableViewFactory($rootScope, $log, $filter){
       };
     }
     
-    function sortRows(){
+    function sortRows(sort){
       
+      function isNumeric(obj) {
+        return !isNaN(obj - parseFloat(obj));
+      }
+      
+      function calcWeight(rowA, rowB, sort){
+        var weightA = 0;
+        var weightB = 0;        
+        var A,B;
+        
+        for(var cKey in sort){
+          
+          if( isNumeric(rowA[cKey]) && isNumeric(rowB[cKey]) ){
+            A = parseFloat(rowA[cKey]);
+            B = parseFloat(rowB[cKey]);
+          } else {
+            A = String(rowA[cKey]).toUpperCase();
+            B = String(rowB[cKey]).toUpperCase();            
+          }
+          
+          if( A > B ){
+            weightA += sort[cKey];
+          } else if( A < B){
+            weightB += sort[cKey];            
+          }
+          
+        }
+        
+        if( weightA > weightB ){
+          return 1;
+        } else if( weightA < weightB ){
+          return -1;
+        }
+        
+        return 0;
+        
+      }
+      
+      return function(rowA, rowB){
+        return calcWeight(rowA, rowB, sort);
+      };
     }
     
-    function onEvent($event){
-      $log.info("Fired event" + $event);
-    }
-    
-    function onHeader($id){
-      
+    function reSort(obj){
+      self.$rowGroups.sort(self.sortGroups(obj));
+      self.$data.sort(self.sortRows(obj));      
     }
     
     function addRowGroup($group, $data){      
@@ -42,20 +79,30 @@ function tableViewFactory($rootScope, $log, $filter){
       }
     }
     
+    function addRowGroupItem(name){
+      
+      for(var i in self.$rowGroups){
+        if( self.$rowGroups[i].name === name ){
+          return;
+        }
+      }
+      
+      self.$rowGroups.push({
+          name: name, 
+          show: false, 
+          extend: false});
+    }
+    
     function addData($newData){
       
       for(var mKey in $newData){
-        var data = $newData[mKey];
-        
+        var data = $newData[mKey];        
         addRowGroup(mKey, data);
         addRowData(data);
-        
-        self.$rowGroups.push({
-          name: mKey, 
-          show: false, 
-          extend: false});
+        addRowGroupItem(mKey);        
       }
-      self.$rowGroups.sort(self.sortHeader(self.sort));
+      
+      self.reSort(self.sort);
     }
     
     function initDefault($init){      
@@ -66,9 +113,10 @@ function tableViewFactory($rootScope, $log, $filter){
       self.hlight      = {};
       self.template    = {};
       self.addData     = addData;
-      self.sortHeader  = sortHeader;
+      self.sortGroups  = sortGroups;
       self.sortRows    = sortRows;
-      self.onEvent     = onEvent;      
+      self.reSort      = reSort;
+      self.filter      = undefined;
       self.sort        = {};
       
       for(var i in $init){
@@ -97,10 +145,13 @@ atcCS.directive('tableTemplate', function ($compile){
     transclude: false,    
     scope: {
       tpl: "=template",
-      row: "=data"
+      row: "=data",
+      scp: "=parentScope"
     },
     link: function(scope, element, attrs){
-      element.replaceWith( $compile(scope.tpl)(scope.$parent) );      
+      var newScope = scope.scp.$new(false);
+      newScope.row = scope.row;
+      element.replaceWith( $compile(scope.tpl)(newScope) );      
     }    
   };
 } );
@@ -121,7 +172,7 @@ function tableViewController($compile, $parse, $sce){
       var flag = true;
       
       for( var hKey in model.hlight){
-        if((!model.hlight[hKey]) || ( String(row[hKey]).toUpperCase() !== String(model.hlight[hKey]).toUpperCase() )){
+        if( (!model.hlight[hKey]) || ( String(row[hKey]).toUpperCase() !== String(model.hlight[hKey]).toUpperCase() )){
           flag = false;
         }
       }
@@ -135,17 +186,16 @@ function tableViewController($compile, $parse, $sce){
     
     $scope.onSortClick = function(event,key){
       var add = event.ctrlKey;
-      var hasVal = sort.hasOwnProperty(key);
-      var val = hasVal?(sort[key]):1;
+      var hasVal = $scope.$sort.hasOwnProperty(key);
+      var val = hasVal?($scope.$sort[key]):1;
       var newVal = (val*-1);
               
       if( !add ){
-        $scope.sort = {};
+        $scope.$sort = {};
       }
       
-      $scope.sort[key] = newVal;
-     
-      //$scope.reSort();
+      $scope.$sort[key] = newVal;     
+      model.reSort($scope.$sort);
     };
     
     $scope.sortDir = function(key){
@@ -158,25 +208,15 @@ function tableViewController($compile, $parse, $sce){
     
     $scope.getColumnsCount = function (){
       return Object.keys($scope.$columns).length;
-    }
-    
-    $scope.headerComparator = function(a,b,c){
-      console.log(a,b,c);
     };
     
-    $scope.reSort = function(){
-      if( model.headerSort ){
-        $scope.makers = model.headerSort($scope.makers, sort);
-      } else {
-        $scope.$applyAsync(function(){
-          $scope.makers = sortMakers($scope.makers, sort);
-        });
-      }
-      //$scope.dataUpdate(false);
-      //);
+    $scope.dataFilter = function(data){
+      if( model.filter ){
+        return model.filter(data);
+      }      
+      return true;
     };
     
-    //$scope.dataUpdate();      
   };
 }
 
@@ -190,12 +230,10 @@ function tableViewDirective ($compile,$parse, $sce){
     templateUrl: "/table-view.html",
     transclude: false,
     scope: {
-      bindModel: "=ngModel"
+      bindModel: "=ngModel",
+      extScope: "=ngExtrScope"
     },
-    controller: tableViewController($compile,$parse,$sce),
-    link: function(scope, element,attributes){
-      console.log(attributes);
-    }
+    controller: tableViewController($compile,$parse,$sce)    
   };
 }
 

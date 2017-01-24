@@ -69,19 +69,7 @@ atcCS.controller( 'partsSearch', [
           return resultArray;
         }
       }
-    ); 
-    
-    $scope.table = {
-      fields:{        
-      },
-      templates: {   
-        
-      },
-      hightlight: {
-        articul: $scope.articulCmp
-      },
-      data: {}
-    };
+    );     
     
     $scope.table = new tableViewData({
       $columns: {
@@ -102,11 +90,39 @@ atcCS.controller( 'partsSearch', [
                   "    </button>",
                   "  </div>",
                   "</span>"].join(""),
-        basket: "<span><button ng-click=\"onAdd(row)\" ng-show=\"isLogin&&!row.adding&&!row.error\">'Добавить'</button><span class=\"load-info\" ng-show=\"row.adding\"></span></span>"
+        basket:  ["<span>",
+                  "  <button ng-click='onAdd(row)' class='basket-add-button'",
+                  "           ng-show='isLogin&&!row.adding&&!row.error'>",
+                  "     <span class='glyphicon glyphicon-plus'></span>",
+                  "     Добавить",
+                  "  </button>",
+                  "  <span class='load-info' ng-show='row.adding'></span>",
+                  "</span>"].join(""),
+        name:     "<span title='{{row.name}}'>{{row.name}}</span>",
+        price:    "<span title='{{showWithMarkup(row.price) | number:2}}'>{{showWithMarkup(row.price) | number:2}}</span>",
+        count:   ["<span>{{row.count}}",
+                  " <div class='lot-quantity' title='Минимальное количество для заказа' ng-show='(row.lot_quantity>1)'>",
+                  "   <span class='glyphicon glyphicon-th-large'></span> {{row.lot_quantity}}",
+                  " </div>",
+                  "</span>"].join("")
+      },
+      hlight: {
+        articul: $scope.articulCmp
+      },
+      sortRows: sortFunction,
+      sortGroups: sortHeader,
+      sort: {
+        maker: 1,
+        price: 1,
+        shiping: 1
+      },
+      filter: function(row){
+        return $scope.analogShow || (row.isOriginal===1);
       }
     });
     
-    console.log($scope.table);
+    $scope.self = $scope;    
+    
     
     $scope.onArticulSearch = function(articul){
       console.log(123);      
@@ -153,24 +169,95 @@ atcCS.controller( 'partsSearch', [
       $scope.table.addData(data.rows);
     }
     
-    function sortFunction($sort){
-      return function(itemA,itemB){
-        var result = 0;        
-        for(var key in $sort){
-          var direct = ($sort[key]==='desc')?-1:1;
-          var valA   = itemA[key];
-          var valB   = itemB[key];
-          if( (key==='viewPrice') || (key==='price') || (key==='shiping') || (key==='count') ){
-            valA  *= 1;
-            valB  *= 1;            
+    function sortFunction(sort){
+      
+      function isNumeric(obj) {
+        return !isNaN(obj - parseFloat(obj));
+      }
+      
+      function calcWeight(rowA, rowB, sort){
+        var weightA = 0;
+        var weightB = 0;        
+        var A,B;
+        if( String(rowA.articul).toUpperCase() === $scope.articulCmp ){
+          weightA -= 100;
+        }
+        if( String(rowB.articul).toUpperCase() === $scope.articulCmp ){
+          weightB -= 100;
+        }
+          
+        for(var cKey in sort){
+          
+          if( isNumeric(rowA[cKey]) && isNumeric(rowB[cKey]) ){
+            A = parseFloat(rowA[cKey]);
+            B = parseFloat(rowB[cKey]);
+          } else {
+            A = String(rowA[cKey]).toUpperCase();
+            B = String(rowB[cKey]).toUpperCase();            
           }
           
-          result += (valA>valB)?direct:0;
-          result -= (valA<valB)?direct:0;
+          if( A > B ){
+            weightA += sort[cKey];
+          } else if( A < B){
+            weightB += sort[cKey];            
+          }
+          
         }
-        return result;
+        
+        
+        if( weightA > weightB ){
+          return 1;
+        } else if( weightA < weightB ){
+          return -1;
+        }
+        
+        return 0;
+        
+      }
+      
+      return function(rowA, rowB){
+        return calcWeight(rowA, rowB, sort);
+      };
+    }   
+    
+    function sortHeader(sort) {
+      
+      return function(headA, headB){
+        var res = 0, brandOffset = 0;
+        
+        if( headA.name === $scope.brand ){
+          brandOffset -= 10;
+        }
+        if( headB.name === $scope.brand ){
+          brandOffset += 10;
+        }
+        
+        if( sort.maker === undefined ){
+          return brandOffset;
+        }
+        
+        if( headA.name > headB.name ){
+          res = 1;
+        } else if( headA.name < headB.name ){
+          res = -1;
+        }
+        return brandOffset + res * sort.maker;
       };
     }
+    
+    $scope.showWithMarkup = function(price){
+      if( $scope.markup === 0){
+        return price;
+      }
+      return price*(1 + $scope.markup/100);
+    };
+    
+    $scope.showMarkupName = function(){
+      if( $scope.markup === 0){
+        return "";
+      }
+      return " [" + $scope.markupName + "]";
+    };
     
     $scope.onAdd  = function(item){      
       /*if( item === undefined ){
@@ -201,22 +288,18 @@ atcCS.controller( 'partsSearch', [
     };
     
     $scope.onCollapse = function(){      
-      var data = $scope.tableParams.data;
-      angular.forEach(data,function(item){        
-        item.$hideRows = true;
-        return item;
-      });
-      
+      var data = $scope.table.$rowGroups;
+      for(var i in data){
+        data[i].show = false;
+      }
       return false;
     };
     
     $scope.onExpand = function(){
-      var data = $scope.tableParams.data;
-      angular.forEach(data,function(item){        
-        item.$hideRows = false;
-        return item;
-      });
-      
+      var data = $scope.table.$rowGroups;
+      for(var i in data){
+        data[i].show = true;
+      }      
       return false;
     };
     
@@ -228,7 +311,7 @@ atcCS.controller( 'partsSearch', [
     $rootScope.$on('markupValueChange', function(event, data){
       $scope.markup     = data.value;
       $scope.markupName = data.value?data.name:'';
-      $scope.tableParams.reload();      
+      $scope.table.$columns.price.name = "Цена" + $scope.showMarkupName();      
     });
     
     $rootScope.$on('userDataUpdate', 
