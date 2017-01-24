@@ -1,8 +1,8 @@
 /* global atcCS, ObjectHelper */
 
 atcCS.controller( 'partsSearch', [
-    '$scope','$filter', 'User' ,'$routeParams','$rootScope','searchNumberControl', 'storage', 'NgTableParams', 'partOutFilter', '$notify', '$q', '$log',
-    function($scope,$filter,$user,$routeParams,$rootScope,$snCtrl, $storage, NgTableParams, $partOut, $notify, $q, $log ) {
+    '$scope','$filter', 'User' ,'$routeParams','$rootScope','searchNumberControl', 'storage', 'NgTableParams', 'partOutFilter', '$notify', '$q', '$log', 'tableViewData',
+    function($scope,$filter,$user,$routeParams,$rootScope,$snCtrl, $storage, NgTableParams, $partOut, $notify, $q, $log, tableViewData ) {
     'use strict';    
     var brands = false;
     var requestParams = {};
@@ -39,7 +39,7 @@ atcCS.controller( 'partsSearch', [
           var originalArray = [];
           var notOriginalArray = [];
           var resultArray = [];
-          
+          console.profile('sorting');
           for( var key in $scope.data){
             var item        = $scope.data[key];
             item.viewPrice  = item.price.toFixed(2);
@@ -65,15 +65,73 @@ atcCS.controller( 'partsSearch', [
             notOriginalArray.sort(sortFunction(sorting));
             resultArray = ObjectHelper.concat(originalArray,notOriginalArray);            
           }
-          
+          console.profileEnd('sorting');
           return resultArray;
         }
       }
-    );    
+    );     
+    
+    $scope.table = new tableViewData({
+      $columns: {
+        maker:    {name: "Производитель", width:"10"},
+        articul:  {name: "Артикул",       width:"15"},
+        name:     {name: "Наименование",  width:"40", align: "left"},
+        price:    {name: "Цена",          width:"8"},
+        shiping:  {name: "Срок",          width:"8"},
+        count:    {name: "Наличие",       width:"8"},
+        basket:   {name: "В корзину",     width:"8"}        
+      },
+      template: {
+        articul: ["<span style='float:none'>{{row.articul}}",
+                  "  <div class='articul-search-div'>",
+                  "    <button ng-click='onArticulSearch(row.articul)'>",
+                  "      <span class='glyphicon glyphicon-search'>",
+                  "      </span>",
+                  "    </button>",
+                  "  </div>",
+                  "</span>"].join(""),
+        basket:  ["<span>",
+                  "  <button ng-click='onAdd(row)' class='basket-add-button'",
+                  "           ng-show='isLogin&&!row.adding&&!row.error'>",
+                  "     <span class='glyphicon glyphicon-plus'></span>",
+                  "     Добавить",
+                  "  </button>",
+                  "  <span class='load-info' ng-show='row.adding'></span>",
+                  "</span>"].join(""),
+        name:     "<span title='{{row.name}}'>{{row.name}}</span>",
+        price:    "<span title='{{showWithMarkup(row.price) | number:2}}'>{{showWithMarkup(row.price) | number:2}}</span>",
+        count:   ["<span>{{row.count}}",
+                  " <div class='lot-quantity' title='Минимальное количество для заказа' ng-show='(row.lot_quantity>1)'>",
+                  "   <span class='glyphicon glyphicon-th-large'></span> {{row.lot_quantity}}",
+                  " </div>",
+                  "</span>"].join("")
+      },
+      hlight: {
+        articul: $scope.articulCmp
+      },
+      sortRows: sortFunction,
+      sortGroups: sortHeader,
+      sort: {
+        maker: 1,
+        price: 1,
+        shiping: 1
+      },
+      filter: function(row){
+        return $scope.analogShow || (row.isOriginal===1);
+      }
+    });
+    
+    $scope.self = $scope;    
+    
+    
+    $scope.onArticulSearch = function(articul){
+      console.log(123);      
+      console.log(articul);      
+    };
     
     brands = $storage.get($scope.timestamp);
     
-    if( $scope.timestamp && brands ) {      
+    if( $scope.timestamp && brands ) {       
       for(var brand in brands.rows){        
         if( brand !== $scope.brand ){
           continue;
@@ -85,10 +143,9 @@ atcCS.controller( 'partsSearch', [
     for(var i in requestParams){
       var clsid = requestParams[i].id;
       var ident = requestParams[i].uid;
-      if( $storage.get($scope.timestamp+'@'+clsid+'@'+ident) ){
-        
-        serverResponse(clsid,ident,$storage.get($scope.timestamp+'@'+clsid+'@'+ident) );
-                
+      var storage = $storage.get($scope.timestamp+'@'+clsid+'@'+ident);
+      if( storage ){                
+        serverResponse(clsid,ident,storage);                
       } else{
         $user.getParts(clsid,ident,serverResponseCall(clsid, ident));
         $scope.loading[clsid] = clsid;        
@@ -103,42 +160,109 @@ atcCS.controller( 'partsSearch', [
     
     function serverResponse(clsid,ident,data){
       delete($scope.loading[clsid]);
+      
       if( !data ){
         return;
       }
-      for(var i in data.rows){
-        data.rows[i].provider = clsid;
-      }
-      $storage.set($scope.timestamp+'@'+clsid+'@'+ident,data);
-      $scope.data = ObjectHelper.concat($scope.data,data.rows);
-      $scope.tableParams.reload();
-      $log.debug($scope.tableParams);
+      
+      $storage.set($scope.timestamp+'@'+clsid+'@'+ident,data);      
+      $scope.table.addData(data.rows);
     }
     
-    function sortFunction($sort){
-      return function(itemA,itemB){
-        var result = 0;        
-        for(var key in $sort){
-          var direct = ($sort[key]==='desc')?-1:1;
-          var valA   = itemA[key];
-          var valB   = itemB[key];
-          if( (key==='viewPrice') || (key==='price') || (key==='shiping') || (key==='count') ){
-            valA  *= 1;
-            valB  *= 1;            
+    function sortFunction(sort){
+      
+      function isNumeric(obj) {
+        return !isNaN(obj - parseFloat(obj));
+      }
+      
+      function calcWeight(rowA, rowB, sort){
+        var weightA = 0;
+        var weightB = 0;        
+        var A,B;
+        if( String(rowA.articul).toUpperCase() === $scope.articulCmp ){
+          weightA -= 100;
+        }
+        if( String(rowB.articul).toUpperCase() === $scope.articulCmp ){
+          weightB -= 100;
+        }
+          
+        for(var cKey in sort){
+          
+          if( isNumeric(rowA[cKey]) && isNumeric(rowB[cKey]) ){
+            A = parseFloat(rowA[cKey]);
+            B = parseFloat(rowB[cKey]);
+          } else {
+            A = String(rowA[cKey]).toUpperCase();
+            B = String(rowB[cKey]).toUpperCase();            
           }
           
-          result += (valA>valB)?direct:0;
-          result -= (valA<valB)?direct:0;
+          if( A > B ){
+            weightA += sort[cKey];
+          } else if( A < B){
+            weightB += sort[cKey];            
+          }
+          
         }
-        return result;
+        
+        
+        if( weightA > weightB ){
+          return 1;
+        } else if( weightA < weightB ){
+          return -1;
+        }
+        
+        return 0;
+        
+      }
+      
+      return function(rowA, rowB){
+        return calcWeight(rowA, rowB, sort);
+      };
+    }   
+    
+    function sortHeader(sort) {
+      
+      return function(headA, headB){
+        var res = 0, brandOffset = 0;
+        
+        if( headA.name === $scope.brand ){
+          brandOffset -= 10;
+        }
+        if( headB.name === $scope.brand ){
+          brandOffset += 10;
+        }
+        
+        if( sort.maker === undefined ){
+          return brandOffset;
+        }
+        
+        if( headA.name > headB.name ){
+          res = 1;
+        } else if( headA.name < headB.name ){
+          res = -1;
+        }
+        return brandOffset + res * sort.maker;
       };
     }
     
-    $scope.Add  = function(key){
-      if( key === undefined ){
-        return;
+    $scope.showWithMarkup = function(price){
+      if( $scope.markup === 0){
+        return price;
       }
-      var item = $scope.data[key];
+      return price*(1 + $scope.markup/100);
+    };
+    
+    $scope.showMarkupName = function(){
+      if( $scope.markup === 0){
+        return "";
+      }
+      return " [" + $scope.markupName + "]";
+    };
+    
+    $scope.onAdd  = function(item){      
+      /*if( item === undefined ){
+        return;
+      }*/      
       
       var onAnswer = function(aitem){
         return function(answer){
@@ -160,25 +284,22 @@ atcCS.controller( 'partsSearch', [
       item.sell_count = item.lot_quantity;
       item.adding = true;      
       $user.toBasket(item, onAnswer(item));
+      return false;
     };
     
-    $scope.onCollapse = function(){
-      var data = $scope.tableParams.data;
-      angular.forEach(data,function(item){        
-        item.$hideRows = true;
-        return item;
-      });
-      
+    $scope.onCollapse = function(){      
+      var data = $scope.table.$rowGroups;
+      for(var i in data){
+        data[i].show = false;
+      }
       return false;
     };
     
     $scope.onExpand = function(){
-      var data = $scope.tableParams.data;
-      angular.forEach(data,function(item){        
-        item.$hideRows = false;
-        return item;
-      });
-      
+      var data = $scope.table.$rowGroups;
+      for(var i in data){
+        data[i].show = true;
+      }      
       return false;
     };
     
@@ -190,7 +311,7 @@ atcCS.controller( 'partsSearch', [
     $rootScope.$on('markupValueChange', function(event, data){
       $scope.markup     = data.value;
       $scope.markupName = data.value?data.name:'';
-      $scope.tableParams.reload();      
+      $scope.table.$columns.price.name = "Цена" + $scope.showMarkupName();      
     });
     
     $rootScope.$on('userDataUpdate', 
