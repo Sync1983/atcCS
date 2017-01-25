@@ -202,12 +202,16 @@ div.tree-view{
 
 .small-preloader{  
   
+  top: 0.5em;
+  display: inline-block;
+  position: relative;
+  
   &:before{
-    content: " ";
-    background-image: url("/img/preloader-small.gif");
-    background-size: 12px 12px;
+    content: " "; 
+    background-image: url("/img/spiner-small.gif");
+    background-size: 1.5em 1.5em;
     display: inline-block;
-    width: 12px;
-    height: 12px;
+    width: 1.5em;
+    height: 1.5em;
   }
 }
