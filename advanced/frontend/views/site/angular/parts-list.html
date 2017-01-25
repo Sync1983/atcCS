@@ -6,7 +6,10 @@
     <span>{{brand}}</span>
   </div>
   <div ng-if="inSearch" class="in-search"></div>    
-  <div ng-if="!inSearch" class="count">Варианты деталей по запросу "<b>{{searchText}}</b>" от производителя <b>{{brand}}</b>:</div>   
+  <div ng-if="!inSearch" class="count">Варианты деталей по запросу "<b>{{searchText}}</b>" от производителя <b>{{brand}}</b>:
+    <span ng-repeat="item in loading" class="small-preloader">
+    </span>
+  </div>   
   <div class="actions">
     <a href="#" ng-click="onCollapse()">
       <span class="glyphicon glyphicon-minus-sign"></span>Свернуть все
@@ -14,8 +17,6 @@
     <a href="#" ng-click="onExpand()">
       <span class="glyphicon glyphicon-plus-sign"></span>Развернуть все
     </a>    
-    <span ng-repeat="item in loading" class="small-preloader" style="top:2px">      
-    </span>
   </div>
   
   <table-view ng-model="table" ng-extr-scope="self"/>  

@@ -199,4 +199,19 @@
       padding-left: 2px;
     }
   }
+  
+  .load-info{
+    top: 2px;
+    display: inline-block;
+    position: relative;
+  
+    &:before{
+      content: " "; 
+      background-image: url("/img/spiner-small.gif");
+      background-size: 1em 1em;
+      display: inline-block;
+      width: 5em;
+      height: 1em;
+    }
+  }
 }
