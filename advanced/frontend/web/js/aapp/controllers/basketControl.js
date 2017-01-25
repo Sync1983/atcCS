@@ -79,8 +79,8 @@ atcCS.controller( 'basketControl', [
         show:         false
       });
       
-    $wndMng.setBodyByTemplate($scope.editWnd, '/parts/_basket-edit.html',   $scope);  
-    $wndMng.setBodyByTemplate($scope.orderWnd, '/parts/_basket-order.html',   $scope);  
+    $wndMng.setBodyByTemplate($scope.editWnd,  '/parts/_basket-edit.html',   $scope);  
+    $wndMng.setBodyByTemplate($scope.orderWnd, '/parts/_basket-order.html',  $scope);  
     $wndMng.setStatusBar($scope.editWnd, confirmButton,   $scope);  
     $wndMng.setStatusBar($scope.orderWnd, orderButton,   $scope);  
         
