@@ -94,11 +94,11 @@ atcCS.controller( 'partsSearch', [
       for(var i in requestParams){
         var clsid = requestParams[i].id;
         var ident = requestParams[i].uid;
-        var storage = $storage.get($scope.timestamp+'@'+clsid+'@'+ident);
+        var storage = $storage.get($scope.timestamp+'@'+clsid+'@'+ident+'@'+$scope.searchText);
         if( storage ){                
           serverResponse(clsid,ident,storage);                
         } else{
-          $user.getParts(clsid,ident,serverResponseCall(clsid, ident));
+          $user.getParts(clsid,ident,$scope.searchText,serverResponseCall(clsid, ident));
           $scope.loading[clsid] = clsid;        
         }
       }      
@@ -117,7 +117,7 @@ atcCS.controller( 'partsSearch', [
         return;
       }
       
-      $storage.set($scope.timestamp+'@'+clsid+'@'+ident,data);      
+      $storage.set($scope.timestamp+'@'+clsid+'@'+ident+'@'+$scope.searchText,data);      
       $scope.table.addData(data.rows);
     }
     

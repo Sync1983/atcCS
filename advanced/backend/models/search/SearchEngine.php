@@ -51,13 +51,13 @@ class SearchEngine extends Object{
     return $answer;
   }
 
-  public function getParts($clsid, $ident){
+  public function getParts($clsid, $ident, $searchText){
     if( !$clsid || !$ident || !isset($this->providers[$clsid]) ){
       return [];
     }    
     /* @var $provider SearchInterface */
     $provider = $this->providers[$clsid];
-    $result   = $provider->getParts($ident);
+    $result   = $provider->getParts($ident, $searchText);
     $isGuest  = \yii::$app->user->isGuest;
     $user     = \yii::$app->user->getIdentity();
     
@@ -137,7 +137,7 @@ class SearchEngine extends Object{
       curl_multi_remove_handle($requests, $request);
       try{
         $results[$clsid] = $this->providers[$clsid]->parseResponse($answer,$method);
-      }catch(Exception $e) {
+      }catch(Exception $e) {        
       }
     }
 

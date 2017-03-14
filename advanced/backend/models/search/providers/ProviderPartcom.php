@@ -30,7 +30,7 @@ class ProviderPartcom extends Provider{
     return $answer;
   }
 
-  public function getParts($ident) {
+  public function getParts($ident, $searchtext) {
     list($maker,$code) = explode("@@", $ident);
     $data = ['number'=>$code,'maker_id'=>$maker,'reCross'=>"on"];
     $request 	= $this->prepareRequest($data,false,  $this->_url."search/parts");
