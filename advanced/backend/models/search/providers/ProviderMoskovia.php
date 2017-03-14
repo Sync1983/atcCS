@@ -46,7 +46,7 @@ class ProviderMoskovia extends Provider{
     return $json;
   }
   
-  public function getParts($ident) {
+  public function getParts($ident, $searchtext) {
     list($maker,$code) = explode("@@", $ident);
 
     $param = [

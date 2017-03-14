@@ -42,7 +42,7 @@ class ProviderEDet extends Provider{
     return $brands;
   }
   
-  public function getParts($ident) {
+  public function getParts($ident, $searchtext) {
     list($brand,$number) = explode("@@", $ident);
 
     $data   = ['number'=>$number];

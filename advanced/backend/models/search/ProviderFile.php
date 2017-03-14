@@ -17,7 +17,7 @@ abstract class ProviderFile extends Provider{
     return \backend\models\price\PriceModel::searchBrands($search_text, $this->_CLSID);
   }
 
-  public function getParts($ident) {
+  public function getParts($ident, $searchtext) {
     return \backend\models\price\PriceModel::searchPart($ident, $this->_CLSID);
   }
   

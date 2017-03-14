@@ -291,7 +291,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
     $http(req).then(serverResponse);
   };
   
-  model.getParts = function getParts(CLSID, ident, callback){
+  model.getParts = function getParts(CLSID, ident, searchText,callback){
     var req = {
       method: 'GET',
       url: URLto('search','get-parts'),
@@ -299,7 +299,8 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
       params: {
         params: {
           clsid: String(CLSID),
-          ident: String(ident)          
+          ident: String(ident),
+          search: String(searchText)
         }
       }
     };

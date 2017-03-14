@@ -40,7 +40,7 @@ class ProviderIxora extends Provider{
     return $answer;
   }
   
-  public function getParts($ident) {
+  public function getParts($ident, $searchtext) {
     list($code,$maker) = explode('@@', $ident);
     $data   = ['Maker'=>$maker,'Number'=>$code,'StockOnly'=>'false','SubstFilter'=>'All'];
     $reqest = $this->prepareRequest($data,true, $this->_url."/FindXML");

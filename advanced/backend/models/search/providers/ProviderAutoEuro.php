@@ -37,7 +37,7 @@ class ProviderAutoEuro extends Provider{
     return $answer;
   }
 
-  public function getParts($ident) {
+  public function getParts($ident, $searchtext) {
     list($maker,$code) = explode("@@", $ident);
     $maker = mb_convert_encoding($maker,"Windows-1251","UTF-8");
     $param = [

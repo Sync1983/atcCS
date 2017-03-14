@@ -12,10 +12,16 @@ use yii\console\Controller;
 class TestController extends Controller {
       
   public function actionIndex() {
-    $this->actionEDet();
+    $this->actionTestSearch();
   }
-    
-  public function actionEDet(){
+
+  public function actionAtd(){
+    $engine = new \backend\models\search\SearchEngine();
+    $answer   = $engine->getBrands("4851029176", true);
+    var_dump($answer);
+  }
+
+    public function actionEDet(){
     $url = "www.e-det.ru/web/getprice.php";
     $vars = [
       "key"     => urlencode("b800c715d13b98909cd4e5587048d05d"),
@@ -53,7 +59,7 @@ class TestController extends Controller {
 
   public function actionTestSearch(){
     $engine = new \backend\models\search\SearchEngine();
-    $answer   = $engine->getBrands("MOF4500", true);
+    $answer   = $engine->getParts(240, 9, "4851029176");
     var_dump($answer);
   }
 

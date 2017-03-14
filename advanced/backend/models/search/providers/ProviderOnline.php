@@ -32,7 +32,7 @@ class ProviderOnline extends Provider{
     return $answer;
   }
   
-  public function getParts($ident) {
+  public function getParts($ident, $searchtext) {
     $data   = ['ident'=>$ident];
     $reqest = $this->prepareRequest($data);
 
