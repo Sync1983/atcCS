@@ -38,7 +38,7 @@ class SearchEngine extends Object{
 
   public function getBrands($search_text,$use_analog){
     $response = $this->providersMap('getBrands', ['search_text'=>$search_text,'use_analog'=>$use_analog]);
-    $answer   = [];
+    $answer   = [];    
     foreach ($response as $row){      
       foreach ($row as $name => $data){
         $name = $this->brandsRename($name);
