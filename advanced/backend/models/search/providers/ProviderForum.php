@@ -1,9 +1,11 @@
 <?php
 
 namespace backend\models\search\providers;
-use backend\models\search\ProviderFile;
+use backend\models\search\Provider;
 
-class ProviderForum extends ProviderFile{
+class ProviderForum extends Provider{
+  protected $_url = "http://api.forum-auto.ru/service.php#";
+
 
   public function loadFromFile() {
     $path = $this->getPath();
@@ -63,5 +65,80 @@ class ProviderForum extends ProviderFile{
       }
     }
   }
+
+  protected function getNamesMap() {
+
+  }
+
+  public function getBrands($search_text, $use_analog) {
+    $data = [
+      'tovnum'  => $search_text,
+      'cross'  => $use_analog?1:0
+    ];
+    $request = $this->prepareRequest($data, true, $this->_url, 'fa.getTov');
+    return $request;
+  }
+
+  public function getBrandsParse($xml) {
+    var_dump($xml);
+    return []; 
+  }
+
+  public function getParts($ident, $searchText) {
+
+  }
+
+  public function onlineRequestHeaders($ch, $action = "", $content = "") {
+    $headers = [
+      "Content-type: text/xml;charset=\"utf-8\"",
+      "Accept: text/xml",
+      "Cache-Control: no-cache",
+      "Pragma: no-cache",
+      "SOAPAction: " . $this->_url . $action,
+      "Content-length: ".strlen($content),
+    ];
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_USERPWD, $this->_default_params['login'].":".$this->_default_params['password']);
+  }
+
+  public function generateContext($action){
+    $context = <<<CEND
+      <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+        <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:api" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/">
+          <SOAP-ENV:Body>
+            <mns:fa.getTov xmlns:mns="" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+              <jrlid xsi:type="xsd:integer"></jrlid>
+              <tovnum xsi:type="xsd:string"></tovnum>
+              <cross xsi:type="xsd:string"></cross>
+              <login xsi:type="xsd:string"></login>
+              <password xsi:type="xsd:string"></password>
+            </mns:fa.getTov>
+          </SOAP-ENV:Body>
+        </SOAP-ENV:Envelope>
+CEND;
+    return $context;
+  }
+
+  public function prepareRequest($data, $is_post = false, $url = false, $action = false) {
+    $ch = curl_init();
+
+    $content = $this->generateContext($action);
+
+    curl_setopt($ch, CURLOPT_VERBOSE, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_PORT, $is_post);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_POST, true);
+
+    $this->onlineRequestHeaders($ch, $action, $content);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
+    
+    return $ch;
+  }
+
+  protected function getRowName() { return 'detail'; }
 
 }

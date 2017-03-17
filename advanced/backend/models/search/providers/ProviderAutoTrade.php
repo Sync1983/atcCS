@@ -83,7 +83,7 @@ class ProviderAutotrade extends Provider{
           'maker'         => $row['brand_name'],
           'name'          => $row['name'],
           'price'         => $row['price'],
-          'shiping'       => $subrow['delivery_period'],
+          'shiping'       => intval($subrow['delivery_period']) + 5,
           'stock'         => $subrow['legend'],
           'is_original'   => $row['is_original'],
           'count'         => $subrow['quantity_unpacked'],
