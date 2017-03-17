@@ -4,71 +4,7 @@ namespace backend\models\search\providers;
 use backend\models\search\Provider;
 
 class ProviderForum extends Provider{
-  protected $_url = "http://api.forum-auto.ru/service.php#";
-
-
-  public function loadFromFile() {
-    $path = $this->getPath();
-
-    if( !is_dir($path) ){
-      throw new \yii\base\InvalidValueException('Field "path" must be directory');
-    }
-    $timestamp = time();
-    $files = scandir($path);
-    foreach ($files as $file){
-      if(is_dir($file) ){
-        continue;
-      }
-      echo "loading $file \r\n";
-      $fp = fopen($path . "/" . $file, "r");
-      $this->loadFile($fp);
-      fclose($fp);
-      unlink($path . "/" . $file);
-    }
-    $timestamp = time() - $timestamp;
-    echo "Load by $timestamp sec. \r\n";
-  }
-
-  protected function loadFile($fp){
-    if( !$fp ){
-      return;
-    }
-    
-    $header = fgetcsv($fp);
-    $header = implode(",", $header);
-    $header = mb_convert_encoding($header, "UTF-8", "CP1251");
-    if( !feof($fp) ){
-      $this->clearPrice();
-    }
-    while( !feof($fp) ){
-      $data           = fgetcsv($fp,0,";");
-      $visula_articul = $data[1];
-      $articul        = preg_replace('/\W*/i', "", $visula_articul);
-      $maker          = mb_convert_encoding($data[0], 'UTF-8', 'CP1251');
-      $name           = mb_convert_encoding($data[2], 'UTF-8', 'CP1251');
-      if( !$articul || !$maker ){
-        continue;
-      }
-      $newPriceRecord = new \backend\models\price\PriceModel();
-      
-      $newPriceRecord->setAttribute('pid',            $this->_CLSID);
-      $newPriceRecord->setAttribute('articul',        $articul);
-      $newPriceRecord->setAttribute('visual_articul', $visula_articul);
-      $newPriceRecord->setAttribute('maker',          $maker);
-      $newPriceRecord->setAttribute('name',           $name);
-      $newPriceRecord->setAttribute('price',          floatval($data[3]));
-      $newPriceRecord->setAttribute('count',          intval($data[4]));
-      $newPriceRecord->setAttribute('lot_quantity',   intval($data[5]));
-      try{
-        $newPriceRecord->save();
-      } catch (\yii\db\Exception $ex) {        
-      }
-    }
-  }
-
-  protected function getNamesMap() {
-
-  }
+  protected $_url = "http://api.forum-auto.ru/service.php";
 
   public function getBrands($search_text, $use_analog) {
     $data = [
@@ -79,13 +15,53 @@ class ProviderForum extends Provider{
     return $request;
   }
 
-  public function getBrandsParse($xml) {
-    var_dump($xml);
-    return []; 
+  public function getBrandsParse($xml) {    
+    if( !is_array($xml) || !isset($xml['Body']) ){
+      return [];  
+    }
+    $data     = array_pop($xml['Body'])['return']['item']['item'];
+    $answer   = [];
+    foreach ($data as $row){      
+      $maker  = strtoupper($row['BRAND']);
+      $maker  = preg_replace('/\W*/i', "", $maker);
+      $answer[ $maker ] = ['id'=>$this->getCLSID(), 'uid'=>$row['BRAND']];
+    }
+    
+    return $answer;
   }
 
   public function getParts($ident, $searchText) {
+    $data = [
+      'tovnum'  => $searchText,
+      'cross'   => 1,
+      'brand'   => $ident
+    ];
+    
+    $request = $this->prepareRequest($data, true, $this->_url, 'fa.getTov1');
+    $response	= $this->executeRequest($request);    
+		$answer		= $this->parseResponse($response,'getParts');
+    return $answer;
+  }
 
+  public function getPartsParse($xml){
+    if( !is_array($xml) || !isset($xml['Body']) ){
+      return [];
+    }
+    $data     = array_pop($xml['Body']);
+    if( !isset($data['return']) || !isset($data['return']['item']) || !isset($data['return']['item']['item']) ) {
+      return [];      
+    }
+    $data = $data['return']['item']['item'];
+    
+    $result  = [];
+    foreach ($data as $row){
+      $converted  = $this->renameByMap($row, $this->getNamesMap());
+      $converted['maker'] = utf8_decode($converted['maker']);
+      $converted['name'] = utf8_decode($converted['name']);      
+      $result[] = $converted;
+    }
+    //var_dump($result);
+    return $result;
   }
 
   public function onlineRequestHeaders($ch, $action = "", $content = "") {
@@ -94,49 +70,81 @@ class ProviderForum extends Provider{
       "Accept: text/xml",
       "Cache-Control: no-cache",
       "Pragma: no-cache",
-      "SOAPAction: " . $this->_url . $action,
+      "SOAPAction: " . $this->_url ."/". $action,
       "Content-length: ".strlen($content),
     ];
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($ch, CURLOPT_USERPWD, $this->_default_params['login'].":".$this->_default_params['password']);
   }
 
-  public function generateContext($action){
+  public function generateContext($data, $action){
     $context = <<<CEND
-      <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-        <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:api" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/">
-          <SOAP-ENV:Body>
-            <mns:fa.getTov xmlns:mns="" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-              <jrlid xsi:type="xsd:integer"></jrlid>
-              <tovnum xsi:type="xsd:string"></tovnum>
-              <cross xsi:type="xsd:string"></cross>
-              <login xsi:type="xsd:string"></login>
-              <password xsi:type="xsd:string"></password>
-            </mns:fa.getTov>
-          </SOAP-ENV:Body>
-        </SOAP-ENV:Envelope>
+<?xml version="1.0" encoding="UTF-8"?>
+  <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:api" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/">
+    <SOAP-ENV:Body>
+      <mns:%s xmlns:mns="" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+        <jrlid xsi:type="xsd:integer">%s</jrlid>
+        <tovnum xsi:type="xsd:string">%s</tovnum>
+        %s
+        <cross xsi:type="xsd:string">%s</cross>
+        <login xsi:type="xsd:string">%s</login>
+        <password xsi:type="xsd:string">%s</password>
+      </mns:$action>
+    </SOAP-ENV:Body>
+  </SOAP-ENV:Envelope>
 CEND;
-    return $context;
+    $brand = "";
+    if( isset($data['brand']) ){
+      $brand = '<brand xsi:type="xsd:string">' . $data['brand'] . '</brand>';
+    }
+
+    $result = sprintf($context,
+                      $action,
+                      $data['jrlid'],
+                      $data['tovnum'],
+                      $brand,
+                      $data['cross'],
+                      $data['login'],
+                      $data['password']);
+    return $result;
   }
 
   public function prepareRequest($data, $is_post = false, $url = false, $action = false) {
     $ch = curl_init();
 
-    $content = $this->generateContext($action);
-
-    curl_setopt($ch, CURLOPT_VERBOSE, true);
+    $data_m = array_merge($this->_default_params, $data);
+    $content = $this->generateContext($data_m, $action);
+    
+    curl_setopt($ch, CURLOPT_VERBOSE, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_PORT, $is_post);
+    curl_setopt($ch, CURLOPT_POST, $is_post);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
     curl_setopt($ch, CURLOPT_TIMEOUT, 10);
     curl_setopt($ch, CURLOPT_POST, true);
 
     $this->onlineRequestHeaders($ch, $action, $content);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
-    
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $content);    
     return $ch;
+  }
+
+  public function parseResponse($answer_string, $method) {    
+    $answer_string = preg_replace('/xmlns:SOAP.*>/U', '>', $answer_string);    
+    $clean_xml = str_ireplace(['SOAP-ENV:', 'SOAP:','SOAP-ENC:','SOAP-ENV','SOAP-ENC'], '', $answer_string);    
+    return parent::parseResponse($clean_xml, $method);
+  }
+
+  protected function getNamesMap() {
+    return [
+			"NR"      			=> "articul",
+  		"BRAND"  				=> "maker",
+		  "NAME"  				=> "name",
+		  "PRICE"     		=> "price",
+		  "D_DELIV"       => "shiping",
+      "NUM"      			=> "count",
+      "KR"            => "lot_quantity"
+    ];
   }
 
   protected function getRowName() { return 'detail'; }
