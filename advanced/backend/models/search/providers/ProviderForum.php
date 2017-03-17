@@ -4,7 +4,7 @@ namespace backend\models\search\providers;
 use backend\models\search\Provider;
 
 class ProviderForum extends Provider{
-  protected $_url = "http://api.forum-auto.ru/service.php#";
+  protected $_url = "http://api.forum-auto.ru/service.php";
 
 
   public function loadFromFile() {
@@ -135,6 +135,13 @@ CEND;
 
     $this->onlineRequestHeaders($ch, $action, $content);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
+
+	curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+	$output = curl_exec($ch); 
+	$information = curl_getinfo($ch);
+	var_dump($information);
+	var_dump($output);
+	curl_close($ch);
     
     return $ch;
   }
