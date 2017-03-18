@@ -43,7 +43,7 @@ class ProviderForum extends Provider{
     return $answer;
   }
 
-  public function getPartsParse($xml){
+  public function getPartsParse($xml){    
     if( !is_array($xml) || !isset($xml['Body']) ){
       return [];
     }
@@ -52,6 +52,9 @@ class ProviderForum extends Provider{
       return [];      
     }
     $data = $data['return']['item']['item'];
+    if( isset($data['TOVNUM']) ){
+      $data = [$data];
+    }
     
     $result  = [];
     foreach ($data as $row){
@@ -59,7 +62,7 @@ class ProviderForum extends Provider{
       $converted['maker'] = utf8_decode($converted['maker']);
       $converted['name'] = utf8_decode($converted['name']);      
       $result[] = $converted;
-    }
+    }    
     return $result;
   }
 
