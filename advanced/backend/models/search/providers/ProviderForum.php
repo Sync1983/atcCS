@@ -19,7 +19,11 @@ class ProviderForum extends Provider{
     if( !is_array($xml) || !isset($xml['Body']) ){
       return [];  
     }
-    $data     = array_pop($xml['Body'])['return']['item']['item'];
+    $data     = array_pop($xml['Body']);
+    if( !isset($data['return']) || !isset($data['return']['item']) || !isset($data['return']['item']['item']) ) {
+      return [];
+    }
+    $data = $data['return']['item']['item'];
     $answer   = [];
     foreach ($data as $row){      
       $maker  = strtoupper($row['BRAND']);
