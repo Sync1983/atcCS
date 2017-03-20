@@ -24,6 +24,10 @@ class ProviderForum extends Provider{
       return [];
     }
     $data = $data['return']['item']['item'];
+    if( isset( $data['BRAND']) ){
+      $data = [$data];
+    }
+    
     $answer   = [];
     foreach ($data as $row){      
       $maker  = strtoupper($row['BRAND']);

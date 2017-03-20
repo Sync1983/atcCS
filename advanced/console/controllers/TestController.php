@@ -17,8 +17,8 @@ class TestController extends Controller {
 
   public function actionTestSearch(){
     $engine = new \backend\models\search\SearchEngine();
-    //$answer   = $engine->getBrands("14738", true);
-    $answer   = $engine->getParts(210,"FEBI","14738");
+    $answer   = $engine->getBrands("MWP1004", true);
+    //$answer   = $engine->getParts(210,"FEBI","14738");
     var_dump($answer);
   }  
 
