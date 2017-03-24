@@ -1,6 +1,6 @@
 "use strict";/* global ObjectHelper */
 
-var ObjectHelper = {};
+var ObjectHelper = {}; 
 
 ObjectHelper.count = function(obj){
   var count = 0;  
