@@ -28,6 +28,11 @@ atcCS.config(['$routeProvider', '$locationProvider',
         templateUrl: '/catalog.html',
         controller: 'catalogControl',
         controllerAs: 'atcCS' 
+      }).when('/news/:page?', {
+        caseInsensitiveMatch: true,
+        templateUrl: '/news.html',
+        controller: 'newsControl',
+        controllerAs: 'atcCS' 
       });
 
     $locationProvider.html5Mode(true);

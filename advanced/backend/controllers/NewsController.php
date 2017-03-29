@@ -8,14 +8,14 @@ namespace backend\controllers;
 
 use yii\web\Controller;
 
-class CatalogController extends Controller{
+class NewsController extends Controller{
 
   public $enableCsrfValidation = false;
   
   public function actions() {
     return [      
       'get-data' => [
-        'class'  => catalog\GetDataAction::className(),
+        'class'  => news\GetDataAction::className(),
       ],      
     ];
   }

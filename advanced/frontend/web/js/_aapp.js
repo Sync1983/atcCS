@@ -126,6 +126,11 @@ atcCS.config(['$routeProvider', '$locationProvider',
         templateUrl: '/catalog.html',
         controller: 'catalogControl',
         controllerAs: 'atcCS' 
+      }).when('/news/:page?', {
+        caseInsensitiveMatch: true,
+        templateUrl: '/news.html',
+        controller: 'newsControl',
+        controllerAs: 'atcCS' 
       });
 
     $locationProvider.html5Mode(true);
@@ -541,6 +546,60 @@ atcCS.controller( 'catalogControl', [
   '$scope', 'User' ,'$rootScope', '$confirm','$wndMng','$notify', '$events', '$routeParams', '$route', 
   function($scope,$user,$rootScope,$confirm,$wndMng,$notify, $events, $routeParams, $route ) {
         return new catalogActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $events, $routeParams, $route);
+}]);
+
+
+/* global atcCS, eventsNames */
+
+function newsActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $events, $routeParams, $route){  
+  'use strict';
+  var searchEvents;  
+  var newsEvents;
+  var userEvents;
+  var page;
+  var self = this;
+  
+  function init(){
+    searchEvents = $events.get(eventsNames.eventsSearch());    
+    newsEvents   = $events.get(eventsNames.eventsNews());    
+    userEvents   = $events.get(eventsNames.eventsUser());    
+    page         = $routeParams.page || false;    
+    //***************************************
+    $scope.isLogin    = $user.isLogin;
+    $scope.isAdmin    = $user.isAdmin; 
+    $scope.news       = [];
+    //*************************************** 
+    newsEvents.broadcast("getData", page);
+  };
+  
+  this.userDataUpdate = function(event,data){    
+    $scope.isLogin    = data.isLogin;        
+    $scope.isAdmin    = data.isAdmin;    
+  };
+  
+  this.newsUpdate = function(event, data){
+    $scope.news = data.data || [];
+    console.log("News:",data);
+  };
+  
+  this.onClick = function(row){
+    if(row.is_group){        
+        $route.updateParams({path:row.path});
+        return;
+     }
+     searchEvents.broadcast("StartSearchText",row.articul);     
+  };
+  
+  //******************************************
+  init();  
+  
+  userEvents.setListner("userDataUpdate",self.userDataUpdate);
+  newsEvents.setListner("update",self.newsUpdate);
+};
+
+atcCS.controller( 'newsControl', ['$scope', 'User' ,'$rootScope', '$confirm','$wndMng','$notify', '$events', '$routeParams', '$route', 
+  function($scope,$user,$rootScope,$confirm,$wndMng,$notify, $events, $routeParams, $route ) {
+        return new newsActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $events, $routeParams, $route);
 }]);
 
 
@@ -2229,6 +2288,37 @@ var catalogBack = function($http, $events){
     
 };
 
+var newsBack = function($http, $events){
+  'use strict';
+  var self = this;
+  self.events = null;
+  const EVENT_UPDATE  = 'update';  
+  const EVENT_GETDATA = 'getData';  
+  
+  function init(){
+    self.events = $events.get(eventsNames.eventsNews());    
+    self.events.setListner(EVENT_GETDATA, getData);
+  };
+  
+  function getData(event, page){    
+    var request = ObjectHelper.createRequest('news','get-data',{ params: { path: String(page) }});    
+    
+    function serverResponse(data){      
+      var answer = data && data.data;      
+      self.events.broadcast(EVENT_UPDATE,answer);
+    };
+    
+    function serverError( error ){
+      console.log('getNews Server error:', error );      
+    }
+    
+    $http(request).then(serverResponse,serverError);
+  };
+  
+  init();  
+    
+};
+
 atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$events',
   function($http, $cookies, $rootScope, $notify, $q, $events){
   'use strict';
@@ -2642,6 +2732,8 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
   };
   
   model.catalog = new catalogBack($http,$events);
+  
+  model.news    = new newsBack($http,$events);
   
   init();
   return model; 
@@ -3545,6 +3637,10 @@ function eventsNamesList(){
   
   this.eventsSearch= function(){
     return 'eventSearchScope';
+  };
+  
+  this.eventsNews= function(){
+    return 'eventNewsScope';
   };
 };
 /* global atcCS */
