@@ -52,6 +52,9 @@ class ProviderIxora extends Provider{
     }
 		
     $data   = $array['DetailInfo'];
+    if( isset($data['number']) ){
+      $data = [$data];
+    }
     $result = [];
     foreach ($data as $item){
       $converted = $this->renameByMap($item, $this->getNamesMap());
