@@ -55,7 +55,7 @@ class ProviderIxora extends Provider{
     $result = [];
     foreach ($data as $item){
       $converted = $this->renameByMap($item, $this->getNamesMap());
-			$converted['is_original'] = ($converted['is_original']==='Analog')?false:true;
+			$converted['is_original'] = (isset($converted['is_original']) && $converted['is_original']==='Analog')?false:true;
       $result[] = $converted;
     }
     return $result;    
