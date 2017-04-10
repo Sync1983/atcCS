@@ -7,12 +7,18 @@ class ProviderArmtek extends Provider{
   protected $_url = "http://ws.armtek.ru/api/";
   
   protected function getNamesMap() {
-    
+    return [
+			"NR"      			=> "articul",
+  		"BRAND"  				=> "maker",
+		  "NAME"  				=> "name",
+		  "PRICE"     		=> "price",
+		  "D_DELIV"       => "shiping",
+      "NUM"      			=> "count",
+      "KR"            => "lot_quantity"
+    ];
   }
 
-  protected function getRowName() {
-    
-  }
+  protected function getRowName() { return ['detail'];}
 
   protected function onlineRequestHeaders($ch) {
     parent::onlineRequestHeaders($ch);
@@ -56,7 +62,27 @@ class ProviderArmtek extends Provider{
   }
 
   public function getParts($ident, $searchText) {
+    $data = [
+      'PIN'         => $searchText,
+      'QUERY_TYPE'  => 2,
+      'BRAND'       => $ident
+    ];
 
+    $request = $this->prepareRequest($data, true, $this->_url . "ws_search/search?format=json");
+    $response	= $this->executeRequest($request);
+		$answer		= $this->parseResponse($response,'getParts');
+    return $answer;
+  }
+
+  public function getPartsParse($json){
+    if( !isset($json['STATUS']) || ($json['STATUS']!=200) || !isset($json['RESP']) ){
+      return [];
+    }
+
+    $data = $json['RESP'];
+    $answer = [];
+    var_dump($json);
+    return [];
   }
 
 }
