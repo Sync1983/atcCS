@@ -1,86 +1,42 @@
 <?php
 
 namespace backend\models\search\providers;
-use backend\models\search\ProviderFile;
+use backend\models\search\Provider;
 
-class ProviderArmtek extends ProviderFile{
-
-  public function loadFromFile() {
-    $path = $this->getPath();
-
-    if( !is_dir($path) ){
-      throw new \yii\base\InvalidValueException('Field "path" must be directory');
-    }
-    $timestamp = time();
-    $files = scandir($path);
-
-    $this->clearPrice();
-
-    foreach ($files as $file){
-      if(is_dir($file) ){
-        continue;
-      }
-      echo "loading $file \r\n";      
-      $this->loadFile($path."/".$file);
-      unlink($path."/".$file);
-    }
-    $timestamp = time() - $timestamp;
-    echo "Load by $timestamp sec. \r\n";
+class ProviderArmtek extends Provider{
+  protected $_url = "http://ws.armtek.ru/api/";
+  
+  protected function getNamesMap() {
+    
   }
 
-  protected function loadFile($file){
-    if( !$file ){
-      return;
-    }
+  protected function getRowName() {
+    
+  }
 
-    $sheet      = simplexml_load_file("zip://" . $file . "#xl/worksheets/sheet1.xml");
-    $strings    = simplexml_load_file("zip://" . $file . "#xl/sharedStrings.xml");
-    $convert    = [];
-    $str_data   = [];
+  protected function onlineRequestHeaders($ch) {
+    parent::onlineRequestHeaders($ch);
+    curl_setopt($ch, CURLOPT_HEADER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 50);
 
-    foreach ($strings->children() as $item) {
-      $str_data[] = strval($item->t);
-    }
+    curl_setopt($ch, CURLOPT_USERPWD, $this->_default_params['login'] . ':' . $this->_default_params['pass']);
+  }
 
-    foreach ($sheet->sheetData->children() as $row){
-      /* @var $row \SimpleXMLElement */
-      $attr = $row->attributes();
-      $line = intval($attr['r']);      
-      $convert[$line] = [];
-      foreach ($row as $data){
-        $dattr  = $data->attributes();
-        $type   = isset($dattr['t'])?$dattr['t']:false;
-        $col    = ord(substr($dattr['r'], 0,1)) - 0x41;
-        $val    = isset($data->v)?intval($data->v):-1;
-        $convert[$line][$col] = ($type=="s")?$str_data[$val]:$val;
-      }      
-    }
+  public function getBrands($search_text, $use_analog) {
+    $data = [
+      'PIN'         => $search_text,
+      'QUERY_TYPE'  => $use_analog?2:1
+    ];
+    $request = $this->prepareRequest($data, true, $this->_url . "ws_search/search?format=json");
+    return $request;
+  }
 
-    unset($convert[1]);
-    unset($sheet);
-    unset($strings);
+  public function getBrandsParse($json) {
+    var_dump($json);
+  }
 
-    foreach ($convert as $row){
-      $visula_articul = $row[3];
-      $articul        = $row[1];
-      $maker          = $row[0];
-      $name           = $row[2];
-      if( !$articul || !$maker ){
-        continue;
-      }
-
-      $newPriceRecord = new \backend\models\price\PriceModel();
-            
-      $newPriceRecord->setAttribute('pid',            $this->_CLSID);
-      $newPriceRecord->setAttribute('articul',        $articul);
-      $newPriceRecord->setAttribute('visual_articul', $visula_articul);
-      $newPriceRecord->setAttribute('maker',          $maker);
-      $newPriceRecord->setAttribute('name',           $name);
-      $newPriceRecord->setAttribute('price',          floatval($row[6]));
-      $newPriceRecord->setAttribute('count',          intval($row[5]));
-      $newPriceRecord->setAttribute('lot_quantity',   1);
-      $newPriceRecord->save();      
-    }
+  public function getParts($ident, $searchText) {
 
   }
 

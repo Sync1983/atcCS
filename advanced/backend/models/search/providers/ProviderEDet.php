@@ -20,7 +20,7 @@ class ProviderEDet extends Provider{
     if( !$json ){
       return $brands;
     }
-
+    
     foreach ($json as $answer_type){
 
       if( !isset($answer_type['offers'])){
@@ -53,6 +53,7 @@ class ProviderEDet extends Provider{
     $array  = json_decode($answer,true);
 
     $data = [];
+    
     foreach ($array as $searchType){
       $is_original = $searchType['type']=="pricelists_by_number";
 
