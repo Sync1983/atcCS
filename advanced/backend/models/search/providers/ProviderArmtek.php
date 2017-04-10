@@ -8,13 +8,12 @@ class ProviderArmtek extends Provider{
   
   protected function getNamesMap() {
     return [
-			"NR"      			=> "articul",
-  		"BRAND"  				=> "maker",
-		  "NAME"  				=> "name",
-		  "PRICE"     		=> "price",
-		  "D_DELIV"       => "shiping",
-      "NUM"      			=> "count",
-      "KR"            => "lot_quantity"
+      "PIN"       => "articul",
+      "BRAND"  	 => "maker",
+      "NAME"  	 => "name",
+      "PRICE"    => "price",
+      "RVALUE"   => "count",
+      "RDPRF"    => "lot_quantity"
     ];
   }
 
@@ -38,7 +37,7 @@ class ProviderArmtek extends Provider{
   }
 
   public function getBrandsParse($json) {
-    if( !isset($json['STATUS']) || ($json['STATUS']!=200) || !isset($json['RESP']) ){
+    if( !isset($json['STATUS']) || ($json['STATUS']!=200) || !isset($json['RESP']) || isset($json['RESP']['MSG'])  ){
       return [];
     }
        
@@ -47,7 +46,7 @@ class ProviderArmtek extends Provider{
     foreach( $data as $row) {
       $maker  = strtoupper($row['BRAND']);
       $maker  = preg_replace('/\W*/i', "", $maker);
-      $answer[ $maker ] = ['id'=>$this->getCLSID(), 'uid'=>$row['BRAND']];
+      $answer[ $maker ] = ['id'=>$this->getCLSID(), 'uid'=>$row['BRAND'] . "@@" . $row['PIN']];
     }
     
     return $answer;
@@ -62,27 +61,45 @@ class ProviderArmtek extends Provider{
   }
 
   public function getParts($ident, $searchText) {
+    list($brand,$articul) = explode('@@',$ident);
     $data = [
-      'PIN'         => $searchText,
-      'QUERY_TYPE'  => 2,
-      'BRAND'       => $ident
+      'PIN'         => $articul,
+      'QUERY_TYPE'  => 1,
+      'BRAND'       => $brand
     ];
 
-    $request = $this->prepareRequest($data, true, $this->_url . "ws_search/search?format=json");
+    $request    = $this->prepareRequest($data, true, $this->_url . "ws_search/search?format=json");
     $response	= $this->executeRequest($request);
-		$answer		= $this->parseResponse($response,'getParts');
+    $answer	= $this->parseResponse($response,'getParts');
     return $answer;
   }
 
   public function getPartsParse($json){
-    if( !isset($json['STATUS']) || ($json['STATUS']!=200) || !isset($json['RESP']) ){
+    if( !isset($json['STATUS']) || ($json['STATUS']!=200) || !isset($json['RESP']) || isset($json['RESP']['MSG']) ){
       return [];
     }
-
+    
     $data = $json['RESP'];
     $answer = [];
-    var_dump($json);
-    return [];
+    $date_n = new \DateTime("now");
+
+    foreach($data as $row){
+      $converted = $this->renameByMap($row, $this->getNamesMap());
+      $converted['is_analog'] = isset($row['ANALOG']) && ($row['ANALOG'] == 'X');
+      if( isset($row['DLVDT']) ){
+        $date = date_parse_from_format("YmdHis", $row['DLVDT']);
+        $date2 = new \DateTime($date['year'] . '-' . $date['month'] . '-' .$date['day']);
+        $interval = date_diff($date_n, $date2);
+        $converted['shiping'] = $interval->days;
+      } else {
+        $converted['shiping'] = 99;
+      }
+      if( !isset($converted['price']) ) {
+        continue;
+      }
+      $answer[] = $converted;
+    }
+    return $answer;
   }
 
 }
