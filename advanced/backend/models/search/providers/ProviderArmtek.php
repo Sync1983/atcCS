@@ -16,7 +16,6 @@ class ProviderArmtek extends Provider{
 
   protected function onlineRequestHeaders($ch) {
     parent::onlineRequestHeaders($ch);
-    curl_setopt($ch, CURLOPT_HEADER, true);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_MAXREDIRS, 50);
 
@@ -33,7 +32,27 @@ class ProviderArmtek extends Provider{
   }
 
   public function getBrandsParse($json) {
-    var_dump($json);
+    if( !isset($json['STATUS']) || ($json['STATUS']!=200) || !isset($json['RESP']) ){
+      return [];
+    }
+       
+    $data = $json['RESP'];
+    $answer = [];
+    foreach( $data as $row) {
+      $maker  = strtoupper($row['BRAND']);
+      $maker  = preg_replace('/\W*/i', "", $maker);
+      $answer[ $maker ] = ['id'=>$this->getCLSID(), 'uid'=>$row['BRAND']];
+    }
+    
+    return $answer;
+  }
+
+  public function parseResponse($answer_string, $method){
+    $xml = json_decode($answer_string, true);
+    if($this->hasMethod($method."Parse") ){      
+      return call_user_func([$this,$method."Parse"],$xml);
+    }
+    return [];
   }
 
   public function getParts($ident, $searchText) {
