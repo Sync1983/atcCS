@@ -33,6 +33,10 @@ atcCS.config(['$routeProvider', '$locationProvider',
         templateUrl: '/news.html',
         controller: 'newsControl',
         controllerAs: 'atcCS' 
+      }).when('/contacts', {
+        caseInsensitiveMatch: true,
+        templateUrl: '/contacts.html',
+        controllerAs: 'atcCS' 
       });
 
     $locationProvider.html5Mode(true);
