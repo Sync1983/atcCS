@@ -1,0 +1,12 @@
+.contacts{
+  padding: 20px;
+  a{
+    color: black;
+    text-decoration: underline;
+    
+    &:active{
+      color:  black;
+    }
+  }
+}
+
