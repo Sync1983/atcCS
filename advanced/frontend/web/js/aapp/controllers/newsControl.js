@@ -28,6 +28,9 @@ function newsActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $events, 
   
   this.newsUpdate = function(event, data){
     $scope.news = data.data || [];
+    for(var item in data.data){
+        data.data[item].date = Date.parse(data.data[item].date);        
+    }
     console.log("News:",data);
   };
   

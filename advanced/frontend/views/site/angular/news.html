@@ -1,15 +1,16 @@
 <div class="news">
   <ul>
-    <li  ng-repeat="row in news">
+    <li  ng-repeat="row in news | filter:{ show: true }">
       <div class="news-row">
         <div class="news-image">
-          <img src="{{row.url}}" alt="{{row.title}}"/>
+          <span><img src="{{row.url}}" alt="{{row.title}}"/></span>
         </div>
         <div class="news-header">
-          {{row.title}}
+          <p>{{row.date | date: 'd.M.yyyy'}}</p>        
+          <p>{{row.title}}</p>
         </div>
         <div class="news-text">
-          
+          {{row.full_text}}
         </div>
       </div>
     </li>    
