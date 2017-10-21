@@ -80,4 +80,4 @@ ObjectHelper.createRequest = function(controller, funct, params,isPost){
 
 
 var eventsNames = new eventsNamesList();
-var atcCS = angular.module('atcCS',['ngCookies','ngRoute', 'ngTable','uiSwitch']);
+var atcCS = angular.module('atcCS',['ngCookies','ngRoute', 'ngTable','uiSwitch','ngSanitize']);

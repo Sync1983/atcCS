@@ -80,7 +80,7 @@ ObjectHelper.createRequest = function(controller, funct, params,isPost){
 
 
 var eventsNames = new eventsNamesList();
-var atcCS = angular.module('atcCS',['ngCookies','ngRoute', 'ngTable','uiSwitch']);
+var atcCS = angular.module('atcCS',['ngCookies','ngRoute', 'ngTable','uiSwitch','ngSanitize']);
 
 Error.stackTraceLimit = 25;
 atcCS.config(['$httpProvider', function ($httpProvider) {
@@ -584,7 +584,8 @@ function newsActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $events, 
   this.newsUpdate = function(event, data){
     $scope.news = data.data || [];
     for(var item in data.data){
-        data.data[item].date = Date.parse(data.data[item].date);        
+        data.data[item].date = Date.parse(data.data[item].date);  
+        //data.data[item].full_text = htmlString(data.data[item].full_text);
     }
     console.log("News:",data);
   };

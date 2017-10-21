@@ -78,7 +78,7 @@ MainPage
 </script>
  <!-- Collect from 'frontend/views/site/angular//news.html' file -->
 <script type="text/ng-template" id="/news.html">
-<div class="news">  <ul>    <li  ng-repeat="row in news | filter:{ show: true }">      <div class="news-row">        <div class="news-image">          <span><img src="{{row.url}}"/></span>        </div>        <div class="news-header">          <p>{{row.date | date: 'd.M.yyyy'}}</p>                  <p>{{row.title}}</p>        </div>        <div class="news-text">          {{row.full_text}}        </div>      </div>    </li>      </ul></div>
+<div class="news">  <ul>    <li  ng-repeat="row in news | filter:{ show: true }">      <div class="news-row">        <div class="news-image">          <span><img src="{{row.url}}"/></span>        </div>        <div class="news-header">          <p>{{row.date | date: 'd.M.yyyy'}}</p>                  <p>{{row.title}}</p>        </div>        <div class="news-text" ng-bind-html="row.full_text">         </div>      </div>    </li>      </ul></div>
 </script>
  <!-- Collect from 'frontend/views/site/angular//orders.html' file -->
 <script type="text/ng-template" id="/orders.html">
