@@ -29,7 +29,8 @@ class PartsBasketModel extends ActiveRecord{
       'wait_time',
       'code',
       'date',
-      'basket_id'
+      'basket_id',
+      'rp'
     ];
   }
 
@@ -37,7 +38,7 @@ class PartsBasketModel extends ActiveRecord{
     return [
       [['id',"provider","maker_id","count","lot_quantity","sell_count",'wait_time',"shiping"],'integer'],
       [['articul',"maker","name","stock","info","comment","code"],'string'],
-      [["price"],'number'],
+      [["price","rp"],'number'],
       [["is_original","price_change"],'boolean'],
       ['date',  \backend\controllers\validators\DateValidator::className()],      
       ['basket_id', \backend\controllers\validators\BasketValidator::className()],

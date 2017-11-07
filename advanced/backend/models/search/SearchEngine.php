@@ -73,7 +73,8 @@ class SearchEngine extends Object{
         $row['prvd']    = $provider->getName();        
       }
       
-      $row['maker_id']  = $clsid;
+      $row['maker_id']  = $clsid; 
+      $row['rp']        = round($price,2);
       $row['price']     = round($price + ($price*$markup)/100,2);
       $maker            = mb_convert_encoding($row['maker'], 'UTF-8', 'UTF-8');//$maker          = preg_replace('/\W*/i', "", $row['maker']);
       $row['maker']     = $this->brandsRename(strtoupper($maker));
