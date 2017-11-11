@@ -40,7 +40,7 @@ class ProviderIxora extends Provider{
     return $answer;
   }
   
-  public function getParts($ident) {
+  public function getParts($ident, $searchtext) {
     list($code,$maker) = explode('@@', $ident);
     $data   = ['Maker'=>$maker,'Number'=>$code,'StockOnly'=>'false','SubstFilter'=>'All'];
     $reqest = $this->prepareRequest($data,true, $this->_url."/FindXML");
@@ -52,10 +52,13 @@ class ProviderIxora extends Provider{
     }
 		
     $data   = $array['DetailInfo'];
+    if( isset($data['number']) ){
+      $data = [$data];
+    }
     $result = [];
     foreach ($data as $item){
       $converted = $this->renameByMap($item, $this->getNamesMap());
-			$converted['is_original'] = ($converted['is_original']==='Analog')?false:true;
+			$converted['is_original'] = (isset($converted['is_original']) && $converted['is_original']==='Analog')?false:true;
       $result[] = $converted;
     }
     return $result;    

@@ -79,4 +79,8 @@ function eventsNamesList(){
   this.eventsSearch= function(){
     return 'eventSearchScope';
   };
+  
+  this.eventsNews= function(){
+    return 'eventNewsScope';
+  };
 };

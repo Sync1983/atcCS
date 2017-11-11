@@ -1,0 +1,49 @@
+<table class="table table-condensed table-bordered table-striped">
+  <colgroup>
+    <col ng-repeat="item in $columns track by $index" width ="{{item.width}}%"/>      
+  </colgroup>
+  <thead> 
+    <tr>
+      <th ng-repeat="(key,item) in $columns track by $index" class="table-header" width="{{item.width}}%" ng-click="onSortClick($event,key)">
+        <div class="table-head-text">
+          {{item.name}}
+          <div class="table-head-sort">
+            <span class="glyphicon glyphicon-sort-by-attributes" ng-if="sortDir(key)===1"></span>
+            <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-if="sortDir(key)===-1"></span>
+          </div>
+        </div>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat-start="item in $rowGroups track by $index">
+      <td colspan="{{getColumnsCount()}}" class="group" ng-class="(item.show)?'group-open':'group-close'">
+        <div ng-click="onToggle(item)">
+          {{item.name}}          
+        </div>
+      </td>
+    </tr>  
+    <tr ng-if="item.show" ng-repeat-start="row in $data| filter:{$group: item.name} | filter:dataFilter | limitTo:item.extend?undefined:15 as showed" ng-class="isHiLight(row)&&'table-row-hilight'">
+      <td ng-repeat="(col,info) in $columns" style = "text-align: {{info.align?info.align:'center'}}">        
+        <table-template data="row" template="getTemplate(col)" parent-scope="extScope">    
+        </table-template>
+      </td>
+    </tr>
+    <tr ng-repeat-end=""></tr>  
+    <tr ng-if="item.show && (showed.length >= 15)">
+      <td colspan="{{getColumnsCount()}}">
+        <div ng-click="item.extend = !item.extend" class="extend-show">
+          Показать <span ng-if="!item.extend">весь</span><span ng-if="item.extend">краткий</span> список {{}}
+        </div>
+      </td>
+    </tr>
+    <tr ng-if="item.show && (showed.length === 0)">
+      <td colspan="{{getColumnsCount()}}">
+        <div class="extend-show">
+          Нет данных
+        </div>
+      </td>
+    </tr>
+    <tr ng-repeat-end=""></tr>  
+  </tbody>
+</table>

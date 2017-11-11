@@ -2,8 +2,10 @@ List of included views
 ajax-button.html
 basket.html
 catalog.html
+contacts.html
 main-page.html
 modal-window.html
+news.html
 orders.html
 parts-list.html
 parts/_articul-info-part.html
@@ -20,4 +22,5 @@ parts/_tile-selector.html
 parts/_tree-part.html
 search-brands.html
 search-line.html
+table-view.html
 window.html

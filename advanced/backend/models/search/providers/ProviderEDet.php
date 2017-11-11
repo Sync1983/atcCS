@@ -15,7 +15,11 @@ class ProviderEDet extends Provider{
   }
 
   public function getBrandsParse($json) {
+
     $brands = [];
+    if( !$json ){
+      return $brands;
+    }
     
     foreach ($json as $answer_type){
 
@@ -38,7 +42,7 @@ class ProviderEDet extends Provider{
     return $brands;
   }
   
-  public function getParts($ident) {
+  public function getParts($ident, $searchtext) {
     list($brand,$number) = explode("@@", $ident);
 
     $data   = ['number'=>$number];
@@ -49,6 +53,7 @@ class ProviderEDet extends Provider{
     $array  = json_decode($answer,true);
 
     $data = [];
+    
     foreach ($array as $searchType){
       $is_original = $searchType['type']=="pricelists_by_number";
 

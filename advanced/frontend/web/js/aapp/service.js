@@ -35,6 +35,37 @@ var catalogBack = function($http, $events){
     
 };
 
+var newsBack = function($http, $events){
+  'use strict';
+  var self = this;
+  self.events = null;
+  const EVENT_UPDATE  = 'update';  
+  const EVENT_GETDATA = 'getData';  
+  
+  function init(){
+    self.events = $events.get(eventsNames.eventsNews());    
+    self.events.setListner(EVENT_GETDATA, getData);
+  };
+  
+  function getData(event, page){    
+    var request = ObjectHelper.createRequest('news','get-data',{ params: { path: String(page) }});    
+    
+    function serverResponse(data){      
+      var answer = data && data.data;      
+      self.events.broadcast(EVENT_UPDATE,answer);
+    };
+    
+    function serverError( error ){
+      console.log('getNews Server error:', error );      
+    }
+    
+    $http(request).then(serverResponse,serverError);
+  };
+  
+  init();  
+    
+};
+
 atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$events',
   function($http, $cookies, $rootScope, $notify, $q, $events){
   'use strict';
@@ -167,7 +198,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
         model.baskets = data.baskets;
         model.info    = data.info;
         model.role    = data.role * 1;
-        model.isAdmin = (model.role==1)?true:false;
+        model.isAdmin = (model.role === 1)?true:false;
         
         setActiveBasket();
         
@@ -291,7 +322,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
     $http(req).then(serverResponse);
   };
   
-  model.getParts = function getParts(CLSID, ident, callback){
+  model.getParts = function getParts(CLSID, ident, searchText,callback){
     var req = {
       method: 'GET',
       url: URLto('search','get-parts'),
@@ -299,7 +330,8 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
       params: {
         params: {
           clsid: String(CLSID),
-          ident: String(ident)          
+          ident: String(ident),
+          search: String(searchText)
         }
       }
     };
@@ -447,6 +479,8 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
   };
   
   model.catalog = new catalogBack($http,$events);
+  
+  model.news    = new newsBack($http,$events);
   
   init();
   return model; 

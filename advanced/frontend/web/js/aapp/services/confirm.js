@@ -42,7 +42,7 @@ function confirm($rootScope,$wndMng,$q){
   
   function init(){
     var cover = $("<div class=\"cover\"></div>");
-    var wnd   = "<span>{{text}}</span>";
+    var wnd   = "<div class=\"confirm-container\"> <span class=\"confirm-text\">{{text}}</span> </div>";
     var status= "<div class=\"status-buttons\"><ul><li ng-repeat=\"btn in buttons\"><button class=\"btn\" ng-class=\" btn.style\" ng-click=\"onSelect(btn.status);\">{{btn.name}}</button></li></ul></div>";
     $('body').append(cover);    
     model.cover = cover;    

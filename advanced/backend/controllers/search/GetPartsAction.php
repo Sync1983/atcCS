@@ -11,14 +11,15 @@ class GetPartsAction extends Action{
   public function run($params){
     $data   = json_decode($params);
     $clsid  = strval( \yii\helpers\ArrayHelper::getValue($data, 'clsid','') );
-    $ident  = strval( \yii\helpers\ArrayHelper::getValue($data, 'ident','') );    
+    $ident  = strval( \yii\helpers\ArrayHelper::getValue($data, 'ident','') );
+    $searchText = strval( \yii\helpers\ArrayHelper::getValue($data, 'search','') );
     
     if( !$clsid || !$ident ){
       return ['count' => 0];
     }
 
     $engine   = new \backend\models\search\SearchEngine();
-    $answer   = $engine->getParts($clsid, $ident);
+    $answer   = $engine->getParts($clsid, $ident, $searchText);
 
     return ['count'  => count($answer),
             'rows'    => $answer];

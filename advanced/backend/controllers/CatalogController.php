@@ -13,22 +13,10 @@ class CatalogController extends Controller{
   public $enableCsrfValidation = false;
   
   public function actions() {
-    return [
-      'add' => [
-        'class'  => basket\AddAction::className(),
-      ],      
+    return [      
       'get-data' => [
         'class'  => catalog\GetDataAction::className(),
-      ],
-      'change' => [
-        'class'  => basket\ChangeAction::className(),
-      ],
-      'update' => [
-        'class'  => basket\UpdateAction::className(),
-      ],
-      'delete' => [
-        'class'  => basket\DeleteAction::className(),
-      ],
+      ],      
     ];
   }
 

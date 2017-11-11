@@ -1,0 +1,17 @@
+<div class="news">
+  <ul>
+    <li  ng-repeat="row in news | filter:{ show: true }">
+      <div class="news-row">
+        <div class="news-image" >
+          <img src="{{row.url}}"/>
+        </div>
+        <div class="news-header">
+          <p>{{row.date | date: 'd.M.yyyy'}}</p>        
+          <p>{{row.title}}</p>
+        </div>
+        <div class="news-text" ng-bind-html="row.full_text"> 
+        </div>
+      </div>
+    </li>    
+  </ul>
+</div>

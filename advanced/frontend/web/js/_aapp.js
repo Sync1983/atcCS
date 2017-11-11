@@ -1,7 +1,7 @@
 "use strict";/* global ObjectHelper */
 
-var ObjectHelper = {};
-
+var ObjectHelper = {}; 
+ 
 ObjectHelper.count = function(obj){
   var count = 0;  
   for(var prop in obj) {
@@ -39,6 +39,30 @@ ObjectHelper.concat = function (a,b){
   return a;
 };
 
+ObjectHelper.merge = function (a,b){
+  var result = new Object();
+  if( !a ){
+    a = {};
+  }
+  if( !b ){
+    b = {};
+  }
+  
+  for(var keyA in a){
+    result[keyA] = a[keyA];
+  }
+  
+  for(var keyB in b){
+    if( result.hasOwnProperty(keyB) ){
+      result[keyB] = ObjectHelper.concat(result[keyB],b[keyB]);
+    } else{
+      result[keyB] = b[keyB];      
+    }
+  }  
+  
+  return result;
+};
+
 ObjectHelper.URLto = function(controller,funct,local){
   var URL   = serverURL + "/index.php";
   return (local?"":URL) + "?r=" + controller + "/" + funct;  
@@ -56,7 +80,7 @@ ObjectHelper.createRequest = function(controller, funct, params,isPost){
 
 
 var eventsNames = new eventsNamesList();
-var atcCS = angular.module('atcCS',['ngCookies','ngRoute', 'ngTable','uiSwitch']);
+var atcCS = angular.module('atcCS',['ngCookies','ngRoute', 'ngTable','uiSwitch','ngSanitize']);
 
 Error.stackTraceLimit = 25;
 atcCS.config(['$httpProvider', function ($httpProvider) {
@@ -101,6 +125,15 @@ atcCS.config(['$routeProvider', '$locationProvider',
         caseInsensitiveMatch: true,
         templateUrl: '/catalog.html',
         controller: 'catalogControl',
+        controllerAs: 'atcCS' 
+      }).when('/news/:page?', {
+        caseInsensitiveMatch: true,
+        templateUrl: '/news.html',
+        controller: 'newsControl',
+        controllerAs: 'atcCS' 
+      }).when('/contacts', {
+        caseInsensitiveMatch: true,
+        templateUrl: '/contacts.html',
         controllerAs: 'atcCS' 
       });
 
@@ -241,8 +274,8 @@ atcCS.controller( 'basketControl', [
         show:         false
       });
       
-    $wndMng.setBodyByTemplate($scope.editWnd, '/parts/_basket-edit.html',   $scope);  
-    $wndMng.setBodyByTemplate($scope.orderWnd, '/parts/_basket-order.html',   $scope);  
+    $wndMng.setBodyByTemplate($scope.editWnd,  '/parts/_basket-edit.html',   $scope);  
+    $wndMng.setBodyByTemplate($scope.orderWnd, '/parts/_basket-order.html',  $scope);  
     $wndMng.setStatusBar($scope.editWnd, confirmButton,   $scope);  
     $wndMng.setStatusBar($scope.orderWnd, orderButton,   $scope);  
         
@@ -520,6 +553,64 @@ atcCS.controller( 'catalogControl', [
 }]);
 
 
+/* global atcCS, eventsNames */
+
+function newsActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $events, $routeParams, $route){  
+  'use strict';
+  var searchEvents;  
+  var newsEvents;
+  var userEvents;
+  var page;
+  var self = this;
+  
+  function init(){
+    searchEvents = $events.get(eventsNames.eventsSearch());    
+    newsEvents   = $events.get(eventsNames.eventsNews());    
+    userEvents   = $events.get(eventsNames.eventsUser());    
+    page         = $routeParams.page || false;    
+    //***************************************
+    $scope.isLogin    = $user.isLogin;
+    $scope.isAdmin    = $user.isAdmin; 
+    $scope.news       = [];
+    //*************************************** 
+    newsEvents.broadcast("getData", page);
+  };
+  
+  this.userDataUpdate = function(event,data){    
+    $scope.isLogin    = data.isLogin;        
+    $scope.isAdmin    = data.isAdmin;    
+  };
+  
+  this.newsUpdate = function(event, data){
+    $scope.news = data.data || [];
+    for(var item in data.data){
+        data.data[item].date = Date.parse(data.data[item].date);  
+        //data.data[item].full_text = htmlString(data.data[item].full_text);
+    }
+    console.log("News:",data);
+  };
+  
+  this.onClick = function(row){
+    if(row.is_group){        
+        $route.updateParams({path:row.path});
+        return;
+     }
+     searchEvents.broadcast("StartSearchText",row.articul);     
+  };
+  
+  //******************************************
+  init();  
+  
+  userEvents.setListner("userDataUpdate",self.userDataUpdate);
+  newsEvents.setListner("update",self.newsUpdate);
+};
+
+atcCS.controller( 'newsControl', ['$scope', 'User' ,'$rootScope', '$confirm','$wndMng','$notify', '$events', '$routeParams', '$route', 
+  function($scope,$user,$rootScope,$confirm,$wndMng,$notify, $events, $routeParams, $route ) {
+        return new newsActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $events, $routeParams, $route);
+}]);
+
+
 /* global atcCS */
 
 atcCS.controller( 'ordersControl', [
@@ -729,14 +820,14 @@ atcCS.controller( 'ordersControl', [
 }]);
 
 
-/* global atcCS, ObjectHelper */
+/* global atcCS, ObjectHelper, eventsNames */
 
 atcCS.controller( 'partsSearch', [
-    '$scope','$filter', 'User' ,'$routeParams','$rootScope','searchNumberControl', 'storage', 'NgTableParams', 'partOutFilter', '$notify', '$q', '$log',
-    function($scope,$filter,$user,$routeParams,$rootScope,$snCtrl, $storage, NgTableParams, $partOut, $notify, $q, $log ) {
+    '$scope', '$filter', 'User' ,'$routeParams','$rootScope','searchNumberControl', 'storage', '$events', 'partOutFilter', '$notify', '$q', '$log', 'tableViewData',
+    function($scope,$filter,$user,$routeParams,$rootScope,$snCtrl, $storage, $events, $partOut, $notify, $q, $log, tableViewData ) {
     'use strict';    
     var brands = false;
-    var requestParams = {};
+    var searchEvents = $events.get(eventsNames.eventsSearch());
     $scope.loading    = {};    
     $scope.data       = [];
     $scope.timestamp  = $routeParams.timestamp  || false;
@@ -751,80 +842,89 @@ atcCS.controller( 'partsSearch', [
     
     $snCtrl.change($scope.searchText); 
     
-    $scope.tableParams = new NgTableParams(
-      { 
-        group: {
-          "maker" : "asc",
-           sortGroups: false
-        },
-        showGroupHeader: false,
-        hidePager: true,        
+    $scope.table = new tableViewData({
+      $columns: {
+        maker:    {name: "Производитель", width:"10"},
+        articul:  {name: "Артикул",       width:"15"},
+        name:     {name: "Наименование",  width:"40", align: "left"},
+        price:    {name: "Цена",          width:"8"},
+        shiping:  {name: "Срок",          width:"8"},
+        count:    {name: "Наличие",       width:"8"},
+        basket:   {name: "В корзину",     width:"8"}        
       },
-      {        
-        counts: [],        
-        applySort:false,
-        applyMultipage:false,
-        getData: function(params){            
-          var sorting = params.sorting();
-          
-          var originalArray = [];
-          var notOriginalArray = [];
-          var resultArray = [];
-          
-          for( var key in $scope.data){
-            var item        = $scope.data[key];
-            item.viewPrice  = item.price.toFixed(2);
-            item.stdArticul = String(item.articul).toUpperCase();
-            item.key        = key;
-            
-            if( $scope.markup ){
-              item.viewPrice = (item.price * (1 + $scope.markup/100)).toFixed(2);              
-            }
-            
-            if( item.maker && 
-                item.articul && 
-                (item.maker === $scope.brand) && 
-                (item.stdArticul  === $scope.articulCmp ) ){
-              originalArray.push(item);              
-            } else {
-              notOriginalArray.push(item);
-            }
-          }
-          
-          resultArray = originalArray.sort(sortFunction(sorting));
-          if( $scope.analogShow ){
-            notOriginalArray.sort(sortFunction(sorting));
-            resultArray = ObjectHelper.concat(originalArray,notOriginalArray);            
-          }
-          
-          return resultArray;
-        }
+      template: {
+        articul: ["<span style='float:none'>{{row.articul}}",
+                  "  <div class='articul-search-div'>",
+                  "    <button ng-click='onArticulSearch(row.articul)'>",
+                  "      <span class='glyphicon glyphicon-search'>",
+                  "      </span>",
+                  "    </button>",
+                  "  </div>",
+                  "</span>"].join(""),
+        basket:  ["<span>",
+                  "  <button ng-click='onAdd(row)' class='basket-add-button'",
+                  "           ng-show='isLogin&&!row.adding&&!row.error'>",
+                  "     <span class='glyphicon glyphicon-plus'></span>",
+                  "     Добавить",
+                  "  </button>",
+                  "  <span class='load-info' ng-show='row.adding'></span>", 
+                  "</span>"].join(""),
+        name:     "<span title='{{row.name}}'><span ng-if='isAdmin'>{{row.prvd}} : {{row.stock}} </span>{{row.name}}</span>",
+        price:    "<span title='{{(isAdmin && (row.price) || showWithMarkup(row.price) ) | number:2}}'>{{showWithMarkup(row.price) | number:2}}</span>",
+        count:   ["<span>{{row.count}}",
+                  " <div class='lot-quantity' title='Минимальное количество для заказа' ng-show='(row.lot_quantity>1)'>",
+                  "   <span class='glyphicon glyphicon-th-large'></span> {{row.lot_quantity}}",
+                  " </div>",
+                  "</span>"].join("")
+      },
+      hlight: {
+        articul: $scope.articulCmp
+      },
+      sortRows: sortFunction,
+      sortGroups: sortHeader,
+      sort: {
+        maker: 1,
+        price: 1,
+        shiping: 1
+      },
+      filter: function(row){
+        return $scope.analogShow || (row.isOriginal===1);
       }
-    );    
+    });
     
-    brands = $storage.get($scope.timestamp);
+    $scope.self = $scope; 
     
-    if( $scope.timestamp && brands ) {      
+    function getRequsetParams(){
+      var requestParams;
+      brands = $storage.get($scope.timestamp);
+    
+      if( !$scope.timestamp || !brands ) {       
+        return {};
+      }
+      
       for(var brand in brands.rows){        
         if( brand !== $scope.brand ){
           continue;
         }
         requestParams = brands.rows[brand];
-      }      
+      }            
+      
+      return requestParams;
     }
     
-    for(var i in requestParams){
-      var clsid = requestParams[i].id;
-      var ident = requestParams[i].uid;
-      if( $storage.get($scope.timestamp+'@'+clsid+'@'+ident) ){
-        
-        serverResponse(clsid,ident,$storage.get($scope.timestamp+'@'+clsid+'@'+ident) );
-                
-      } else{
-        $user.getParts(clsid,ident,serverResponseCall(clsid, ident));
-        $scope.loading[clsid] = clsid;        
-      }
-    }
+    function loadingData(requestParams){
+      for(var i in requestParams){
+        var clsid = requestParams[i].id;
+        var ident = requestParams[i].uid;
+        var storage = $storage.get($scope.timestamp+'@'+clsid+'@'+ident+'@'+$scope.searchText);
+        if( storage ){                
+          serverResponse(clsid,ident,storage);                
+        } else{
+          $user.getParts(clsid,ident,$scope.searchText,serverResponseCall(clsid, ident));
+          $scope.loading[clsid] = clsid;        
+        }
+      }      
+    }    
     
     function serverResponseCall($clsid, $ident){
       return function(data){
@@ -834,42 +934,119 @@ atcCS.controller( 'partsSearch', [
     
     function serverResponse(clsid,ident,data){
       delete($scope.loading[clsid]);
+      
       if( !data ){
         return;
       }
-      for(var i in data.rows){
-        data.rows[i].provider = clsid;
-      }
-      $storage.set($scope.timestamp+'@'+clsid+'@'+ident,data);
-      $scope.data = ObjectHelper.concat($scope.data,data.rows);
-      $scope.tableParams.reload();
-      $log.debug($scope.tableParams);
+      
+      $storage.set($scope.timestamp+'@'+clsid+'@'+ident+'@'+$scope.searchText,data);      
+      $scope.table.addData(data.rows);
     }
     
-    function sortFunction($sort){
-      return function(itemA,itemB){
-        var result = 0;        
-        for(var key in $sort){
-          var direct = ($sort[key]==='desc')?-1:1;
-          var valA   = itemA[key];
-          var valB   = itemB[key];
-          if( (key==='viewPrice') || (key==='price') || (key==='shiping') || (key==='count') ){
-            valA  *= 1;
-            valB  *= 1;            
+    function load(){
+      loadingData( getRequsetParams() );
+    }
+    
+    function sortFunction(sort){
+      
+      function isNumeric(obj) {
+        return !isNaN(obj - parseFloat(obj));
+      }
+      
+      function calcWeight(rowA, rowB, sort){
+        var weightA = 0;
+        var weightB = 0;        
+        var A,B;
+        if( String(rowA.articul).toUpperCase() === $scope.articulCmp ){
+          weightA -= 100;
+        }
+        if( String(rowB.articul).toUpperCase() === $scope.articulCmp ){
+          weightB -= 100;
+        }
+          
+        for(var cKey in sort){
+          
+          if( isNumeric(rowA[cKey]) && isNumeric(rowB[cKey]) ){
+            A = parseFloat(rowA[cKey]);
+            B = parseFloat(rowB[cKey]);
+          } else {
+            A = String(rowA[cKey]).toUpperCase();
+            B = String(rowB[cKey]).toUpperCase();            
           }
           
-          result += (valA>valB)?direct:0;
-          result -= (valA<valB)?direct:0;
+          if( A > B ){
+            weightA += sort[cKey];
+          } else if( A < B){
+            weightB += sort[cKey];            
+          }
+          
         }
-        return result;
+        
+        
+        if( weightA > weightB ){
+          return 1;
+        } else if( weightA < weightB ){
+          return -1;
+        }
+        
+        return 0;
+        
+      }
+      
+      return function(rowA, rowB){
+        return calcWeight(rowA, rowB, sort);
+      };
+    }   
+    
+    function sortHeader(sort) {
+      
+      return function(headA, headB){
+        var res = 0, brandOffset = 0;
+        
+        if( headA.name === $scope.brand ){
+          brandOffset -= 10;
+        }
+        if( headB.name === $scope.brand ){
+          brandOffset += 10;
+        }
+        
+        if( sort.maker === undefined ){
+          return brandOffset;
+        }
+        
+        if( headA.name > headB.name ){
+          res = 1;
+        } else if( headA.name < headB.name ){
+          res = -1;
+        }
+        return brandOffset + res * sort.maker;
       };
     }
     
-    $scope.Add  = function(key){
-      if( key === undefined ){
-        return;
+    $scope.showWithMarkup = function(price){
+      if( $scope.markup === 0){
+        return price;
       }
-      var item = $scope.data[key];
+      return price*(1 + $scope.markup/100);
+    };
+    
+    $scope.showMarkupName = function(){
+      if( $scope.markup === 0){
+        return "";
+      }
+      return " [" + $scope.markupName + "]";
+    };
+    
+    $scope.table.$columns.price.name = "Цена" + $scope.showMarkupName();
+    
+    $scope.onArticulSearch = function(articul){
+      searchEvents.broadcast("StartSearchText",articul);      
+    };
+    
+    $scope.onAdd  = function(item){      
+      /*if( item === undefined ){
+        return;
+      }*/      
       
       var onAnswer = function(aitem){
         return function(answer){
@@ -891,25 +1068,22 @@ atcCS.controller( 'partsSearch', [
       item.sell_count = item.lot_quantity;
       item.adding = true;      
       $user.toBasket(item, onAnswer(item));
+      return false;
     };
     
-    $scope.onCollapse = function(){
-      var data = $scope.tableParams.data;
-      angular.forEach(data,function(item){        
-        item.$hideRows = true;
-        return item;
-      });
-      
+    $scope.onCollapse = function(){      
+      var data = $scope.table.$rowGroups;
+      for(var i in data){
+        data[i].show = false;
+      }
       return false;
     };
     
     $scope.onExpand = function(){
-      var data = $scope.tableParams.data;
-      angular.forEach(data,function(item){        
-        item.$hideRows = false;
-        return item;
-      });
-      
+      var data = $scope.table.$rowGroups;
+      for(var i in data){
+        data[i].show = true;
+      }      
       return false;
     };
     
@@ -921,14 +1095,15 @@ atcCS.controller( 'partsSearch', [
     $rootScope.$on('markupValueChange', function(event, data){
       $scope.markup     = data.value;
       $scope.markupName = data.value?data.name:'';
-      $scope.tableParams.reload();      
+      $scope.table.$columns.price.name = "Цена" + $scope.showMarkupName();      
     });
     
-    $rootScope.$on('userDataUpdate', 
-      function(event){        
-        $scope.isLogin = $user.isLogin;        
+    $rootScope.$on('userDataUpdate', function(event){        
+        $scope.isLogin = $user.isLogin;         
+        $scope.isAdmin = $user.isAdmin;         
      });   
     
+    load();
 }]);
 /* global atcCS */
 
@@ -1489,6 +1664,249 @@ atcCS.directive('sinput', function (){
     }
   };
 } );
+/* global atcCS, ObjectHelper */
+
+function tableViewFactory($rootScope, $log, $filter){
+  return tableViewCtrl;
+  
+  function tableViewCtrl($conf){
+    
+    var self = this;
+    
+    function sortGroups(sort){
+      return function(headA, headB){
+        if( headA.name > headB.name ){
+          return 1;
+        } else if( headA.name < headB.name ){
+          return -1;
+        }
+        return 0;
+      };
+    }
+    
+    function sortRows(sort){
+      
+      function isNumeric(obj) {
+        return !isNaN(obj - parseFloat(obj));
+      }
+      
+      function calcWeight(rowA, rowB, sort){
+        var weightA = 0;
+        var weightB = 0;        
+        var A,B;
+        
+        for(var cKey in sort){
+          
+          if( isNumeric(rowA[cKey]) && isNumeric(rowB[cKey]) ){
+            A = parseFloat(rowA[cKey]);
+            B = parseFloat(rowB[cKey]);
+          } else {
+            A = String(rowA[cKey]).toUpperCase();
+            B = String(rowB[cKey]).toUpperCase();            
+          }
+          
+          if( A > B ){
+            weightA += sort[cKey];
+          } else if( A < B){
+            weightB += sort[cKey];            
+          }
+          
+        }
+        
+        if( weightA > weightB ){
+          return 1;
+        } else if( weightA < weightB ){
+          return -1;
+        }
+        
+        return 0;
+        
+      }
+      
+      return function(rowA, rowB){
+        return calcWeight(rowA, rowB, sort);
+      };
+    }
+    
+    function reSort(obj){
+      self.$rowGroups.sort(self.sortGroups(obj));
+      self.$data.sort(self.sortRows(obj));      
+    }
+    
+    function addRowGroup($group, $data){      
+      for(var i in $data){        
+        $data[i]['$group'] = $group;
+      }
+    }
+    
+    function addRowData($data){
+      for(var i in $data){
+        self.$data.push($data[i]);
+      }
+    }
+    
+    function addRowGroupItem(name){
+      
+      for(var i in self.$rowGroups){
+        if( self.$rowGroups[i].name === name ){
+          return;
+        }
+      }
+      
+      self.$rowGroups.push({
+          name: name, 
+          show: true, 
+          extend: false});
+    }
+    
+    function addData($newData){
+      
+      for(var mKey in $newData){
+        var data = $newData[mKey];        
+        addRowGroup(mKey, data);
+        addRowData(data);
+        addRowGroupItem(mKey);        
+      }
+      
+      self.reSort(self.sort);
+    }
+    
+    function initDefault($init){      
+      self.$columns    = {};
+      self.$rowGroups  = [];
+      self.$rows       = [];
+      self.$data       = [];
+      self.hlight      = {};
+      self.template    = {};
+      self.addData     = addData;
+      self.sortGroups  = sortGroups;
+      self.sortRows    = sortRows;
+      self.reSort      = reSort;
+      self.filter      = undefined;
+      self.sort        = {};
+      
+      for(var i in $init){
+        self[i] = $init[i];
+      }
+    }
+    
+    initDefault($conf);
+    
+    return self;
+    
+  }
+  
+}
+
+atcCS.factory('tableViewData', ['$rootScope', '$log', '$filter', tableViewFactory]);
+
+
+atcCS.directive('tableTemplate', function ($compile){
+  return {    
+    priority: 0,
+    terminal: false,
+    restrict: 'E',
+    replace: true,
+    template: "", 
+    transclude: false,    
+    scope: {
+      tpl: "=template",
+      row: "=data",
+      scp: "=parentScope"
+    },
+    link: function(scope, element, attrs){
+      var newScope = scope.scp.$new(false);
+      newScope.row = scope.row;
+      element.replaceWith( $compile(scope.tpl)(newScope) );      
+    }    
+  };
+} );
+
+function tableViewController($compile, $parse, $sce){
+  return function($scope, $element, $attrs, $transclude){        
+    var model         = $scope.bindModel;    
+    
+    $scope.$columns   = model.$columns;
+    $scope.$rows      = model.$rows;
+    $scope.$rowGroups = model.$rowGroups;
+    $scope.$sort      = model.sort;
+    $scope.$data      = model.$data;
+    $scope.template   = model.template;
+    
+    
+    $scope.isHiLight = function(row){
+      var flag = true;
+      
+      for( var hKey in model.hlight){
+        if( (!model.hlight[hKey]) || ( String(row[hKey]).toUpperCase() !== String(model.hlight[hKey]).toUpperCase() )){
+          flag = false;
+        }
+      }
+      return flag;
+    };
+    
+    $scope.onToggle = function(item){
+      item.show = !item.show;
+      return false;
+    };
+    
+    $scope.onSortClick = function(event,key){
+      var add = event.ctrlKey;
+      var hasVal = $scope.$sort.hasOwnProperty(key);
+      var val = hasVal?($scope.$sort[key]):1;
+      var newVal = (val*-1);
+              
+      if( !add ){
+        $scope.$sort = {};
+      }
+      
+      $scope.$sort[key] = newVal;     
+      model.reSort($scope.$sort);
+    };
+    
+    $scope.sortDir = function(key){
+      return ($scope.$sort[key] || 0);
+    };
+    
+    $scope.getTemplate = function (key){           
+      return ($scope.template[key] || "<span>{{row."+key+"}}</span>");
+    };
+    
+    $scope.getColumnsCount = function (){
+      return Object.keys($scope.$columns).length;
+    };
+    
+    $scope.dataFilter = function(data){
+      if( model.filter ){
+        return model.filter(data);
+      }      
+      return true;
+    };
+    
+  };
+}
+
+function tableViewDirective ($compile,$parse, $sce){
+  return {
+    require: "ngModel",
+    priority: 0,
+    terminal: false,
+    restrict: 'E',
+    replace: true,
+    templateUrl: "/table-view.html",
+    transclude: false,
+    scope: {
+      bindModel: "=ngModel",
+      extScope: "=ngExtrScope"
+    },
+    controller: tableViewController($compile,$parse,$sce)    
+  };
+}
+
+atcCS.directive('tableView', ["$compile", "$parse", "$sce", tableViewDirective] );
+
+
+
 atcCS.directive( 'tileSelector',['$http', function ($http){
   return {
     require: "ngModel",
@@ -1878,6 +2296,37 @@ var catalogBack = function($http, $events){
     
 };
 
+var newsBack = function($http, $events){
+  'use strict';
+  var self = this;
+  self.events = null;
+  const EVENT_UPDATE  = 'update';  
+  const EVENT_GETDATA = 'getData';  
+  
+  function init(){
+    self.events = $events.get(eventsNames.eventsNews());    
+    self.events.setListner(EVENT_GETDATA, getData);
+  };
+  
+  function getData(event, page){    
+    var request = ObjectHelper.createRequest('news','get-data',{ params: { path: String(page) }});    
+    
+    function serverResponse(data){      
+      var answer = data && data.data;      
+      self.events.broadcast(EVENT_UPDATE,answer);
+    };
+    
+    function serverError( error ){
+      console.log('getNews Server error:', error );      
+    }
+    
+    $http(request).then(serverResponse,serverError);
+  };
+  
+  init();  
+    
+};
+
 atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$events',
   function($http, $cookies, $rootScope, $notify, $q, $events){
   'use strict';
@@ -2010,7 +2459,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
         model.baskets = data.baskets;
         model.info    = data.info;
         model.role    = data.role * 1;
-        model.isAdmin = (model.role==1)?true:false;
+        model.isAdmin = (model.role === 1)?true:false;
         
         setActiveBasket();
         
@@ -2134,7 +2583,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
     $http(req).then(serverResponse);
   };
   
-  model.getParts = function getParts(CLSID, ident, callback){
+  model.getParts = function getParts(CLSID, ident, searchText,callback){
     var req = {
       method: 'GET',
       url: URLto('search','get-parts'),
@@ -2142,7 +2591,8 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
       params: {
         params: {
           clsid: String(CLSID),
-          ident: String(ident)          
+          ident: String(ident),
+          search: String(searchText)
         }
       }
     };
@@ -2290,6 +2740,8 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
   };
   
   model.catalog = new catalogBack($http,$events);
+  
+  model.news    = new newsBack($http,$events);
   
   init();
   return model; 
@@ -2952,7 +3404,7 @@ function confirm($rootScope,$wndMng,$q){
   
   function init(){
     var cover = $("<div class=\"cover\"></div>");
-    var wnd   = "<span>{{text}}</span>";
+    var wnd   = "<div class=\"confirm-container\"> <span class=\"confirm-text\">{{text}}</span> </div>";
     var status= "<div class=\"status-buttons\"><ul><li ng-repeat=\"btn in buttons\"><button class=\"btn\" ng-class=\" btn.style\" ng-click=\"onSelect(btn.status);\">{{btn.name}}</button></li></ul></div>";
     $('body').append(cover);    
     model.cover = cover;    
@@ -3193,6 +3645,10 @@ function eventsNamesList(){
   
   this.eventsSearch= function(){
     return 'eventSearchScope';
+  };
+  
+  this.eventsNews= function(){
+    return 'eventNewsScope';
   };
 };
 /* global atcCS */
@@ -3441,20 +3897,15 @@ function storage($rootScope){
     }
     
     var time = Math.round( (new Date()).getTime() / 1000);
-    console.log("lS Actual time: " + time);
     
-    for (var i  in localStorage){       
-      if( i === String(i*1) && ((time-i*1) > 60*60*12) ){
-        console.log("lS Item time: "+ i);
-        localStorage.removeItem(i);
+    for (var i  in localStorage){  
+      var itemTime = parseInt(i);
+      if( isNaN(itemTime) ){
         continue;
       }
-      if( String(i).indexOf('@') !== -1 ){
-        var keyTime = String(i).substr(0,i.indexOf('@')) * 1;        
-        console.log("lS Item time: "+ keyTime);
-        if( (time-keyTime) > 60*60*12 ) {
-          localStorage.removeItem(i);
-        }        
+      
+      if( (time-itemTime) > 60*60*12 ) {
+        localStorage.removeItem(i);      
       }       
     }
   };

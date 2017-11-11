@@ -18,16 +18,16 @@ return [
             'identityClass' => \common\models\User::className(),
             'enableAutoLogin' => false,
         ],
-        'mongodb' => [
-            'class' => '\yii\mongodb\Connection',
-            'dsn'   => 'mongodb://sync:test@localhost:27017/atc',
-        ],
-        'redis' => [
-            'class' => 'yii\redis\Connection',
-            'hostname' => 'localhost',
-            'port' => 6379,
-            'database' => 0,
-        ],
+        //'mongodb' => [
+        //    'class' => '\yii\mongodb\Connection',
+        //    'dsn'   => 'mongodb://sync:test@localhost:27017/atc',
+        //],
+        //'redis' => [
+        //    'class' => 'yii\redis\Connection',
+        //    'hostname' => 'localhost',
+        //    'port' => 6379,
+        //    'database' => 0,
+        //],
         'db' =>[
           'class' => 'yii\db\Connection',
           'dsn' => 'pgsql:host=localhost;port=5432;dbname=atccs',
@@ -61,4 +61,4 @@ return [
         ]        
     ],
     'params' => $params,
-];?>
+];

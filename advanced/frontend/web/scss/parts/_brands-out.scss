@@ -24,19 +24,18 @@
       text-decoration: underline;
     }
   }  
-  .in-search{
-    top: 5px;
-    width: 100%;
-    height: 20px;
+  .in-search{    
+    width: 60%;
+    height: 95%;
     margin: auto;
-    line-height: 20px;
-    text-align: center;
-    border-radius: 10px;
-    background-image: url("/img/preloader.gif");
+    border-radius: 0 0 2% 2%;
+    background-image: url("/img/spiner.gif");
+    background-position: center;
     background-repeat: no-repeat;
-    background-size: 100% 100%;
-    background-color: #3C3C3C;
-    position: relative;
+    background-size: 128px 128px;
+    background-color: #BFC1C3CC;
+    position: absolute;    
+    display: block;
   }
   .count{   
     

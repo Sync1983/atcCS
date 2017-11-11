@@ -1,87 +1,105 @@
 <?php
 
 namespace backend\models\search\providers;
-use backend\models\search\ProviderFile;
+use backend\models\search\Provider;
 
-class ProviderArmtek extends ProviderFile{
-
-  public function loadFromFile() {
-    $path = $this->getPath();
-
-    if( !is_dir($path) ){
-      throw new \yii\base\InvalidValueException('Field "path" must be directory');
-    }
-    $timestamp = time();
-    $files = scandir($path);
-
-    $this->clearPrice();
-
-    foreach ($files as $file){
-      if(is_dir($file) ){
-        continue;
-      }
-      echo "loading $file \r\n";      
-      $this->loadFile($path."/".$file);
-      unlink($path."/".$file);
-    }
-    $timestamp = time() - $timestamp;
-    echo "Load by $timestamp sec. \r\n";
+class ProviderArmtek extends Provider{
+  protected $_url = "http://ws.armtek.ru/api/";
+  
+  protected function getNamesMap() {
+    return [
+      "PIN"       => "articul",
+      "BRAND"  	 => "maker",
+      "NAME"  	 => "name",
+      "PRICE"    => "price",
+      "RVALUE"   => "count",
+      "RDPRF"    => "lot_quantity"
+    ];
   }
 
-  protected function loadFile($file){
-    if( !$file ){
-      return;
+  protected function getRowName() { return ['detail'];}
+
+  protected function onlineRequestHeaders($ch) {
+    parent::onlineRequestHeaders($ch);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 50);
+
+    curl_setopt($ch, CURLOPT_USERPWD, $this->_default_params['login'] . ':' . $this->_default_params['pass']);
+  }
+
+  public function getBrands($search_text, $use_analog) {
+    $data = [
+      'PIN'         => $search_text,
+      'QUERY_TYPE'  => $use_analog?2:1
+    ];
+    $request = $this->prepareRequest($data, true, $this->_url . "ws_search/search?format=json");
+    return $request;
+  }
+
+  public function getBrandsParse($json) {
+    if( !isset($json['STATUS']) || ($json['STATUS']!=200) || !isset($json['RESP']) || isset($json['RESP']['MSG'])  ){
+      return [];
     }
-
-    $sheet      = simplexml_load_file("zip://" . $file . "#xl/worksheets/sheet1.xml");
-    $strings    = simplexml_load_file("zip://" . $file . "#xl/sharedStrings.xml");
-    $convert    = [];
-    $str_data   = [];
-
-    foreach ($strings->children() as $item) {
-      $str_data[] = strval($item->t);
+       
+    $data = $json['RESP'];
+    $answer = [];
+    foreach( $data as $row) {
+      $maker  = strtoupper($row['BRAND']);
+      $maker  = preg_replace('/\W*/i', "", $maker);
+      $answer[ $maker ] = ['id'=>$this->getCLSID(), 'uid'=>$row['BRAND'] . "@@" . $row['PIN']];
     }
+    
+    return $answer;
+  }
 
-    foreach ($sheet->sheetData->children() as $row){
-      /* @var $row \SimpleXMLElement */
-      $attr = $row->attributes();
-      $line = intval($attr['r']);      
-      $convert[$line] = [];
-      foreach ($row as $data){
-        $dattr  = $data->attributes();
-        $type   = isset($dattr['t'])?$dattr['t']:false;
-        $col    = ord(substr($dattr['r'], 0,1)) - 0x41;
-        $val    = isset($data->v)?intval($data->v):-1;
-        $convert[$line][$col] = ($type=="s")?$str_data[$val]:$val;
-      }      
+  public function parseResponse($answer_string, $method){
+    $xml = json_decode($answer_string, true);
+    if($this->hasMethod($method."Parse") ){      
+      return call_user_func([$this,$method."Parse"],$xml);
     }
+    return [];
+  }
 
-    unset($convert[1]);
-    unset($sheet);
-    unset($strings);
+  public function getParts($ident, $searchText) {
+    list($brand,$articul) = explode('@@',$ident);
+    $data = [
+      'PIN'         => $articul,
+      'QUERY_TYPE'  => 1,
+      'BRAND'       => $brand
+    ];
 
-    foreach ($convert as $row){
-      $visula_articul = $row[3];
-      $articul        = $row[1];
-      $maker          = $row[0];
-      $name           = $row[2];
-      if( !$articul || !$maker ){
+    $request    = $this->prepareRequest($data, true, $this->_url . "ws_search/search?format=json");
+    $response	= $this->executeRequest($request);
+    $answer	= $this->parseResponse($response,'getParts');
+    return $answer;
+  }
+
+  public function getPartsParse($json){
+    if( !isset($json['STATUS']) || ($json['STATUS']!=200) || !isset($json['RESP']) || isset($json['RESP']['MSG']) ){
+      return [];
+    }
+    
+    $data = $json['RESP'];
+    $answer = [];
+    $date_n = new \DateTime("now");
+
+    foreach($data as $row){
+      $converted = $this->renameByMap($row, $this->getNamesMap());
+      $converted['is_analog'] = isset($row['ANALOG']) && ($row['ANALOG'] == 'X');
+      if( isset($row['DLVDT']) ){
+        $date = date_parse_from_format("YmdHis", $row['DLVDT']);
+        $date2 = new \DateTime($date['year'] . '-' . $date['month'] . '-' .$date['day']);
+        $interval = date_diff($date_n, $date2);
+        $converted['shiping'] = $interval->days;
+      } else {
+        $converted['shiping'] = 99;
+      }
+      if( !isset($converted['price']) ) {
         continue;
       }
-
-      $newPriceRecord = new \backend\models\price\PriceModel();
-            
-      $newPriceRecord->setAttribute('pid',            $this->_CLSID);
-      $newPriceRecord->setAttribute('articul',        $articul);
-      $newPriceRecord->setAttribute('visual_articul', $visula_articul);
-      $newPriceRecord->setAttribute('maker',          $maker);
-      $newPriceRecord->setAttribute('name',           $name);
-      $newPriceRecord->setAttribute('price',          floatval($row[6]));
-      $newPriceRecord->setAttribute('count',          intval($row[5]));
-      $newPriceRecord->setAttribute('lot_quantity',   1);
-      $newPriceRecord->save();      
+      $answer[] = $converted;
     }
-
+    return $answer;
   }
 
 }
