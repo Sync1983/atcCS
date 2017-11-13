@@ -1,0 +1,30 @@
+<div class="brands-out">
+  <div class="breadcrumb">
+    <span>Поиск</span>
+    <span>{{searchText}}</span>
+    <span>Производители</span>
+  </div>
+  <div ng-if="inSearch" class="in-search"></div>    
+  <div ng-if="!inSearch&&!count" class="count">Вариантов по запросу "<b>{{searchText}}</b>" не найдено</div>
+  <div ng-if="!inSearch&&count" class="count">Для запроса "<b>{{searchText}}</b>" найдено производителей: <b>{{count}}</b></div>  
+  <div class="brand-tesaurus" id="tag_tesaurus">
+    <ul>
+      <li ng-repeat="(letter,data) in brands track by $index">
+        <a ng-click="goToTarget(letter)">{{letter}}</a>        
+      </li>      
+    </ul>
+  </div>
+  <div ng-repeat=" (letter,data) in brands track by $index" class="brand-header" id="tag{{letter}}">
+    <div class="brand-title">      
+      <a ng-click="titleShow[letter] = !titleShow[letter]">{{letter}}</a>
+    </div>
+    <div class="brand-list" ng-show="titleShow[letter]">      
+      <div ng-repeat="(brand,bdata) in data track by $index" class="brand" >
+        <a href="/parts/{{searchText}}/{{timestamp}}/{{brand}}">{{brand}}</a>
+      </div>
+    </div>
+  </div>
+  <div class="toUp" ng-show="isScroll" ng-click="goToTarget('_tesaurus')">
+    <span class="glyphicon glyphicon-arrow-up"></span>
+  </div>
+</div>

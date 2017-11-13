@@ -101,7 +101,7 @@ atcCS.config(function($logProvider){
 atcCS.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
     $routeProvider      
-      .when('/brands/:searchText/:timestamp?', {
+      .when('/brands/:searchText', {
         caseInsensitiveMatch: true,
         templateUrl: '/search-brands.html',
         controller: 'brandsSearch',
@@ -114,7 +114,7 @@ atcCS.config(['$routeProvider', '$locationProvider',
       }).when('/basket', {
         caseInsensitiveMatch: true,
         templateUrl: '/basket.html',
-        controller: 'basketControl',
+        controller: 'basketControl', 
         controllerAs: 'atcCS' 
       }).when('/orders', {
         caseInsensitiveMatch: true,
@@ -141,24 +141,144 @@ atcCS.config(['$routeProvider', '$locationProvider',
 }]);
 
 /* global atcCS */ 
+/* global eventsNames */ 
 
-atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', function($scope,$user,$templateCache,$menu) {
+atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$events', '$windowSrv', '$location', 
+  function($scope,$user,$templateCache,$menu,$events, $window, $location) {
     'use strict';
     
-    $scope.searchText = "text1";
-
+    var menuEvents = $events.get(eventsNames.eventsMain());
+    var searchEvents = $events.get(eventsNames.eventsSearch());
+    
+    $scope.searchText = "3465";
+    menuEvents.setListner('menuSelect', onMenuSelect);
+    searchEvents.setListner('change', onSearchChange);
+    
     $scope.onMenuLoad = function(){
-      console.log("menu load");
-      $scope.searchText = "text1";
+      $menu.setEventsListner(menuEvents,'menuSelect');
+      $menu.clear();
+      $menu.addItem("main","Главная");
+      if( $user.isLogin !== true ){
+        $menu.addItem("login", "Войти");        
+      } else {
+        $menu.addItem("change-markup", "Сменить наценку", $user.activeMarkupName || undefined);
+        $menu.addItem("change-basket", "Сменить корзину", $user.activeBasket && $user.activeBasket.name || undefined);
+      }
+      console.log($user);
+      $menu.addItem("change-analog", "Показывать аналоги", $user.analogShow?"Да":"Нет" );
+      
+      
       $menu.show();
     };
     
     $scope.onSearch = function(){
-      console.log("search load");
+      var clearText   = String($scope.searchText).replace(/\W*/gi,"");
+        $scope.$evalAsync(function() {
+          $location.path('brands/'+clearText);
+        });       
+    };
+    
+    function menuLogin(){
+      $window.setTemplate('/login-window.html',$scope);
+      $window.show().then(
+        function(ok){          
+          $user.login($scope.login, $scope.pass, $scope.reuse);
+        },
+        function(reject){
+           
+        }
+      );
+    }
+    
+    function onMenuSelect(name, args){
+      
+      if(args === "login"){
+        menuLogin();
+      } else if(args === "change-analog"){
+        $user.analogShow = !$user.analogShow;
+      }
+      
+    };
+    
+    function onSearchChange(name,args){
+      $scope.searchText = args;
     };
     
     
    
+    
+}]);
+/* global atcCS, eventsNames */
+
+atcCS.controller( 'brandsSearch', [
+    '$scope', 'User' ,'$routeParams','$events', '$anchorScroll', '$location', 
+    function($scope,$user,$routeParams, $events, $anchorScroll, $location ) {
+    'use strict';        
+    
+    var searchEvents = $events.get(eventsNames.eventsSearch());
+    $scope.searchText = $routeParams.searchText || false;
+    $scope.count      = 0;
+    $scope.titleShow  = {};
+    $scope.isScroll   = false;
+      
+    searchEvents.broadcast('change', $scope.searchText);
+    
+    $user.getBrands( $scope.searchText, serverResponse);
+    
+    /*
+    function createMultiList(data){ 
+      var list      = {};
+      var sortData  = {};
+      var keys      = Object.keys(data);
+      
+      keys.sort();
+      
+      for(var i in keys){
+        var key = keys[i];
+        var letter = String(key).substring(0,1);
+        sortData[key] = data[key];        
+        $scope.titleShow[letter] = true;
+      }
+      
+      
+      for(var key in sortData){
+        var letter = String(key).substring(0,1);
+        if( !list.hasOwnProperty(letter) ){
+          list[letter] = {};
+        }
+        
+        list[letter][key] = sortData[key];
+      }
+      
+      return list;
+    }
+    */
+    function serverResponse(data){
+      $scope.inSearch = false;
+      console.log(data);
+      if( !data || !data.count ){
+        return;
+      }      
+      
+      $scope.brands = createMultiList(data.rows || []);
+      $scope.count  = data.count;      
+      
+    }
+    
+    $scope.goToTarget = function(letter){
+      var newHash = 'tag' + letter;                  
+      $anchorScroll(newHash);
+    };
+    
+    
+    angular.element("div.view").bind("scroll", function(event) {            
+      if (event.currentTarget.scrollTop >= 100) {
+        $scope.isScroll = true;
+      } else {
+        $scope.isScroll = false;
+      }
+      $scope.$apply();
+     });
     
 }]);
 /* global atcCS */   
@@ -792,6 +912,10 @@ atcCS.service('$events',[
 }]);
 
 function eventsNamesList(){
+  this.eventsMain = function(){
+    return 'eventMainScope';
+  };
+  
   this.eventsUser = function(){
     return 'eventUserScope';
   };
@@ -810,23 +934,47 @@ function eventsNamesList(){
 };
 /* global atcCS */
 
-function menuControl($root, $q, $templateCache, $compile){
+function menuControl($root, $q, $templateCache, $compile, $events){
   var self = this;
   var body = $.find("#menu-block");
   var template = $templateCache.get('/menu-view.html');
   var scope = $root.$new(true);
   var html = $(template);
   var compile = $compile(html)(scope);
-  
-  scope.items = [
-    {key:"a", name:"a"},
-    {key:"b", name:'b'}
-  ];
+  self.listner    = undefined;
+  self.eventName  = undefined;
+          
+  scope.items = [  ];
   
   $(body).html( compile );
+  $(body).find(".menu-close").click(function(){ self.hide(); });
+  
+  scope.onClick = function(id){
+    if(self.listner && self.eventName ){
+      self.listner.broadcast(self.eventName, id);
+    }    
+    self.hide();
+  };
   
   self.show = function(){
     $(body).fadeIn("slow").css("display","inline-block");
+  };
+  
+  self.hide = function(){    
+    $(body).fadeOut("slow");
+  };
+  
+  self.clear = function(){
+    scope.items = new Array();
+  };
+  
+  self.setEventsListner = function(listner, eventName){
+    self.listner = listner;
+    self.eventName = eventName;
+  };
+  
+  self.addItem = function(id, name,bubble){    
+    scope.items.push({key:id, name:name, bubble});
   };
   
   return self;  
@@ -834,9 +982,75 @@ function menuControl($root, $q, $templateCache, $compile){
 
 
 atcCS.service('$menu',[
-  '$rootScope', '$q', '$templateCache','$compile',
-  function($rootScope,$q,$templateCache,$compile){
-    return new menuControl($rootScope, $q, $templateCache, $compile);
+  '$rootScope', '$q', '$templateCache','$compile', '$events',
+  function($rootScope,$q,$templateCache,$compile, $events){
+    return new menuControl($rootScope, $q, $templateCache, $compile, $events);
+}]);
+
+
+/* global atcCS */
+
+function windowControl($root, $q, $templateCache, $compile, $events){
+  var self = this;
+  var body = $.find("#window");
+  var defer = $q.defer();
+  
+  self.setTemplate = function(templateAddr, scope){
+    var template = $templateCache.get(templateAddr);
+    var html = $(template);
+    var compile = $compile(html)(scope);
+    $(body).find(".window-body").html( compile );
+  };
+  
+  $(body).find(".window-close").click(onClose);
+  $(body).find("#cancel").click(onClose);
+  $(body).find("#ok").click(onOk);
+  
+  function onClose(){
+    $(body).fadeOut();
+    defer.reject();
+  };
+  
+  function onOk(){
+    $(body).fadeOut();    
+    defer.resolve(true);
+  };
+  
+  self.show = function(){
+    $(body).fadeIn();
+    return defer.promise;
+  };
+  /*
+  
+  self.show = function(){
+    $(body).fadeIn("slow").css("display","inline-block");
+  };
+  
+  self.hide = function(){    
+    $(body).fadeOut("slow");
+  };
+  
+  self.clear = function(){
+    scope.items = new Array();
+  };
+  
+  self.setEventsListner = function(listner, eventName){
+    self.listner = listner;
+    self.eventName = eventName;
+  };
+  
+  self.addItem = function(id, name,bubble){    
+    scope.items.push({key:id, name:name, bubble});
+  };*/
+  
+  return self;  
+}
+
+
+atcCS.service('$windowSrv',[
+  '$rootScope', '$q', '$templateCache','$compile', '$events',
+  function($rootScope,$q,$templateCache,$compile, $events){
+    return new windowControl($rootScope, $q, $templateCache, $compile, $events);
 }]);
 
 

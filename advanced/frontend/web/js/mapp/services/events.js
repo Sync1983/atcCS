@@ -68,6 +68,10 @@ atcCS.service('$events',[
 }]);
 
 function eventsNamesList(){
+  this.eventsMain = function(){
+    return 'eventMainScope';
+  };
+  
   this.eventsUser = function(){
     return 'eventUserScope';
   };

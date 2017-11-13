@@ -53,6 +53,7 @@ div.header{
     height: 2rem;
     display: inline-block;
     background-color: $main_color;
+    border-radius: 0 0 0.5rem 0.5rem;
     
     & > .search-input{
       width: 70%;

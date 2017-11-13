@@ -1,0 +1,56 @@
+/* 
+    Created on : 13.11.2017, 22:29:56
+    Author     : Sync<atc58.ru>
+*/
+
+div#window{
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  position: fixed;
+  z-index: 1001;
+  display: none;
+  
+  div.header{
+    opacity: 0.4;
+  }
+  div.window-body{
+    top:4rem;
+    width: 100%;
+    height: 100%;
+    position: relative;    
+  }
+  div.window-close{
+    z-index: 1002;
+    position: fixed;
+    opacity: 1;
+    top: 0.5rem;
+    line-height: 2rem;
+    height: 2rem;
+    font-size: 2rem;
+    color: white;
+    right: 1rem;
+  }
+  div.buttons{
+    display: inline;
+    position: absolute;
+    bottom: 0.5rem;
+    width: 100%;
+    text-align: center;
+    
+    button{
+      display: inline-block;
+      width: 45%;
+      border: 1px solid $atc_color;
+      background-color: $main_color;
+      color: $atc_color;
+      font-size: 1rem;
+      font-weight: bold;
+      font-stretch: expanded;
+      border-radius: 0.5rem;
+    }
+  }
+}
+

@@ -3,7 +3,7 @@
 atcCS.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
     $routeProvider      
-      .when('/brands/:searchText/:timestamp?', {
+      .when('/brands/:searchText', {
         caseInsensitiveMatch: true,
         templateUrl: '/search-brands.html',
         controller: 'brandsSearch',
@@ -16,7 +16,7 @@ atcCS.config(['$routeProvider', '$locationProvider',
       }).when('/basket', {
         caseInsensitiveMatch: true,
         templateUrl: '/basket.html',
-        controller: 'basketControl',
+        controller: 'basketControl', 
         controllerAs: 'atcCS' 
       }).when('/orders', {
         caseInsensitiveMatch: true,
