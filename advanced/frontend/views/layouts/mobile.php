@@ -31,33 +31,19 @@ MAppAsset::register($this);
 <body ng-app="atcCS" id="ng-app">
 <?php $this->beginBody() ?>
   <div id="main-body">    
-  
-  <div class="header" ng-controller="main-screen">
-    <div class="top-line">
-      <div class="paint">
-        &nbsp;
-      </div>
-    </div>
-    <div class="logo">  
-      <a href="<?= Url::home();?>"><img src="img/logo_left.png"/></a>  
-    </div>
-    <div class="menu-button">
-      <button ng-click="onMenuLoad()">
-        <span class="glyphicon glyphicon-menu-hamburger"/>
-      </button>
-    </div>
-    <div class="search-line">
-      <div class="search-input">
-        <input ng-model="searchText"/>
-      </div>
-      <div class="search-start">
-        <button class="glyphicon glyphicon-search" ng-click="onSearch()">
-        </button>
+    <div id="menu-block" class="menu-block">&nbsp;</div>
+    <div id="main-view"> 
+      <div class="header" ng-controller="main-screen">
+        <div class="top-line"><div class="paint">&nbsp;</div></div>
+        <div class="logo"><a href="<?= Url::home();?>"><img src="img/logo_left.png"/></a></div>
+        <div class="menu-button"><button ng-click="onMenuLoad()"><span class="glyphicon glyphicon-menu-hamburger"/></button></div>
+        <div class="search-line">
+          <div class="search-input"><input ng-model="searchText"/></div>
+          <div class="search-start"><button class="glyphicon glyphicon-search" ng-click="onSearch()"></button></div>
+        </div>
       </div>
     </div>
   </div>
-  </div>
-  <div id="menu-block" class="menu-block">&nbsp;</div>
   
 <footer class="footer">    
   <p class="">&copy; АвтоТехСнаб <?= date('Y') ?></p>
@@ -66,7 +52,7 @@ MAppAsset::register($this);
 <!-- Angular views -->
  <!-- Collect from 'frontend/views/mobile//menu-view.html' file -->
 <script type="text/ng-template" id="/menu-view.html">
-<div class="menu-main-area">  </div>   
+<div class="menu-main-area">  <ul>    <li><div class="menu-close"><span>Свернуть</span></div></li>    <li  ng-repeat="row in items">      <div class="menu-row"><span>{{row.name}}</span></div>    </li>      </ul></div>   
 </script>
 <!-- Grunt views place stop -->
 

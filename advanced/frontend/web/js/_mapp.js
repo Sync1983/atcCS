@@ -142,7 +142,7 @@ atcCS.config(['$routeProvider', '$locationProvider',
 
 /* global atcCS */ 
 
-atcCS.controller( 'main-screen',['$scope','User','$templateCache', function($scope,$user,$templateCache) {
+atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', function($scope,$user,$templateCache,$menu) {
     'use strict';
     
     $scope.searchText = "text1";
@@ -150,6 +150,7 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache', function($sco
     $scope.onMenuLoad = function(){
       console.log("menu load");
       $scope.searchText = "text1";
+      $menu.show();
     };
     
     $scope.onSearch = function(){
@@ -809,17 +810,33 @@ function eventsNamesList(){
 };
 /* global atcCS */
 
-function menuControll($root, $q){
+function menuControl($root, $q, $templateCache, $compile){
   var self = this;
+  var body = $.find("#menu-block");
+  var template = $templateCache.get('/menu-view.html');
+  var scope = $root.$new(true);
+  var html = $(template);
+  var compile = $compile(html)(scope);
+  
+  scope.items = [
+    {key:"a", name:"a"},
+    {key:"b", name:'b'}
+  ];
+  
+  $(body).html( compile );
+  
+  self.show = function(){
+    $(body).fadeIn("slow").css("display","inline-block");
+  };
   
   return self;  
 }
 
 
 atcCS.service('$menu',[
-  '$rootScope', '$q',
-  function($rootScope,$q){
-    return new menuControl($rootScope,$q);
+  '$rootScope', '$q', '$templateCache','$compile',
+  function($rootScope,$q,$templateCache,$compile){
+    return new menuControl($rootScope, $q, $templateCache, $compile);
 }]);
 
 

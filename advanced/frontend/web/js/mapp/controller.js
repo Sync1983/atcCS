@@ -1,6 +1,6 @@
 /* global atcCS */ 
 
-atcCS.controller( 'main-screen',['$scope','User','$templateCache', function($scope,$user,$templateCache) {
+atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', function($scope,$user,$templateCache,$menu) {
     'use strict';
     
     $scope.searchText = "text1";
@@ -8,6 +8,7 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache', function($sco
     $scope.onMenuLoad = function(){
       console.log("menu load");
       $scope.searchText = "text1";
+      $menu.show();
     };
     
     $scope.onSearch = function(){

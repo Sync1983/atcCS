@@ -1,3 +1,8 @@
 <div class="menu-main-area">
-  
+  <ul>
+    <li><div class="menu-close"><span>Свернуть</span></div></li>
+    <li  ng-repeat="row in items">
+      <div class="menu-row"><span>{{row.name}}</span></div>
+    </li>    
+  </ul>
 </div>   
