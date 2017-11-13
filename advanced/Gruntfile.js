@@ -40,8 +40,8 @@ module.exports = function(grunt) {
         }
       },
       mobile:{
-        files: ['frontend/web/scss_mobile/**/*.scss', 'frontend/web/js/mapp/**/*.js'],
-        tasks: ['sass', 'compileAngularJS'],
+        files: ['frontend/web/scss_mobile/**/*.scss', 'frontend/web/js/mapp/**/*.js', 'frontend/views/mobile/*.html'],
+        tasks: ['sass', 'compileAngularJS','compileAngularView'],
         options: {
           reload: false,
           spawn: false
@@ -54,6 +54,10 @@ module.exports = function(grunt) {
     if( target !== "views" ){
       grunt.config('compileAngularJS.src', "frontend/web/js/mapp/");
       grunt.config('compileAngularJS.dest', "frontend/web/js/_mapp.js");
+      
+      grunt.config('compileAngularView.src', "frontend/views/mobile/");
+      grunt.config('compileAngularView.map', "frontend/views/mobile/views.map");
+      grunt.config('compileAngularView.dest', "frontend/views/layouts/mobile.php");
     }    
   });
   

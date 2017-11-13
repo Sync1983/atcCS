@@ -66,8 +66,8 @@ var newsBack = function($http, $events){
     
 };
 
-atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$events',
-  function($http, $cookies, $rootScope, $notify, $q, $events){
+atcCS.service('User',['$http', '$cookies', '$rootScope', '$q', '$events',
+  function($http, $cookies, $rootScope, $q, $events){
   'use strict';
   
   var URL   = serverURL + "/index.php";
@@ -108,9 +108,9 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
   
   function init(){    
     $rootScope.user = model;
-    for(var index in model.alerts){
-      $notify.addObj(model.alerts[index]);
-    }
+    //for(var index in model.alerts){
+    //  $notify.addObj(model.alerts[index]);
+    //}
     loadFormCookies();      //Пробуем войти через информацию в cookie
   };
   
@@ -171,7 +171,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
         
       },
       function error(response){
-        $notify.addItem("Ошибка авторизации","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
+        //$notify.addItem("Ошибка авторизации","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
         defer.reject();          
     });
     
@@ -206,7 +206,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
         events.broadcast('userDataUpdate',model);
       }, 
       function (reason){        
-        $notify.addItem("Ошибка","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
+        //$notify.addItem("Ошибка","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
       });    
   };
 
@@ -453,12 +453,12 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
         data = answer && answer.data;
         if( !data ){
           defer.reject();
-          $notify.error('Ошибка заказ','Ошибка добавления деталей в заказ');
+          //$notify.error('Ошибка заказ','Ошибка добавления деталей в заказ');
         }
         defer.resolve(data);
       },
       function(reason){
-        $notify.error('Ошибка заказ','Ошибка добавления деталей в заказ');        
+        //$notify.error('Ошибка заказ','Ошибка добавления деталей в заказ');        
         defer.reject();
       }
     );

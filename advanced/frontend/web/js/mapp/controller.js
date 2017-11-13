@@ -1,9 +1,20 @@
-/* global atcCS */  
+/* global atcCS */ 
 
-atcCS.controller( 'headControl',['$scope','User','$wndMng','$templateCache', function($scope,$user,$wndMng,$templateCache) {
+atcCS.controller( 'main-screen',['$scope','User','$templateCache', function($scope,$user,$templateCache) {
     'use strict';
+    
+    $scope.searchText = "text1";
 
-    var menu = $(".search-bar");
+    $scope.onMenuLoad = function(){
+      console.log("menu load");
+      $scope.searchText = "text1";
+    };
+    
+    $scope.onSearch = function(){
+      console.log("search load");
+    };
+    
+    
    
     
 }]);

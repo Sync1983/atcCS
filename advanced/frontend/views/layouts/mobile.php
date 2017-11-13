@@ -30,7 +30,9 @@ MAppAsset::register($this);
 </head>
 <body ng-app="atcCS" id="ng-app">
 <?php $this->beginBody() ?>
-  <div class="header">
+  <div id="main-body">    
+  
+  <div class="header" ng-controller="main-screen">
     <div class="top-line">
       <div class="paint">
         &nbsp;
@@ -40,17 +42,32 @@ MAppAsset::register($this);
       <a href="<?= Url::home();?>"><img src="img/logo_left.png"/></a>  
     </div>
     <div class="menu-button">
-      <button ng-click="onMenuLoad">
+      <button ng-click="onMenuLoad()">
         <span class="glyphicon glyphicon-menu-hamburger"/>
       </button>
     </div>
+    <div class="search-line">
+      <div class="search-input">
+        <input ng-model="searchText"/>
+      </div>
+      <div class="search-start">
+        <button class="glyphicon glyphicon-search" ng-click="onSearch()">
+        </button>
+      </div>
+    </div>
   </div>
+  </div>
+  <div id="menu-block" class="menu-block">&nbsp;</div>
   
 <footer class="footer">    
   <p class="">&copy; АвтоТехСнаб <?= date('Y') ?></p>
 </footer>
 <!-- Grunt views place start -->
-
+<!-- Angular views -->
+ <!-- Collect from 'frontend/views/mobile//menu-view.html' file -->
+<script type="text/ng-template" id="/menu-view.html">
+<div class="menu-main-area">  </div>   
+</script>
 <!-- Grunt views place stop -->
 
 <?php $this->endBody() ?>

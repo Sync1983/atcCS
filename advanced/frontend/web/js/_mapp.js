@@ -140,64 +140,26 @@ atcCS.config(['$routeProvider', '$locationProvider',
     $locationProvider.html5Mode(true);
 }]);
 
-/* global atcCS */  
+/* global atcCS */ 
 
-atcCS.controller( 'headControl',['$scope','User','$wndMng','$templateCache', function($scope,$user,$wndMng,$templateCache) {
+atcCS.controller( 'main-screen',['$scope','User','$templateCache', function($scope,$user,$templateCache) {
     'use strict';
+    
+    $scope.searchText = "text1";
 
-    var menu = $(".search-bar");
+    $scope.onMenuLoad = function(){
+      console.log("menu load");
+      $scope.searchText = "text1";
+    };
+    
+    $scope.onSearch = function(){
+      console.log("search load");
+    };
+    
+    
    
     
 }]);
-atcCS.directive('modal', function (){
-  return {
-    require: "ngModel",    
-    restrict: 'E',
-    replace: true,    
-    transclude: true,
-    templateUrl: '/modal-window.html',
-    scope: true,
-    link: function link(scope, element, attrs, modelCtrl){
-      scope.title = attrs.title;
-
-      scope.$watch(function(){
-          return modelCtrl.$viewValue;}, 
-        function( newVal ){
-          if( newVal === true ){
-            $(element).modal({
-              backdrop: false,
-              show: true
-            });
-          } else {
-            $(element).modal('hide');
-          }
-        });
-    }
-  };
-} );
-
-atcCS.directive('inject', function(){
-  return {
-    link: function($scope, $element, $attrs, controller, $transclude) {
-      if (!$transclude) {
-        throw minErr('ngTransclude')('orphan',
-         'Illegal use of ngTransclude directive in the template! ' +
-         'No parent directive that requires a transclusion found. ' +
-         'Element: {0}',
-         startingTag($element));
-      }
-      var innerScope = $scope.$new();
-      $transclude(innerScope, function(clone) {
-        $element.empty();
-        $element.append(clone);
-        });
-      }
-      
-    };
-});
-
-
-
 /* global atcCS */   
 
 atcCS.factory('atcServerToken', ['$q', '$rootScope', '$injector',
@@ -238,7 +200,6 @@ atcCS.factory('atcServerToken', ['$q', '$rootScope', '$injector',
 }]);
 
 
-/* global atcCS */
 
 /*
  * Модель пользователя системы
@@ -339,8 +300,8 @@ var newsBack = function($http, $events){
     
 };
 
-atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$events',
-  function($http, $cookies, $rootScope, $notify, $q, $events){
+atcCS.service('User',['$http', '$cookies', '$rootScope', '$q', '$events',
+  function($http, $cookies, $rootScope, $q, $events){
   'use strict';
   
   var URL   = serverURL + "/index.php";
@@ -381,9 +342,9 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
   
   function init(){    
     $rootScope.user = model;
-    for(var index in model.alerts){
-      $notify.addObj(model.alerts[index]);
-    }
+    //for(var index in model.alerts){
+    //  $notify.addObj(model.alerts[index]);
+    //}
     loadFormCookies();      //Пробуем войти через информацию в cookie
   };
   
@@ -444,7 +405,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
         
       },
       function error(response){
-        $notify.addItem("Ошибка авторизации","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
+        //$notify.addItem("Ошибка авторизации","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
         defer.reject();          
     });
     
@@ -479,7 +440,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
         events.broadcast('userDataUpdate',model);
       }, 
       function (reason){        
-        $notify.addItem("Ошибка","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
+        //$notify.addItem("Ошибка","Вам не удалось авторизоваться. Проверьте правильность имени пользователя и\или пароля.");
       });    
   };
 
@@ -726,12 +687,12 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$notify', '$q', '$even
         data = answer && answer.data;
         if( !data ){
           defer.reject();
-          $notify.error('Ошибка заказ','Ошибка добавления деталей в заказ');
+          //$notify.error('Ошибка заказ','Ошибка добавления деталей в заказ');
         }
         defer.resolve(data);
       },
       function(reason){
-        $notify.error('Ошибка заказ','Ошибка добавления деталей в заказ');        
+        //$notify.error('Ошибка заказ','Ошибка добавления деталей в заказ');        
         defer.reject();
       }
     );
@@ -846,3 +807,19 @@ function eventsNamesList(){
     return 'eventNewsScope';
   };
 };
+/* global atcCS */
+
+function menuControll($root, $q){
+  var self = this;
+  
+  return self;  
+}
+
+
+atcCS.service('$menu',[
+  '$rootScope', '$q',
+  function($rootScope,$q){
+    return new menuControl($rootScope,$q);
+}]);
+
+
