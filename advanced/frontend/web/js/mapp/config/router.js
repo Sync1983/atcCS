@@ -5,13 +5,13 @@ atcCS.config(['$routeProvider', '$locationProvider',
     $routeProvider      
       .when('/brands/:searchText', {
         caseInsensitiveMatch: true,
-        templateUrl: '/search-brands.html',
-        controller: 'brandsSearch',
+        templateUrl: '/brands.html',
+        controller: 'brands',
         controllerAs: 'atcCS' 
-      }).when('/parts/:searchText/:timestamp/:brand', {
+      }).when('/parts/:searchText/:brand', {
         caseInsensitiveMatch: true,
-        templateUrl: '/parts-list.html',
-        controller: 'partsSearch',
+        templateUrl: '/parts.html',
+        controller: 'parts',
         controllerAs: 'atcCS' 
       }).when('/basket', {
         caseInsensitiveMatch: true,

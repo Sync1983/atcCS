@@ -30,28 +30,6 @@ function windowControl($root, $q, $templateCache, $compile, $events){
     $(body).fadeIn();
     return defer.promise;
   };
-  /*
-  
-  self.show = function(){
-    $(body).fadeIn("slow").css("display","inline-block");
-  };
-  
-  self.hide = function(){    
-    $(body).fadeOut("slow");
-  };
-  
-  self.clear = function(){
-    scope.items = new Array();
-  };
-  
-  self.setEventsListner = function(listner, eventName){
-    self.listner = listner;
-    self.eventName = eventName;
-  };
-  
-  self.addItem = function(id, name,bubble){    
-    scope.items.push({key:id, name:name, bubble});
-  };*/
   
   return self;  
 }

@@ -38,9 +38,12 @@ MAppAsset::register($this);
         <div class="logo"><a href="<?= Url::home();?>"><img src="img/logo_left.png"/></a></div>
         <div class="menu-button"><button ng-click="onMenuLoad()"><span class="glyphicon glyphicon-menu-hamburger"/></button></div>
         <div class="search-line">
-          <div class="search-input"><input ng-model="searchText"/></div>
+          <div class="search-input"><input ng-model="searchText.text" id="search-input"/></div>
           <div class="search-start"><button class="glyphicon glyphicon-search" ng-click="onSearch()"></button></div>
         </div>
+      </div>
+      <div class="view">
+        <div ng-view></div>
       </div>
     </div>
   </div>
@@ -59,9 +62,7 @@ MAppAsset::register($this);
     </div>
 </div>
   
-  <div class="view">
-    <div ng-view></div>
-  </div>
+  
   
 
 <footer class="footer">    
@@ -69,6 +70,10 @@ MAppAsset::register($this);
 </footer>
 <!-- Grunt views place start -->
 <!-- Angular views -->
+ <!-- Collect from 'frontend/views/mobile//brands.html' file -->
+<script type="text/ng-template" id="/brands.html">
+ <div class="brands-view"><div ng-if="inSearch" class="in-search"></div><div class="brands-list"><ul><li ng-repeat="brand in brands"><span><a href="/parts/{{searchText}}/{{brand}}">{{brand}}</a></span></li></ul></div>    </div>
+</script>
  <!-- Collect from 'frontend/views/mobile//login-window.html' file -->
 <script type="text/ng-template" id="/login-window.html">
 <div class="login-window"><ul><li><div class="label">                <span>Логин</span></div></li><li><div class="field">                <input ng-model="login"/></div></li><li><div class="label">                <span>Пароль</span></div></li><li><div class="field"><input ng-model="pass"/></div></li><li><div class="label">                <label><input type="checkbox" ng-model="reuse"/> Запомнить меня</label></div></li></ul></div>
@@ -77,9 +82,9 @@ MAppAsset::register($this);
 <script type="text/ng-template" id="/menu-view.html">
 <div class="menu-main-area">  <ul>    <li><div class="menu-close"><span class="glyphicon glyphicon-chevron-left" style="float: left;top: 0.75rem;left: 1rem;"></span><span>Свернуть</span></div></li>    <li  ng-repeat="row in items">      <div class="menu-row" ng-click="onClick(row.key)"><span>{{row.name}}</span><span class="bubble" ng-show="{{row.bubble !== undefined}}">{{row.bubble}}</span></div>    </li>      </ul></div>   
 </script>
- <!-- Collect from 'frontend/views/mobile//search-brands.html' file -->
-<script type="text/ng-template" id="/search-brands.html">
-<div class="brands-out"><div class="breadcrumb"><span>Поиск</span><span>{{searchText}}</span><span>Производители</span></div><div ng-if="inSearch" class="in-search"></div>      <div ng-if="!inSearch&&!count" class="count">Вариантов по запросу "<b>{{searchText}}</b>" не найдено</div><div ng-if="!inSearch&&count" class="count">Для запроса "<b>{{searchText}}</b>" найдено производителей: <b>{{count}}</b></div>    <div class="brand-tesaurus" id="tag_tesaurus"><ul><li ng-repeat="(letter,data) in brands track by $index"><a ng-click="goToTarget(letter)">{{letter}}</a>              </li>          </ul></div><div ng-repeat=" (letter,data) in brands track by $index" class="brand-header" id="tag{{letter}}"><div class="brand-title">            <a ng-click="titleShow[letter] = !titleShow[letter]">{{letter}}</a></div><div class="brand-list" ng-show="titleShow[letter]">            <div ng-repeat="(brand,bdata) in data track by $index" class="brand" ><a href="/parts/{{searchText}}/{{timestamp}}/{{brand}}">{{brand}}</a></div></div></div><div class="toUp" ng-show="isScroll" ng-click="goToTarget('_tesaurus')"><span class="glyphicon glyphicon-arrow-up"></span></div></div>
+ <!-- Collect from 'frontend/views/mobile//parts.html' file -->
+<script type="text/ng-template" id="/parts.html">
+<div class="parts-out">  <div class="breadcrumb">    <span>Поиск</span>    <span>{{searchText}}</span>    <span><a href="/brands/{{searchText}}/{{timestamp}}">Производители</a></span>    <span>{{brand}}</span>  </div>  <div ng-if="inSearch" class="in-search"></div>      <div ng-if="!inSearch" class="count">Варианты деталей по запросу "<b>{{searchText}}</b>" от производителя <b>{{brand}}</b>:    <span ng-repeat="item in loading" class="small-preloader">    </span>  </div>     <div class="actions">    <a href="#" ng-click="onCollapse()">      <span class="glyphicon glyphicon-minus-sign"></span>Свернуть все    </a>    <a href="#" ng-click="onExpand()">      <span class="glyphicon glyphicon-plus-sign"></span>Развернуть все    </a>      </div>    <table-view ng-model="table" ng-extr-scope="self"/>    </div>
 </script>
 <!-- Grunt views place stop -->
 

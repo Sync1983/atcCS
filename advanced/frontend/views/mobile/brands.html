@@ -1,0 +1,11 @@
+ <div class="brands-view">
+   <div ng-if="inSearch" class="in-search"></div>
+   <div class="brands-list">
+     <ul>
+       <li ng-repeat="brand in brands">
+         <span><a href="/parts/{{searchText}}/{{brand}}">{{brand}}</a></span>
+       </li>
+     </ul>
+   </div>   
+ </div>
+

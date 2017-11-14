@@ -67,6 +67,7 @@ div.header{
         border: none;
         height: 1.6rem;    
         padding: 0;
+        width:90%;
         &:active, &:focus{
           outline: none;
         }
@@ -82,6 +83,11 @@ div.header{
         border-radius: 1.7rem
       }
     }
+  }
+  
+  & > .view{
+    top:7rem;
+    position: relative;
   }
 }
 

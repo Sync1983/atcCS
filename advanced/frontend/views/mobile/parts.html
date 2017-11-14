@@ -1,0 +1,24 @@
+<div class="parts-out">
+  <div class="breadcrumb">
+    <span>Поиск</span>
+    <span>{{searchText}}</span>
+    <span><a href="/brands/{{searchText}}/{{timestamp}}">Производители</a></span>
+    <span>{{brand}}</span>
+  </div>
+  <div ng-if="inSearch" class="in-search"></div>    
+  <div ng-if="!inSearch" class="count">Варианты деталей по запросу "<b>{{searchText}}</b>" от производителя <b>{{brand}}</b>:
+    <span ng-repeat="item in loading" class="small-preloader">
+    </span>
+  </div>   
+  <div class="actions">
+    <a href="#" ng-click="onCollapse()">
+      <span class="glyphicon glyphicon-minus-sign"></span>Свернуть все
+    </a>
+    <a href="#" ng-click="onExpand()">
+      <span class="glyphicon glyphicon-plus-sign"></span>Развернуть все
+    </a>    
+  </div>
+  
+  <table-view ng-model="table" ng-extr-scope="self"/>  
+  
+</div>

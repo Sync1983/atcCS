@@ -7,8 +7,9 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
     
     var menuEvents = $events.get(eventsNames.eventsMain());
     var searchEvents = $events.get(eventsNames.eventsSearch());
+    var searchInput = $("#search-input");
     
-    $scope.searchText = "3465";
+    $scope.searchText = {'text':""};    
     menuEvents.setListner('menuSelect', onMenuSelect);
     searchEvents.setListner('change', onSearchChange);
     
@@ -30,7 +31,7 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
     };
     
     $scope.onSearch = function(){
-      var clearText   = String($scope.searchText).replace(/\W*/gi,"");
+      var clearText   = String($scope.searchText.text).replace(/\W*/gi,"");
         $scope.$evalAsync(function() {
           $location.path('brands/'+clearText);
         });       
@@ -58,8 +59,8 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
       
     };
     
-    function onSearchChange(name,args){
-      $scope.searchText = args;
+    function onSearchChange(name,args){      
+      $(searchInput).val(args).trigger('change');
     };
     
     
