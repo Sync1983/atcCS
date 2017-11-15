@@ -106,7 +106,7 @@ atcCS.config(['$routeProvider', '$locationProvider',
         templateUrl: '/brands.html',
         controller: 'brands',
         controllerAs: 'atcCS' 
-      }).when('/parts/:searchText/:brand', {
+      }).when('/parts/:searchText/:brand/:rule', {
         caseInsensitiveMatch: true,
         templateUrl: '/parts.html',
         controller: 'parts',
@@ -212,8 +212,8 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
 /* global atcCS, eventsNames */
 
 atcCS.controller( 'brands', [
-    '$scope', 'User' ,'$routeParams','$events', '$anchorScroll', '$location', 
-    function($scope,$user,$routeParams, $events, $anchorScroll, $location ) {
+    '$scope', 'User' ,'$routeParams','$events', '$location', 
+    function($scope,$user,$routeParams, $events, $location ) {
     'use strict';        
     
     var searchEvents = $events.get(eventsNames.eventsSearch());
@@ -231,31 +231,21 @@ atcCS.controller( 'brands', [
       if( !data || !data.count ){
         return;
       }      
-      var keys = Object.keys(data.rows).sort();      
-      $scope.brands = keys;
+      var keys = Object.keys(data.rows).sort();
+      var list = {};
+      for(var i in keys){
+        var key = keys[i];
+        list[key] = data.rows[key];
+      }      
+      $scope.brands = list;
     }
-    
-    $scope.goToTarget = function(letter){
-      var newHash = 'tag' + letter;                  
-      $anchorScroll(newHash);
-    };
-    
-    
-    angular.element("div.view").bind("scroll", function(event) {            
-      if (event.currentTarget.scrollTop >= 100) {
-        $scope.isScroll = true;
-      } else {
-        $scope.isScroll = false;
-      }
-      $scope.$apply();
-     });
     
 }]);
 /* global atcCS, ObjectHelper, eventsNames */
 
 atcCS.controller( 'parts', [
-    '$scope', '$filter', 'User' ,'$routeParams','$rootScope','searchNumberControl', 'storage', '$events', 'partOutFilter', '$notify', '$q', '$log', 'tableViewData',
-    function($scope,$filter,$user,$routeParams,$rootScope,$snCtrl, $storage, $events, $partOut, $notify, $q, $log, tableViewData ) {
+    '$scope', '$filter', 'User' ,'$routeParams','$rootScope', '$events', '$q', '$log',
+    function($scope,$filter,$user,$routeParams,$rootScope, $events, $q, $log ) {
     'use strict';    
     var brands = false;
     var searchEvents = $events.get(eventsNames.eventsSearch());
@@ -264,6 +254,7 @@ atcCS.controller( 'parts', [
     $scope.data       = [];    
     $scope.searchText = $routeParams.searchText || false;
     $scope.brand      = $routeParams.brand      || false;
+    $scope.rule       = $routeParams.rule       || false;
     $scope.analogShow = $user.analogShow;
     $scope.markup     = $user.activeMarkup || 0;
     $scope.markupName = $user.activeMarkupName || '';
@@ -271,7 +262,9 @@ atcCS.controller( 'parts', [
     $scope.isAdmin    = $user.isAdmin;
     $scope.articulCmp = $scope.searchText.toUpperCase();
     
-    $snCtrl.change($scope.searchText); 
+    
+    console.log($scope);
+    /*$snCtrl.change($scope.searchText); 
     
     $scope.table = new tableViewData({
       $columns: {
@@ -478,7 +471,7 @@ atcCS.controller( 'parts', [
       /*if( item === undefined ){
         return;
       }*/      
-      
+    /*  
       var onAnswer = function(aitem){
         return function(answer){
           item.adding = false;
@@ -533,8 +526,8 @@ atcCS.controller( 'parts', [
         $scope.isLogin = $user.isLogin;         
         $scope.isAdmin = $user.isAdmin;         
      });   
-    
-    load();
+    */
+    //load();
 }]);
 /* global atcCS */   
 

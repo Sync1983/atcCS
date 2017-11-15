@@ -1,8 +1,8 @@
 /* global atcCS, ObjectHelper, eventsNames */
 
 atcCS.controller( 'parts', [
-    '$scope', '$filter', 'User' ,'$routeParams','$rootScope','searchNumberControl', 'storage', '$events', 'partOutFilter', '$notify', '$q', '$log', 'tableViewData',
-    function($scope,$filter,$user,$routeParams,$rootScope,$snCtrl, $storage, $events, $partOut, $notify, $q, $log, tableViewData ) {
+    '$scope', '$filter', 'User' ,'$routeParams','$rootScope', '$events', '$q', '$log',
+    function($scope,$filter,$user,$routeParams,$rootScope, $events, $q, $log ) {
     'use strict';    
     var brands = false;
     var searchEvents = $events.get(eventsNames.eventsSearch());
@@ -11,6 +11,7 @@ atcCS.controller( 'parts', [
     $scope.data       = [];    
     $scope.searchText = $routeParams.searchText || false;
     $scope.brand      = $routeParams.brand      || false;
+    $scope.rule       = $routeParams.rule       || false;
     $scope.analogShow = $user.analogShow;
     $scope.markup     = $user.activeMarkup || 0;
     $scope.markupName = $user.activeMarkupName || '';
@@ -18,7 +19,9 @@ atcCS.controller( 'parts', [
     $scope.isAdmin    = $user.isAdmin;
     $scope.articulCmp = $scope.searchText.toUpperCase();
     
-    $snCtrl.change($scope.searchText); 
+    
+    console.log($scope);
+    /*$snCtrl.change($scope.searchText); 
     
     $scope.table = new tableViewData({
       $columns: {
@@ -225,7 +228,7 @@ atcCS.controller( 'parts', [
       /*if( item === undefined ){
         return;
       }*/      
-      
+    /*  
       var onAnswer = function(aitem){
         return function(answer){
           item.adding = false;
@@ -280,6 +283,6 @@ atcCS.controller( 'parts', [
         $scope.isLogin = $user.isLogin;         
         $scope.isAdmin = $user.isAdmin;         
      });   
-    
-    load();
+    */
+    //load();
 }]);

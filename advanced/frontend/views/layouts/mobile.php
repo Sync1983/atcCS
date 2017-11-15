@@ -72,7 +72,7 @@ MAppAsset::register($this);
 <!-- Angular views -->
  <!-- Collect from 'frontend/views/mobile//brands.html' file -->
 <script type="text/ng-template" id="/brands.html">
- <div class="brands-view"><div ng-if="inSearch" class="in-search"></div><div class="brands-list"><ul><li ng-repeat="brand in brands"><span><a href="/parts/{{searchText}}/{{brand}}">{{brand}}</a></span></li></ul></div>    </div>
+ <div class="brands-view"><div ng-if="inSearch" class="in-search"></div><div class="brands-list"><ul><li ng-repeat="(brand,rule) in brands"><span><a href="/parts/{{searchText}}/{{brand}}/{{rule}}">{{brand}}</a></span></li></ul></div>    </div>
 </script>
  <!-- Collect from 'frontend/views/mobile//login-window.html' file -->
 <script type="text/ng-template" id="/login-window.html">

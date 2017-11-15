@@ -8,7 +8,7 @@ atcCS.config(['$routeProvider', '$locationProvider',
         templateUrl: '/brands.html',
         controller: 'brands',
         controllerAs: 'atcCS' 
-      }).when('/parts/:searchText/:brand', {
+      }).when('/parts/:searchText/:brand/:rule', {
         caseInsensitiveMatch: true,
         templateUrl: '/parts.html',
         controller: 'parts',

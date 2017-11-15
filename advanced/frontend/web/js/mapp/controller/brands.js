@@ -1,8 +1,8 @@
 /* global atcCS, eventsNames */
 
 atcCS.controller( 'brands', [
-    '$scope', 'User' ,'$routeParams','$events', '$anchorScroll', '$location', 
-    function($scope,$user,$routeParams, $events, $anchorScroll, $location ) {
+    '$scope', 'User' ,'$routeParams','$events', '$location', 
+    function($scope,$user,$routeParams, $events, $location ) {
     'use strict';        
     
     var searchEvents = $events.get(eventsNames.eventsSearch());
@@ -20,23 +20,13 @@ atcCS.controller( 'brands', [
       if( !data || !data.count ){
         return;
       }      
-      var keys = Object.keys(data.rows).sort();      
-      $scope.brands = keys;
+      var keys = Object.keys(data.rows).sort();
+      var list = {};
+      for(var i in keys){
+        var key = keys[i];
+        list[key] = data.rows[key];
+      }      
+      $scope.brands = list;
     }
-    
-    $scope.goToTarget = function(letter){
-      var newHash = 'tag' + letter;                  
-      $anchorScroll(newHash);
-    };
-    
-    
-    angular.element("div.view").bind("scroll", function(event) {            
-      if (event.currentTarget.scrollTop >= 100) {
-        $scope.isScroll = true;
-      } else {
-        $scope.isScroll = false;
-      }
-      $scope.$apply();
-     });
     
 }]);
