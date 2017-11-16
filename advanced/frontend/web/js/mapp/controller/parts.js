@@ -11,16 +11,45 @@ atcCS.controller( 'parts', [
     $scope.data       = [];    
     $scope.searchText = $routeParams.searchText || false;
     $scope.brand      = $routeParams.brand      || false;
-    $scope.rule       = $routeParams.rule       || false;
+    $scope.rule       = JSON.parse($routeParams.rule)       || false;
     $scope.analogShow = $user.analogShow;
     $scope.markup     = $user.activeMarkup || 0;
     $scope.markupName = $user.activeMarkupName || '';
     $scope.isLogin    = $user.isLogin;
     $scope.isAdmin    = $user.isAdmin;
     $scope.articulCmp = $scope.searchText.toUpperCase();
+    $scope.expand     = "ATE";//undefined;
+        
+    for(var i in $scope.rule){
+        var clsid = $scope.rule[i].id;
+        var ident = $scope.rule[i].uid;
+       
+        $user.getParts(clsid,ident,$scope.searchText,
+          function(data){
+            serverResponse(clsid, ident, data);
+        });
+        $scope.loading[clsid] = clsid;        
+    }  
     
+    function serverResponse(clsid,ident,data){
+      delete($scope.loading[clsid]);
+      if( !data || !data.rows){
+        return;
+      }
+
+      $scope.data = ObjectHelper.merge($scope.data, data.rows);
+    }
     
-    console.log($scope);
+    $scope.selectMaker=function(maker){
+      console.log(maker);
+      $scope.expand = maker;
+    };
+    
+    $scope.$watch("data",
+      function(newVal, oldVal){
+        console.log(newVal);
+      }, true);
+      
     /*$snCtrl.change($scope.searchText); 
     
     $scope.table = new tableViewData({

@@ -1,0 +1,123 @@
+/* 
+    Created on : 14.11.2017, 22:25:57
+    Author     : Sync<atc58.ru>
+*/
+
+div.parts-view{
+  top: 6rem;
+  width: 100%;    
+  bottom: 2rem;
+  position: fixed;
+  
+  border:0;
+  background:transparent;
+  display: block;
+  overflow: scroll;
+  
+//  .in-search{    
+//    width: 50%;
+//    height: 50%;
+//    margin: auto;    
+//    background-image: url("/img/spiner.gif");
+//    background-position: center;
+//    background-repeat: no-repeat;
+//    background-size: 64px 64px;    
+//    position: absolute;    
+//    display: block;
+//    top: 50%;
+//    margin-top: -37%;
+//    left: 50%;
+//    margin-left: -25%;
+//  }
+    
+  div.parts-list{
+    width:100%;
+    height: 100%;
+    
+    & > ul{
+      list-style:none; 
+      padding:0;
+      
+      li{
+        width: 100%;
+        line-height:2.5rem;
+        background: transparent;
+        background-image: linear-gradient($main_color,#989898,$main_color);
+        box-shadow: inset 0 0 1rem black;
+        margin: 0.5rem 0;
+        border-radius: 0.5rem;
+        
+        & > span{
+          padding: 0 2rem;
+          font-size: 1.5rem;
+          font-weight: bold;
+          color: $atc_color;
+          text-shadow: 0 0 2px white;
+        }
+        
+        button.expand-button{
+          position: absolute;
+          right: 1rem;
+          line-height: 2rem;
+          margin-top: 0.3rem;
+          background: none;
+          border: none;
+          color: white;
+          text-shadow: 0 0 1rem #565656;
+        }
+      }
+    }
+  }
+  
+  div.parts-expand{
+    ul{
+      list-style: none;
+      padding: 0;
+      color:white;
+      text-shadow: 0 0 2px black;
+      
+      li{
+        line-height: 1rem;
+        font-size: 0.6rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background: transparent;
+        background-image: linear-gradient($main_color,#989898,$main_color);
+        box-shadow: inset 0 0 1rem black;
+        margin: 0.1rem 0;
+        border-radius: 0.5rem;
+        
+        div.row-head{
+          width: 100%;
+          overflow: hidden;
+          display: inline-block;
+          text-align: left;
+          padding-left: 1rem;
+              margin-top: 0.2rem;
+          
+          span.articul{
+            display: block;
+          }
+          
+          span.name{
+            display: block;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+        }
+        
+        div.row-info{
+          right:  1rem;
+          position: absolute;
+          display:inline-block;
+              margin-top: 0.2rem;
+          
+          span{
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}
+

@@ -72,11 +72,11 @@ MAppAsset::register($this);
 <!-- Angular views -->
  <!-- Collect from 'frontend/views/mobile//brands.html' file -->
 <script type="text/ng-template" id="/brands.html">
- <div class="brands-view"><div ng-if="inSearch" class="in-search"></div><div class="brands-list"><ul><li ng-repeat="(brand,rule) in brands"><span><a href="/parts/{{searchText}}/{{brand}}/{{rule}}">{{brand}}</a></span></li></ul></div>    </div>
+ <div class="brands-view">   <div ng-if="inSearch" class="in-search"></div>   <div class="brands-list">     <ul>       <li ng-repeat="(brand,rule) in brands">         <span><a href="/parts/{{searchText}}/{{brand}}/{{rule}}">{{brand}}</a></span>       </li>     </ul>   </div>    </div>
 </script>
  <!-- Collect from 'frontend/views/mobile//login-window.html' file -->
 <script type="text/ng-template" id="/login-window.html">
-<div class="login-window"><ul><li><div class="label">                <span>Логин</span></div></li><li><div class="field">                <input ng-model="login"/></div></li><li><div class="label">                <span>Пароль</span></div></li><li><div class="field"><input ng-model="pass"/></div></li><li><div class="label">                <label><input type="checkbox" ng-model="reuse"/> Запомнить меня</label></div></li></ul></div>
+<div class="login-window">  <ul>    <li>      <div class="label">                <span>Логин</span>      </div>    </li>    <li>      <div class="field">                <input ng-model="login"/>      </div>    </li>    <li>      <div class="label">                <span>Пароль</span>      </div>    </li>    <li>      <div class="field">        <input ng-model="pass"/>      </div>    </li>    <li>      <div class="label">                <label><input type="checkbox" ng-model="reuse"/> Запомнить меня</label>      </div>    </li>  </ul></div>
 </script>
  <!-- Collect from 'frontend/views/mobile//menu-view.html' file -->
 <script type="text/ng-template" id="/menu-view.html">
@@ -84,7 +84,7 @@ MAppAsset::register($this);
 </script>
  <!-- Collect from 'frontend/views/mobile//parts.html' file -->
 <script type="text/ng-template" id="/parts.html">
-<div class="parts-out">  <div class="breadcrumb">    <span>Поиск</span>    <span>{{searchText}}</span>    <span><a href="/brands/{{searchText}}/{{timestamp}}">Производители</a></span>    <span>{{brand}}</span>  </div>  <div ng-if="inSearch" class="in-search"></div>      <div ng-if="!inSearch" class="count">Варианты деталей по запросу "<b>{{searchText}}</b>" от производителя <b>{{brand}}</b>:    <span ng-repeat="item in loading" class="small-preloader">    </span>  </div>     <div class="actions">    <a href="#" ng-click="onCollapse()">      <span class="glyphicon glyphicon-minus-sign"></span>Свернуть все    </a>    <a href="#" ng-click="onExpand()">      <span class="glyphicon glyphicon-plus-sign"></span>Развернуть все    </a>      </div>    <table-view ng-model="table" ng-extr-scope="self"/>    </div>
+<div class="parts-view">  <div class="parts-list"  ng-show="expand===undefined">    <ul>      <li ng-repeat="(brand,rows) in data">        <span>{{brand}}</span>        <button class="expand-button" ng-click="selectMaker(brand)"><span class="glyphicon glyphicon-chevron-right"></span></button>      </li>    </ul>      </div>    <div class="parts-expand"  ng-show="expand!==undefined">    <ul>      <li ng-repeat="rows in data[expand]">        <div class="row-head"><span class="articul">{{rows.articul}}</span><span class="name">{{rows.name}}</span></div>        <div class="row-info"><span>Цена <b>{{rows.price}}</b> руб. срок от <b>{{rows.shiping}}</b> дн.</span></div>              </li>    </ul>      </div>  </div>
 </script>
 <!-- Grunt views place stop -->
 
