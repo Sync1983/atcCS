@@ -40,30 +40,52 @@ div.parts-view{
       
       li{
         width: 100%;
-        line-height:2.5rem;
+        line-height:1rem;
         background: transparent;
-        background-image: linear-gradient($main_color,#989898,$main_color);
+        background-image: linear-gradient($main_color 38%,#888888,$main_color);
         box-shadow: inset 0 0 1rem black;
-        margin: 0.5rem 0;
+        margin: 0.25rem 0;
         border-radius: 0.5rem;
         
         & > span{
-          padding: 0 2rem;
-          font-size: 1.5rem;
+          padding: 0.3rem 0 0 2rem;
+          font-size: 0.8rem;
           font-weight: bold;
           color: $atc_color;
           text-shadow: 0 0 2px white;
+          max-width: 90%;
+          display: block;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         
         button.expand-button{
           position: absolute;
           right: 1rem;
-          line-height: 2rem;
-          margin-top: 0.3rem;
+          line-height: 2rem;          
           background: none;
           border: none;
           color: white;
           text-shadow: 0 0 1rem #565656;
+          margin-top: -1.5rem;
+        }
+        
+        div.name-info{
+          display: block;
+          font-size: 0.6rem;
+          line-height: 1rem;
+          width: 100%; 
+          color:white;
+          
+          span.a{
+            padding-left:0.8rem;            
+          }
+          
+          span.b{
+            right: 1rem;
+            position: absolute;
+            text-align: right;
+          }
         }
       }
     }
@@ -114,6 +136,28 @@ div.parts-view{
           
           span{
             display: block;
+          }
+        }
+        
+        div.back{
+          line-height: 2rem;
+          font-size: 0.8rem;
+          padding: 0 1rem;
+          
+          span.brand-name{
+            max-width: 30%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            vertical-align: middle;
+          }
+          
+          span.back{
+            text-align: center;
+            width: 50%;
+            display: inline-block;
+            font-size: 1.2rem;
+            vertical-align: middle;
           }
         }
       }

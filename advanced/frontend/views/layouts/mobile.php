@@ -72,11 +72,11 @@ MAppAsset::register($this);
 <!-- Angular views -->
  <!-- Collect from 'frontend/views/mobile//brands.html' file -->
 <script type="text/ng-template" id="/brands.html">
- <div class="brands-view">   <div ng-if="inSearch" class="in-search"></div>   <div class="brands-list">     <ul>       <li ng-repeat="(brand,rule) in brands">         <span><a href="/parts/{{searchText}}/{{brand}}/{{rule}}">{{brand}}</a></span>       </li>     </ul>   </div>    </div>
+ <div class="brands-view"><div ng-if="inSearch" class="in-search"></div><div class="brands-list"><ul><li ng-repeat="(brand,rule) in brands"><span><a href="/parts/{{searchText}}/{{brand}}/{{rule}}">{{brand}}</a></span></li></ul></div>    </div>
 </script>
  <!-- Collect from 'frontend/views/mobile//login-window.html' file -->
 <script type="text/ng-template" id="/login-window.html">
-<div class="login-window">  <ul>    <li>      <div class="label">                <span>Логин</span>      </div>    </li>    <li>      <div class="field">                <input ng-model="login"/>      </div>    </li>    <li>      <div class="label">                <span>Пароль</span>      </div>    </li>    <li>      <div class="field">        <input ng-model="pass"/>      </div>    </li>    <li>      <div class="label">                <label><input type="checkbox" ng-model="reuse"/> Запомнить меня</label>      </div>    </li>  </ul></div>
+<div class="login-window"><ul><li><div class="label">                <span>Логин</span></div></li><li><div class="field">                <input ng-model="login"/></div></li><li><div class="label">                <span>Пароль</span></div></li><li><div class="field"><input ng-model="pass"/></div></li><li><div class="label">                <label><input type="checkbox" ng-model="reuse"/> Запомнить меня</label></div></li></ul></div>
 </script>
  <!-- Collect from 'frontend/views/mobile//menu-view.html' file -->
 <script type="text/ng-template" id="/menu-view.html">
@@ -84,7 +84,7 @@ MAppAsset::register($this);
 </script>
  <!-- Collect from 'frontend/views/mobile//parts.html' file -->
 <script type="text/ng-template" id="/parts.html">
-<div class="parts-view">  <div class="parts-list"  ng-show="expand===undefined">    <ul>      <li ng-repeat="(brand,rows) in data">        <span>{{brand}}</span>        <button class="expand-button" ng-click="selectMaker(brand)"><span class="glyphicon glyphicon-chevron-right"></span></button>      </li>    </ul>      </div>    <div class="parts-expand"  ng-show="expand!==undefined">    <ul>      <li ng-repeat="rows in data[expand]">        <div class="row-head"><span class="articul">{{rows.articul}}</span><span class="name">{{rows.name}}</span></div>        <div class="row-info"><span>Цена <b>{{rows.price}}</b> руб. срок от <b>{{rows.shiping}}</b> дн.</span></div>              </li>    </ul>      </div>  </div>
+<div class="parts-view">  <div class="parts-list"  ng-show="expand===undefined">    <ul>      <li ng-repeat="rows in data | orderBy:'name'">        <span>{{rows.name}}</span>        <button class="expand-button" ng-click="selectMaker(rows)"><span class="glyphicon glyphicon-chevron-right"></span></button>        <div class="name-info">          <span class="a">Цена <u>{{rows.min_price.price}}</u> руб. срок от <u>{{rows.min_price.shiping}} дн.</u></span>          <span class="b" ng-show="((rows.min_time.price!==rows.min_price.price) || (rows.min_price.shiping !==rows.min_time.shiping) ) ">Цена <u>{{rows.min_time.price}}</u> руб. срок от <u>{{rows.min_time.shiping}} дн.</u></span>        </div>      </li>    </ul>      </div>    <div class="parts-expand"  ng-show="expand!==undefined">    <ul>      <li><div ng-click="expand=undefined" class="back"><span class="glyphicon glyphicon-chevron-left icon-back" ></span><span class="brand-name">{{expand.name}}</span><span class="back">Назад</span></div></li>      <li ng-repeat="rows in expand.rows | orderBy:'price'">        <div class="row-head"><span class="articul">{{rows.articul}}</span><!-- span class="name">{{rows.name}}</span--></div>        <div class="row-info"><span>Цена <u>{{rows.price}}</u> руб. срок от <u>{{rows.shiping}} дн.</u> есть <u>{{rows.count}} шт.</u></span></div>              </li>    </ul>      </div>  </div>
 </script>
 <!-- Grunt views place stop -->
 
