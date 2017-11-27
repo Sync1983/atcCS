@@ -116,6 +116,24 @@ div.parts-view{
             display: block;
           }
         }
+        
+        div.parts-control{
+          display: inline;
+          line-height: 2rem;
+          font-size: 1rem;
+          text-align: center;
+          
+          span{
+            width: 33%;
+            display: inline-block;
+            margin: auto;
+            div{
+              display: inline-block;
+              position: relative;
+              font-size: 0.8rem;
+            }
+          }
+        }
       }
     }
   }

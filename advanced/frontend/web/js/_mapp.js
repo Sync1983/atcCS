@@ -262,6 +262,10 @@ atcCS.controller( 'parts', [
     $scope.isAdmin    = $user.isAdmin;
     $scope.articulCmp = $scope.searchText.toUpperCase();
     $scope.expand     = "ATE";//undefined;
+    $scope.sort       = {
+      name: undefined,
+      order: 0
+    };
         
     for(var i in $scope.rule){
         var clsid = $scope.rule[i].id;
