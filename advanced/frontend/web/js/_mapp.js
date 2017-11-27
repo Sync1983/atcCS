@@ -251,7 +251,8 @@ atcCS.controller( 'parts', [
     var searchEvents = $events.get(eventsNames.eventsSearch());
     
     $scope.loading    = {};    
-    $scope.data       = [];    
+    $scope.data       = [];
+    $scope.data_in    = [];
     $scope.searchText = $routeParams.searchText || false;
     $scope.brand      = $routeParams.brand      || false;
     $scope.rule       = JSON.parse($routeParams.rule)       || false;
@@ -284,7 +285,45 @@ atcCS.controller( 'parts', [
         return;
       }
 
-      $scope.data = ObjectHelper.merge($scope.data, data.rows);
+      $scope.data_in = ObjectHelper.merge($scope.data_in, data.rows);
+      var result = [];
+      
+      for(var i in $scope.data_in){
+        var name = i;
+        var info = $scope.data_in[i];
+        
+        var min = {
+          price:    Number.MAX_VALUE,
+          shiping:  Number.MAX_VALUE
+        };
+        var speed = {
+          price:    Number.MAX_VALUE,
+          shiping:  Number.MAX_VALUE
+        };
+        
+        for(var j in info){
+          var row = info[j];
+          console.log(row);
+          if( (row.price <= min.price) ){
+            console.log(row.shiping,row.price,min.shiping,min.price);
+            min.shiping = (row.price===min.price)?Math.min(row.shiping,min.shiping):row.shiping;
+            min.price = row.price;
+            console.log(row.shiping,row.price,min.shiping,min.price);
+          }
+          if( (row.shiping <= speed.shiping) ){            
+            speed.price = (row.shiping === speed.shiping)?Math.min(row.price,speed.price):row.price;
+            speed.shiping = row.shiping;            
+          }
+        }
+        
+        result.push({
+          name: name,
+          min_price: min,
+          min_time: speed,
+          rows: info          
+        });
+      }      
+      $scope.data = result;
     }
     
     $scope.selectMaker=function(maker){
@@ -294,7 +333,7 @@ atcCS.controller( 'parts', [
     
     $scope.$watch("data",
       function(newVal, oldVal){
-        console.log(newVal);
+        //console.log(newVal);
       }, true);
       
     /*$snCtrl.change($scope.searchText); 
