@@ -152,6 +152,9 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
     var searchInput = $("#search-input");
     
     $scope.searchText = {'text':""};    
+    $scope.markups = $user.markup;
+    $scope.selectedMarkup = undefined;
+    
     menuEvents.setListner('menuSelect', onMenuSelect);
     searchEvents.setListner('change', onSearchChange);
     
@@ -165,10 +168,8 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
         $menu.addItem("change-markup", "Сменить наценку", $user.activeMarkupName || undefined);
         $menu.addItem("change-basket", "Сменить корзину", $user.activeBasket && $user.activeBasket.name || undefined);
       }
-      console.log($user);
       $menu.addItem("change-analog", "Показывать аналоги", $user.analogShow?"Да":"Нет" );
-      
-      
+        
       $menu.show();
     };
     
@@ -177,6 +178,10 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
         $scope.$evalAsync(function() {
           $location.path('brands/'+clearText);
         });       
+    };
+    
+    $scope.onMarkupChange = function(){
+      
     };
     
     function menuLogin(){
@@ -189,7 +194,32 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
            
         }
       );
-    }
+    };
+    
+    function menuBasket(){
+      $window.setTemplate('/select-basket-window.html',$scope);
+      $window.show().then(
+        function(ok){          
+          //$user.login($scope.login, $scope.pass, $scope.reuse);
+        },
+        function(reject){
+           
+        }
+      );
+    };
+    
+    function menuMarkup(){
+      $scope.markups = $user.markup;
+      $window.setTemplate('/select-markup-window.html',$scope);
+      $window.show().then(
+        function(ok){          
+          //$user.login($scope.login, $scope.pass, $scope.reuse);
+        },
+        function(reject){
+           
+        }
+      );
+    };
     
     function onMenuSelect(name, args){
       
@@ -197,6 +227,10 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
         menuLogin();
       } else if(args === "change-analog"){
         $user.analogShow = !$user.analogShow;
+      } else if(args === "change-basket"){
+        menuBasket();
+      } else if(args === "change-markup"){
+        menuMarkup();
       }
       
     };
@@ -262,7 +296,7 @@ atcCS.controller( 'parts', [
     $scope.isLogin    = $user.isLogin;
     $scope.isAdmin    = $user.isAdmin;
     $scope.articulCmp = $scope.searchText.toUpperCase();
-    $scope.expand     = "ATE";//undefined;
+    $scope.expand     = undefined;
     $scope.sort       = {
       name: undefined,
       order: 0
@@ -303,12 +337,9 @@ atcCS.controller( 'parts', [
         
         for(var j in info){
           var row = info[j];
-          console.log(row);
           if( (row.price <= min.price) ){
-            console.log(row.shiping,row.price,min.shiping,min.price);
             min.shiping = (row.price===min.price)?Math.min(row.shiping,min.shiping):row.shiping;
             min.price = row.price;
-            console.log(row.shiping,row.price,min.shiping,min.price);
           }
           if( (row.shiping <= speed.shiping) ){            
             speed.price = (row.shiping === speed.shiping)?Math.min(row.price,speed.price):row.price;
@@ -327,197 +358,24 @@ atcCS.controller( 'parts', [
     }
     
     $scope.selectMaker=function(maker){
-      console.log(maker);
       $scope.expand = maker;
     };
     
-    $scope.$watch("data",
-      function(newVal, oldVal){
-        //console.log(newVal);
-      }, true);
-      
-    /*$snCtrl.change($scope.searchText); 
-    
-    $scope.table = new tableViewData({
-      $columns: {
-        maker:    {name: "Производитель", width:"10"},
-        articul:  {name: "Артикул",       width:"15"},
-        name:     {name: "Наименование",  width:"40", align: "left"},
-        price:    {name: "Цена",          width:"8"},
-        shiping:  {name: "Срок",          width:"8"},
-        count:    {name: "Наличие",       width:"8"},
-        basket:   {name: "В корзину",     width:"8"}        
-      },
-      template: {
-        articul: ["<span style='float:none'>{{row.articul}}",
-                  "  <div class='articul-search-div'>",
-                  "    <button ng-click='onArticulSearch(row.articul)'>",
-                  "      <span class='glyphicon glyphicon-search'>",
-                  "      </span>",
-                  "    </button>",
-                  "  </div>",
-                  "</span>"].join(""),
-        basket:  ["<span>",
-                  "  <button ng-click='onAdd(row)' class='basket-add-button'",
-                  "           ng-show='isLogin&&!row.adding&&!row.error'>",
-                  "     <span class='glyphicon glyphicon-plus'></span>",
-                  "     Добавить",
-                  "  </button>",
-                  "  <span class='load-info' ng-show='row.adding'></span>", 
-                  "</span>"].join(""),
-        name:     "<span title='{{row.name}}'><span ng-if='isAdmin'>{{row.prvd}} : {{row.stock}} </span>{{row.name}}</span>",
-        price:    "<span title='{{(isAdmin && (row.price) || showWithMarkup(row.price) ) | number:2}}'>{{showWithMarkup(row.price) | number:2}}</span>",
-        count:   ["<span>{{row.count}}",
-                  " <div class='lot-quantity' title='Минимальное количество для заказа' ng-show='(row.lot_quantity>1)'>",
-                  "   <span class='glyphicon glyphicon-th-large'></span> {{row.lot_quantity}}",
-                  " </div>",
-                  "</span>"].join("")
-      },
-      hlight: {
-        articul: $scope.articulCmp
-      },
-      sortRows: sortFunction,
-      sortGroups: sortHeader,
-      sort: {
-        maker: 1,
-        price: 1,
-        shiping: 1
-      },
-      filter: function(row){
-        return $scope.analogShow || (row.isOriginal===1);
+    $scope.sortBy = function(field){
+      if(field===$scope.sort.name){
+        $scope.sort.order = 1-$scope.sort.order;
+      } else{
+        $scope.sort.name = field;
+        $scope.sort.order = 1;
       }
+    };
+    
+    $rootScope.$on('markupValueChange', function(event,data){    
+      $scope.activeMarkup      = data.value; 
+      $scope.activeMarkupName  = data.name;
     });
-    
-    $scope.self = $scope; 
-    
-    function getRequsetParams(){
-      var requestParams;
-      brands = $storage.get($scope.timestamp);
-    
-      if( !$scope.timestamp || !brands ) {       
-        return {};
-      }
       
-      for(var brand in brands.rows){        
-        if( brand !== $scope.brand ){
-          continue;
-        }
-        requestParams = brands.rows[brand];
-      }            
-      
-      return requestParams;
-    }
-    
-    function loadingData(requestParams){
-      for(var i in requestParams){
-        var clsid = requestParams[i].id;
-        var ident = requestParams[i].uid;
-        var storage = $storage.get($scope.timestamp+'@'+clsid+'@'+ident+'@'+$scope.searchText);
-        if( storage ){                
-          serverResponse(clsid,ident,storage);                
-        } else{
-          $user.getParts(clsid,ident,$scope.searchText,serverResponseCall(clsid, ident));
-          $scope.loading[clsid] = clsid;        
-        }
-      }      
-    }    
-    
-    function serverResponseCall($clsid, $ident){
-      return function(data){
-        serverResponse($clsid,$ident,data);
-      };
-    }
-    
-    function serverResponse(clsid,ident,data){
-      delete($scope.loading[clsid]);
-      
-      if( !data ){
-        return;
-      }
-      
-      $storage.set($scope.timestamp+'@'+clsid+'@'+ident+'@'+$scope.searchText,data);      
-      $scope.table.addData(data.rows);
-    }
-    
-    function load(){
-      loadingData( getRequsetParams() );
-    }
-    
-    function sortFunction(sort){
-      
-      function isNumeric(obj) {
-        return !isNaN(obj - parseFloat(obj));
-      }
-      
-      function calcWeight(rowA, rowB, sort){
-        var weightA = 0;
-        var weightB = 0;        
-        var A,B;
-        if( String(rowA.articul).toUpperCase() === $scope.articulCmp ){
-          weightA -= 100;
-        }
-        if( String(rowB.articul).toUpperCase() === $scope.articulCmp ){
-          weightB -= 100;
-        }
-          
-        for(var cKey in sort){
-          
-          if( isNumeric(rowA[cKey]) && isNumeric(rowB[cKey]) ){
-            A = parseFloat(rowA[cKey]);
-            B = parseFloat(rowB[cKey]);
-          } else {
-            A = String(rowA[cKey]).toUpperCase();
-            B = String(rowB[cKey]).toUpperCase();            
-          }
-          
-          if( A > B ){
-            weightA += sort[cKey];
-          } else if( A < B){
-            weightB += sort[cKey];            
-          }
-          
-        }
-        
-        
-        if( weightA > weightB ){
-          return 1;
-        } else if( weightA < weightB ){
-          return -1;
-        }
-        
-        return 0;
-        
-      }
-      
-      return function(rowA, rowB){
-        return calcWeight(rowA, rowB, sort);
-      };
-    }   
-    
-    function sortHeader(sort) {
-      
-      return function(headA, headB){
-        var res = 0, brandOffset = 0;
-        
-        if( headA.name === $scope.brand ){
-          brandOffset -= 10;
-        }
-        if( headB.name === $scope.brand ){
-          brandOffset += 10;
-        }
-        
-        if( sort.maker === undefined ){
-          return brandOffset;
-        }
-        
-        if( headA.name > headB.name ){
-          res = 1;
-        } else if( headA.name < headB.name ){
-          res = -1;
-        }
-        return brandOffset + res * sort.maker;
-      };
-    }
+    /*
     
     $scope.showWithMarkup = function(price){
       if( $scope.markup === 0){
@@ -533,7 +391,7 @@ atcCS.controller( 'parts', [
       return " [" + $scope.markupName + "]";
     };
     
-    $scope.table.$columns.price.name = "Цена" + $scope.showMarkupName();
+    
     
     $scope.onArticulSearch = function(articul){
       searchEvents.broadcast("StartSearchText",articul);      

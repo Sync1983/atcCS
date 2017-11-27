@@ -66,7 +66,7 @@ div.parts-view{
           background: none;
           border: none;
           color: white;
-          text-shadow: 0 0 1rem #565656;
+          text-shadow: 0 0 1rem #565656, 0 0 2px black;
           margin-top: -1.5rem;
         }
         
@@ -76,6 +76,7 @@ div.parts-view{
           line-height: 1rem;
           width: 100%; 
           color:white;
+          text-shadow: 0 0 1px black;
           
           span.a{
             padding-left:0.8rem;            
@@ -139,11 +140,40 @@ div.parts-view{
           }
         }
         
+        div.row-expand{
+          ul{
+            padding: 0;
+            padding-left:1rem;
+            padding-bottom:0.5rem;
+            li{
+              background-image: none;
+              box-shadow: none;
+              line-height: 0.8rem;
+              padding: 0;
+              margin: 0;
+            }
+          }
+          div.actions{
+            width: 100%;
+            display: inline;
+            button{
+              display: inline-block;
+              line-height: 2rem;
+              font-size: 1rem;
+              background: transparent;
+              border: 4px;
+              border-style: groove;
+              padding:0 1rem;
+            }
+          }
+        }
+        
         div.parts-control{
           display: inline;
           line-height: 2rem;
           font-size: 1rem;
           text-align: center;
+          padding-left: 33%;
           
           span{
             width: 33%;
@@ -152,7 +182,7 @@ div.parts-view{
             div{
               display: inline-block;
               position: relative;
-              font-size: 0.8rem;
+              font-size: 0.8rem;              
             }
           }
         }

@@ -10,6 +10,9 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
     var searchInput = $("#search-input");
     
     $scope.searchText = {'text':""};    
+    $scope.markups = $user.markup;
+    $scope.selectedMarkup = undefined;
+    
     menuEvents.setListner('menuSelect', onMenuSelect);
     searchEvents.setListner('change', onSearchChange);
     
@@ -23,10 +26,8 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
         $menu.addItem("change-markup", "Сменить наценку", $user.activeMarkupName || undefined);
         $menu.addItem("change-basket", "Сменить корзину", $user.activeBasket && $user.activeBasket.name || undefined);
       }
-      console.log($user);
       $menu.addItem("change-analog", "Показывать аналоги", $user.analogShow?"Да":"Нет" );
-      
-      
+        
       $menu.show();
     };
     
@@ -35,6 +36,10 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
         $scope.$evalAsync(function() {
           $location.path('brands/'+clearText);
         });       
+    };
+    
+    $scope.onMarkupChange = function(){
+      
     };
     
     function menuLogin(){
@@ -47,7 +52,32 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
            
         }
       );
-    }
+    };
+    
+    function menuBasket(){
+      $window.setTemplate('/select-basket-window.html',$scope);
+      $window.show().then(
+        function(ok){          
+          //$user.login($scope.login, $scope.pass, $scope.reuse);
+        },
+        function(reject){
+           
+        }
+      );
+    };
+    
+    function menuMarkup(){
+      $scope.markups = $user.markup;
+      $window.setTemplate('/select-markup-window.html',$scope);
+      $window.show().then(
+        function(ok){          
+          //$user.login($scope.login, $scope.pass, $scope.reuse);
+        },
+        function(reject){
+           
+        }
+      );
+    };
     
     function onMenuSelect(name, args){
       
@@ -55,6 +85,10 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
         menuLogin();
       } else if(args === "change-analog"){
         $user.analogShow = !$user.analogShow;
+      } else if(args === "change-basket"){
+        menuBasket();
+      } else if(args === "change-markup"){
+        menuMarkup();
       }
       
     };

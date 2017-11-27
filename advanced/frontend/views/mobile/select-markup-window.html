@@ -1,0 +1,8 @@
+<div class="markup-window">
+  <ul>
+    <li ng-repeat="mp in markups|orderBy:'v'">
+      <span class="glyphicon glyphicon-ok" ng-if="selectedMarkup==1"></span>
+      <span ng-click="selectedMarkup=$index">{{mp.n}} ( {{mp.v}}% )</span>
+    </li>
+  </ul>
+</div>
