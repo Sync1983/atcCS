@@ -143,20 +143,21 @@ atcCS.config(['$routeProvider', '$locationProvider',
 /* global atcCS */ 
 /* global eventsNames */ 
 
-atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$events', '$windowSrv', '$location', 
-  function($scope,$user,$templateCache,$menu,$events, $window, $location) {
+atcCS.controller( 'main-screen',['$scope','User','$rootScope','$menu', '$events', '$windowSrv', '$location', 
+  function($scope,$user,$rootScope,$menu,$events, $window, $location) {
     'use strict';
     
     var menuEvents = $events.get(eventsNames.eventsMain());
     var searchEvents = $events.get(eventsNames.eventsSearch());
     var searchInput = $("#search-input");
     
-    $scope.searchText = {'text':""};    
+    $scope.searchText = "";    
     $scope.markups = $user.markup;
     $scope.selectedMarkup = undefined;
     
     menuEvents.setListner('menuSelect', onMenuSelect);
     searchEvents.setListner('change', onSearchChange);
+    searchEvents.setListner('StartSearchText', onSearchStart);
     
     $scope.onMenuLoad = function(){
       $menu.setEventsListner(menuEvents,'menuSelect');
@@ -174,14 +175,10 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
     };
     
     $scope.onSearch = function(){
-      var clearText   = String($scope.searchText.text).replace(/\W*/gi,"");
+      var clearText   = String($scope.searchText).replace(/\W*/gi,"");
         $scope.$evalAsync(function() {
           $location.path('brands/'+clearText);
         });       
-    };
-    
-    $scope.onMarkupChange = function(){
-      
     };
     
     function menuLogin(){
@@ -210,10 +207,16 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
     
     function menuMarkup(){
       $scope.markups = $user.markup;
+      for(var i in $scope.markups){
+        if($scope.markups[i].v === $user.activeMarkup){
+          $scope.selectedMarkup = $scope.markups[i];
+          break;
+        }
+      };
       $window.setTemplate('/select-markup-window.html',$scope);
       $window.show().then(
         function(ok){          
-          //$user.login($scope.login, $scope.pass, $scope.reuse);
+          $rootScope.$broadcast('markupValueChange',{value:$scope.selectedMarkup.v,name:$scope.selectedMarkup.n});
         },
         function(reject){
            
@@ -237,6 +240,13 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
     
     function onSearchChange(name,args){      
       $(searchInput).val(args).trigger('change');
+    };
+    
+    function onSearchStart(name,args){   
+      console.log('start search articul');
+      $(searchInput).val(args).trigger('change');
+      $scope.searchText = args;
+      $scope.onSearch();
     };
     
     
@@ -301,6 +311,8 @@ atcCS.controller( 'parts', [
       name: undefined,
       order: 0
     };
+    
+    searchEvents.broadcast("change",$scope.searchText);
         
     for(var i in $scope.rule){
         var clsid = $scope.rule[i].id;
@@ -370,94 +382,36 @@ atcCS.controller( 'parts', [
       }
     };
     
-    $rootScope.$on('markupValueChange', function(event,data){    
-      $scope.activeMarkup      = data.value; 
-      $scope.activeMarkupName  = data.name;
-    });
-      
-    /*
-    
-    $scope.showWithMarkup = function(price){
-      if( $scope.markup === 0){
-        return price;
-      }
-      return price*(1 + $scope.markup/100);
-    };
-    
-    $scope.showMarkupName = function(){
-      if( $scope.markup === 0){
-        return "";
-      }
-      return " [" + $scope.markupName + "]";
-    };
-    
-    
-    
-    $scope.onArticulSearch = function(articul){
-      searchEvents.broadcast("StartSearchText",articul);      
-    };
-    
     $scope.onAdd  = function(item){      
-      /*if( item === undefined ){
+      if( item === undefined ){
         return;
-      }*/      
-    /*  
-      var onAnswer = function(aitem){
-        return function(answer){
-          item.adding = false;
-          if( answer.error ){
-            for(var i in answer.error){
-              aitem.error = true;
-              $notify.error("Ошибка корзины",answer.error[i]);
-            }
-            return;
-          }
-          if( answer.save ){
-            $notify.info("Деталь добавлена","Деталь " + aitem.name + "добавлена в корзину");
-            return;
-          }          
-        };
-      };
+      }      
       
       item.sell_count = item.lot_quantity;
       item.adding = true;      
-      $user.toBasket(item, onAnswer(item));
+      $user.toBasket(item).then(function success(data){
+        item.added = true;
+        item.adding = false;
+      }, function error(){
+        item.error = true;
+      });
       return false;
     };
-    
-    $scope.onCollapse = function(){      
-      var data = $scope.table.$rowGroups;
-      for(var i in data){
-        data[i].show = false;
-      }
-      return false;
+      
+    $rootScope.$on('markupValueChange', function(event,data){    
+      $scope.activeMarkup      = data.value; 
+      $scope.activeMarkupName  = data.name;
+    });  
+        
+    $scope.onArticulSearch = function(articul){
+      searchEvents.broadcast("StartSearchText",articul);      
     };
-    
-    $scope.onExpand = function(){
-      var data = $scope.table.$rowGroups;
-      for(var i in data){
-        data[i].show = true;
-      }      
-      return false;
-    };
-    
-    $rootScope.$on('analogStateChange', function(event,data){
-      $scope.analogShow  = data.value;    
-      $scope.tableParams.reload();
-    });
-    
-    $rootScope.$on('markupValueChange', function(event, data){
-      $scope.markup     = data.value;
-      $scope.markupName = data.value?data.name:'';
-      $scope.table.$columns.price.name = "Цена" + $scope.showMarkupName();      
-    });
-    
+        
     $rootScope.$on('userDataUpdate', function(event){        
         $scope.isLogin = $user.isLogin;         
         $scope.isAdmin = $user.isAdmin;         
      });   
-    */
-    //load();
+    
 }]);
 /* global atcCS */   
 
@@ -504,6 +458,17 @@ atcCS.factory('atcServerToken', ['$q', '$rootScope', '$injector',
 atcCS.filter('ObjectLength', function() {
   return function(object) {
     return Object.keys(object).length;
+  };
+});
+
+atcCS.filter('percent',function(){
+  return function(text,value){
+    var pc = 1 + (value/100);
+    var res = text * pc;
+    if( isNaN(res) ){
+      res = text;
+    }
+    return res;
   };
 });
 
@@ -894,7 +859,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$q', '$events',
     $http(req).then(serverResponse,serverError);
   };
   
-  model.toBasket  = function toBasket(data,callback){
+  model.toBasket  = function toBasket(data){
     var req = {
       method: 'GET',
       url: URLto('basket','add'),
@@ -903,21 +868,20 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$q', '$events',
         params: data
       }
     };
+    var defer = $q.defer();
     
     function serverResponse(answer){      
-      var data = answer && answer.data;      
-      if ( callback instanceof Function ){
-        callback(data);
-      }
+      var data = answer && answer.data;
+      defer.resolve(data);
     }
     
     function serverError(error){      
-      if ( callback instanceof Function ){
-        callback(false);
-      }
+      console.log("toBasket service error", error);
+      defer.reject(error);
     }
     
     $http(req).then(serverResponse,serverError);
+    return defer.promise;
   };
   
   model.getBasket = function getBasket(){

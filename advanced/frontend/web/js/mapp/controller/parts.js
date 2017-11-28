@@ -24,6 +24,8 @@ atcCS.controller( 'parts', [
       name: undefined,
       order: 0
     };
+    
+    searchEvents.broadcast("change",$scope.searchText);
         
     for(var i in $scope.rule){
         var clsid = $scope.rule[i].id;
@@ -93,92 +95,34 @@ atcCS.controller( 'parts', [
       }
     };
     
-    $rootScope.$on('markupValueChange', function(event,data){    
-      $scope.activeMarkup      = data.value; 
-      $scope.activeMarkupName  = data.name;
-    });
-      
-    /*
-    
-    $scope.showWithMarkup = function(price){
-      if( $scope.markup === 0){
-        return price;
-      }
-      return price*(1 + $scope.markup/100);
-    };
-    
-    $scope.showMarkupName = function(){
-      if( $scope.markup === 0){
-        return "";
-      }
-      return " [" + $scope.markupName + "]";
-    };
-    
-    
-    
-    $scope.onArticulSearch = function(articul){
-      searchEvents.broadcast("StartSearchText",articul);      
-    };
-    
     $scope.onAdd  = function(item){      
-      /*if( item === undefined ){
+      if( item === undefined ){
         return;
-      }*/      
-    /*  
-      var onAnswer = function(aitem){
-        return function(answer){
-          item.adding = false;
-          if( answer.error ){
-            for(var i in answer.error){
-              aitem.error = true;
-              $notify.error("Ошибка корзины",answer.error[i]);
-            }
-            return;
-          }
-          if( answer.save ){
-            $notify.info("Деталь добавлена","Деталь " + aitem.name + "добавлена в корзину");
-            return;
-          }          
-        };
-      };
+      }      
       
       item.sell_count = item.lot_quantity;
       item.adding = true;      
-      $user.toBasket(item, onAnswer(item));
+      $user.toBasket(item).then(function success(data){
+        item.added = true;
+        item.adding = false;
+      }, function error(){
+        item.error = true;
+      });
       return false;
     };
-    
-    $scope.onCollapse = function(){      
-      var data = $scope.table.$rowGroups;
-      for(var i in data){
-        data[i].show = false;
-      }
-      return false;
+      
+    $rootScope.$on('markupValueChange', function(event,data){    
+      $scope.activeMarkup      = data.value; 
+      $scope.activeMarkupName  = data.name;
+    });  
+        
+    $scope.onArticulSearch = function(articul){
+      searchEvents.broadcast("StartSearchText",articul);      
     };
-    
-    $scope.onExpand = function(){
-      var data = $scope.table.$rowGroups;
-      for(var i in data){
-        data[i].show = true;
-      }      
-      return false;
-    };
-    
-    $rootScope.$on('analogStateChange', function(event,data){
-      $scope.analogShow  = data.value;    
-      $scope.tableParams.reload();
-    });
-    
-    $rootScope.$on('markupValueChange', function(event, data){
-      $scope.markup     = data.value;
-      $scope.markupName = data.value?data.name:'';
-      $scope.table.$columns.price.name = "Цена" + $scope.showMarkupName();      
-    });
-    
+        
     $rootScope.$on('userDataUpdate', function(event){        
         $scope.isLogin = $user.isLogin;         
         $scope.isAdmin = $user.isAdmin;         
      });   
-    */
-    //load();
+    
 }]);

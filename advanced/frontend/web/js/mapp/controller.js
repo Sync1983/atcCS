@@ -1,20 +1,21 @@
 /* global atcCS */ 
 /* global eventsNames */ 
 
-atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$events', '$windowSrv', '$location', 
-  function($scope,$user,$templateCache,$menu,$events, $window, $location) {
+atcCS.controller( 'main-screen',['$scope','User','$rootScope','$menu', '$events', '$windowSrv', '$location', 
+  function($scope,$user,$rootScope,$menu,$events, $window, $location) {
     'use strict';
     
     var menuEvents = $events.get(eventsNames.eventsMain());
     var searchEvents = $events.get(eventsNames.eventsSearch());
     var searchInput = $("#search-input");
     
-    $scope.searchText = {'text':""};    
+    $scope.searchText = "";    
     $scope.markups = $user.markup;
     $scope.selectedMarkup = undefined;
     
     menuEvents.setListner('menuSelect', onMenuSelect);
     searchEvents.setListner('change', onSearchChange);
+    searchEvents.setListner('StartSearchText', onSearchStart);
     
     $scope.onMenuLoad = function(){
       $menu.setEventsListner(menuEvents,'menuSelect');
@@ -32,14 +33,10 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
     };
     
     $scope.onSearch = function(){
-      var clearText   = String($scope.searchText.text).replace(/\W*/gi,"");
+      var clearText   = String($scope.searchText).replace(/\W*/gi,"");
         $scope.$evalAsync(function() {
           $location.path('brands/'+clearText);
         });       
-    };
-    
-    $scope.onMarkupChange = function(){
-      
     };
     
     function menuLogin(){
@@ -68,10 +65,16 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
     
     function menuMarkup(){
       $scope.markups = $user.markup;
+      for(var i in $scope.markups){
+        if($scope.markups[i].v === $user.activeMarkup){
+          $scope.selectedMarkup = $scope.markups[i];
+          break;
+        }
+      };
       $window.setTemplate('/select-markup-window.html',$scope);
       $window.show().then(
         function(ok){          
-          //$user.login($scope.login, $scope.pass, $scope.reuse);
+          $rootScope.$broadcast('markupValueChange',{value:$scope.selectedMarkup.v,name:$scope.selectedMarkup.n});
         },
         function(reject){
            
@@ -95,6 +98,13 @@ atcCS.controller( 'main-screen',['$scope','User','$templateCache','$menu', '$eve
     
     function onSearchChange(name,args){      
       $(searchInput).val(args).trigger('change');
+    };
+    
+    function onSearchStart(name,args){   
+      console.log('start search articul');
+      $(searchInput).val(args).trigger('change');
+      $scope.searchText = args;
+      $scope.onSearch();
     };
     
     

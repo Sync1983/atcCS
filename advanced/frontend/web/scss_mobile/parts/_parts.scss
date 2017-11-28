@@ -151,6 +151,12 @@ div.parts-view{
               line-height: 0.8rem;
               padding: 0;
               margin: 0;
+              button.btn-articul-search{
+                line-height: 0.8rem;
+                background: transparent;
+                border-style: groove;    
+                vertical-align: text-bottom;
+              }
             }
           }
           div.actions{
@@ -164,6 +170,29 @@ div.parts-view{
               border: 4px;
               border-style: groove;
               padding:0 1rem;
+              
+              span.wait{
+                top: 0.5em;
+                display: inline-block;
+                position: relative;
+  
+                &:before{
+                  content: " "; 
+                  background-image: url("/img/spiner-small.gif");
+                  background-size: 1.5em 1.5em;
+                  display: inline-block;
+                  width: 1.5em;
+                  height: 1.5em;
+                } 
+              }
+              span.glyphicon-ok{
+                color:lime;
+                text-shadow: 0 0 5px black;
+              }
+              span.glyphicon-remove{
+                color:red;
+                text-shadow: 0 0 5px black;
+              }
             }
           }
         }

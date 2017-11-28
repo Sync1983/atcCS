@@ -353,7 +353,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$q', '$events',
     $http(req).then(serverResponse,serverError);
   };
   
-  model.toBasket  = function toBasket(data,callback){
+  model.toBasket  = function toBasket(data){
     var req = {
       method: 'GET',
       url: URLto('basket','add'),
@@ -362,21 +362,20 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$q', '$events',
         params: data
       }
     };
+    var defer = $q.defer();
     
     function serverResponse(answer){      
-      var data = answer && answer.data;      
-      if ( callback instanceof Function ){
-        callback(data);
-      }
+      var data = answer && answer.data;
+      defer.resolve(data);
     }
     
     function serverError(error){      
-      if ( callback instanceof Function ){
-        callback(false);
-      }
+      console.log("toBasket service error", error);
+      defer.reject(error);
     }
     
     $http(req).then(serverResponse,serverError);
+    return defer.promise;
   };
   
   model.getBasket = function getBasket(){

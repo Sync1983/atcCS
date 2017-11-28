@@ -28,15 +28,20 @@
         <div class="row-expand" ng-show="rows.open">
           <ul>
             <li>Производитель: {{rows.maker}}</li>            
-            <li>Артикул: {{rows.articul}}</li>            
+            <li>Артикул: {{rows.articul}} <button class="btn-articul-search" ng-click="onArticulSearch(rows.articul)"><span class="glyphicon glyphicon-search"></span></button></li>            
             <li>Наименование: {{rows.name}}</li>            
             <li>На складе: {{rows.count}} шт.</li>            
             <li>Упаковка: {{rows.lot_quantity}} шт.</li>            
-            <li>Цена: {{rows.price}} руб.</li>            
-            <li>Срок: от {{rows.shiping}} дн.</li>            
+            <li>Цена: {{rows.price}} руб.</li>
+            <li>Цена [{{activeMarkupName}} ({{activeMarkup}}%)]: <u>{{rows.price | percent:activeMarkup | number:2}} руб.</u></li>            
+            <li>Срок: от <u>{{rows.shiping}} дн.</u></li>            
           </ul>
           <div class="actions">
-            <button>В корзину</button>
+            <button ng-click="onAdd(rows)">В корзину
+              <span class="wait" ng-show="rows.adding"></span>
+              <span class="glyphicon glyphicon-ok" ng-show="rows.added"></span>
+              <span class="glyphicon glyphicon-remove" ng-show="rows.error"></span>
+            </button>
             <button style="float: right" ng-click="rows.open=false">Свернуть</button>
           </div>
         </div>
