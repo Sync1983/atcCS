@@ -16,7 +16,7 @@ atcCS.config(['$routeProvider', '$locationProvider',
       }).when('/basket', {
         caseInsensitiveMatch: true,
         templateUrl: '/basket.html',
-        controller: 'basketControl', 
+        controller: 'basket', 
         controllerAs: 'atcCS' 
       }).when('/orders', {
         caseInsensitiveMatch: true,

@@ -114,7 +114,7 @@ atcCS.config(['$routeProvider', '$locationProvider',
       }).when('/basket', {
         caseInsensitiveMatch: true,
         templateUrl: '/basket.html',
-        controller: 'basketControl', 
+        controller: 'basket', 
         controllerAs: 'atcCS' 
       }).when('/orders', {
         caseInsensitiveMatch: true,
@@ -168,6 +168,7 @@ atcCS.controller( 'main-screen',['$scope','User','$rootScope','$menu', '$events'
       } else {
         $menu.addItem("change-markup", "Сменить наценку", $user.activeMarkupName || undefined);
         $menu.addItem("change-basket", "Сменить корзину", $user.activeBasket && $user.activeBasket.name || undefined);
+        $menu.addItem("show-basket", "Корзина", undefined);
       }
       $menu.addItem("change-analog", "Показывать аналоги", $user.analogShow?"Да":"Нет" );
         
@@ -234,6 +235,10 @@ atcCS.controller( 'main-screen',['$scope','User','$rootScope','$menu', '$events'
         menuBasket();
       } else if(args === "change-markup"){
         menuMarkup();
+      } else if(args === "show-basket"){
+        $scope.$evalAsync(function() {
+          $location.path('basket/');
+        });
       }
       
     };
@@ -251,6 +256,38 @@ atcCS.controller( 'main-screen',['$scope','User','$rootScope','$menu', '$events'
     
     
    
+    
+}]);
+/* global atcCS, ObjectHelper, eventsNames */
+
+atcCS.controller( 'basket', [
+    '$scope', 'User' ,'$routeParams','$events', '$location','$rootScope',
+    function($scope,$user,$routeParams, $events, $location, $rootScope ) {
+    'use strict';
+    
+    var searchEvents = $events.get(eventsNames.eventsSearch());
+    $scope.isLogin = $user.isLogin;         
+    $scope.isAdmin = $user.isAdmin;
+    $scope.parts = [];
+    
+    $user.getBasket().then(update);   
+    
+    $rootScope.$on('userDataUpdate', function(event){
+      if( $scope.isLogin !== $user.isLogin ){
+        $scope.isLogin = $user.isLogin;
+        $user.getBasket().then(update);
+      }
+      $scope.isAdmin = $user.isAdmin;         
+    }); 
+    
+      
+    function update(data){
+      var rows = data && data.data;
+      console.log(rows);
+      $scope.parts = ObjectHelper.merge($scope.parts, rows);
+    }
+ 
+    
     
 }]);
 /* global atcCS, eventsNames */

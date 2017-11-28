@@ -1,0 +1,111 @@
+/* 
+    Created on : 28.11.2017, 15:38:30
+    Author     : Sync
+*/
+
+div.basket-view{
+  top: 6rem;
+  width: 100%;    
+  bottom: 2rem;
+  position: fixed;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  border:0;
+  
+  ul{
+    list-style: none;
+    padding: 0;
+    color:white;
+    text-shadow: 0 0 2px black;
+    
+    li{
+      line-height: 1rem;
+      font-size: 0.6rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      background: transparent;
+      background-image: linear-gradient($main_color,#989898,$main_color);
+      box-shadow: inset 0 0 1rem black;
+      margin: 0.3rem 0;
+      border-radius: 0.5rem;
+      div{
+        width: 100%;
+        padding: 0 1rem 0.2rem 1rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      div.line-a{
+        span{
+          padding: 0 0.5rem 0 0;
+        }
+      }
+      div.row-expand{
+        ul{
+          padding: 0;
+          padding-left:1rem;
+          padding-bottom:0.5rem;
+          li{
+            background-image: none;
+            box-shadow: none;
+            line-height: 0.8rem;
+            padding: 0;
+            margin: 0;
+            
+            button.btn-articul-search{
+              line-height: 0.8rem;
+              background: transparent;
+              border-style: groove;    
+              vertical-align: text-bottom;
+            }
+            
+            input{
+              border: 1rem white;
+              border-radius: 0.5rem;
+              color: black;
+              padding: 0 0.5rem;
+              text-align: right;
+            }
+            
+            div.actions{
+            width: 100%;
+            display: inline;
+            button{
+              display: inline-block;
+              line-height: 2rem;
+              font-size: 1rem;
+              background: transparent;
+              border: 4px;
+              border-style: groove;
+              padding:0 1rem;
+              
+              span.wait{
+                top: 0.5em;
+                display: inline-block;
+                position: relative;
+  
+                &:before{
+                  content: " "; 
+                  background-image: url("/img/spiner-small.gif");
+                  background-size: 1.5em 1.5em;
+                  display: inline-block;
+                  width: 1.5em;
+                  height: 1.5em;
+                } 
+              }
+              span.glyphicon-ok{
+                color:lime;
+                text-shadow: 0 0 5px black;
+              }
+              span.glyphicon-remove{
+                color:red;
+                text-shadow: 0 0 5px black;
+              }
+            }
+          }
+          }
+        }
+      }
+    }
+  }
+}
+

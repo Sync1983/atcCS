@@ -26,6 +26,7 @@ atcCS.controller( 'main-screen',['$scope','User','$rootScope','$menu', '$events'
       } else {
         $menu.addItem("change-markup", "Сменить наценку", $user.activeMarkupName || undefined);
         $menu.addItem("change-basket", "Сменить корзину", $user.activeBasket && $user.activeBasket.name || undefined);
+        $menu.addItem("show-basket", "Корзина", undefined);
       }
       $menu.addItem("change-analog", "Показывать аналоги", $user.analogShow?"Да":"Нет" );
         
@@ -92,6 +93,10 @@ atcCS.controller( 'main-screen',['$scope','User','$rootScope','$menu', '$events'
         menuBasket();
       } else if(args === "change-markup"){
         menuMarkup();
+      } else if(args === "show-basket"){
+        $scope.$evalAsync(function() {
+          $location.path('basket/');
+        });
       }
       
     };
