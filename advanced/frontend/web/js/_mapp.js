@@ -282,10 +282,18 @@ atcCS.controller( 'basket', [
     
       
     function update(data){
-      var rows = data && data.data;
-      console.log(rows);
-      $scope.parts = ObjectHelper.merge($scope.parts, rows);
+      var rows = data && data.data;        
+      $scope.parts = Object.values(ObjectHelper.merge($scope.parts, rows));
     }
+    
+    $scope.onChange = function(row){
+      row.change = 1;
+      $user.updatePartInfo(row).then(function(success){
+        row.change = 2;        
+      }, function(error){
+        row.change = 3;
+      });
+    };
  
     
     
@@ -425,12 +433,11 @@ atcCS.controller( 'parts', [
       }      
       
       item.sell_count = item.lot_quantity;
-      item.adding = true;      
+      item.adding = 1;      
       $user.toBasket(item).then(function success(data){
-        item.added = true;
-        item.adding = false;
+        item.adding = 2;        
       }, function error(){
-        item.error = true;
+        item.adding = 3;
       });
       return false;
     };
@@ -1172,6 +1179,56 @@ atcCS.service('$menu',[
   '$rootScope', '$q', '$templateCache','$compile', '$events',
   function($rootScope,$q,$templateCache,$compile, $events){
     return new menuControl($rootScope, $q, $templateCache, $compile, $events);
+}]);
+
+
+/* global atcCS */
+
+function windowControl($root, $q, $templateCache, $compile, $events){
+  var self = this;
+  var body = $.find("#window");
+  var defer = $q.defer();
+  
+  self.setTemplate = function(templateAddr, scope){
+    var template = $templateCache.get(templateAddr);
+    var html = $(template);
+    var compile = $compile(html)(scope);
+    $(body).find(".window-body").html( compile );
+  };
+  
+  $(body).find(".window-close").click(onClose);
+  $(body).find("#cancel").click(onClose);
+  $(body).find("#ok").click(onOk);
+  
+  function onClose(){
+    $(body).fadeOut();
+    defer.reject();
+  };
+  
+  function onOk(){
+    $(body).fadeOut();    
+    defer.resolve(true);
+  };
+  
+  self.show = function(){
+    $(body).fadeIn();
+    return defer.promise;
+  };
+  
+  return self;  
+}
+
+
+atcCS.directive('netState',['$rootScope',  function($rootScope){
+    return {
+    require: 'ngModel',
+    restrict: 'E',
+    scope: {
+      ngModel: '='
+    },
+    template: "<span ng-show='ngModel>0' ng-class=\"{'wait':ngModel===1,'glyphicon glyphicon-ok':ngModel===2,'glyphicon glyphicon-remove':ngModel===3}\"></span>",
+    replace: true
+  };
 }]);
 
 

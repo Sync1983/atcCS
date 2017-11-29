@@ -22,10 +22,18 @@ atcCS.controller( 'basket', [
     
       
     function update(data){
-      var rows = data && data.data;
-      console.log(rows);
-      $scope.parts = ObjectHelper.merge($scope.parts, rows);
+      var rows = data && data.data;        
+      $scope.parts = Object.values(ObjectHelper.merge($scope.parts, rows));
     }
+    
+    $scope.onChange = function(row){
+      row.change = 1;
+      $user.updatePartInfo(row).then(function(success){
+        row.change = 2;        
+      }, function(error){
+        row.change = 3;
+      });
+    };
  
     
     

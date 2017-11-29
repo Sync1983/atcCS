@@ -38,9 +38,7 @@
           </ul>
           <div class="actions">
             <button ng-click="onAdd(rows)">В корзину
-              <span class="wait" ng-show="rows.adding"></span>
-              <span class="glyphicon glyphicon-ok" ng-show="rows.added"></span>
-              <span class="glyphicon glyphicon-remove" ng-show="rows.error"></span>
+              <net-state ng-model="rows.adding"></net-state>
             </button>
             <button style="float: right" ng-click="rows.open=false">Свернуть</button>
           </div>

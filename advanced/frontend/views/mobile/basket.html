@@ -1,8 +1,9 @@
 <div class="basket-view">
 
   <ul>
-    <li ng-repeat="row in parts" ng-click="row.open=true">
-      <div class="line-a">
+    <li ng-repeat="row in parts | orderBy:'id'">
+      <div class="line-a" ng-click="row.open=true;">
+        <span>{{$index + 1}}.</span>
         <span>{{row.articul}}</span>
         <span>{{row.maker}}</span>        
         <span style="float: right">Заказ: {{row.sell_count}} шт.</span>
@@ -10,7 +11,7 @@
       <div class="line-b">
         <span>{{row.name}}</span>
       </div>
-      <div class="row-expand" ng-show="row.open">
+      <div class="row-expand" ng-show="row.open===true">
         <ul>
           <li>Добавлено: {{(row.date*1000) | date:'HH:mm:ss dd-MM-yyyy'}}</li>            
           <li>Производитель: {{row.maker}}</li>            
@@ -25,9 +26,7 @@
         </ul>
         <div class="actions">
           <button ng-click="onChange(row)">Изменить
-            <span class="wait" ng-show="rows.adding"></span>
-            <span class="glyphicon glyphicon-ok" ng-show="rows.added"></span>
-            <span class="glyphicon glyphicon-remove" ng-show="rows.error"></span>
+            <net-state ng-model="row.change"></net-state>
           </button>
           <button style="float: right" ng-click="row.open=false">Свернуть</button>
         </div>

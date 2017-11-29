@@ -101,12 +101,11 @@ atcCS.controller( 'parts', [
       }      
       
       item.sell_count = item.lot_quantity;
-      item.adding = true;      
+      item.adding = 1;      
       $user.toBasket(item).then(function success(data){
-        item.added = true;
-        item.adding = false;
+        item.adding = 2;        
       }, function error(){
-        item.error = true;
+        item.adding = 3;
       });
       return false;
     };
