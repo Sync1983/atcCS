@@ -78,6 +78,10 @@ MAppAsset::register($this);
 <script type="text/ng-template" id="/brands.html">
  <div class="brands-view">   <div ng-if="inSearch" class="in-search"></div>   <div class="brands-list">     <ul>       <li ng-repeat="(brand,rule) in brands">         <span><a href="/parts/{{searchText}}/{{brand}}/{{rule}}">{{brand}}</a></span>       </li>     </ul>   </div>    </div>
 </script>
+ <!-- Collect from 'frontend/views/mobile//catalog.html' file -->
+<script type="text/ng-template" id="/catalog.html">
+<div class="catalog"><div class="return"><span ng-repeat="path in ret_path">      {{path.name}}/    </span></div><ul><li ng-repeat="row in nodes | filter:{is_group:true}" class="group"><span ng-click="goTo(row);">{{row.name}}</span></li><li ng-repeat="row in nodes | filter:{is_group:false}" class="item"><div><span>Артикул<button class="btn-articul-search" ng-click="onArticulSearch(row.articul)"><span class="glyphicon glyphicon-search"></span></button></span><span><u>{{row.articul}}</u></span></div><div><span>Производитель</span><span><u>{{row.maker}}  </u></span></div><div><span>Наимменование</span><span><u>{{row.name}}   </u></span></div><div><span>Описание</span><span><u>{{row.descr}}  </u></span></div></li></ul></div>
+</script>
  <!-- Collect from 'frontend/views/mobile//login-window.html' file -->
 <script type="text/ng-template" id="/login-window.html">
 <div class="login-window">  <ul>    <li>      <div class="label">                <span>Логин</span>      </div>    </li>    <li>      <div class="field">                <input ng-model="login"/>      </div>    </li>    <li>      <div class="label">                <span>Пароль</span>      </div>    </li>    <li>      <div class="field">        <input ng-model="pass"/>      </div>    </li>    <li>      <div class="label">                <label><input type="checkbox" ng-model="reuse"/> Запомнить меня</label>      </div>    </li>  </ul></div>

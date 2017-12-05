@@ -21,6 +21,8 @@ atcCS.controller( 'main-screen',['$scope','User','$rootScope','$menu', '$events'
       $menu.setEventsListner(menuEvents,'menuSelect');
       $menu.clear();
       $menu.addItem("main","Главная");
+      $menu.addItem("show-catalog", "Каталог", undefined);
+      
       if( $user.isLogin !== true ){
         $menu.addItem("login", "Войти");        
       } else {
@@ -96,6 +98,10 @@ atcCS.controller( 'main-screen',['$scope','User','$rootScope','$menu', '$events'
       } else if(args === "show-basket"){
         $scope.$evalAsync(function() {
           $location.path('basket/');
+        });      
+      } else if(args === "show-catalog"){
+        $scope.$evalAsync(function() {
+          $location.path('catalog/');
         });
       }
       
@@ -105,8 +111,7 @@ atcCS.controller( 'main-screen',['$scope','User','$rootScope','$menu', '$events'
       $(searchInput).val(args).trigger('change');
     };
     
-    function onSearchStart(name,args){   
-      console.log('start search articul');
+    function onSearchStart(name,args){         
       $(searchInput).val(args).trigger('change');
       $scope.searchText = args;
       $scope.onSearch();

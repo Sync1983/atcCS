@@ -124,7 +124,7 @@ atcCS.config(['$routeProvider', '$locationProvider',
       }).when('/catalog/:path?', {
         caseInsensitiveMatch: true,
         templateUrl: '/catalog.html',
-        controller: 'catalogControl',
+        controller: 'catalog',
         controllerAs: 'atcCS' 
       }).when('/news/:page?', {
         caseInsensitiveMatch: true,
@@ -163,6 +163,8 @@ atcCS.controller( 'main-screen',['$scope','User','$rootScope','$menu', '$events'
       $menu.setEventsListner(menuEvents,'menuSelect');
       $menu.clear();
       $menu.addItem("main","Главная");
+      $menu.addItem("show-catalog", "Каталог", undefined);
+      
       if( $user.isLogin !== true ){
         $menu.addItem("login", "Войти");        
       } else {
@@ -238,6 +240,10 @@ atcCS.controller( 'main-screen',['$scope','User','$rootScope','$menu', '$events'
       } else if(args === "show-basket"){
         $scope.$evalAsync(function() {
           $location.path('basket/');
+        });      
+      } else if(args === "show-catalog"){
+        $scope.$evalAsync(function() {
+          $location.path('catalog/');
         });
       }
       
@@ -247,8 +253,7 @@ atcCS.controller( 'main-screen',['$scope','User','$rootScope','$menu', '$events'
       $(searchInput).val(args).trigger('change');
     };
     
-    function onSearchStart(name,args){   
-      console.log('start search articul');
+    function onSearchStart(name,args){         
       $(searchInput).val(args).trigger('change');
       $scope.searchText = args;
       $scope.onSearch();
@@ -348,6 +353,46 @@ atcCS.controller( 'brands', [
       }      
       $scope.brands = list;
     }
+    
+}]);
+/* global atcCS, ObjectHelper, eventsNames */
+
+atcCS.controller( 'catalog', [
+    '$scope', 'User' ,'$routeParams','$events', '$location','$rootScope',
+    function($scope,$user,$routeParams, $events, $location, $rootScope ) {
+    'use strict';
+    
+    var searchEvents = $events.get(eventsNames.eventsSearch());
+    var events       = $events.get(eventsNames.eventsCatalog());
+    var path         = $routeParams.path || false; 
+    $scope.nodes     = [];
+    $scope.ret_path  = [];
+    
+    $scope.isLogin = $user.isLogin;         
+    $scope.isAdmin = $user.isAdmin;
+    
+    function update(event, data){
+      console.log(data);
+      $scope.nodes = data.nodes;
+      $scope.ret_path = data.path;
+    }
+    
+    $scope.goTo = function(node){
+      $scope.$evalAsync(function() {
+          $location.path('catalog/'+node.path);
+      });
+    };
+    
+    events.setListner("update",update);
+    events.broadcast("getData",path);  
+        
+    $rootScope.$on('userDataUpdate', function(event){
+      if( $scope.isLogin !== $user.isLogin ){
+        $scope.isLogin = $user.isLogin;        
+      }
+      $scope.isAdmin = $user.isAdmin;         
+    }); 
+    
     
 }]);
 /* global atcCS, ObjectHelper, eventsNames */

@@ -26,7 +26,7 @@ atcCS.config(['$routeProvider', '$locationProvider',
       }).when('/catalog/:path?', {
         caseInsensitiveMatch: true,
         templateUrl: '/catalog.html',
-        controller: 'catalogControl',
+        controller: 'catalog',
         controllerAs: 'atcCS' 
       }).when('/news/:page?', {
         caseInsensitiveMatch: true,
