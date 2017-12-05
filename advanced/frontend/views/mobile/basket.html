@@ -1,8 +1,8 @@
 <div class="basket-view">
 
   <ul>
-    <li ng-repeat="row in parts | orderBy:'id'">
-      <div class="line-a" ng-click="row.open=true;">
+    <li ng-repeat="row in parts | orderBy:'id'" ng-init="row.open=false" ng-show="!row.delete">
+      <div class="line-a" ng-click="row.open=!row.open;">
         <span>{{$index + 1}}.</span>
         <span>{{row.articul}}</span>
         <span>{{row.maker}}</span>        
@@ -21,14 +21,14 @@
           <li>Упаковка: {{row.lot_quantity}} шт.</li>            
           <li>Цена: {{row.price}} руб.</li>          
           <li>Срок: от <u>{{row.shiping}} дн.</u></li>            
-          <li>Заказано  <input id="sell_count" type="number" step="{{row.lot_quantity}}" min="{{row.lot_quantity}}" max="{{row.count}}" ng-model="row.sell_count"/> шт.</li>            
-          <li>Комментарий <input id="comment" type="text" ng-model="row.comment"/></li>            
+          <li>Заказано  <input id="sell_count" type="number" step="{{row.lot_quantity}}" min="{{row.lot_quantity}}" max="{{row.count}}" ng-model="row.sell_count" ng-change="row.change = 0"/> шт.</li>            
+          <li>Комментарий <input id="comment" type="text" ng-model="row.comment" ng-change="row.change = 0"/></li>            
+          <li>Перезаказ по цене <input id="price-change" type="checkbox" ng-model="row.price_change"/></li>            
         </ul>
         <div class="actions">
-          <button ng-click="onChange(row)">Изменить
-            <net-state ng-model="row.change"></net-state>
-          </button>
-          <button style="float: right" ng-click="row.open=false">Свернуть</button>
+          <button ng-click="onDelete(row,$index)"><span class="glyphicon glyphicon-remove"></span><net-state ng-model="row.delete"></net-state></button>
+          <button ng-click="onChange(row)" ng-disabled="(row.change===undefined) || (row.change===2)" ><span class="glyphicon glyphicon-floppy-disk"></span><net-state ng-model="row.change"></net-state></button>
+          <button ng-click="onAdd(row)" ng-show="!row.add"><span class="glyphicon glyphicon-send"></span><net-state ng-model="row.add"></net-state></button>          
         </div>
       </div>
     </li>

@@ -70,20 +70,32 @@ div.basket-view{
         }
         div.actions{
             width: 100%;
-            display: inline;
+            display: inline-flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: stretch;
+            
             button{
-              display: inline-block;
+              display: inline-flex;
+              color: $atc_color;
               line-height: 2rem;
+              height: 2rem;
               font-size: 1rem;
-              background: transparent;
+              background-color: #cadde296;
               border: 4px;
-              border-style: groove;
+              border-style: double;
+              border-radius: 2rem;
+              text-shadow: 0 0 black;
               padding:0 1rem;
+              align-items: center;
+              flex-direction: row;              
               
-              span.wait{
-                top: 0.5em;
-                display: inline-block;
-                position: relative;
+              &:disabled{
+                color:#a5becc;
+              }
+              
+              span.wait{                
+                display: inline-flex;                
   
                 &:before{
                   content: " "; 
@@ -99,6 +111,10 @@ div.basket-view{
                 text-shadow: 0 0 5px black;
               }
               span.glyphicon-remove{
+                color:red;
+                text-shadow: 0 0 5px black;
+              }
+              span.glyphicon-erase{
                 color:red;
                 text-shadow: 0 0 5px black;
               }

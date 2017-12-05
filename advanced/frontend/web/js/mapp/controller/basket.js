@@ -34,6 +34,26 @@ atcCS.controller( 'basket', [
         row.change = 3;
       });
     };
+    
+    $scope.onDelete = function(row, index){
+      row.delete = 1;
+      $user.deletePart(row.id).then(function(success){
+        row.delete = 2;
+        var id = $scope.parts.indexOf(row);
+        $scope.parts.splice(id,1);
+      }, function(error){
+        row.delete = 3;
+      });
+    };
+    
+    $scope.onAdd = function(row){
+      row.add = 1;
+      $user.orderParts([row]).then(function(success){
+        row.add = 2;        
+      }, function(error){
+        row.add = 3;
+      });
+    };
  
     
     

@@ -418,7 +418,7 @@ atcCS.service('User',['$http', '$cookies', '$rootScope', '$q', '$events',
     return $http(req);
   };
   
-  model.deletePart = function updatePartInfo(partId){
+  model.deletePart = function deletePart(partId){
     var req = {
       method: 'GET',
       url: URLto('basket','delete'),      
