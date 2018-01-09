@@ -19,7 +19,7 @@
 <div class="search-bar row-md-top btn-group-justified" ng-controller="searchControl">
   <search-line ng-model="query">
 
-  </search-line>
+  </search-line>  
 </div>
 <!-- Блок меню -->
 <div class="main-menu-left">  

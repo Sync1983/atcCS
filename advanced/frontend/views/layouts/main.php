@@ -24,6 +24,7 @@ AAppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="yandex-verification" content="dc8a298dfbad44c8" />
+    <script type="text/javascript" src="//vk.com/js/api/openapi.js?151"></script>
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
@@ -42,6 +43,12 @@ AAppAsset::register($this);
   <div class="tray-bar">  </div>
   <div class="notifications">  </div>
 </div>
+
+  <!-- VK Widget -->
+  <div id="vk_community_messages"></div>
+  <script type="text/javascript">
+    VK.Widgets.CommunityMessages("vk_community_messages",75891521, {disableExpandChatSound: "1",disableNewMessagesSound: "1",tooltipButtonText: "Задайте Ваш вопрос"});
+  </script>
 
 <footer class="footer">
     <div class="container-fluid">
@@ -62,11 +69,110 @@ AAppAsset::register($this);
 </script>
  <!-- Collect from 'frontend/views/site/angular//catalog.html' file -->
 <script type="text/ng-template" id="/catalog.html">
-<div class="catalog">  <div class="row editSwitch">    <switch id="editMode" ng-model="editMode" class="green"></switch><span style="font-weight: bold;">Редактировать список</span>    <div class="filter">      <input ng-model="search" type="text" placeholder="Введите часть названия, артикула или примечания" />    </div>  </div>    <div class="path">    <ul>      <li ng-repeat="rowH in path"><a href="#" ng-click='onClick(rowH);'>{{rowH.name}}</a></li>    </ul>  </div>    <div class="nodes">        <ul>      <li ng-repeat="row in nodes|orderBy:['-is_group','name']|filter:search" ng-model="row" ng-class="row.is_group?'group':'part'">        <span class="ref" ng-click="onClick(row)" editable e-val="row.name" ng-if="editMode">{{row.name}}</span>                <div class="description" ng-if="editMode">          <b><span editable e-val="row.marker">{{row.maker}}</span></b> [<span editable e-val="row.descr">{{row.articul}}</span>] : <span editable e-val="row.descr">{{row.descr}}</span>        </div>        <span class="ref" ng-click="onClick(row)" ng-if="!editMode">{{row.name}}</span>                <div class="description" ng-if="!editMode">          <b><span>{{row.maker}}</span></b> [<span>{{row.articul}}</span>] : <span>{{row.descr}}</span>        </div>      </li>    </ul>  </div>  </div>
+<div class="catalog">
+  <div class="row editSwitch">
+    <switch id="editMode" ng-model="editMode" class="green"></switch><span style="font-weight: bold;">Редактировать список</span>
+    <div class="filter">
+      <input ng-model="search" type="text" placeholder="Введите часть названия, артикула или примечания" />
+    </div>
+  </div>
+  
+  <div class="path">
+    <ul>
+      <li ng-repeat="rowH in path"><a href="#" ng-click='onClick(rowH);'>{{rowH.name}}</a></li>
+    </ul>
+  </div>
+  
+  <div class="nodes">    
+    <ul>
+      <li ng-repeat="row in nodes|orderBy:['-is_group','name']|filter:search" ng-model="row" ng-class="row.is_group?'group':'part'">
+        <span class="ref" ng-click="onClick(row)" editable e-val="row.name" ng-if="editMode">{{row.name}}</span>        
+        <div class="description" ng-if="editMode">
+          <b><span editable e-val="row.marker">{{row.maker}}</span></b> [<span editable e-val="row.descr">{{row.articul}}</span>] : <span editable e-val="row.descr">{{row.descr}}</span>
+        </div>
+        <span class="ref" ng-click="onClick(row)" ng-if="!editMode">{{row.name}}</span>        
+        <div class="description" ng-if="!editMode">
+          <b><span>{{row.maker}}</span></b> [<span>{{row.articul}}</span>] : <span>{{row.descr}}</span>
+        </div>
+      </li>
+    </ul>
+  </div>  
+</div>
 </script>
  <!-- Collect from 'frontend/views/site/angular//contacts.html' file -->
 <script type="text/ng-template" id="/contacts.html">
-    <div class="contacts"><p style="text-align:justify"><span style="font-size:16px">Пензенская компания <a href="/">&laquo;АвтоТехСнаб&raquo;</a> продает автомобильные запчасти для корейских грузовиков <strong>Hyundai</strong>, автобусов <strong>Hyundai </strong>и <strong>Kia</strong>, японских грузовиков <strong>Hino</strong>, <strong>Isuzu</strong>, <strong>Fuso</strong>, <strong>Canter</strong></span></p><p style="text-align:justify"><span style="font-size:16px">Проводит компьютерную диагностику <strong>ЭБУ</strong></span></p><p style="text-align:justify"><span style="font-size:16px">Осуществляет ремонт <strong>КПП</strong>, редукторов</span></p><hr /><p><span style="font-size:16px">Мы предлагаем нашим клиентам:</span></p><ul><li style="text-align:justify"><span style="font-size:12px">Оптовую и розничную продажу</span></li><li style="text-align:justify"><span style="font-size:12px">Огромный ассортимент более 100000 наименований запчастей для грузовых автомобилей корейского производства <strong>Hyundai </strong>(HD78, HD65, HD120, HD170, HD72, Porter, Porter ТагАз)</span></li><li style="text-align:justify"><span style="font-size:12px">Более 100000 наименований запчастей для автобусов <strong>Hyundai </strong>(Starex, GrandStarex, County, AeroSpace, AeroTown, Universe), <strong>Kia </strong>(Granbird), <strong>Богдан</strong>, <strong>Isuzu</strong></span></li><li style="text-align:justify"><span style="font-size:12px">Более 100000 наименований запчастей для грузовых автомобилей японского производства<strong> Hino 300</strong>, <strong>Hino 500</strong>, <strong>Isuzu Elf</strong>, <strong>Giga</strong>, <strong>Nqr</strong>, <strong>Nkr</strong>, <strong>Forward</strong>, <strong>Mitsubishi Fuso</strong>, <strong>Canter</strong></span></li><li style="text-align:justify"><span style="font-size:12px">Широкий выбор запчастей для двигателей (N04C-UV, J08E-UR, D4AL, D4DB, D4DD, D4GA, D6DA19, D6DA22, D6BR, D6GA, D6AB, D6AC), топливных систем, КПП и трансмиссии (M6S6, KH10, K505A, M3S5, M035S5, M2S5, T060S5, RT-10, Aisin M550, MYY6S), детали подвески и ходовой части</span></li><li style="text-align:justify"><span style="font-size:12px">Производим компьютерную диагностику <strong>ЭБУ </strong>(блоков управления двигателя, работы двигателя, электрики, прописываем форсунки, диагностика работы турбонагнетателей) корейских грузовых автомобилей <strong>Hyundai </strong>HD65, HD78, HD120, HD170, автобусов <strong>Hyundai County</strong>, <strong>Богдан </strong>с двигателями D4DD, D4GA, D4DB, D6GA а также <strong>Hyundai Porter 2</strong>, <strong>Kia Bongo</strong>, <strong>Hyundai GrandStarex</strong> с двигателями D4CB.</span></li><li style="text-align:justify"><span style="font-size:12px">Производим ремонт механических <strong>КПП Hyundai </strong>HD65, HD78, HD72, HD120, HD78, HD170, автобусов <strong>County</strong>, <strong>Богдан</strong>. Модели КПП грузовых (MO35S5 Dymos, RT-10, M3S3, Harbin, M2S5, M6S6, KH10, T06S6, T06S5, M8S5, M10S6, M12S6), лёгкого коммерческого транспорта <strong>Hyundai Porter</strong>, <strong>Starex</strong>, <strong>GrandStarex</strong>, <strong>Kia Bongo</strong>, (M5TR1, M6AR1, KM135), ремонт мкпп корейских легковых <strong>Kia </strong>и <strong>Hyundai</strong>, японских <strong>Toyota</strong>, <strong>Subaru</strong>, <strong>Mitsubishi</strong>, <strong>Honda</strong>.</span></li></ul><p><span style="font-size:16px">Также производим ремонт <strong>МКПП </strong>японских грузовиков <strong>Hino 300</strong> (M550), <strong>Hino 500</strong>, <strong>Mitsubishi Canter</strong>, <strong>Fuso</strong>. Используем при ремонте только оригинальные или качественные неоригинальные запчасти и материалы.</span></p><ul><li><span style="font-size:12px">Широкий выбор моторных и трансмиссионных масел известных производителей (<strong>Toyota</strong>, <strong>Mitsubishi</strong>, <strong>Castrol</strong>, <strong>Mobil</strong>, <strong>Hyundai</strong>, <strong>Elf</strong>, <strong>Valvoline</strong>, <strong>Zic</strong>), смазочные материалы, а также оригинальные спецжидкости</span></li><li><span style="font-size:12px">Качественные оригинальные и неоригинальные запасные части на собственном складе в г. Пенза</span></li><li><span style="font-size:12px">Мы сотрудничаем с более 30 поставщиками из России, Европы, ОАЭ, Японии</span></li><li><span style="font-size:12px">Сертификаты качества и гарантия на поставляемую продукцию</span></li></ul><hr /><p><span style="font-size:16px">Персональное обслуживание и сервис:</span></p><ul><li style="text-align:justify"><span style="font-size:12px">Каждый клиент получает персонального менеджера, который занимается всем процессом от получения заявки до выдачи заказа клиенту </span></li><li style="text-align:justify"><span style="font-size:12px">Интернет-магазин atc58.ru предоставляет удобный online-сервис для клиентов: каталог запчастей для грузовых Hyundai, Hino, Fuso, Isuzu, заказ запчастей, покупка и отслеживание заказа </span></li><li style="text-align:justify"><span style="font-size:12px">Максимальная помощь в подборе запчастей, расходных материалов, масел, смазок и спецжидкостей, инструмента, сервиса.</span></li><li style="text-align:justify"><span style="font-size:12px">Отличные условия сотрудничества для владельцев автопарков, АТП и предприятий Пензенской, Ульяновской, Саратовской областей и республики Мордовия </span></li><li style="text-align:justify"><span style="font-size:12px">Автопомощь на территории всей Пензенской области (запчасти, поиск сервиса и ремонта)</span></li></ul><hr /><p><span style="font-size:16px">Доставка и оплата: </span></p><ul><li style="text-align:justify"><span style="font-size:12px">Быстрая курьерская доставка запчастей по Пензе и Пензенской области (Сердобск, Каменка, Русский Камешкир, Городище, Башмаково, Тамала, Колышлей, Белинский, Вадинск, Заметчино, Лунино, Нижний Ломов, Пачелма, Наровчат, Неверкино, Никольск, Исса, Грабово, Сосновоборск, Лопатино, Малая Сердоба, Беково, Кузнецк); Саратовской области (Саратов, Петровск, Ртищево), Республика Мордовия (Саранск, Рузавевка)</span></li><li style="text-align:justify"><span style="font-size:12px">Отправка транспортными компаниями, автобусами, маршрутными такси по России</span></li><li style="text-align:justify"><span style="font-size:12px">Наш курьер доставит товар, приобретённый в интернет-магазине запчастей компании АвтоТехСнаб, быстро и в указанное вами место</span></li><li style="text-align:justify"><span style="font-size:12px">При отсутствии требуемой запчасти. Заказ и поставка запчастей осуществляем в максимально сжатые сроки, от 24 часов</span></li><li style="text-align:justify"><span style="font-size:12px">Удобная система оплаты для клиента наличными, картой (Visa, MasterCard, Сбербанк, ВТБ24) или безналичный расчёт</span></li></ul><p><div class="cont-text"><p style="text-align:center"><u><strong><span style="font-size:16px">Наши контакты: </span></strong></u></p><p style="text-align:center"><span style="font-size:16px">г. Пенза, ул. Кустанайская, 1Б </span></p><p style="text-align:center"><span style="font-size:16px"><strong>тел</strong>. +7 (8412) 763-533 </span></p><p style="text-align:center"><span style="font-size:16px"><strong>тел</strong>. +7 (8412) 518-302 </span></p><p style="text-align:center"><span style="font-size:16px"><strong>e-mail</strong>: sales@atc58.ru </span></p><p style="text-align:center"><span style="font-size:16px"><strong>viber</strong>: +79022063533 </span></p><p style="text-align:center"><span style="font-size:16px"><strong>skype</strong>: atc_58</span></p></div><div class="cont-map"><iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Ac6873fdc614a7f5351bb7c78f884b7e26c6f86052838f493335e2eb5abc8fc20&amp;source=constructor" width="500" height="400" frameborder="0"></iframe></div>    </p>    </div> 
+    <div class="contacts">
+
+<p style="text-align:justify"><span style="font-size:16px">Пензенская компания <a href="/">&laquo;АвтоТехСнаб&raquo;</a> продает автомобильные запчасти для корейских грузовиков <strong>Hyundai</strong>, автобусов <strong>Hyundai </strong>и <strong>Kia</strong>, японских грузовиков <strong>Hino</strong>, <strong>Isuzu</strong>, <strong>Fuso</strong>, <strong>Canter</strong></span></p>
+
+<p style="text-align:justify"><span style="font-size:16px">Проводит компьютерную диагностику <strong>ЭБУ</strong></span></p>
+
+<p style="text-align:justify"><span style="font-size:16px">Осуществляет ремонт <strong>КПП</strong>, редукторов</span></p>
+
+<hr />
+<p><span style="font-size:16px">Мы предлагаем нашим клиентам:</span></p>
+
+<ul>
+<li style="text-align:justify"><span style="font-size:12px">Оптовую и розничную продажу</span></li>
+<li style="text-align:justify"><span style="font-size:12px">Огромный ассортимент более 100000 наименований запчастей для грузовых автомобилей корейского производства <strong>Hyundai </strong>(HD78, HD65, HD120, HD170, HD72, Porter, Porter ТагАз)</span></li>
+<li style="text-align:justify"><span style="font-size:12px">Более 100000 наименований запчастей для автобусов <strong>Hyundai </strong>(Starex, GrandStarex, County, AeroSpace, AeroTown, Universe), <strong>Kia </strong>(Granbird), <strong>Богдан</strong>, <strong>Isuzu</strong></span></li>
+<li style="text-align:justify"><span style="font-size:12px">Более 100000 наименований запчастей для грузовых автомобилей японского производства<strong> Hino 300</strong>, <strong>Hino 500</strong>, <strong>Isuzu Elf</strong>, <strong>Giga</strong>, <strong>Nqr</strong>, <strong>Nkr</strong>, <strong>Forward</strong>, <strong>Mitsubishi Fuso</strong>, <strong>Canter</strong></span></li>
+<li style="text-align:justify"><span style="font-size:12px">Широкий выбор запчастей для двигателей (N04C-UV, J08E-UR, D4AL, D4DB, D4DD, D4GA, D6DA19, D6DA22, D6BR, D6GA, D6AB, D6AC), топливных систем, КПП и трансмиссии (M6S6, KH10, K505A, M3S5, M035S5, M2S5, T060S5, RT-10, Aisin M550, MYY6S), детали подвески и ходовой части</span></li>
+<li style="text-align:justify"><span style="font-size:12px">Производим компьютерную диагностику <strong>ЭБУ </strong>(блоков управления двигателя, работы двигателя, электрики, прописываем форсунки, диагностика работы турбонагнетателей) корейских грузовых автомобилей <strong>Hyundai </strong>HD65, HD78, HD120, HD170, автобусов <strong>Hyundai County</strong>, <strong>Богдан </strong>с двигателями D4DD, D4GA, D4DB, D6GA а также <strong>Hyundai Porter 2</strong>, <strong>Kia Bongo</strong>, <strong>Hyundai GrandStarex</strong> с двигателями D4CB.</span></li>
+<li style="text-align:justify"><span style="font-size:12px">Производим ремонт механических <strong>КПП Hyundai </strong>HD65, HD78, HD72, HD120, HD78, HD170, автобусов <strong>County</strong>, <strong>Богдан</strong>. Модели КПП грузовых (MO35S5 Dymos, RT-10, M3S3, Harbin, M2S5, M6S6, KH10, T06S6, T06S5, M8S5, M10S6, M12S6), лёгкого коммерческого транспорта <strong>Hyundai Porter</strong>, <strong>Starex</strong>, <strong>GrandStarex</strong>, <strong>Kia Bongo</strong>, (M5TR1, M6AR1, KM135), ремонт мкпп корейских легковых <strong>Kia </strong>и <strong>Hyundai</strong>, японских <strong>Toyota</strong>, <strong>Subaru</strong>, <strong>Mitsubishi</strong>, <strong>Honda</strong>.</span></li>
+</ul>
+
+<p><span style="font-size:16px">Также производим ремонт <strong>МКПП </strong>японских грузовиков <strong>Hino 300</strong> (M550), <strong>Hino 500</strong>, <strong>Mitsubishi Canter</strong>, <strong>Fuso</strong>. Используем при ремонте только оригинальные или качественные неоригинальные запчасти и материалы.</span></p>
+
+<ul>
+<li><span style="font-size:12px">Широкий выбор моторных и трансмиссионных масел известных производителей (<strong>Toyota</strong>, <strong>Mitsubishi</strong>, <strong>Castrol</strong>, <strong>Mobil</strong>, <strong>Hyundai</strong>, <strong>Elf</strong>, <strong>Valvoline</strong>, <strong>Zic</strong>), смазочные материалы, а также оригинальные спецжидкости</span></li>
+<li><span style="font-size:12px">Качественные оригинальные и неоригинальные запасные части на собственном складе в г. Пенза</span></li>
+<li><span style="font-size:12px">Мы сотрудничаем с более 30 поставщиками из России, Европы, ОАЭ, Японии</span></li>
+<li><span style="font-size:12px">Сертификаты качества и гарантия на поставляемую продукцию</span></li>
+</ul>
+
+<hr />
+<p><span style="font-size:16px">Персональное обслуживание и сервис:</span></p>
+
+<ul>
+<li style="text-align:justify"><span style="font-size:12px">Каждый клиент получает персонального менеджера, который занимается всем процессом от получения заявки до выдачи заказа клиенту </span></li>
+<li style="text-align:justify"><span style="font-size:12px">Интернет-магазин atc58.ru предоставляет удобный online-сервис для клиентов: каталог запчастей для грузовых Hyundai, Hino, Fuso, Isuzu, заказ запчастей, покупка и отслеживание заказа </span></li>
+<li style="text-align:justify"><span style="font-size:12px">Максимальная помощь в подборе запчастей, расходных материалов, масел, смазок и спецжидкостей, инструмента, сервиса.</span></li>
+<li style="text-align:justify"><span style="font-size:12px">Отличные условия сотрудничества для владельцев автопарков, АТП и предприятий Пензенской, Ульяновской, Саратовской областей и республики Мордовия </span></li>
+<li style="text-align:justify"><span style="font-size:12px">Автопомощь на территории всей Пензенской области (запчасти, поиск сервиса и ремонта)</span></li>
+</ul>
+
+<hr />
+<p><span style="font-size:16px">Доставка и оплата: </span></p>
+
+<ul>
+<li style="text-align:justify"><span style="font-size:12px">Быстрая курьерская доставка запчастей по Пензе и Пензенской области (Сердобск, Каменка, Русский Камешкир, Городище, Башмаково, Тамала, Колышлей, Белинский, Вадинск, Заметчино, Лунино, Нижний Ломов, Пачелма, Наровчат, Неверкино, Никольск, Исса, Грабово, Сосновоборск, Лопатино, Малая Сердоба, Беково, Кузнецк); Саратовской области (Саратов, Петровск, Ртищево), Республика Мордовия (Саранск, Рузавевка)</span></li>
+<li style="text-align:justify"><span style="font-size:12px">Отправка транспортными компаниями, автобусами, маршрутными такси по России</span></li>
+<li style="text-align:justify"><span style="font-size:12px">Наш курьер доставит товар, приобретённый в интернет-магазине запчастей компании АвтоТехСнаб, быстро и в указанное вами место</span></li>
+<li style="text-align:justify"><span style="font-size:12px">При отсутствии требуемой запчасти. Заказ и поставка запчастей осуществляем в максимально сжатые сроки, от 24 часов</span></li>
+<li style="text-align:justify"><span style="font-size:12px">Удобная система оплаты для клиента наличными, картой (Visa, MasterCard, Сбербанк, ВТБ24) или безналичный расчёт</span></li>
+</ul>
+<p>
+<div class="cont-text">
+<p style="text-align:center"><u><strong><span style="font-size:16px">Наши контакты: </span></strong></u></p>
+
+<p style="text-align:center"><span style="font-size:16px">г. Пенза, ул. Кустанайская, 1Б </span></p>
+
+<p style="text-align:center"><span style="font-size:16px"><strong>тел</strong>. +7 (8412) 763-533 </span></p>
+
+<p style="text-align:center"><span style="font-size:16px"><strong>тел</strong>. +7 (8412) 518-302 </span></p>
+
+<p style="text-align:center"><span style="font-size:16px"><strong>e-mail</strong>: sales@atc58.ru </span></p>
+
+<p style="text-align:center"><span style="font-size:16px"><strong>viber</strong>: +79022063533 </span></p>
+
+<p style="text-align:center"><span style="font-size:16px"><strong>skype</strong>: atc_58</span></p>
+</div>
+<div class="cont-map">
+<iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Ac6873fdc614a7f5351bb7c78f884b7e26c6f86052838f493335e2eb5abc8fc20&amp;source=constructor" width="500" height="400" frameborder="0"></iframe>
+</div>
+    </p>
+    </div> 
 </script>
  <!-- Collect from 'frontend/views/site/angular//main-page.html' file -->
 <script type="text/ng-template" id="/main-page.html">
@@ -78,7 +184,23 @@ MainPage
 </script>
  <!-- Collect from 'frontend/views/site/angular//news.html' file -->
 <script type="text/ng-template" id="/news.html">
-<div class="news">  <ul>    <li  ng-repeat="row in news | filter:{ show: true }">      <div class="news-row">        <div class="news-image" >          <img src="{{row.url}}"/>        </div>        <div class="news-header">          <p>{{row.date | date: 'd.M.yyyy'}}</p>                  <p>{{row.title}}</p>        </div>        <div class="news-text" ng-bind-html="row.full_text">         </div>      </div>    </li>      </ul></div>
+<div class="news">
+  <ul>
+    <li  ng-repeat="row in news | filter:{ show: true }">
+      <div class="news-row">
+        <div class="news-image" >
+          <img src="{{row.url}}"/>
+        </div>
+        <div class="news-header">
+          <p>{{row.date | date: 'd.M.yyyy'}}</p>        
+          <p>{{row.title}}</p>
+        </div>
+        <div class="news-text" ng-bind-html="row.full_text"> 
+        </div>
+      </div>
+    </li>    
+  </ul>
+</div>
 </script>
  <!-- Collect from 'frontend/views/site/angular//orders.html' file -->
 <script type="text/ng-template" id="/orders.html">
@@ -86,7 +208,30 @@ MainPage
 </script>
  <!-- Collect from 'frontend/views/site/angular//parts-list.html' file -->
 <script type="text/ng-template" id="/parts-list.html">
-<div class="parts-out">  <div class="breadcrumb">    <span>Поиск</span>    <span>{{searchText}}</span>    <span><a href="/brands/{{searchText}}/{{timestamp}}">Производители</a></span>    <span>{{brand}}</span>  </div>  <div ng-if="inSearch" class="in-search"></div>      <div ng-if="!inSearch" class="count">Варианты деталей по запросу "<b>{{searchText}}</b>" от производителя <b>{{brand}}</b>:    <span ng-repeat="item in loading" class="small-preloader">    </span>  </div>     <div class="actions">    <a href="#" ng-click="onCollapse()">      <span class="glyphicon glyphicon-minus-sign"></span>Свернуть все    </a>    <a href="#" ng-click="onExpand()">      <span class="glyphicon glyphicon-plus-sign"></span>Развернуть все    </a>      </div>    <table-view ng-model="table" ng-extr-scope="self"/>    </div>
+<div class="parts-out">
+  <div class="breadcrumb">
+    <span>Поиск</span>
+    <span>{{searchText}}</span>
+    <span><a href="/brands/{{searchText}}/{{timestamp}}">Производители</a></span>
+    <span>{{brand}}</span>
+  </div>
+  <div ng-if="inSearch" class="in-search"></div>    
+  <div ng-if="!inSearch" class="count">Варианты деталей по запросу "<b>{{searchText}}</b>" от производителя <b>{{brand}}</b>:
+    <span ng-repeat="item in loading" class="small-preloader">
+    </span>
+  </div>   
+  <div class="actions">
+    <a href="#" ng-click="onCollapse()">
+      <span class="glyphicon glyphicon-minus-sign"></span>Свернуть все
+    </a>
+    <a href="#" ng-click="onExpand()">
+      <span class="glyphicon glyphicon-plus-sign"></span>Развернуть все
+    </a>    
+  </div>
+  
+  <table-view ng-model="table" ng-extr-scope="self"/>  
+  
+</div>
 </script>
  <!-- Collect from 'frontend/views/site/angular//parts/_articul-info-part.html' file -->
 <script type="text/ng-template" id="/parts/_articul-info-part.html">
@@ -146,7 +291,55 @@ MainPage
 </script>
  <!-- Collect from 'frontend/views/site/angular//table-view.html' file -->
 <script type="text/ng-template" id="/table-view.html">
-<table class="table table-condensed table-bordered table-striped">  <colgroup>    <col ng-repeat="item in $columns track by $index" width ="{{item.width}}%"/>        </colgroup>  <thead>     <tr>      <th ng-repeat="(key,item) in $columns track by $index" class="table-header" width="{{item.width}}%" ng-click="onSortClick($event,key)">        <div class="table-head-text">          {{item.name}}          <div class="table-head-sort">            <span class="glyphicon glyphicon-sort-by-attributes" ng-if="sortDir(key)===1"></span>            <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-if="sortDir(key)===-1"></span>          </div>        </div>      </th>    </tr>  </thead>  <tbody>    <tr ng-repeat-start="item in $rowGroups track by $index">      <td colspan="{{getColumnsCount()}}" class="group" ng-class="(item.show)?'group-open':'group-close'">        <div ng-click="onToggle(item)">          {{item.name}}                  </div>      </td>    </tr>      <tr ng-if="item.show" ng-repeat-start="row in $data| filter:{$group: item.name} | filter:dataFilter | limitTo:item.extend?undefined:15 as showed" ng-class="isHiLight(row)&&'table-row-hilight'">      <td ng-repeat="(col,info) in $columns" style = "text-align: {{info.align?info.align:'center'}}">                <table-template data="row" template="getTemplate(col)" parent-scope="extScope">            </table-template>      </td>    </tr>    <tr ng-repeat-end=""></tr>      <tr ng-if="item.show && (showed.length >= 15)">      <td colspan="{{getColumnsCount()}}">        <div ng-click="item.extend = !item.extend" class="extend-show">          Показать <span ng-if="!item.extend">весь</span><span ng-if="item.extend">краткий</span> список {{}}        </div>      </td>    </tr>    <tr ng-if="item.show && (showed.length === 0)">      <td colspan="{{getColumnsCount()}}">        <div class="extend-show">          Нет данных        </div>      </td>    </tr>    <tr ng-repeat-end=""></tr>    </tbody></table>
+<table class="table table-condensed table-bordered table-striped">
+  <colgroup>
+    <col ng-repeat="item in $columns track by $index" width ="{{item.width}}%"/>      
+  </colgroup>
+  <thead> 
+    <tr>
+      <th ng-repeat="(key,item) in $columns track by $index" class="table-header" width="{{item.width}}%" ng-click="onSortClick($event,key)">
+        <div class="table-head-text">
+          {{item.name}}
+          <div class="table-head-sort">
+            <span class="glyphicon glyphicon-sort-by-attributes" ng-if="sortDir(key)===1"></span>
+            <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-if="sortDir(key)===-1"></span>
+          </div>
+        </div>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat-start="item in $rowGroups track by $index">
+      <td colspan="{{getColumnsCount()}}" class="group" ng-class="(item.show)?'group-open':'group-close'">
+        <div ng-click="onToggle(item)">
+          {{item.name}}          
+        </div>
+      </td>
+    </tr>  
+    <tr ng-if="item.show" ng-repeat-start="row in $data| filter:{$group: item.name} | filter:dataFilter | limitTo:item.extend?undefined:15 as showed" ng-class="isHiLight(row)&&'table-row-hilight'">
+      <td ng-repeat="(col,info) in $columns" style = "text-align: {{info.align?info.align:'center'}}">        
+        <table-template data="row" template="getTemplate(col)" parent-scope="extScope">    
+        </table-template>
+      </td>
+    </tr>
+    <tr ng-repeat-end=""></tr>  
+    <tr ng-if="item.show && (showed.length >= 15)">
+      <td colspan="{{getColumnsCount()}}">
+        <div ng-click="item.extend = !item.extend" class="extend-show">
+          Показать <span ng-if="!item.extend">весь</span><span ng-if="item.extend">краткий</span> список {{}}
+        </div>
+      </td>
+    </tr>
+    <tr ng-if="item.show && (showed.length === 0)">
+      <td colspan="{{getColumnsCount()}}">
+        <div class="extend-show">
+          Нет данных
+        </div>
+      </td>
+    </tr>
+    <tr ng-repeat-end=""></tr>  
+  </tbody>
+</table>
 </script>
  <!-- Collect from 'frontend/views/site/angular//window.html' file -->
 <script type="text/ng-template" id="/window.html">
