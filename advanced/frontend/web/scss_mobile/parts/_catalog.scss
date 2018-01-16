@@ -13,14 +13,16 @@ div.catalog{
   border:0;
   
   div.return{
-    color: $atc_color;
+    color: #a9d8f3;
     width: 100%;
-    line-height:2rem;
+    line-height: 1rem;
     padding: 0 0.5rem;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-around;
     align-content: stretch;
+    font-size: 0.5rem;
   }
   
   & > ul{
@@ -51,24 +53,41 @@ div.catalog{
       box-shadow: inset 0 0 1rem black;
       margin: 0.25rem 0;
       border-radius: 0.5rem;
-      padding: 0.5rem 0.5rem;      
-      display: flex;
-      flex-direction: column;      
-      justify-content: flex-start;
-      
-      div{
-        display: flex;
+      padding: 0.5rem 0.5rem;  
+      font-size: 0.7rem;
+      white-space: normal;
+
+      div.data-row{
+        display: block;
+        width: 100%;
+        line-height: 1rem;
+        text-align: right;
         flex-direction: row;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         justify-content: space-between;
-        font-size: 0.7rem;
+        align-content: stretch;
+        display: flex;        
+        
+        & > div{
+          display: flex;
+          flex-direction: column;
+          padding: 0 10px;
+          flex-grow: 1;
+        }
         
         button{
           background: transparent;
           border: none;
         }
       }
+      
+      div.subline{
+        display: block;
+        text-align: right;
+        font-size: 0.5rem;
+      }
     }
+      
   }
 }
 

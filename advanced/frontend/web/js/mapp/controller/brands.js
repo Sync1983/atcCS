@@ -14,6 +14,12 @@ atcCS.controller( 'brands', [
     
     $user.getBrands( $scope.searchText, serverResponse);
     
+    $scope.goTo = function(text, brand, rule){      
+      $user.partRule = rule;
+      $scope.$evalAsync(function() {
+          $location.path('parts/'+text+'/'+brand);
+      });
+    };
  
     function serverResponse(data){
       $scope.inSearch = false;      

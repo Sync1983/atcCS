@@ -1,18 +1,26 @@
 <div class="catalog">
   <div class="return">
-    <span ng-repeat="path in ret_path">
-      {{path.name}}/
+    <span ng-repeat-start="path in ret_path" ng-click="goTo(path)">
+      <u>{{path.name}}</u>
     </span>
+    <span ng-repeat-end="" ng-show="!$last">/</span >
+    
   </div>
   <ul>
     <li ng-repeat="row in nodes | filter:{is_group:true}" class="group">
       <span ng-click="goTo(row);">{{row.name}}</span>
     </li>
     <li ng-repeat="row in nodes | filter:{is_group:false}" class="item">
-      <div><span>Артикул<button class="btn-articul-search" ng-click="onArticulSearch(row.articul)"><span class="glyphicon glyphicon-search"></span></button></span>       <span><u>{{row.articul}}</u></span></div>
-      <div><span>Производитель</span> <span><u>{{row.maker}}  </u></span></div>
-      <div><span>Наимменование</span> <span><u>{{row.name}}   </u></span></div>
-      <div><span>Описание</span>      <span><u>{{row.descr}}  </u></span></div>
+      <div class="data-row"> 
+        <div style="flex-grow: 1">
+          <span style="white-space: nowrap" ng-click="onArticulSearch(row.articul)"></button><u>{{row.articul}}</u></span>
+          <span>{{row.maker}}</span>
+        </div>
+        <div style="flex-grow: 20 ">{{row.name}}</div>      
+      </div>
+      <div class="data-row subline">
+        <span><i>{{row.descr}}</i></span>
+      </div>        
     </li>
   </ul>
 </div>

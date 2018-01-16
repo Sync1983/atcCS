@@ -12,7 +12,7 @@ atcCS.controller( 'parts', [
     $scope.data_in    = [];
     $scope.searchText = $routeParams.searchText || false;
     $scope.brand      = $routeParams.brand      || false;
-    $scope.rule       = JSON.parse($routeParams.rule)       || false;
+    $scope.rule       = $user.partRule       || false;
     $scope.analogShow = $user.analogShow;
     $scope.markup     = $user.activeMarkup || 0;
     $scope.markupName = $user.activeMarkupName || '';
@@ -26,7 +26,7 @@ atcCS.controller( 'parts', [
     };
     
     searchEvents.broadcast("change",$scope.searchText);
-        
+    
     for(var i in $scope.rule){
         var clsid = $scope.rule[i].id;
         var ident = $scope.rule[i].uid;

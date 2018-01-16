@@ -106,7 +106,7 @@ atcCS.config(['$routeProvider', '$locationProvider',
         templateUrl: '/brands.html',
         controller: 'brands',
         controllerAs: 'atcCS' 
-      }).when('/parts/:searchText/:brand/:rule', {
+      }).when('/parts/:searchText/:brand', {
         caseInsensitiveMatch: true,
         templateUrl: '/parts.html',
         controller: 'parts',
@@ -339,6 +339,12 @@ atcCS.controller( 'brands', [
     
     $user.getBrands( $scope.searchText, serverResponse);
     
+    $scope.goTo = function(text, brand, rule){      
+      $user.partRule = rule;
+      $scope.$evalAsync(function() {
+          $location.path('parts/'+text+'/'+brand);
+      });
+    };
  
     function serverResponse(data){
       $scope.inSearch = false;      
@@ -371,11 +377,14 @@ atcCS.controller( 'catalog', [
     $scope.isLogin = $user.isLogin;         
     $scope.isAdmin = $user.isAdmin;
     
-    function update(event, data){
-      console.log(data);
+    function update(event, data){      
       $scope.nodes = data.nodes;
       $scope.ret_path = data.path;
     }
+    
+    $scope.onArticulSearch = function(articul){
+      searchEvents.broadcast("StartSearchText",articul);
+    };
     
     $scope.goTo = function(node){
       $scope.$evalAsync(function() {
@@ -409,7 +418,7 @@ atcCS.controller( 'parts', [
     $scope.data_in    = [];
     $scope.searchText = $routeParams.searchText || false;
     $scope.brand      = $routeParams.brand      || false;
-    $scope.rule       = JSON.parse($routeParams.rule)       || false;
+    $scope.rule       = $user.partRule       || false;
     $scope.analogShow = $user.analogShow;
     $scope.markup     = $user.activeMarkup || 0;
     $scope.markupName = $user.activeMarkupName || '';
@@ -423,7 +432,7 @@ atcCS.controller( 'parts', [
     };
     
     searchEvents.broadcast("change",$scope.searchText);
-        
+    
     for(var i in $scope.rule){
         var clsid = $scope.rule[i].id;
         var ident = $scope.rule[i].uid;

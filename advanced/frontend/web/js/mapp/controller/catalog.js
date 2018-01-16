@@ -14,11 +14,14 @@ atcCS.controller( 'catalog', [
     $scope.isLogin = $user.isLogin;         
     $scope.isAdmin = $user.isAdmin;
     
-    function update(event, data){
-      console.log(data);
+    function update(event, data){      
       $scope.nodes = data.nodes;
       $scope.ret_path = data.path;
     }
+    
+    $scope.onArticulSearch = function(articul){
+      searchEvents.broadcast("StartSearchText",articul);
+    };
     
     $scope.goTo = function(node){
       $scope.$evalAsync(function() {

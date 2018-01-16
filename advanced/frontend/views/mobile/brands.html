@@ -3,7 +3,7 @@
    <div class="brands-list">
      <ul>
        <li ng-repeat="(brand,rule) in brands">
-         <span><a href="/parts/{{searchText}}/{{brand}}/{{rule}}">{{brand}}</a></span>
+         <span ng-click="goTo(searchText, brand, rule)">{{brand}}</span>
        </li>
      </ul>
    </div>   
