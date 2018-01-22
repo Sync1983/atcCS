@@ -32,7 +32,8 @@
         "bower-asset/angular-route": ">=v1.5.8",
         "bower-asset/angular-cookies": ">=v1.5.5",
         "bower-asset/textAngular": ">=v1.5.5",
-        "sync/ng-table": "dev-dev-atc"        
+        "sync/ng-table": "dev-dev-atc",
+        "alexandernst/yii2-device-detect": "0.0.12"
     },
     "require-dev": {                
     },

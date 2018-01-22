@@ -9,10 +9,11 @@ $params = array_merge(
 return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log','devicedetect'],
     'controllerNamespace' => 'frontend\controllers',
     'aliases' => [
-      '@sync' => '@vendor/sync/'
+      '@sync' => '@vendor/sync/',
+      '@mobile-view' => 'mobile'
     ],
     'components' => [
         'assetManager' => [
@@ -35,6 +36,9 @@ return [
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
+        ],
+        'devicedetect' => [
+          'class' => 'alexandernst\devicedetect\DeviceDetect'
         ],
     ],
     'params' => $params,

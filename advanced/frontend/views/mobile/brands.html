@@ -1,0 +1,11 @@
+ <div class="brands-view">
+   <div ng-if="inSearch" class="in-search"></div>
+   <div class="brands-list">
+     <ul>
+       <li ng-repeat="(brand,rule) in brands">
+         <span ng-click="goTo(searchText, brand, rule)">{{brand}}</span>
+       </li>
+     </ul>
+   </div>   
+ </div>
+

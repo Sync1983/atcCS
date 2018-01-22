@@ -1,0 +1,41 @@
+/* 
+    Created on : 13.11.2017, 23:16:48
+    Author     : Sync<atc58.ru>
+*/
+
+div.login-window{
+  text-align:center;
+  ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li{
+      text-align: center;
+      padding: 0.5rem 0;
+      
+      .field{
+        margin: 0 auto;        
+        padding: 0.2rem 2rem 0.2rem 1rem;
+        border-radius: 1rem;
+        background-color: white;
+        border-width: 1px;
+        width: 70%;    
+        position: relative;
+        
+        input{
+          border: none;
+          &:focus, &:active{
+            outline: none;
+          }
+        }
+      }
+      
+      .label{
+        font-size: 1rem;
+        line-height: 1rem;
+        font-stretch: expanded;
+      }
+    }
+  }
+}
+

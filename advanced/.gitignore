@@ -37,7 +37,7 @@ phpunit.phar
 /console/migrate_data
 /node_modules
 
-.sass-cahce
-/.sass-cahce
-/.sass-cahce/*
+.sass-cache
+/.sass-cache
+/.sass-cache/*
 composer.lock

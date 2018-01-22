@@ -18,6 +18,13 @@ use yii\filters\AccessControl;
  */
 class SiteController extends Controller
 {
+  
+  public function __construct($id, $module, $config = array()){
+    parent::__construct($id, $module, $config);
+    if (\Yii::$app->devicedetect->isMobile()){
+      \Yii::$app->layout = \Yii::$aliases['@mobile-view'];      
+    }
+  }
     /**
      * @inheritdoc
      */

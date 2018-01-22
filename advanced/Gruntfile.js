@@ -22,21 +22,43 @@ module.exports = function(grunt) {
         options: {
           style: 'compressed'
         },
-        files: { 'frontend/web/css/site.css': 'frontend/web/scss/site.scss'}
+        files: { 'frontend/web/css/site.css': 'frontend/web/scss/site.scss',
+                 'frontend/web/css/mobile.css': 'frontend/web/scss_mobile/mobile.scss'}
       }
     },
     watch:{
       options: {
-        livereload: true
+        livereload: true,
+        spawn: false
       },
       views:{
         files: ['frontend/views/site/angular/**/*.html','frontend/web/js/aapp/**/*.js','frontend/web/scss/**/*.scss'],
         tasks: ['compileAngularView', 'compileAngularJS','sass'],
         options: {
-          reload: true
+          reload: true,
+          spawn: false
+        }
+      },
+      mobile:{
+        files: ['frontend/web/scss_mobile/**/*.scss', 'frontend/web/js/mapp/**/*.js', 'frontend/views/mobile/*.html'],
+        tasks: ['sass', 'compileAngularJS','compileAngularView'],
+        options: {
+          reload: false,
+          spawn: false
         }
       }
     }
+  });
+  
+  grunt.event.on('watch', function(action, filepath, target) {    
+    if( target !== "views" ){
+      grunt.config('compileAngularJS.src', "frontend/web/js/mapp/");
+      grunt.config('compileAngularJS.dest', "frontend/web/js/_mapp.js");
+      
+      grunt.config('compileAngularView.src', "frontend/views/mobile/");
+      grunt.config('compileAngularView.map', "frontend/views/mobile/views.map");
+      grunt.config('compileAngularView.dest', "frontend/views/layouts/mobile.php");
+    }    
   });
   
   grunt.registerTask('copyBootstrap', 'Copy Bootstrap assets.', function() {    
@@ -126,7 +148,7 @@ module.exports = function(grunt) {
     
     grunt.file.write(dest,fileText);
 
-    grunt.log.write("Anjular Min File Update").ok();
+    grunt.log.write("Anjular Min File Update ").ok();
   });
   
   

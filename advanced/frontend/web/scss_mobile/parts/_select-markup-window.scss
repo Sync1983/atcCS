@@ -1,0 +1,22 @@
+/* 
+    Created on : 27.11.2017, 14:36:59
+    Author     : Sync
+*/
+
+div.markup-window{
+  text-align: center;
+  ul{
+    list-style:none;
+    padding: 0;
+  }
+  span{
+    color:white;
+    line-height: 2rem;
+    font-size:1rem;
+    font-weight: bold;
+  }
+  span.glyphicon-ok{
+    padding: 0 1rem;
+    color:lime;
+  }
+}

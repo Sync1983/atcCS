@@ -1,0 +1,50 @@
+<div class="parts-view">
+
+  <div class="parts-list"  ng-show="expand===undefined">
+    <ul>
+      <li ng-repeat="rows in data | orderBy:'name'">
+        <span>{{rows.name}}</span>
+        <button class="expand-button" ng-click="selectMaker(rows)"><span class="glyphicon glyphicon-chevron-right"></span></button>
+        <div class="name-info">
+          <span class="a">Цена <u>{{rows.min_price.price}}</u> руб. срок от <u>{{rows.min_price.shiping}} дн.</u> </span>
+          <span class="b" ng-show="((rows.min_time.price!==rows.min_price.price) || (rows.min_price.shiping !==rows.min_time.shiping) ) ">Цена <u>{{rows.min_time.price}}</u> руб. срок от <u>{{rows.min_time.shiping}} дн.</u></span>
+        </div>
+      </li>
+    </ul>    
+  </div>
+  
+  <div class="parts-expand"  ng-show="expand!==undefined">
+    <ul>
+      <li><div ng-click="expand=undefined" class="back"><span class="glyphicon glyphicon-chevron-left icon-back" ></span><span class="brand-name">{{expand.name}}</span><span class="back">Назад</span></div></li>
+      <li>
+        <div class="parts-control">
+          <span ng-click="sortBy('price')">Цена <div ng-show="sort.name==='price'"><span class="glyphicon" ng-class="sort.order===1?'glyphicon-triangle-bottom':'glyphicon-triangle-top'"></span></div></span>
+          <span ng-click="sortBy('shiping')">Срок <div ng-show="sort.name==='shiping'"><span class="glyphicon" ng-class="sort.order===1?'glyphicon-triangle-bottom':'glyphicon-triangle-top'"></span></div></span>
+        </div>
+      </li>
+      <li ng-repeat="rows in expand.rows | orderBy:sort.name:(sort.order==1)">
+        <div class="row-head" ng-click="rows.open=true"><span class="articul">{{rows.articul}}</span></div>
+        <div class="row-info"><span>Цена <u>{{rows.price}}</u> руб. срок от <u>{{rows.shiping}} дн.</u> есть <u>{{rows.count}} шт.</u></span></div>
+        <div class="row-expand" ng-show="rows.open">
+          <ul>
+            <li>Производитель: {{rows.maker}}</li>            
+            <li>Артикул: {{rows.articul}} <button class="btn-articul-search" ng-click="onArticulSearch(rows.articul)"><span class="glyphicon glyphicon-search"></span></button></li>            
+            <li>Наименование: {{rows.name}}</li>            
+            <li>На складе: {{rows.count}} шт.</li>            
+            <li>Упаковка: {{rows.lot_quantity}} шт.</li>            
+            <li>Цена: {{rows.price}} руб.</li>
+            <li>Цена [{{activeMarkupName}} ({{activeMarkup}}%)]: <u>{{rows.price | percent:activeMarkup | number:2}} руб.</u></li>            
+            <li>Срок: от <u>{{rows.shiping}} дн.</u></li>            
+          </ul>
+          <div class="actions">
+            <button ng-click="onAdd(rows)">В корзину
+              <net-state ng-model="rows.adding"></net-state>
+            </button>
+            <button style="float: right" ng-click="rows.open=false">Свернуть</button>
+          </div>
+        </div>
+      </li>
+    </ul>    
+  </div>
+  
+</div>

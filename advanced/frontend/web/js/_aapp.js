@@ -95,7 +95,7 @@ atcCS.config(['$httpProvider', function ($httpProvider) {
  
 atcCS.config(function($logProvider){
   $logProvider.debugEnabled(false);
-});
+});  
 /* global atcCS */
 
 atcCS.config(['$routeProvider', '$locationProvider',

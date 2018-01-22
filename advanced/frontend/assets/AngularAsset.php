@@ -8,7 +8,6 @@
 namespace frontend\assets;
 
 use yii\web\AssetBundle;
-use frontend\assets\AppAsset;
 use yii\web\View;
 
 class AngularAsset extends AssetBundle
