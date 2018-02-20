@@ -30,7 +30,7 @@ return [
         ],
         'db' =>[
           'class' => 'yii\db\Connection',
-          'dsn' => 'pgsql:host=localhost;port=5432;dbname=atccs',
+          'dsn' => 'pgsql:host=atcserv;port=6543;dbname=atccs',
           'username' => 'client',
           'password' => 'client',
           'charset' => 'utf8',
