@@ -38,12 +38,12 @@ class ProviderATC extends ProviderFile{
     list($brand,$articul) = explode('@@',$ident);
 
     $result = Stock::find()
-                -> select(['articul','maker','name','count'])
+                -> select(['articul','maker','name','count','price'])
                 -> where(['maker' => $brand])
                 -> andWhere(['articul' => $articul])
                 -> asArray()
                 -> all();
-    $answer = [];
+    $answer = [];    
     foreach ($result as $row){
       $converted = [];
       $converted['articul']   = $row['articul'];
@@ -51,7 +51,7 @@ class ProviderATC extends ProviderFile{
       $converted['name']      = $row['name'];
       $converted['is_analog'] = false;
       $converted['shiping']   = 0;
-      $converted['price']     = 0;
+      $converted['price']     = floatval($row['price']);
       $converted['stock']         = "Склад";
       $converted['count']         = $row['count'];
       $converted['lot_quantity']  = 1;
