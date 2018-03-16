@@ -24,11 +24,12 @@ class UserGetDataAction extends Action{
       ];
     }
 
-    $user = \yii::$app->user->getIdentity();
     $answer   = [];
     $baskets  = [];
+    $user = \yii::$app->user->getIdentity();
 
-    foreach(\backend\models\user\UserBasket::findAll(['uid' => $user->id]) as $row){
+    $rows = \backend\models\user\UserBasket::findAll(['uid' => $user->id]);
+    foreach( $rows as $row){
       $baskets[] = [
         'id'    => $row->basket_id,
         'name'  => $row->name,

@@ -21,7 +21,7 @@
         </div>
         <span class="ref" ng-click="onClick(row)" ng-if="!editMode">{{row.name}}</span>        
         <div class="description" ng-if="!editMode">
-          <b><span>{{row.maker}}</span></b> [<span>{{row.articul}}</span>] : <span>{{row.descr}}</span>
+          <b><span>{{row.maker}}</span></b> [<span>{{row.articul}}</span>] : <span>{{row.descr}}</span> <span ng-show="row.count"> На складе: <span><b>{{row.count}}</b></span></span> <span ng-show="row.price"> Цена: <span><b>{{row.price | number:2}}</b></span></span>
         </div>
       </li>
     </ul>

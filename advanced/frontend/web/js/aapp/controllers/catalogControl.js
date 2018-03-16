@@ -12,8 +12,9 @@ function catalogActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $event
     searchEvents = $events.get(eventsNames.eventsSearch());
     events       = $events.get(eventsNames.eventsCatalog());
     userEvents   = $events.get(eventsNames.eventsUser());    
-    path         = $routeParams.path || false;    
+    path         = $routeParams.path || false;  
     //***************************************
+    $scope.markup     = $user.activeMarkup || 0;
     $scope.isLogin    = $user.isLogin;
     $scope.isAdmin    = $user.isAdmin;
     $scope.editMode   = false;
@@ -27,6 +28,10 @@ function catalogActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $event
   this.updateListner = function(event, data){      
       $scope.nodes  = data.nodes;
       $scope.path   = data.path;  
+      for(var i in $scope.nodes){
+        var row = $scope.nodes[i];      
+        row.price = row.rp*(1 + $scope.markup/100);
+      }
   };
   
   this.onClick = function(row){
@@ -40,15 +45,28 @@ function catalogActions($scope,$user,$rootScope,$confirm,$wndMng,$notify, $event
   this.changeNodes = function(newVal, oldVal){    
     if(angular.equals(newVal, oldVal) || (oldVal.length === 0)) {
       return; // simply skip that
+    }    
+    
+    $scope.markup     = $user.activeMarkup || 0;
+    for(var i in newVal){
+      var row = newVal[i];                  
+      row.price = row.rp*(1 + $scope.markup/100);
     }
-      
-    console.log(oldVal,newVal);
+    
   };
   
   this.userDataUpdate = function(event,data){    
     $scope.isLogin    = data.isLogin;        
     $scope.isAdmin    = data.isAdmin;    
   };
+  
+  $rootScope.$on('markupValueChange', function(event, data){
+      $scope.markup     = data.value;      
+      for(var i in $scope.nodes){
+        var row = $scope.nodes[i];      
+        row.price = row.rp*(1 + $scope.markup/100);
+      } 
+  });
   
   //******************************************
   init();

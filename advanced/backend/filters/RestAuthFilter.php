@@ -29,9 +29,9 @@ class RestAuthFilter extends AuthMethod{
    * @inheritdoc
    */
   public function init() {    
-    array_map(function($item){
+    /*array_map(function($item){
       return strtoupper($item);
-    }, $this->exceptMethods);
+    }, $this->exceptMethods);*/
     
     return parent::init();
   }
@@ -48,7 +48,7 @@ class RestAuthFilter extends AuthMethod{
             $this->request ? : \yii::$app->getRequest(),
             $response
         );
-
+    
     if( $identity || 
         (!$identity && in_array($action->id, $this->silentAuthtActions)) ||
         (in_array($method, $this->exceptMethods)) ||

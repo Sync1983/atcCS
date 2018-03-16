@@ -29,7 +29,14 @@ class CatalogController extends Controller{
             'Access-Control-Request-Headers' => ['*'],            
             'Access-Control-Allow-Credentials' => true
           ]
-        ],        
+        ],
+        'authFilter' => [
+          'class'       => \backend\filters\RestAuthFilter::className(),
+          'auth'        => [\backend\controllers\user\LoginAction::className(),'authHttpBasic'],
+          'authToken'   => [\backend\controllers\user\LoginAction::className(),'authToken'],
+          'exceptMethods' => ['OPTIONS'],
+          'exceptActions' => ["get-data"],
+        ],
         'contentNegotiator' => [
             'class' => \yii\filters\ContentNegotiator::className(),
             'formats' => [

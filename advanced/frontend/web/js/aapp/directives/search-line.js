@@ -33,7 +33,7 @@ atcCS.directive('searchLine', [
       $scope.treeModel = {
           text: "Категории",
           type: 'request',
-          url: $user.getUrl('helper','get-groups'),
+          //url: $user.getUrl('helper','get-groups'), 
           data: {path:"",type:""}
         };
         
@@ -110,7 +110,7 @@ atcCS.directive('searchLine', [
 
       //Установка темплейтов
       $wndMng.setBodyByTemplate($scope.carsWnd, '/parts/_car-select-part.html',   $scope);
-      $wndMng.setBodyByTemplate($scope.treeWnd, '/parts/_car-select-group.html',  $scope);      
+      //$wndMng.setBodyByTemplate($scope.treeWnd, '/parts/_car-select-group.html',  $scope);      
       $wndMng.setBodyByTemplate($scope.cfgWnd,  '/parts/_settings.html',          $scope);
       $searchDropdown.setTemplate('/parts/_search-dropdown-part.html',            $scope);
       //Установка слушателей
