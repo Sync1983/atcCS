@@ -58,7 +58,7 @@ abstract class Provider extends Object implements SearchInterface{
       $url = $this->_url;
     }
 
-    curl_setopt($ch, CURLOPT_VERBOSE, true);
+    curl_setopt($ch, CURLOPT_VERBOSE, false);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);    
     curl_setopt($ch, CURLOPT_POST, $is_post==1);
     $params = http_build_query(array_merge($data,$this->_default_params));
