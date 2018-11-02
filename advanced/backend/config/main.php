@@ -46,6 +46,13 @@ return [
                     //'categories'  => ['application'],
                     //'logVars'     => ['_GET', '_POST', '_COOKIE']
                 ],
+                [
+                    'class'       => 'yii\log\SyslogTarget',
+                    'levels'      => 0,
+		    'prefix'	  => 'atccs',
+                    //'categories'  => ['application'],
+                    //'logVars'     => ['_GET', '_POST', '_COOKIE']
+                ],
             ],
         ],
         'errorHandler' => [

@@ -28,6 +28,9 @@ class ProviderAutoEuro extends Provider{
 
   public function getBrandsParse($array) {
     $answer   = [];
+    if(!is_array($array)) {
+	return $answer;
+    }
     foreach ($array as $row){      
       $maker_utf = mb_convert_encoding($row['maker'],"UTF-8","Windows-1251");
       $maker  = strtoupper($maker_utf);
@@ -86,6 +89,7 @@ class ProviderAutoEuro extends Provider{
   }
 
   public function parseResponse($answer_string, $method) {
+    \Yii::info($answer_string);
     $decode_string  = base64_decode($answer_string);
     $ustring        = unserialize($decode_string);
     
