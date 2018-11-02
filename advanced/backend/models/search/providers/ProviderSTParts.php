@@ -52,7 +52,7 @@ class ProviderSTParts extends Provider{
       $converted['shiping'] /= 24;      
       $result[]   = $converted;
     }
-var_dump($result);
+
     return $result;
   }
 

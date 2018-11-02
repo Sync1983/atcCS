@@ -49,7 +49,7 @@ return [
                 [
                     'class'       => 'yii\log\SyslogTarget',
                     'levels'      => 0,
-		    'prefix'	  => 'atccs',
+		    //'prefix'	  => 'atccs',
                     //'categories'  => ['application'],
                     //'logVars'     => ['_GET', '_POST', '_COOKIE']
                 ],
