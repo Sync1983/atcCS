@@ -21,23 +21,22 @@ class ProviderVoshod extends Provider{
       \yii::info("Voshod json error: " . json_encode($json));
       return [];
     }
-    var_dump($json);
     $answer   = [];
     foreach($json as $row){
       if(!isset($row['brand'])){
         continue;
       }
 			$maker = strtoupper($row['brand']);
-			$answer[ $maker ] = ['id'=> $this->getCLSID(), 'uid' => $row['id'] . '@@' . $this->_search_text];
+			$answer[ $maker ] = ['id'=> $this->getCLSID(), 'uid' => $row['brand'] . "@@" . $row['numberFix']];
     }
     
     return $answer;
   }
 
   public function getParts($ident, $searchtext) {
-    list($maker,$code) = explode("@@", $ident);
-    $data = ['number'=>$code,'maker_id'=>$maker,'reCross'=>"on"];
-    $request 	= $this->prepareRequest($data,false,  $this->_url."search/articles");
+    list($maker,$number) = explode("@@", $ident);
+    $data = ['number'=>$number,'brand'=>$maker];
+    $request = $this->prepareRequest($data,false,  $this->_url."search/articles");
 		$response	= $this->executeRequest($request);
 		$answer		= $this->parseResponse($response,false);
 		$result 	= [];
@@ -51,7 +50,6 @@ class ProviderVoshod extends Provider{
 
   protected function onlineRequestHeaders($ch) {
     $headers = [
-      "Authorization: Basic ".  base64_encode($this->_default_params['Login']. ":" .$this->_default_params['Password']),
       "Accept: application/json",
       "Content-type: application/json'"
     ];

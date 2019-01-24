@@ -38,11 +38,11 @@ return [
           'queryCacheDuration' => -1
         ], // PostgreSQL
         'log' => [
-            'traceLevel' => 3, //YII_DEBUG ? 3 : 0,
+            'traceLevel' => 0, //YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
                     'class'       => 'yii\log\FileTarget',
-                    'levels'      => ['info', 'error', 'warning','trace'],
+                    'levels'      => ['error'],
                     //'categories'  => ['application'],
                     //'logVars'     => ['_GET', '_POST', '_COOKIE']
                 ],
