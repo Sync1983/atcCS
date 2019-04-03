@@ -5,10 +5,10 @@
  */
 
 namespace backend\models\search;
-use yii\base\Object;
+use yii\base\BaseObject;
 use backend\models\search\SearchInterface;
 
-abstract class Provider extends Object implements SearchInterface{
+abstract class Provider extends BaseObject implements SearchInterface{
   protected $_CLSID = 0;
   protected $_NAME  = "Provider";
   protected $_url   = "http://";

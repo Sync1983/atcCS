@@ -5,7 +5,7 @@
  */
 
 namespace backend\models\soap;
-use yii\base\Object;
+use yii\base\BaseObject;
 use backend\models\xml\XmlAttribute;
 /**
  * Описывает класс в формате WSDL
@@ -15,7 +15,7 @@ use backend\models\xml\XmlAttribute;
  * @wsdl_publicate  для указания списка экспортируемых функций
  * @wsdl_name       для указания имени, отличающегося от имени класса
  */
-class WSDLClass extends Object{
+class WSDLClass extends BaseObject{
 
   private $config;
 

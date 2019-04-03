@@ -4,10 +4,10 @@
  * @author Sync
  */
 namespace backend\models\search;
-use yii\base\Object;
+use yii\base\BaseObject;
 use yii\base\InvalidConfigException;
 
-class SearchEngine extends Object{
+class SearchEngine extends BaseObject{
   protected $providers;
   
   public function init() {

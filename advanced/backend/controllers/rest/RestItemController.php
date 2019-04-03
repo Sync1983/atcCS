@@ -1,9 +1,9 @@
 <?php
 
 namespace backend\controllers\rest;
-use yii\base\Object;
+use yii\base\BaseObject;
 
-abstract class RestItemController extends Object{
+abstract class RestItemController extends BaseObject{
 
   abstract public function all(     $id, $params );
   abstract public function get(     $id, $params );

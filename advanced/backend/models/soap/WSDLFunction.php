@@ -5,13 +5,13 @@
  */
 
 namespace backend\models\soap;
-use yii\base\Object;
+use yii\base\BaseObject;
 use backend\models\xml\XmlAttribute;
 /**
  * Описывает функцию формате WSDL
  * описание берется из PhpDoc функции
  */
-class WSDLFunction extends Object{
+class WSDLFunction extends BaseObject{
   /* @var $method \ReflectionMethod */
   protected $method     = null;
   /* @var $root XmlAttribute */

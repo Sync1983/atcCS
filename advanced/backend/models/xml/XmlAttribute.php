@@ -5,7 +5,7 @@ namespace backend\models\xml;
  * @author Sync
  * @property String $value Текстовое значение внутри тэга 
  */
-class XmlAttribute extends \yii\base\Object{
+class XmlAttribute extends \yii\base\BaseObject{
 
   protected $name         = null;
   protected $value        = null;
