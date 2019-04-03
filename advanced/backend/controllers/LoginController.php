@@ -26,7 +26,7 @@ class LoginController extends Controller{
         'corsFilter' => [
           'class' => \yii\filters\Cors::className(),
           'cors'  => [
-            'Origin' => ['*'],
+            'Origin' => \yii\helpers\ArrayHelper::getValue(\yii::$app->params, 'server_origin',['*']),
             'Access-Control-Request-Headers' => ['*'],
             'Access-Control-Allow-Credentials' => true
           ]
